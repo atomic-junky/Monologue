@@ -2,6 +2,16 @@ extends GraphEdit
 
 
 var speakers = []
+var mouse_pressed = false
+var selection_mode = false
+
+func _input(event):
+	if event is InputEventMouseButton:
+		mouse_pressed = event.is_pressed()
+	
+	selection_mode = false
+	if event is InputEventMouseMotion and mouse_pressed:
+		selection_mode = true
 
 
 func get_all_connections_from_node(from_node: StringName):

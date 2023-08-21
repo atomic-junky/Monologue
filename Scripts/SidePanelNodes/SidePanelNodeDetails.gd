@@ -26,6 +26,9 @@ func clear_current_panel():
 
 
 func _on_graph_edit_node_selected(node):
+	if graph_edit.selection_mode:
+		return
+		
 	clear_current_panel()
 	
 	var exceptions_nodes = ["NodeEndPath", "NodeBridgeIn", "NodeBridgeOut"]
