@@ -4,6 +4,8 @@ A fork of an untitled godot dialog system by Amberlim. (using Godot 4.x)
 This system converts your story/dialog into a JSON file which you can then use to create your dialog in game.
 The app this application allows you to modify a single dialog file, not projects with several files.
 
+You can find the doc [here](https://crewsaders.gitbook.io/monologue/).
+
 ### Brief Introduction
 
 Monologue is a dialog system that allows you to create and edit dialogs for your Godot games. It is a fork of an untitled dialog system by Amberlim.
