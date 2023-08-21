@@ -140,7 +140,6 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
-scroll_offset = Vector2(0, -24)
 connection_lines_curvature = 0.0
 connection_lines_thickness = 3.0
 zoom = 0.6
