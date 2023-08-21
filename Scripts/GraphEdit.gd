@@ -2,6 +2,16 @@ extends GraphEdit
 
 
 var speakers = []
+var mouse_pressed = false
+var selection_mode = false
+
+func _input(event):
+	if event is InputEventMouseButton:
+		mouse_pressed = event.is_pressed()
+	
+	selection_mode = false
+	if event is InputEventMouseMotion and mouse_pressed:
+		selection_mode = true
 
 
 func get_all_connections_from_node(from_node: StringName):
@@ -32,3 +42,17 @@ func clear_all_empty_connections():
 		var node_ref = get_node_or_null(NodePath(to_name))
 		if node_ref == null or node_ref.is_queued_for_deletion():
 			disconnect_node(co.get("from"), co.get("from_port"), co.get("to"), co.get("to_port"))
+
+func get_linked_bridge_node(target_number):
+	for node in get_children():
+		if node.node_type == "NodeBridgeOut" and node.number_selector.value == target_number:
+			return node
+
+func get_free_bridge_number(_n=1, lp_max=50):
+	for node in get_children():
+		if (node.node_type == "NodeBridgeOut" or node.node_type == "NodeBridgeIn") and node.number_selector.value == _n:
+			if lp_max <= 0:
+				return _n
+				
+			return get_free_bridge_number(_n+1, lp_max-1)
+	return _n

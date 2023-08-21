@@ -5,11 +5,13 @@ var dialog_for_localisation = []
 
 @export var file_path: String
 
+@onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
 @onready var sentence_node = preload("res://Objects/GraphNodes/SentenceNode.tscn")
 @onready var dice_roll_node = preload("res://Objects/GraphNodes/DiceRollNode.tscn")
 @onready var choice_node = preload("res://Objects/GraphNodes/ChoiceNode.tscn")
 @onready var end_node = preload("res://Objects/GraphNodes/EndPathNode.tscn")
-@onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
+@onready var bridge_in_node = preload("res://Objects/GraphNodes/BridgeInNode.tscn")
+@onready var bridge_out_node = preload("res://Objects/GraphNodes/BridgeOutNode.tscn")
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 
 @onready var graph_edit: GraphEdit = $VBoxContainer/Control/GraphEdit
@@ -128,6 +130,10 @@ func load_project(path):
 				new_node = dice_roll_node.instantiate()
 			"NodeEndPath":
 				new_node = end_node.instantiate()
+			"NodeBridgeIn":
+				new_node = bridge_in_node.instantiate()
+			"NodeBridgeOut":
+				new_node = bridge_out_node.instantiate()
 		
 		if not new_node:
 			continue
@@ -171,6 +177,11 @@ func load_project(path):
 				if node.get("FailID") is String:
 					var fail_node = get_node_by_id(node.get("FailID"))
 					graph_edit.connect_node(current_node.name, 1, fail_node.name, 0)
+			"NodeBridgeOut":
+				print("cc")
+				if node.get("NextID") is String:
+					var next_node = get_node_by_id(node.get("NextID"))
+					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
 		
 		if not current_node: # OptionNode
 			continue
@@ -224,6 +235,20 @@ func _on_new_end_pressed():
 	graph_edit.add_child(node)
 	center_node_in_graph_edit(node)
 
+func _on_new_bridge_pressed():
+	var number = graph_edit.get_free_bridge_number()
+	
+	var in_node = bridge_in_node.instantiate()
+	var out_node = bridge_out_node.instantiate()
+	
+	graph_edit.add_child(in_node)
+	graph_edit.add_child(out_node)
+	
+	in_node.number_selector.value = number
+	out_node.number_selector.value = number
+	
+	center_node_in_graph_edit(in_node)
+	center_node_in_graph_edit(out_node)
 
 func _on_Clear_pressed():
 	for node in get_tree().get_nodes_in_group("graph_nodes"):
@@ -238,6 +263,7 @@ func _on_GraphEdit_connection_request(from, from_slot, to, to_slot):
 
 func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
 	graph_edit.disconnect_node(from, from_slot, to, to_slot)
+
 
 
 ####################

@@ -102,6 +102,12 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New EndPath +"
 
+[node name="NewBridge" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "New Bridge +"
+
 [node name="Save" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -134,6 +140,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
+scroll_offset = Vector2(0, -24)
 connection_lines_curvature = 0.0
 connection_lines_thickness = 3.0
 zoom = 0.6
@@ -322,6 +329,7 @@ script = SubResource("GDScript_so3r8")
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewOption" to="." method="_on_NewOption_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewRoll" to="." method="_on_NewRoll_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewEnd" to="." method="_on_new_end_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewBridge" to="." method="_on_new_bridge_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Save" to="." method="save"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Clear" to="." method="_on_Clear_pressed"]
 [connection signal="connection_request" from="VBoxContainer/Control/GraphEdit" to="." method="_on_GraphEdit_connection_request"]

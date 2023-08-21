@@ -26,9 +26,14 @@ func clear_current_panel():
 
 
 func _on_graph_edit_node_selected(node):
+	if graph_edit.selection_mode:
+		return
+		
 	clear_current_panel()
 	
-	if node.node_type == "NodeEndPath":
+	var exceptions_nodes = ["NodeEndPath", "NodeBridgeIn", "NodeBridgeOut"]
+	
+	if node.node_type in exceptions_nodes:
 		return
 	
 	label_id.text = node.id
