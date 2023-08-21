@@ -4,33 +4,41 @@ A fork of an untitled godot dialog system by Amberlim. (using Godot 4.x)
 This system converts your story/dialog into a JSON file which you can then use to create your dialog in game.
 The app this application allows you to modify a single dialog file, not projects with several files.
 
+### Brief Introduction
+
+Monologue is a dialog system that allows you to create and edit dialogs for your Godot games. It is a fork of an untitled dialog system by Amberlim.
+
 
 ### Brief Steps to Start Your Story
-1. Open or create a `.json` file (the file must have the correct format)
+1. Create or open a `.json` file.
 2. Create your dialogues with the various nodes
 3. Save the project for use in your story
+4. Save the file and use it in your game
 
 
 ### Types of nodes
  - **Root Node**<br>
-	There is only one in each file, and it cannot be deleted. The Root Node is the starting point of your story
+	The starting point of your story. There is only one Root Node in each file.
 
 - **Sentence Node**<br>
-	Sentence nodes represent a character's dialogue sentence.
+	A node that represents a character's dialogue sentence.
 
 - **Choice Node**<br>
-	It's a node that allows the user to make choices and then select a specific branch. A Choice Node has several Option Nodes.
+	A node that allows the user to make choices and then select a specific branch. A Choice Node has several Option Nodes.
 
 - **Option Node**<br>
-	An Option Node has several parameters:<br>
-	- **Enable by default**: the first time the user is confronted with the Choice Node.
-	- **One Shot**: this option is valid only once
+	An option that can be chosen by the user in a Choice Node.
 
 - **DiceRoll Node**<br>
 	To have a bit of random stuff.
 
 - **End Path Node**<br>
-	This node represents the end of a path. It can be interpreted as an exit of the file
+	This node represents the end of a path. It can be interpreted as an exit of the file.
+
+- **Bridge Node**<br>
+	- The Bridge node creates a connection between two nodes, when you create a Bridge node, two nodes appear, a BridgeInNode and a BridgeOutNode.
+	- The `BridgeInNode` is the link's input node, and the `BridgeOutNode` is the link's exit node.
+	- The modifiable number is the link number.
 
 
 ### The JSON file format
