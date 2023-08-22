@@ -6,9 +6,10 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
-  export_game:
+  export:
+    permissions: write-all
     runs-on: ubuntu-latest
-    name: Monologue
+    name: Monologue export
     steps:
       - name: Checkout
         uses: actions/checkout@v3.3.0
