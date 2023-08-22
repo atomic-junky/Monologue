@@ -1,14 +1,9 @@
 # Monologue 🦖
-A fork of an untitled godot dialog system by Amberlim. (using Godot 4.x)
 
-This system converts your story/dialog into a JSON file which you can then use to create your dialog in game.
-The app this application allows you to modify a single dialog file, not projects with several files.
+### About
+Monologue is a powerful tool that allows you to create and edit dialogues in a node editor and then save them as a JSON file so you can use them anywhere.
 
 You can find the doc [here](https://crewsaders.gitbook.io/monologue/).
-
-### Brief Introduction
-
-Monologue is a dialog system that allows you to create and edit dialogs for your Godot games. It is a fork of an untitled dialog system by Amberlim.
 
 
 ### Brief Steps to Start Your Story
@@ -18,7 +13,7 @@ Monologue is a dialog system that allows you to create and edit dialogs for your
 4. Save the file and use it in your game
 
 
-### Types of nodes
+## Types of nodes
  - **Root Node**<br>
 	The starting point of your story. There is only one Root Node in each file.
 
@@ -43,7 +38,7 @@ Monologue is a dialog system that allows you to create and edit dialogs for your
 	- The modifiable number is the link number.
 
 
-### The JSON file format
+## The JSON file format
 ```json
 {
 	"RootNodeId": "", # The id of the root node (where all start)
@@ -60,7 +55,7 @@ Monologue is a dialog system that allows you to create and edit dialogs for your
 ```
 
 
-### How it's interpreted
+## How it's interpreted
 You can write your own script or use [this one]() (not yet written).
 
 This how the end of a branch is interpreted.
@@ -68,5 +63,5 @@ If there is no EndPathNode, the next node is the last NodeChoice
 ![end_path_system](./doc/end_path.png)
 
 
-### More Support
-Hop into the Amberlim's Discord to share your project: https://discord.gg/AAcKmJz7Na
+## More Support
+This project is originally from Amberlim, so if you want, here is her [Discord server](https://discord.gg/AAcKmJz7Na). However, if you need help, don't hesitate to create an issue on Github.
