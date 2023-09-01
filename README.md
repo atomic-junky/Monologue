@@ -56,11 +56,9 @@ You can find the doc [here](https://crewsaders.gitbook.io/monologue/).
 
 
 ## How it's interpreted
-You can write your own script or use [this one]() (not yet written).
+You can write your own script or use the one in the example (MonologueProcess.gd).
 
-This how the end of a branch is interpreted.
-If there is no EndPathNode, the next node is the last NodeChoice
-![end_path_system](./doc/end_path.png)
+More soon.
 
 
 ## More Support
