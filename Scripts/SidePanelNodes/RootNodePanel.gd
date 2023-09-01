@@ -15,22 +15,22 @@ var variables = []
 
 func _ready():
 	for character in graph_node.get_parent().speakers:
-		add_character(character.get("ID"))
+		add_character(character.get("Reference"))
 
 func _from_dict(dict):
 	id = dict.get("ID")
 
 
-func add_character(id: String = ""):
+func add_character(reference: String = ""):
 	var new_node = character_node.instantiate()
 	characters_container.add_child(new_node)
 	
-	var node_index = characters_container.get_children().find(new_node)
-	var id_input: LineEdit = new_node.id_input
+	var node_id = characters_container.get_children().find(new_node)
+	var ref_input: LineEdit = new_node.ref_input
 	
-	id_input.text = id
-	id_input.text_changed.connect(text_submitted_callback)
-	new_node.editor_index = node_index
+	ref_input.text = reference
+	ref_input.text_changed.connect(text_submitted_callback)
+	new_node.id = node_id
 	new_node.root_node = self
 	
 	update_speakers()
@@ -52,8 +52,7 @@ func update_speakers():
 		if child.is_queued_for_deletion():
 			continue
 		
-		var node_index = all_nodes.find(child)
-		child.editor_index = node_index
+		child.id = all_nodes.find(child)
 		
 		updated_speakers.append(child._to_dict())
 		

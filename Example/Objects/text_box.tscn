@@ -1,0 +1,88 @@
+[gd_scene load_steps=7 format=3 uid="uid://cm2caiiwpfydd"]
+
+[ext_resource type="Script" path="res://Example/Scripts/text_box.gd" id="1_fnrne"]
+[ext_resource type="FontFile" uid="uid://d38bcon155qfn" path="res://Example/Font/VT323-Regular.ttf" id="2_ol0cq"]
+[ext_resource type="StyleBox" uid="uid://d3p673l757k3x" path="res://Example/Theme/style_box_texture.tres" id="2_tfhx6"]
+[ext_resource type="Texture2D" uid="uid://j4x0hbxrjig0" path="res://Example/Assets/UI_Flat_Dropdown_Handle.png" id="3_k60ig"]
+[ext_resource type="Texture2D" uid="uid://gissild282fn" path="res://Example/Assets/UI_Flat_Banner_01_Upward.png" id="5_p7a04"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_t5xt7"]
+font = ExtResource("2_ol0cq")
+font_color = Color(0, 0, 0, 1)
+outline_color = Color(0, 0, 0, 1)
+
+[node name="TextBox" type="Control"]
+custom_minimum_size = Vector2(350, 100)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 674.0
+offset_bottom = 224.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_fnrne")
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.028
+offset_bottom = 0.052002
+
+[node name="SpeakerContainer" type="Control" parent="Container"]
+layout_mode = 2
+
+[node name="SpeakerLabel" type="Label" parent="Container/SpeakerContainer"]
+z_index = 2
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+offset_left = 41.0
+offset_top = -29.0
+offset_right = 171.0
+offset_bottom = 1.0
+text = "Doulgas Adams"
+label_settings = SubResource("LabelSettings_t5xt7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Container/SpeakerContainer"]
+z_index = 1
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+offset_left = 9.0
+offset_top = -31.0
+offset_right = 201.0
+offset_bottom = 13.0
+texture = ExtResource("5_p7a04")
+
+[node name="TextLabel" type="RichTextLabel" parent="Container"]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_ol0cq")
+theme_override_font_sizes/normal_font_size = 22
+theme_override_styles/focus = ExtResource("2_tfhx6")
+theme_override_styles/normal = ExtResource("2_tfhx6")
+fit_content = true
+scroll_following = true
+
+[node name="Indicator" type="Control" parent="Container"]
+layout_mode = 2
+
+[node name="NextIndicator" type="TextureRect" parent="Container/Indicator"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+scale = Vector2(2, 2)
+texture = ExtResource("3_k60ig")

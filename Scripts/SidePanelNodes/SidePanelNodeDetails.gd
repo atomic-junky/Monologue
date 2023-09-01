@@ -10,6 +10,7 @@ extends PanelContainer
 @onready var sentence_node_panel_instance = preload("res://Objects/SidePanelNodes/SentenceNodePanel.tscn")
 @onready var choice_node_panel_instance = preload("res://Objects/SidePanelNodes/ChoiceNodePanel.tscn")
 @onready var dice_roll_node_panel_instance = preload("res://Objects/SidePanelNodes/DiceRollNodePanel.tscn")
+@onready var end_path_node_panel_instance = preload("res://Objects/SidePanelNodes/EndPathNodePanel.tscn")
 
 var selected_node = null
 var current_panel = null
@@ -26,12 +27,13 @@ func clear_current_panel():
 
 
 func _on_graph_edit_node_selected(node):
-	if graph_edit.selection_mode:
+	await get_tree().create_timer(0.05).timeout
+	if graph_edit.selection_mode or graph_edit.moving_mode:
 		return
 		
 	clear_current_panel()
 	
-	var exceptions_nodes = ["NodeEndPath", "NodeBridgeIn", "NodeBridgeOut"]
+	var exceptions_nodes = ["NodeBridgeIn", "NodeBridgeOut"]
 	
 	if node.node_type in exceptions_nodes:
 		return
@@ -48,6 +50,8 @@ func _on_graph_edit_node_selected(node):
 			new_panel = choice_node_panel_instance.instantiate()
 		"NodeDiceRoll":
 			new_panel = dice_roll_node_panel_instance.instantiate()
+		"NodeEndPath":
+			new_panel = end_path_node_panel_instance.instantiate()
 	
 	new_panel.graph_node = node
 	
@@ -78,3 +82,11 @@ func _on_config_pressed():
 	label_id.text = root_node.id
 	
 	show()
+
+
+func _on_graph_edit_child_exiting_tree(_node):
+	hide()
+
+
+func _on_graph_edit_node_deselected(_node):
+	hide()

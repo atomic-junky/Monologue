@@ -16,6 +16,7 @@ var dialog_for_localisation = []
 
 @onready var graph_edit: GraphEdit = $VBoxContainer/Control/GraphEdit
 @onready var saved_notification = $VBoxContainer/HBoxContainer/SavedNotification
+@onready var graph_node_selecter = $GraphNodeSelecter
 
 var live_dict: Dictionary
 
@@ -26,6 +27,11 @@ var all_nodes_index = 0
 
 var root_node_ref
 var root_dict
+
+var picker_mode: bool = false
+var picker_from_node
+var picker_from_port
+var picker_position
 
 
 func _ready():
@@ -55,8 +61,8 @@ func _to_dict() -> Dictionary:
 	var characters = graph_edit.speakers
 	if graph_edit.speakers.size() <= 0:
 		characters.append({
-			"ID": "_NARRATOR",
-			"EditorIndex": 0
+			"Reference": "_NARRATOR",
+			"ID": 0
 		})
 	
 	return {
@@ -178,7 +184,6 @@ func load_project(path):
 					var fail_node = get_node_by_id(node.get("FailID"))
 					graph_edit.connect_node(current_node.name, 1, fail_node.name, 0)
 			"NodeBridgeOut":
-				print("cc")
 				if node.get("NextID") is String:
 					var next_node = get_node_by_id(node.get("NextID"))
 					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
@@ -212,7 +217,13 @@ func get_options_nodes(node_list, options_id):
 ###############################
 
 func center_node_in_graph_edit(node):
-	node.position_offset = Vector2.ZERO
+	if picker_mode:
+		node.position_offset = picker_position
+		graph_edit.connect_node(picker_from_node, picker_from_port, node.name, 0)
+		disable_picker_mode()
+		return
+	
+	node.position_offset = ((graph_edit.size/2) + graph_edit.scroll_offset) / graph_edit.zoom
 
 func _on_new_sentence_pressed():
 	var node = sentence_node.instantiate()
@@ -294,3 +305,29 @@ func _on_open_file_btn_pressed():
 	var file_path = output[0].trim_suffix("\r\n")
 	if file_path != "":
 		return file_selected(file_path, 1)
+
+
+func _on_graph_edit_connection_to_empty(from_node, from_port, release_position):
+	graph_node_selecter.position = get_viewport().get_mouse_position()
+	graph_node_selecter.show()
+	
+	picker_from_node = from_node
+	picker_from_port = from_port
+	picker_position = (get_local_mouse_position() + graph_edit.scroll_offset) / graph_edit.zoom
+	
+	picker_mode = true
+	$NoInteractions.show()
+
+
+func disable_picker_mode():
+	graph_node_selecter.hide()
+	picker_mode = false
+	$NoInteractions.hide()
+
+
+func _on_graph_node_selecter_focus_exited():
+	disable_picker_mode()
+
+
+func _on_graph_node_selecter_close_requested():
+	disable_picker_mode()

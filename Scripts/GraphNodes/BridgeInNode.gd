@@ -38,3 +38,8 @@ func _from_dict(dict):
 func _on_close_request():
 	queue_free()
 	get_parent().clear_all_empty_connections()
+
+
+func _on_position_offset_changed():
+	return
+	print("dragging")

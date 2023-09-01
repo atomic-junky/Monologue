@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwox6etsdpnh8"]
+
+[ext_resource type="Script" path="res://Scripts/SidePanelNodes/EndPathNodePanel.gd" id="1_tde0e"]
+
+[node name="TargetContainer" type="VBoxContainer"]
+offset_right = 353.0
+offset_bottom = 26.0
+theme_override_constants/separation = 10
+script = ExtResource("1_tde0e")
+
+[node name="SubContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Target" type="Label" parent="SubContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Next story"
+
+[node name="LineEdit" type="LineEdit" parent="SubContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="text_changed" from="SubContainer/LineEdit" to="." method="_on_line_edit_text_changed"]

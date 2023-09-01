@@ -7,12 +7,10 @@ var graph_node
 
 var id = ""
 var target_number: int = 0
-var actions: Array
 
 func _from_dict(dict):
 	id = dict.get("ID")
 	target_number = dict.get("Target")
-	actions = dict.get("Actions")
 	
 	target_number_node.value = target_number
 

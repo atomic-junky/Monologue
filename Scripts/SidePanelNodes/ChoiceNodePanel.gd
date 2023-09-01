@@ -25,6 +25,8 @@ func new_option(dict = null, init: bool = false):
 	option._from_dict(dict)
 	
 	if not init:
+		if not dict:
+			dict = option._to_dict()
 		update_all_options()
 		graph_node.new_option_reference(dict)
 	

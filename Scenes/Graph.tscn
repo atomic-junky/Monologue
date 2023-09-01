@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://cx2kpptyyju8l" path="res://Assets/Icons/close_icon.png" id="5_f42wd"]
 [ext_resource type="Texture2D" uid="uid://cwql5qpl4e4v0" path="res://Assets/Icons/new_file_icon.png" id="5_vkhra"]
 [ext_resource type="Texture2D" uid="uid://cqqihpieogmyx" path="res://Assets/Icons/folder_icon.png" id="6_vjwwg"]
-[ext_resource type="Texture2D" uid="uid://108wgm8dsxbr" path="res://Assets/Icons/help_icon.png" id="7_nc85w"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gptd3"]
@@ -21,6 +20,14 @@ bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_p3pmt"]
 font_size = 10
 font_color = Color(0.635294, 0.635294, 0.635294, 1)
+
+[sub_resource type="GDScript" id="GDScript_n7pld"]
+script/source = "extends Window
+
+
+func _ready():
+	hide()
+"
 
 [sub_resource type="LabelSettings" id="LabelSettings_7mcdy"]
 font_color = Color(0.423529, 0.423529, 0.423529, 1)
@@ -84,11 +91,11 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Sentence +"
 
-[node name="NewOption" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="NewChoice" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
-text = "New Option +"
+text = "New Choice +"
 
 [node name="NewRoll" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -206,7 +213,63 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 0)
+color = Color(0, 0, 0, 0.196078)
+
+[node name="GraphNodeSelecter" type="Window" parent="."]
+title = "Graph Node Picker"
+position = Vector2i(0, 36)
+size = Vector2i(185, 160)
+visible = false
+unresizable = true
+always_on_top = true
+popup_window = true
+extend_to_title = true
+content_scale_mode = 1
+script = SubResource("GDScript_n7pld")
+
+[node name="PanelContainer" type="PanelContainer" parent="GraphNodeSelecter"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GraphNodeSelecter/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="SentenceSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Sentence"
+
+[node name="ChoiceSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Choice"
+
+[node name="DiceRollSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node DiceRoll"
+
+[node name="EndPathSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node EndPath"
+
+[node name="BridgeSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Nodes Bridge"
 
 [node name="WelcomeWindow" type="Window" parent="."]
 size = Vector2i(586, 188)
@@ -233,25 +296,19 @@ theme_override_constants/separation = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 40
 
 [node name="NewFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "New File"
 icon = ExtResource("5_vkhra")
 
 [node name="OpenFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Open File..."
 icon = ExtResource("6_vjwwg")
-
-[node name="CenterContainer" type="CenterContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
-layout_mode = 2
-
-[node name="HelpBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/CenterContainer"]
-layout_mode = 2
-text = "Need Help ?"
-icon = ExtResource("7_nc85w")
 
 [node name="VersionLabel" type="Label" parent="WelcomeWindow/PanelContainer"]
 layout_mode = 2
@@ -325,17 +382,29 @@ script = SubResource("GDScript_so3r8")
 [connection signal="resized" from="." to="HelpWindow" method="_on_control_resized"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Config" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_config_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewSentence" to="." method="_on_new_sentence_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewOption" to="." method="_on_NewOption_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewChoice" to="." method="_on_NewOption_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewRoll" to="." method="_on_NewRoll_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewEnd" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewBridge" to="." method="_on_new_bridge_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Save" to="." method="save"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Clear" to="." method="_on_Clear_pressed"]
+[connection signal="child_exiting_tree" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_child_exiting_tree"]
 [connection signal="connection_request" from="VBoxContainer/Control/GraphEdit" to="." method="_on_GraphEdit_connection_request"]
+[connection signal="connection_to_empty" from="VBoxContainer/Control/GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
 [connection signal="disconnection_request" from="VBoxContainer/Control/GraphEdit" to="." method="_on_GraphEdit_disconnection_request"]
+[connection signal="node_deselected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/GraphEdit" method="_on_node_deselected"]
+[connection signal="node_deselected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_deselected"]
+[connection signal="node_selected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/GraphEdit" method="_on_node_selected"]
 [connection signal="node_selected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_selected"]
 [connection signal="pressed" from="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
+[connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
+[connection signal="close_requested" from="GraphNodeSelecter" to="GraphNodeSelecter" method="_on_close_requested"]
+[connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/SentenceSelector" to="." method="_on_new_sentence_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ChoiceSelector" to="." method="_on_NewOption_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/DiceRollSelector" to="." method="_on_NewRoll_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="." method="_on_new_end_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/BridgeSelector" to="." method="_on_new_bridge_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/CenterContainer/HelpBtn" to="HelpWindow" method="_on_help_btn_pressed"]
 [connection signal="pressed" from="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/CenterContainer/Continue" to="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/CenterContainer/Continue" method="_on_pressed"]

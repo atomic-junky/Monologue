@@ -11,8 +11,8 @@ line_spacing = 0.0
 font_color = Color(0.666667, 0.141176, 0.231373, 1)
 
 [node name="DiceRoll" type="GraphNode" groups=["graph_nodes"]]
-offset_right = 339.0
-offset_bottom = 96.0
+offset_right = 110.0
+offset_bottom = 100.0
 title = "DiceRoll"
 show_close = true
 slot/0/left_enabled = true
@@ -37,6 +37,7 @@ script = ExtResource("4_4behm")
 
 [node name="PassContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
@@ -49,6 +50,7 @@ label_settings = SubResource("LabelSettings_i36fi")
 
 [node name="FailContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 

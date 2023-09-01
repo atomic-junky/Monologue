@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://dmmaitgac87vx"]
 
 [node name="Option" type="HBoxContainer"]
-anchors_preset = -1
 offset_right = 461.0
 offset_bottom = 31.0
 theme_override_constants/separation = 39

@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://cm6p57snykipc" path="res://Assets/Icons/Exit.png" id="2_nabb1"]
 
 [node name="EndPathNode" type="GraphNode"]
-offset_right = 247.0
-offset_bottom = 160.0
+offset_right = 240.0
+offset_bottom = 140.0
 scale = Vector2(0.6, 0.6)
 mouse_filter = 1
 title = "EndPath"

@@ -19,10 +19,6 @@ func _to_dict() -> Dictionary:
 		"$type": node_type,
 		"ID": id,
 		"OptionsID": get_all_options_id(),
-		"Conditions": [],
-		"Actions": [],
-		"Flags": [],
-		"CustomProperties": [],
 		"EditorPosition": {
 			"x": position_offset.x,
 			"y": position_offset.y

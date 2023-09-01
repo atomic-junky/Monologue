@@ -45,3 +45,4 @@ alignment = 1
 update_on_text_changed = true
 
 [connection signal="close_request" from="." to="." method="_on_close_request"]
+[connection signal="position_offset_changed" from="." to="." method="_on_position_offset_changed"]

@@ -9,7 +9,7 @@ var loaded_text = ""
 var sentence = ""
 var speaker_id = 0
 var display_speaker_name = ""
-var actions: Array
+var display_variant = ""
 
 
 func _ready():
@@ -27,10 +27,7 @@ func _to_dict() -> Dictionary:
 		"Sentence": sentence,
 		"SpeakerID": speaker_id,
 		"DisplaySpeakerName": display_speaker_name,
-		"Conditions": [],
-		"Actions": actions,
-		"Flags": [],
-		"CustomProperties": [],
+		"DisplayVariant": display_variant,
 		"EditorPosition": {
 			"x": position_offset.x,
 			"y": position_offset.y
@@ -38,14 +35,14 @@ func _to_dict() -> Dictionary:
 	}
 
 
-func _from_dict(dict):
+func _from_dict(dict: Dictionary):
 	_node_dict = dict
 	
 	id = dict.get("ID")
 	sentence = dict.get("Sentence")
 	speaker_id = dict.get("SpeakerID")
 	display_speaker_name = dict.get("DisplaySpeakerName")
-	actions = dict.get("Actions")
+	display_variant = dict.get("DisplayVariant", "")
 	
 	position_offset.x = dict.EditorPosition.get("x")
 	position_offset.y = dict.EditorPosition.get("y")

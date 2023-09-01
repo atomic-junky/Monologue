@@ -5,14 +5,18 @@ var speakers = []
 var mouse_pressed = false
 var selection_mode = false
 
+var graphnode_selected = false
+var moving_mode = false
+
 func _input(event):
 	if event is InputEventMouseButton:
 		mouse_pressed = event.is_pressed()
 	
 	selection_mode = false
+	moving_mode = false
 	if event is InputEventMouseMotion and mouse_pressed:
 		selection_mode = true
-
+		moving_mode = graphnode_selected
 
 func get_all_connections_from_node(from_node: StringName):
 	var connections = []
@@ -56,3 +60,11 @@ func get_free_bridge_number(_n=1, lp_max=50):
 				
 			return get_free_bridge_number(_n+1, lp_max-1)
 	return _n
+
+
+func _on_node_selected(_node):
+	graphnode_selected = true
+
+
+func _on_node_deselected(_node):
+	graphnode_selected = false
