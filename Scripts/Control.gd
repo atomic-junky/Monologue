@@ -115,7 +115,11 @@ func file_selected(path, open_mode):
 	file_path = path
 	$WelcomeWindow.hide()
 	if open_mode == 0: #NEW
-		save()
+		for node in graph_edit.get_children():
+			node.queue_free()
+		var new_root_node = root_node.instantiate()
+		graph_edit.add_child(new_root_node)
+		await save()
 	
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
 		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
@@ -156,6 +160,7 @@ func save():
 	
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	var data = JSON.stringify(await _to_dict(), "\t", false, true)
+	print(data)
 	file.store_string(data)
 	file.close()
 	
@@ -374,7 +379,7 @@ func _on_new_file_btn_pressed():
 	
 	var file_path = output[0].trim_suffix("\r\n")
 	if file_path != "":
-		return file_selected(file_path, 0)
+		return await file_selected(file_path, 0)
 
 
 func _on_open_file_btn_pressed():
@@ -387,7 +392,7 @@ func _on_open_file_btn_pressed():
 	
 	var file_path = output[0].trim_suffix("\r\n")
 	if file_path != "":
-		return file_selected(file_path, 1)
+		return await file_selected(file_path, 1)
 
 
 func _on_graph_edit_connection_to_empty(from_node, from_port, release_position):
