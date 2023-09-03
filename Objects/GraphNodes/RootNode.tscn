@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqsnkyn3r76m4"]
+[gd_scene load_steps=5 format=3 uid="uid://dqsnkyn3r76m4"]
 
+[ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="1_ctsl7"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/RootNode.gd" id="1_e8g7i"]
 
 [sub_resource type="Theme" id="Theme_llmqa"]
@@ -16,13 +17,13 @@ theme_override_constants/title_h_offset = 5
 title = "RootNode"
 slot/0/left_enabled = false
 slot/0/left_type = 0
-slot/0/left_color = Color(1, 0.156863, 0.396078, 1)
+slot/0/left_color = Color(1, 1, 1, 1)
 slot/0/left_icon = null
 slot/0/right_enabled = true
 slot/0/right_type = 0
-slot/0/right_color = Color(0.0352941, 0.443137, 0.407843, 1)
-slot/0/right_icon = null
-slot/0/draw_stylebox = true
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = ExtResource("1_ctsl7")
+slot/0/draw_stylebox = false
 script = ExtResource("1_e8g7i")
 
 [node name="Connection" type="MarginContainer" parent="."]

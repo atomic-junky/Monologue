@@ -10,12 +10,14 @@ extends VBoxContainer
 var graph_node
 
 var id = ""
-var variables = []
 
 
 func _ready():
 	for character in graph_node.get_parent().speakers:
 		add_character(character.get("Reference"))
+	
+	for variable in graph_node.get_parent().variables:
+		add_variable(true, variable)
 
 func _from_dict(dict):
 	id = dict.get("ID")
@@ -35,15 +37,35 @@ func add_character(reference: String = ""):
 	
 	update_speakers()
 
-
-func add_variable():
+ 
+func add_variable(init: bool = false, dict: Dictionary = {}):
 	var new_node = variable_node.instantiate()
+	new_node.update_callback = update_variables
 	variables_container.add_child(new_node)
 	
+	if init: # Called from _ready()
+		new_node.name_input.text = dict.get("Name")
+		
+		match dict.get("Type"):
+			"Boolean":
+				new_node.type_selection.select(0)
+				new_node.boolean_edit.button_pressed = dict.get("Value")
+			"Integer":
+				new_node.type_selection.select(1)
+				new_node.number_edit.value = dict.get("Value")
+			"String":
+				new_node.type_selection.select(2)
+				new_node.string_edit.text = dict.get("Value")
+	
+		new_node.update_value_edit()
 
+
+## Call the update_speakers function when a character node is updated
 func text_submitted_callback(_new_text):
 	update_speakers()
 
+
+## Update the GraphEdit speakers variable based on all character nodes
 func update_speakers():
 	var all_nodes = characters_container.get_children()
 	var updated_speakers = []
@@ -57,3 +79,17 @@ func update_speakers():
 		updated_speakers.append(child._to_dict())
 		
 	graph_node.get_parent().speakers = updated_speakers
+
+
+## Update the GraphEdit variables variable based on all variables nodes
+func update_variables():
+	var all_nodes = variables_container.get_children()
+	var updated_variables = []
+	
+	for child in all_nodes:
+		if child.is_queued_for_deletion():
+			continue
+		
+		updated_variables.append(child._to_dict())
+		
+	graph_node.get_parent().variables = updated_variables

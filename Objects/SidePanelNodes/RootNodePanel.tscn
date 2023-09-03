@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://b66fevmn5fhd0"]
+[gd_scene load_steps=2 format=3 uid="uid://b66fevmn5fhd0"]
 
-[ext_resource type="PackedScene" uid="uid://blvmilslu5boy" path="res://Objects/SubComponents/Actions.tscn" id="1_omsta"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/RootNodePanel.gd" id="1_pf2u6"]
 
 [node name="RootNodePanel" type="VBoxContainer"]
@@ -45,9 +44,6 @@ theme_override_constants/separation = 5
 [node name="Add" type="Button" parent="VariablesMainContainer"]
 layout_mode = 2
 text = "+"
-
-[node name="Actions" parent="." instance=ExtResource("1_omsta")]
-layout_mode = 2
 
 [connection signal="pressed" from="CharactersMainContainer/Add" to="." method="add_character"]
 [connection signal="pressed" from="VariablesMainContainer/Add" to="." method="add_variable"]

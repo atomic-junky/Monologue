@@ -2,14 +2,13 @@
 
 [ext_resource type="Script" path="res://Scripts/SubComponents/OptionReference.gd" id="1_me3e4"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t4rei"]
-bg_color = Color(0.117647, 0.133333, 0.164706, 1)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jqboc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xgf1c"]
 font_color = Color(0.686275, 0.686275, 0.686275, 1)
 
 [node name="OptionReference" type="PanelContainer"]
-theme_override_styles/panel = SubResource("StyleBoxFlat_t4rei")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jqboc")
 script = ExtResource("1_me3e4")
 
 [node name="MainContainer" type="MarginContainer" parent="."]

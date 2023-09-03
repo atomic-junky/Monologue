@@ -6,7 +6,6 @@ var _node_dict: Dictionary
 var id = UUID.v4()
 var node_type = "NodeRoot"
 var characters = []
-var variables = []
 
 
 func _ready():
@@ -39,16 +38,6 @@ func _from_dict(dict, global_dict):
 func get_characters():
 	var result = []
 	for child in characters:
-		if not child is PanelContainer:
-			continue
-		
-		result.append(child._to_dict())
-	
-	return result
-
-func get_variables():
-	var result = []
-	for child in variables:
 		if not child is PanelContainer:
 			continue
 		

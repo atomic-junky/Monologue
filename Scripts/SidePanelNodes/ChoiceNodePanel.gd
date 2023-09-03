@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+const arrow_texture01 = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
+const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
 
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 @onready var options_container = $OptionsContainer
@@ -30,7 +32,7 @@ func new_option(dict = null, init: bool = false):
 		update_all_options()
 		graph_node.new_option_reference(dict)
 	
-	graph_node.set_slot(get_child_count()-1, false, 0, Color("ff2865"), true, 0, Color("097168"))
+	graph_node.set_slot(get_child_count() - 1, false, 0, Color("ffffff"), true, 0, Color("ffffff"), arrow_texture01, arrow_texture02, false)
 
 
 func update_all_options():

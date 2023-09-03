@@ -1,6 +1,9 @@
 extends GraphNode
 
 
+const arrow_texture01 = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
+const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
+
 @onready var option_reference = preload("res://Objects/SubComponents/OptionReference.tscn")
 
 var _node_dict: Dictionary
@@ -60,7 +63,7 @@ func new_option_reference(dict = null):
 		new_ref._from_dict(dict)
 	
 	var is_first = get_child_count() <= 1
-	set_slot(get_child_count() - 1, is_first, 0, Color("ff2865"), true, 0, Color("097168"))
+	set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true, 0, Color("ffffff"), arrow_texture01, arrow_texture02, false)
 
 
 func update_option_reference(index, dict):

@@ -1,33 +1,15 @@
 [gd_scene load_steps=6 format=3 uid="uid://cfimjp133kacy"]
 
+[ext_resource type="Script" path="res://Scripts/SubComponents/Variable.gd" id="1_287dt"]
 [ext_resource type="Texture2D" uid="uid://coirxt3km0oht" path="res://Assets/Icons/trash_icon.png" id="1_qgrst"]
 [ext_resource type="Texture2D" uid="uid://bl5yb5x0rivmo" path="res://Assets/Icons/bool_icon.png" id="2_1iil2"]
 [ext_resource type="Texture2D" uid="uid://qcd8ly7qhpse" path="res://Assets/Icons/int_icon.png" id="3_wmcdv"]
 [ext_resource type="Texture2D" uid="uid://dxckss1g02ogs" path="res://Assets/Icons/str_icon.png" id="4_5xlia"]
 
-[sub_resource type="GDScript" id="GDScript_re5n5"]
-script/source = "extends PanelContainer
-
-
-@onready var type_selection = $MarginContainer/VBoxContainer/HBoxContainer/OptionButton
-@onready var name_input = $MarginContainer/VBoxContainer/HBoxContainer2/LineEdit
-@onready var value_input = $MarginContainer/VBoxContainer/HBoxContainer3/LineEdit
-
-
-func _to_dict():
-	return {
-		\"$type\": type_selection.get_item_text(type_selection.selected),
-		\"name\": name_input.text,
-		\"value\": value_input.text
-	}
-
-
-func _on_delete_pressed():
-	queue_free()
-"
-
 [node name="Variable" type="PanelContainer"]
-script = SubResource("GDScript_re5n5")
+offset_right = 271.0
+offset_bottom = 108.0
+script = ExtResource("1_287dt")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -38,7 +20,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 10
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -94,8 +76,22 @@ custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "Value"
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="StringEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="NumberEdit" type="SpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+visible = false
+layout_mode = 2
+
+[node name="BooleanEdit" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+flat = true
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/Delete" to="." method="_on_delete_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer3/StringEdit" to="." method="value_change"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer3/NumberEdit" to="." method="value_change"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer3/BooleanEdit" to="." method="value_change"]

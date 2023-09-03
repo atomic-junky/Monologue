@@ -2,6 +2,7 @@ extends GraphEdit
 
 
 var speakers = []
+var variables = []
 var mouse_pressed = false
 var selection_mode = false
 
@@ -61,6 +62,14 @@ func get_free_bridge_number(_n=1, lp_max=50):
 			return get_free_bridge_number(_n+1, lp_max-1)
 	return _n
 
+func is_option_node_exciste(node_id):
+	for node in get_children():
+		if node.node_type != "NodeChoice":
+			continue
+		var node_options_id: Array = node.get_all_options_id()
+		if node_options_id.has(node_id):
+			return true
+	return false
 
 func _on_node_selected(_node):
 	graphnode_selected = true

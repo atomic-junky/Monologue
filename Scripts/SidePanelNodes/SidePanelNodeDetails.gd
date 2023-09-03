@@ -11,6 +11,8 @@ extends PanelContainer
 @onready var choice_node_panel_instance = preload("res://Objects/SidePanelNodes/ChoiceNodePanel.tscn")
 @onready var dice_roll_node_panel_instance = preload("res://Objects/SidePanelNodes/DiceRollNodePanel.tscn")
 @onready var end_path_node_panel_instance = preload("res://Objects/SidePanelNodes/EndPathNodePanel.tscn")
+@onready var condition_node_panel_instance = preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
+@onready var action_node_panel_instance = preload("res://Objects/SidePanelNodes/ActionNodePanel.tscn")
 
 var selected_node = null
 var current_panel = null
@@ -52,6 +54,10 @@ func _on_graph_edit_node_selected(node):
 			new_panel = dice_roll_node_panel_instance.instantiate()
 		"NodeEndPath":
 			new_panel = end_path_node_panel_instance.instantiate()
+		"NodeCondition":
+			new_panel = condition_node_panel_instance.instantiate()
+		"NodeAction":
+			new_panel = action_node_panel_instance.instantiate()
 	
 	new_panel.graph_node = node
 	

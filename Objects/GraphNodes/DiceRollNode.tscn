@@ -1,5 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b6mcmodpmsacw"]
+[gd_scene load_steps=6 format=3 uid="uid://b6mcmodpmsacw"]
 
+[ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_sro87"]
+[ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_ruyti"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/DiceRoll.gd" id="4_4behm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_i36fi"]
@@ -17,29 +19,29 @@ title = "DiceRoll"
 show_close = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
-slot/0/left_color = Color(1, 0.156863, 0.396078, 1)
-slot/0/left_icon = null
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = ExtResource("1_sro87")
 slot/0/right_enabled = true
 slot/0/right_type = 0
-slot/0/right_color = Color(0.0117647, 0.635294, 0.403922, 1)
-slot/0/right_icon = null
-slot/0/draw_stylebox = true
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = ExtResource("2_ruyti")
+slot/0/draw_stylebox = false
 slot/1/left_enabled = false
 slot/1/left_type = 0
 slot/1/left_color = Color(1, 1, 1, 1)
 slot/1/left_icon = null
 slot/1/right_enabled = true
 slot/1/right_type = 0
-slot/1/right_color = Color(1, 0.156863, 0.396078, 1)
-slot/1/right_icon = null
-slot/1/draw_stylebox = true
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = ExtResource("2_ruyti")
+slot/1/draw_stylebox = false
 script = ExtResource("4_4behm")
 
 [node name="PassContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_right = 5
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
 
 [node name="PassLabel" type="Label" parent="PassContainer"]
 layout_mode = 2
@@ -51,8 +53,8 @@ label_settings = SubResource("LabelSettings_i36fi")
 [node name="FailContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_right = 5
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
 
 [node name="FailLabel" type="Label" parent="FailContainer"]
 layout_mode = 2

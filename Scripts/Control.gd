@@ -1,8 +1,10 @@
 extends Control
 
+
 var dialog = {}
 var dialog_for_localisation = []
 
+const HISTORY_FILE_PATH: String = "user://history.save"
 @export var file_path: String
 
 @onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
@@ -12,11 +14,22 @@ var dialog_for_localisation = []
 @onready var end_node = preload("res://Objects/GraphNodes/EndPathNode.tscn")
 @onready var bridge_in_node = preload("res://Objects/GraphNodes/BridgeInNode.tscn")
 @onready var bridge_out_node = preload("res://Objects/GraphNodes/BridgeOutNode.tscn")
+@onready var condition_node = preload("res://Objects/GraphNodes/ConditionNode.tscn")
+@onready var action_node = preload("res://Objects/GraphNodes/ActionNode.tscn")
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
+
+@onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 @onready var graph_edit: GraphEdit = $VBoxContainer/Control/GraphEdit
 @onready var saved_notification = $VBoxContainer/HBoxContainer/SavedNotification
 @onready var graph_node_selecter = $GraphNodeSelecter
+@onready var save_progress_bar: ProgressBar = $VBoxContainer/HBoxContainer/SaveProgressBar
+@onready var save_button: Button = $VBoxContainer/HBoxContainer/Save
+@onready var clear_button: Button = $VBoxContainer/HBoxContainer/Clear
+@onready var clear_confirmation_dialog = $ClearConfirmationDialog
+
+@onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
+@onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
 
 var live_dict: Dictionary
 
@@ -38,6 +51,23 @@ func _ready():
 	var new_root_node = root_node.instantiate()
 	graph_edit.add_child(new_root_node)
 	
+	if not FileAccess.file_exists(HISTORY_FILE_PATH):
+		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
+		recent_files_container.hide()
+	else:
+		var file = FileAccess.open(HISTORY_FILE_PATH, FileAccess.READ)
+		var raw_data = file.get_as_text()
+		if raw_data:
+			var data: Array = JSON.parse_string(raw_data)
+			for path in data.slice(0, 3):
+				var btn: Button = recent_file_button.instantiate()
+				btn.text = path.rsplit("\\", true, 1)[1]
+				btn.pressed.connect(file_selected.bind(path, 1))
+				recent_files_button_container.add_child(btn)
+			recent_files_container.show()
+		else:
+			recent_files_container.hide()
+			
 	if not file_path.is_empty():
 		$WelcomeWindow.show()
 		
@@ -47,6 +77,8 @@ func _ready():
 func _to_dict() -> Dictionary:
 	var list_nodes = []
 	
+	save_progress_bar.max_value = graph_edit.get_children().size() + 1
+	
 	for node in graph_edit.get_children():
 		if node.is_queued_for_deletion():
 			continue
@@ -54,6 +86,9 @@ func _to_dict() -> Dictionary:
 		if node.node_type == "NodeChoice":
 			for child in node.get_children():
 				list_nodes.append(child._to_dict())
+		
+		save_progress_bar.value = list_nodes.size()
+		await get_tree().create_timer(0.01).timeout
 	
 	root_dict = get_root_dict(list_nodes)
 	root_node_ref = get_root_node_ref()
@@ -64,12 +99,13 @@ func _to_dict() -> Dictionary:
 			"Reference": "_NARRATOR",
 			"ID": 0
 		})
+	save_progress_bar.value += 1
 	
 	return {
 		"RootNodeID": root_dict.get("ID"),
 		"ListNodes": list_nodes,
 		"Characters": characters,
-		"Variables": root_node_ref.get_variables()
+		"Variables": graph_edit.variables
 	}
 
 
@@ -80,7 +116,23 @@ func file_selected(path, open_mode):
 	$WelcomeWindow.hide()
 	if open_mode == 0: #NEW
 		save()
-		
+	
+	if not FileAccess.file_exists(HISTORY_FILE_PATH):
+		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
+	else:
+		var file: FileAccess = FileAccess.open(HISTORY_FILE_PATH, FileAccess.READ_WRITE)
+		var raw_data = file.get_as_text()
+		var data: Array
+		if raw_data:
+			data = JSON.parse_string(raw_data)
+			data.erase(path)
+			data.append(path)
+		else:
+			data = [path]
+		file = FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
+		data.reverse()
+		file.store_string(JSON.stringify(data.slice(0, 10)))
+	
 	load_project(path)
 
 
@@ -97,14 +149,22 @@ func get_root_node_ref():
 
 
 func save():
+	save_progress_bar.value = 0
+	save_progress_bar.show()
+	save_button.hide()
+	clear_button.hide()
+	
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
-	var data = JSON.stringify(_to_dict(), "\t", false, true)
+	var data = JSON.stringify(await _to_dict(), "\t", false, true)
 	file.store_string(data)
 	file.close()
 	
 	saved_notification.show()
 	await get_tree().create_timer(1.5).timeout
 	saved_notification.hide()
+	save_progress_bar.hide()
+	save_button.show()
+	clear_button.show()
 
 
 func load_project(path):
@@ -140,6 +200,10 @@ func load_project(path):
 				new_node = bridge_in_node.instantiate()
 			"NodeBridgeOut":
 				new_node = bridge_out_node.instantiate()
+			"NodeCondition":
+				new_node = condition_node.instantiate()
+			"NodeAction":
+				new_node = action_node.instantiate()
 		
 		if not new_node:
 			continue
@@ -155,9 +219,7 @@ func load_project(path):
 		var graph_node = get_node_by_id(node.get("ID"))
 		graph_node._options_from_dict(node, node_list)
 	
-	# Root Node Variables
-	for variable in data.get("Variables"):
-		root_node_ref.add_variable()
+	graph_edit.variables = data.get("Variables")
 	
 	for node in node_list:
 		if not node.has("ID"):
@@ -165,11 +227,7 @@ func load_project(path):
 		
 		var current_node = get_node_by_id(node.get("ID"))
 		match node.get("$type"):
-			"NodeRoot":
-				if node.get("NextID") is String:
-					var next_node = get_node_by_id(node.get("NextID"))
-					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
-			"NodeSentence":
+			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction":
 				if node.get("NextID") is String:
 					var next_node = get_node_by_id(node.get("NextID"))
 					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
@@ -183,10 +241,14 @@ func load_project(path):
 				if node.get("FailID") is String:
 					var fail_node = get_node_by_id(node.get("FailID"))
 					graph_edit.connect_node(current_node.name, 1, fail_node.name, 0)
-			"NodeBridgeOut":
-				if node.get("NextID") is String:
-					var next_node = get_node_by_id(node.get("NextID"))
-					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
+			"NodeCondition":
+				if node.get("IfNextID") is String:
+					var if_node = get_node_by_id(node.get("IfNextID"))
+					graph_edit.connect_node(current_node.name, 0, if_node.name, 0)
+				
+				if node.get("ElseNextID") is String:
+					var else_node = get_node_by_id(node.get("ElseNextID"))
+					graph_edit.connect_node(current_node.name, 1, else_node.name, 0)
 		
 		if not current_node: # OptionNode
 			continue
@@ -261,11 +323,33 @@ func _on_new_bridge_pressed():
 	center_node_in_graph_edit(in_node)
 	center_node_in_graph_edit(out_node)
 
+func _on_new_condition_pressed():
+	var node = condition_node.instantiate()
+	graph_edit.add_child(node)
+	center_node_in_graph_edit(node)
+
+func _on_new_action_pressed():
+	var node = action_node.instantiate()
+	graph_edit.add_child(node)
+	center_node_in_graph_edit(node)
+
+
 func _on_Clear_pressed():
+	$NoInteractions.show()
+	clear_confirmation_dialog.show()
+
+func _on_confirmation_dialog_confirmed():
 	for node in get_tree().get_nodes_in_group("graph_nodes"):
 		if node.node_type != "NodeRoot":
 			node.queue_free()
 	graph_edit.clear_connections()
+	
+	$NoInteractions.hide()
+	clear_confirmation_dialog.hide()
+
+func _on_clear_confirmation_dialog_canceled():
+	$NoInteractions.hide()
+	clear_confirmation_dialog.hide()
 
 
 func _on_GraphEdit_connection_request(from, from_slot, to, to_slot):
@@ -274,7 +358,6 @@ func _on_GraphEdit_connection_request(from, from_slot, to, to_slot):
 
 func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
 	graph_edit.disconnect_node(from, from_slot, to, to_slot)
-
 
 
 ####################

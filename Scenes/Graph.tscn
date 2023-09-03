@@ -1,13 +1,42 @@
-[gd_scene load_steps=16 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=28 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Texture2D" uid="uid://baiy1kygdapj1" path="res://Assets/Icons/config_icon.png" id="2_47s6l"]
 [ext_resource type="Script" path="res://Scripts/GraphEdit.gd" id="2_fn1ag"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
+[ext_resource type="Texture2D" uid="uid://de64n4wjlnfi7" path="res://Assets/Icons/NodesIcons/Sentence.svg" id="3_pk5un"]
+[ext_resource type="Texture2D" uid="uid://c76t2ieqa3ac3" path="res://Assets/Icons/NodesIcons/Multiple Choice.svg" id="4_2u3tl"]
 [ext_resource type="Texture2D" uid="uid://cx2kpptyyju8l" path="res://Assets/Icons/close_icon.png" id="5_f42wd"]
+[ext_resource type="Texture2D" uid="uid://ck5p35jsi1388" path="res://Assets/Icons/NodesIcons/DiceRoll.svg" id="5_qjglw"]
 [ext_resource type="Texture2D" uid="uid://cwql5qpl4e4v0" path="res://Assets/Icons/new_file_icon.png" id="5_vkhra"]
+[ext_resource type="Texture2D" uid="uid://do11vpbpk1w6s" path="res://Assets/Icons/NodesIcons/Link.svg" id="6_gcn4v"]
 [ext_resource type="Texture2D" uid="uid://cqqihpieogmyx" path="res://Assets/Icons/folder_icon.png" id="6_vjwwg"]
+[ext_resource type="Texture2D" uid="uid://dhgu1x820up88" path="res://Assets/Icons/NodesIcons/Condition.svg" id="7_nh0w0"]
+[ext_resource type="Texture2D" uid="uid://bjjp58wq1iexy" path="res://Assets/Icons/NodesIcons/Cog.svg" id="8_hffb8"]
+[ext_resource type="Texture2D" uid="uid://nqaces7g2h37" path="res://Assets/Icons/NodesIcons/Exit.svg" id="8_hudw3"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knd4m"]
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r02mm"]
+bg_color = Color(0.619608, 0.901961, 0.482353, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="LabelSettings" id="LabelSettings_gptd3"]
 line_spacing = 0.0
@@ -21,6 +50,26 @@ bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 font_size = 10
 font_color = Color(0.635294, 0.635294, 0.635294, 1)
 
+[sub_resource type="GDScript" id="GDScript_eo10b"]
+script/source = "extends Window
+
+
+func _ready():
+	_on_control_resized()
+	hide()
+
+func _on_control_resized():
+	var new_pos: Vector2 = get_parent().get_window().get_size_with_decorations() / 2 - size / 2
+	position = new_pos
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kwbu"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+draw_center = false
+
 [sub_resource type="GDScript" id="GDScript_n7pld"]
 script/source = "extends Window
 
@@ -28,6 +77,9 @@ script/source = "extends Window
 func _ready():
 	hide()
 "
+
+[sub_resource type="LabelSettings" id="LabelSettings_1l82f"]
+font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7mcdy"]
 font_color = Color(0.423529, 0.423529, 0.423529, 1)
@@ -90,36 +142,66 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Sentence +"
+icon = ExtResource("3_pk5un")
 
 [node name="NewChoice" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Choice +"
+icon = ExtResource("4_2u3tl")
 
 [node name="NewRoll" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New DiceRoll +"
-
-[node name="NewEnd" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New EndPath +"
+icon = ExtResource("5_qjglw")
 
 [node name="NewBridge" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Bridge +"
+icon = ExtResource("6_gcn4v")
+
+[node name="NewCondition" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "New Condition +"
+icon = ExtResource("7_nh0w0")
+
+[node name="NewAction" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "New Action +"
+icon = ExtResource("8_hffb8")
+
+[node name="NewEnd" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "New EndPath +"
+icon = ExtResource("8_hudw3")
 
 [node name="Save" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "Save"
+
+[node name="SaveProgressBar" type="ProgressBar" parent="VBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_knd4m")
+theme_override_styles/fill = SubResource("StyleBoxFlat_r02mm")
+step = 1.0
+rounded = true
+show_percentage = false
 
 [node name="Clear" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -148,7 +230,7 @@ grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
 connection_lines_curvature = 0.0
-connection_lines_thickness = 3.0
+connection_lines_thickness = 1.0
 zoom = 0.6
 zoom_min = 0.035
 zoom_max = 1.0
@@ -207,6 +289,7 @@ texture_normal = ExtResource("5_f42wd")
 stretch_mode = 3
 
 [node name="NoInteractions" type="ColorRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -215,10 +298,34 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.196078)
 
+[node name="ClearConfirmationDialog" type="ConfirmationDialog" parent="."]
+position = Vector2i(0, 36)
+size = Vector2i(362, 99)
+transient = false
+exclusive = false
+unresizable = true
+borderless = true
+always_on_top = true
+unfocusable = true
+popup_window = true
+extend_to_title = true
+script = SubResource("GDScript_eo10b")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ClearConfirmationDialog"]
+offset_right = 362.0
+offset_bottom = 66.0
+mouse_filter = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_0kwbu")
+bbcode_enabled = true
+text = "[center]Are you sure you want to clear all nodes ?
+You can't undo theses changes.[/center]"
+fit_content = true
+scroll_following = true
+
 [node name="GraphNodeSelecter" type="Window" parent="."]
 title = "Graph Node Picker"
 position = Vector2i(0, 36)
-size = Vector2i(185, 160)
+size = Vector2i(210, 225)
 visible = false
 unresizable = true
 always_on_top = true
@@ -246,34 +353,52 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Node Sentence"
+icon = ExtResource("3_pk5un")
 
 [node name="ChoiceSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Node Choice"
+icon = ExtResource("4_2u3tl")
 
 [node name="DiceRollSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Node DiceRoll"
-
-[node name="EndPathSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_default_cursor_shape = 2
-text = "Node EndPath"
+icon = ExtResource("5_qjglw")
 
 [node name="BridgeSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Nodes Bridge"
+icon = ExtResource("6_gcn4v")
+
+[node name="ConditionSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Condition"
+icon = ExtResource("7_nh0w0")
+
+[node name="ActionSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Action"
+icon = ExtResource("8_hffb8")
+
+[node name="EndPathSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node EndPath"
+icon = ExtResource("8_hudw3")
 
 [node name="WelcomeWindow" type="Window" parent="."]
-size = Vector2i(586, 188)
-visible = false
+size = Vector2i(728, 188)
 wrap_controls = true
 unresizable = true
 borderless = true
@@ -309,6 +434,19 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Open File..."
 icon = ExtResource("6_vjwwg")
+
+[node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
+visible = false
+layout_mode = 2
+
+[node name="RecentFilesLabel" type="Label" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
+layout_mode = 2
+text = "Recent files"
+label_settings = SubResource("LabelSettings_1l82f")
+
+[node name="ButtonContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="VersionLabel" type="Label" parent="WelcomeWindow/PanelContainer"]
 layout_mode = 2
@@ -384,8 +522,10 @@ script = SubResource("GDScript_so3r8")
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewSentence" to="." method="_on_new_sentence_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewChoice" to="." method="_on_NewOption_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewRoll" to="." method="_on_NewRoll_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewEnd" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewBridge" to="." method="_on_new_bridge_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewCondition" to="." method="_on_new_condition_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewAction" to="." method="_on_new_action_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewEnd" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Save" to="." method="save"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Clear" to="." method="_on_Clear_pressed"]
 [connection signal="child_exiting_tree" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_child_exiting_tree"]
@@ -397,14 +537,18 @@ script = SubResource("GDScript_so3r8")
 [connection signal="node_selected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/GraphEdit" method="_on_node_selected"]
 [connection signal="node_selected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_selected"]
 [connection signal="pressed" from="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
+[connection signal="canceled" from="ClearConfirmationDialog" to="." method="_on_clear_confirmation_dialog_canceled"]
+[connection signal="confirmed" from="ClearConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="GraphNodeSelecter" method="_on_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/SentenceSelector" to="." method="_on_new_sentence_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ChoiceSelector" to="." method="_on_NewOption_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/DiceRollSelector" to="." method="_on_NewRoll_pressed"]
-[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/BridgeSelector" to="." method="_on_new_bridge_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ConditionSelector" to="." method="_on_new_condition_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ActionSelector" to="." method="_on_new_action_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
 [connection signal="pressed" from="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/CenterContainer/Continue" to="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/CenterContainer/Continue" method="_on_pressed"]
