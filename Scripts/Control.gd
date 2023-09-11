@@ -25,6 +25,7 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var graph_node_selecter = $GraphNodeSelecter
 @onready var save_progress_bar: ProgressBar = $VBoxContainer/HBoxContainer/SaveProgressBar
 @onready var save_button: Button = $VBoxContainer/HBoxContainer/Save
+@onready var test_button: Button = $VBoxContainer/HBoxContainer/TestBtnContainer/Test
 
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
@@ -158,10 +159,11 @@ func get_root_node_ref():
 			return node
 
 
-func save():
+func save(is_test: bool = false):
 	save_progress_bar.value = 0
 	save_progress_bar.show()
 	save_button.hide()
+	test_button.hide()
 	
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	var data = JSON.stringify(await _to_dict(), "\t", false, true)
@@ -169,10 +171,12 @@ func save():
 	file.close()
 	
 	saved_notification.show()
-	await get_tree().create_timer(1.5).timeout
+	if !is_test:
+		await get_tree().create_timer(1.5).timeout
 	saved_notification.hide()
 	save_progress_bar.hide()
 	save_button.show()
+	test_button.show()
 
 
 func load_project(path):
@@ -350,7 +354,7 @@ func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
 
 
 func _on_test_pressed():
-	await save()
+	await save(true)
 	
 	var global_vars = get_node("/root/GlobalVariables")
 	global_vars.test_path = file_path

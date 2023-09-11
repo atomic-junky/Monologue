@@ -4,6 +4,7 @@ class_name MonologueProcess
 
 
 var end_callback: Callable
+var action_callback: Callable
 var character_asset_getter: Callable
 
 var text_box
@@ -20,12 +21,13 @@ var next_id
 var rng = RandomNumberGenerator.new()
 
 
-func _init(_text_box, _choice_panel, _end_callback: Callable, _character_asset_node = null, _character_asset_getter: Callable = _default_character_asset_getter):
+func _init(_text_box, _choice_panel, _end_callback: Callable, _action_callback: Callable, _character_asset_node = null, _character_asset_getter: Callable = _default_character_asset_getter):
 	text_box = _text_box
 	choice_panel = _choice_panel
 	character_asset_node = _character_asset_node
 	
 	end_callback = _end_callback
+	action_callback = _action_callback
 	character_asset_getter = _character_asset_getter
 	
 	print("[INFO] Monologue Process initiated")
@@ -112,6 +114,24 @@ func next():
 			else:
 				next_id = node.get("FailID")
 		
+			next()
+			return
+		"NodeAction":
+			next_id = node.get("NextID")
+			
+			var action = node.get("Action")
+			match action.get("$type"): # TODO: Process the action
+				"ActionOption":
+					pass
+				"ActionVariable":
+					pass
+			
+			next()
+			return
+		"NodeCondidition":
+			# TODO: Process the condition
+			
+			next_id = node.get("IfNextID")
 			next()
 			return
 		"NodeEndPath":

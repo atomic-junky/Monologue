@@ -173,12 +173,12 @@ text = "✅ SAVED"
 label_settings = SubResource("LabelSettings_gptd3")
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="TestBtnContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="Test" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="Test" type="Button" parent="VBoxContainer/HBoxContainer/TestBtnContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
@@ -412,7 +412,7 @@ label_settings = SubResource("LabelSettings_7mcdy")
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewAction" to="." method="_on_new_action_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewEnd" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Save" to="." method="save"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/Test" to="." method="_on_test_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/TestBtnContainer/Test" to="." method="_on_test_pressed"]
 [connection signal="child_exiting_tree" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_child_exiting_tree"]
 [connection signal="connection_request" from="VBoxContainer/Control/GraphEdit" to="." method="_on_GraphEdit_connection_request"]
 [connection signal="connection_to_empty" from="VBoxContainer/Control/GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]

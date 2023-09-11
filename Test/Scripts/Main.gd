@@ -15,7 +15,7 @@ func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
 	var path = global_vars.test_path
 	
-	Process = MonologueProcess.new(text_box, choice_panel, end_callback, character_asset_node, get_character_asset)
+	Process = MonologueProcess.new(text_box, choice_panel, end_callback, action_callback, character_asset_node, get_character_asset)
 	Process.load_dialogue(path.get_basename())
 	Process.next()
 
@@ -29,6 +29,9 @@ func end_callback():
 	
 	get_tree().root.add_child(menu_scene)
 	queue_free()
+
+func action_callback():
+	pass
 
 func get_character_asset(character):
 	match character:
