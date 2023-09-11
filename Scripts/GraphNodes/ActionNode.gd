@@ -92,3 +92,8 @@ func update_preview():
 			variable_operator_label.text = operator if operator else "operator"
 			variable_value_label.text = str(value) if value != null else "value"
 			variable_container.show()
+
+
+func _on_close_request():
+	queue_free()
+	get_parent().clear_all_empty_connections()

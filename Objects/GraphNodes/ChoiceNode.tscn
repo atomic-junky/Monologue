@@ -8,6 +8,6 @@ title = "ChoiceNode"
 show_close = true
 script = ExtResource("1_nn3v2")
 
-[connection signal="close_request" from="." to="." method="_on_OptionNode_close_request"]
+[connection signal="close_request" from="." to="." method="_on_close_request"]
 [connection signal="resize_request" from="." to="." method="_on_OptionNode_resize_request"]
 [connection signal="slot_updated" from="." to="." method="_on_slot_updated"]

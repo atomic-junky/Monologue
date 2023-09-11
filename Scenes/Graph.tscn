@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=26 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Texture2D" uid="uid://baiy1kygdapj1" path="res://Assets/Icons/config_icon.png" id="2_47s6l"]
@@ -62,6 +62,13 @@ script/source = "extends Window
 func _ready():
 	hide()
 "
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wb4lr"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_1l82f"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
@@ -345,8 +352,7 @@ icon = ExtResource("8_hudw3")
 
 [node name="WelcomeWindow" type="Window" parent="."]
 initial_position = 2
-size = Vector2i(728, 188)
-visible = false
+size = Vector2i(600, 150)
 wrap_controls = true
 unresizable = true
 borderless = true
@@ -359,6 +365,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wb4lr")
 
 [node name="CenterContainer" type="CenterContainer" parent="WelcomeWindow/PanelContainer"]
 layout_mode = 2

@@ -24,6 +24,7 @@ size_flags_vertical = 0
 theme = SubResource("Theme_llmqa")
 theme_override_constants/title_h_offset = 5
 title = "ConditionNode"
+show_close = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -95,3 +96,5 @@ theme_override_constants/margin_right = 10
 [node name="Label" type="Label" parent="MarginElseContainer"]
 layout_mode = 2
 text = "Else"
+
+[connection signal="close_request" from="." to="." method="_on_close_request"]

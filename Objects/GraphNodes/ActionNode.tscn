@@ -152,3 +152,5 @@ layout_mode = 2
 text = "value
 "
 label_settings = SubResource("LabelSettings_v4ya3")
+
+[connection signal="close_request" from="." to="." method="_on_close_request"]

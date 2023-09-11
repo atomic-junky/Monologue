@@ -50,6 +50,8 @@ func _from_dict(dict: Dictionary):
 
 
 func update_all_condition():
+	if variable_drop_node.selected <= -1:
+		return
 	var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 	if not variable_name:
 		return

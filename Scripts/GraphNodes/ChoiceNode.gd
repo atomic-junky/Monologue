@@ -84,11 +84,6 @@ func get_all_options_id() -> Array:
 	return ids
 
 
-func _on_OptionNode_close_request():
-	queue_free()
-	get_parent().clear_all_empty_connections()
-
-
 func connect_all_options(node_list: Array):
 	# Clear all slots
 	for child_idx in get_child_count():
@@ -119,3 +114,8 @@ func get_next_node(next_node_id):
 
 func _on_slot_updated(idx):
 	pass # Replace with function body.
+
+
+func _on_close_request():
+	queue_free()
+	get_parent().clear_all_empty_connections()

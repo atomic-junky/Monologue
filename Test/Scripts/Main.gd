@@ -8,6 +8,7 @@ extends Control
 
 @onready var character_asset_node = $CharacterAssetContainer/Asset
 
+var rng = RandomNumberGenerator.new()
 var Process
 
 
@@ -33,10 +34,24 @@ func end_callback():
 func action_callback():
 	pass
 
-func get_character_asset(character):
-	match character:
-		"Lazy God":
-			return preload("res://Test/Assets/lazyGod.png")
-		"Douglas Adams":
-			return preload("res://Test/Assets/douglasAdams.png")
+func get_character_asset(character, variant = null):
+	if character == "_NARRATOR":
+		return
+		
+	rng.seed = hash(character)	
+	var rng_nbr = rng.randi_range(0, 5)
+	match  rng_nbr:
+		0:
+			return
+		1:
+			return preload("res://Test/Assets/AlbertoMielgo01.png")
+		2:
+			return preload("res://Test/Assets/AlbertoMielgo02.png")
+		3:
+			return preload("res://Test/Assets/AlbertoMielgo03.png")
+		4:
+			return preload("res://Test/Assets/AlbertoMielgo04.png")
+		5:
+			return preload("res://Test/Assets/AlbertoMielgo05.png")
+	
 	return

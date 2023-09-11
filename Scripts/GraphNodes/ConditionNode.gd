@@ -60,3 +60,8 @@ func update_preview():
 	variable_label.text = variable_name
 	operator_label.text = operator
 	value_label.text = str(value)
+
+
+func _on_close_request():
+	queue_free()
+	get_parent().clear_all_empty_connections()
