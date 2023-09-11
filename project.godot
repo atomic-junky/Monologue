@@ -18,12 +18,13 @@ boot_splash/bg_color=Color(0.117647, 0.133333, 0.164706, 1)
 boot_splash/image="res://icon.png"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
-config/version="1.2.0"
+config/version="1.3.0-dev1"
 
 [autoload]
 
 UUID="*res://Scripts/Global/UUID.gd"
 Util="*res://Scripts/Global/Util.gd"
+GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
 
 [display]
 

@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://cffd4esx3hj6g"]
+
+[ext_resource type="Script" path="res://Test/Scripts/choice_panel.gd" id="1_aiat6"]
+
+[node name="ChoicePanel" type="HBoxContainer"]
+clip_contents = true
+anchors_preset = -1
+anchor_right = 0.178
+offset_right = -165.056
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+alignment = 1
+script = ExtResource("1_aiat6")
+
+[node name="LeftContainer" type="VBoxContainer" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 5
+
+[node name="RightContainer" type="VBoxContainer" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 5

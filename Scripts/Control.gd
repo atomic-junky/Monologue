@@ -349,6 +349,19 @@ func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
 	graph_edit.disconnect_node(from, from_slot, to, to_slot)
 
 
+func _on_test_pressed():
+	await save()
+	
+	var global_vars = get_node("/root/GlobalVariables")
+	global_vars.test_path = file_path
+	
+	var test_instance = preload("res://Test/Menu.tscn")
+	var test_scene = test_instance.instantiate()
+	
+	get_tree().root.add_child(test_scene)
+	
+
+
 ####################
 #  File selection  #
 ####################
@@ -403,3 +416,4 @@ func _on_graph_node_selecter_focus_exited():
 
 func _on_graph_node_selecter_close_requested():
 	disable_picker_mode()
+

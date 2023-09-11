@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=25 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Texture2D" uid="uid://baiy1kygdapj1" path="res://Assets/Icons/config_icon.png" id="2_47s6l"]
@@ -43,6 +43,11 @@ line_spacing = 0.0
 font_size = 12
 font_color = Color(0.647059, 0.858824, 0.505882, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tyw4k"]
+content_margin_left = 7.0
+content_margin_right = 7.0
+bg_color = Color(0.768627, 0.180392, 0.25098, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ehqk"]
 bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 
@@ -63,27 +68,6 @@ font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7mcdy"]
 font_color = Color(0.423529, 0.423529, 0.423529, 1)
-
-[sub_resource type="GDScript" id="GDScript_gf31e"]
-script/source = "extends Window
-
-
-func _on_help_btn_pressed():
-	show()
-
-
-func _on_control_resized():
-	var new_pos: Vector2 = get_parent().get_window().get_size_with_decorations() / 2 - size / 2
-	position = new_pos
-"
-
-[sub_resource type="GDScript" id="GDScript_so3r8"]
-script/source = "extends Button
-
-
-func _on_pressed():
-	get_window().hide()
-"
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -106,7 +90,6 @@ theme_override_constants/separation = 7
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/separation = 10
 
@@ -189,6 +172,19 @@ layout_mode = 2
 text = "✅ SAVED"
 label_settings = SubResource("LabelSettings_gptd3")
 vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Test" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_tyw4k")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tyw4k")
+text = "Test"
 
 [node name="Control" type="Control" parent="VBoxContainer"]
 layout_mode = 2
@@ -348,7 +344,9 @@ text = "Node EndPath"
 icon = ExtResource("8_hudw3")
 
 [node name="WelcomeWindow" type="Window" parent="."]
+initial_position = 2
 size = Vector2i(728, 188)
+visible = false
 wrap_controls = true
 unresizable = true
 borderless = true
@@ -404,70 +402,7 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 label_settings = SubResource("LabelSettings_7mcdy")
 
-[node name="HelpWindow" type="Window" parent="."]
-size = Vector2i(650, 400)
-visible = false
-unresizable = true
-borderless = true
-always_on_top = true
-script = SubResource("GDScript_gf31e")
-
-[node name="PanelContainer" type="PanelContainer" parent="HelpWindow"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HelpWindow/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HelpWindow/PanelContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 20
-
-[node name="PanelContainer" type="PanelContainer" parent="HelpWindow/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="RichTextLabel" type="RichTextLabel" parent="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-bbcode_enabled = true
-text = "This app converts your story/dialog into a JSON file which you can then use to create your dialog in game.
-This application allows you to modify a single dialog file, not projects with several files.
-
-Each file contains several nodes, including a root node (RootNode) that forms the beginning of the story.
-Once exported, the nodes will be saved as individual objects in the file, and each node will refer to another node.
-
-This software isn't enough, you need to write a small script to interpret the data in the file.
-An example can be found on the project's GitHub page.
-
-
-Good luck and have fun creating your own stories!
-"
-
-[node name="CenterContainer" type="CenterContainer" parent="HelpWindow/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Continue" type="Button" parent="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/CenterContainer"]
-layout_mode = 2
-text = "Ok"
-script = SubResource("GDScript_so3r8")
-
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
-[connection signal="resized" from="." to="HelpWindow" method="_on_control_resized"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Config" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_config_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewSentence" to="." method="_on_new_sentence_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewChoice" to="." method="_on_NewOption_pressed"]
@@ -477,6 +412,7 @@ script = SubResource("GDScript_so3r8")
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewAction" to="." method="_on_new_action_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewEnd" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Save" to="." method="save"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/Test" to="." method="_on_test_pressed"]
 [connection signal="child_exiting_tree" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_child_exiting_tree"]
 [connection signal="connection_request" from="VBoxContainer/Control/GraphEdit" to="." method="_on_GraphEdit_connection_request"]
 [connection signal="connection_to_empty" from="VBoxContainer/Control/GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
@@ -498,4 +434,3 @@ script = SubResource("GDScript_so3r8")
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
-[connection signal="pressed" from="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/CenterContainer/Continue" to="HelpWindow/PanelContainer/MarginContainer/VBoxContainer/CenterContainer/Continue" method="_on_pressed"]
