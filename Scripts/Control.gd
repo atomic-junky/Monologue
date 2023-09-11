@@ -25,8 +25,6 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var graph_node_selecter = $GraphNodeSelecter
 @onready var save_progress_bar: ProgressBar = $VBoxContainer/HBoxContainer/SaveProgressBar
 @onready var save_button: Button = $VBoxContainer/HBoxContainer/Save
-@onready var clear_button: Button = $VBoxContainer/HBoxContainer/Clear
-@onready var clear_confirmation_dialog = $ClearConfirmationDialog
 
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
@@ -51,6 +49,7 @@ func _ready():
 	var new_root_node = root_node.instantiate()
 	graph_edit.add_child(new_root_node)
 	
+	# Load recent files
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
 		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
 		recent_files_container.hide()
@@ -59,6 +58,10 @@ func _ready():
 		var raw_data = file.get_as_text()
 		if raw_data:
 			var data: Array = JSON.parse_string(raw_data)
+			for path in data:
+				if FileAccess.file_exists(path):
+					continue
+				data.erase(path)
 			for path in data.slice(0, 3):
 				var btn: Button = recent_file_button.instantiate()
 				btn.text = path.rsplit("\\", true, 1)[1]
@@ -130,11 +133,14 @@ func file_selected(path, open_mode):
 		if raw_data:
 			data = JSON.parse_string(raw_data)
 			data.erase(path)
-			data.append(path)
+			data.insert(0, path)
 		else:
 			data = [path]
+		for p in data:
+			if FileAccess.file_exists(p):
+				continue
+			data.erase(p)
 		file = FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
-		data.reverse()
 		file.store_string(JSON.stringify(data.slice(0, 10)))
 	
 	load_project(path)
@@ -156,11 +162,9 @@ func save():
 	save_progress_bar.value = 0
 	save_progress_bar.show()
 	save_button.hide()
-	clear_button.hide()
 	
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	var data = JSON.stringify(await _to_dict(), "\t", false, true)
-	print(data)
 	file.store_string(data)
 	file.close()
 	
@@ -169,7 +173,6 @@ func save():
 	saved_notification.hide()
 	save_progress_bar.hide()
 	save_button.show()
-	clear_button.show()
 
 
 func load_project(path):
@@ -337,25 +340,6 @@ func _on_new_action_pressed():
 	var node = action_node.instantiate()
 	graph_edit.add_child(node)
 	center_node_in_graph_edit(node)
-
-
-func _on_Clear_pressed():
-	$NoInteractions.show()
-	clear_confirmation_dialog.show()
-
-func _on_confirmation_dialog_confirmed():
-	for node in get_tree().get_nodes_in_group("graph_nodes"):
-		if node.node_type != "NodeRoot":
-			node.queue_free()
-	graph_edit.clear_connections()
-	
-	$NoInteractions.hide()
-	clear_confirmation_dialog.hide()
-
-func _on_clear_confirmation_dialog_canceled():
-	$NoInteractions.hide()
-	clear_confirmation_dialog.hide()
-
 
 func _on_GraphEdit_connection_request(from, from_slot, to, to_slot):
 	if graph_edit.get_all_connections_from_slot(from, from_slot).size() <= 0:

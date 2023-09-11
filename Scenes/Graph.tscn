@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=26 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Texture2D" uid="uid://baiy1kygdapj1" path="res://Assets/Icons/config_icon.png" id="2_47s6l"]
@@ -49,26 +49,6 @@ bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_p3pmt"]
 font_size = 10
 font_color = Color(0.635294, 0.635294, 0.635294, 1)
-
-[sub_resource type="GDScript" id="GDScript_eo10b"]
-script/source = "extends Window
-
-
-func _ready():
-	_on_control_resized()
-	hide()
-
-func _on_control_resized():
-	var new_pos: Vector2 = get_parent().get_window().get_size_with_decorations() / 2 - size / 2
-	position = new_pos
-"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kwbu"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-draw_center = false
 
 [sub_resource type="GDScript" id="GDScript_n7pld"]
 script/source = "extends Window
@@ -203,12 +183,6 @@ step = 1.0
 rounded = true
 show_percentage = false
 
-[node name="Clear" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "Clear"
-
 [node name="SavedNotification" type="Label" parent="VBoxContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
@@ -297,30 +271,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.196078)
-
-[node name="ClearConfirmationDialog" type="ConfirmationDialog" parent="."]
-position = Vector2i(0, 36)
-size = Vector2i(362, 99)
-transient = false
-exclusive = false
-unresizable = true
-borderless = true
-always_on_top = true
-unfocusable = true
-popup_window = true
-extend_to_title = true
-script = SubResource("GDScript_eo10b")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="ClearConfirmationDialog"]
-offset_right = 362.0
-offset_bottom = 66.0
-mouse_filter = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_0kwbu")
-bbcode_enabled = true
-text = "[center]Are you sure you want to clear all nodes ?
-You can't undo theses changes.[/center]"
-fit_content = true
-scroll_following = true
 
 [node name="GraphNodeSelecter" type="Window" parent="."]
 title = "Graph Node Picker"
@@ -527,7 +477,6 @@ script = SubResource("GDScript_so3r8")
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewAction" to="." method="_on_new_action_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewEnd" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Save" to="." method="save"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Clear" to="." method="_on_Clear_pressed"]
 [connection signal="child_exiting_tree" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_child_exiting_tree"]
 [connection signal="connection_request" from="VBoxContainer/Control/GraphEdit" to="." method="_on_GraphEdit_connection_request"]
 [connection signal="connection_to_empty" from="VBoxContainer/Control/GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
@@ -537,8 +486,6 @@ script = SubResource("GDScript_so3r8")
 [connection signal="node_selected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/GraphEdit" method="_on_node_selected"]
 [connection signal="node_selected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_selected"]
 [connection signal="pressed" from="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
-[connection signal="canceled" from="ClearConfirmationDialog" to="." method="_on_clear_confirmation_dialog_canceled"]
-[connection signal="confirmed" from="ClearConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="GraphNodeSelecter" method="_on_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
