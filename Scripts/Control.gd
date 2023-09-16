@@ -187,6 +187,7 @@ func load_project(path):
 	
 	live_dict = data
 	graph_edit.speakers = data.get("Characters")
+	graph_edit.variables = data.get("Variables")
 	
 	for node in graph_edit.get_children():
 		node.queue_free()
@@ -230,8 +231,6 @@ func load_project(path):
 	for node in node_list.filter(func(n): return n.get("$type") == "NodeChoice"):
 		var graph_node = get_node_by_id(node.get("ID"))
 		graph_node._options_from_dict(node, node_list)
-	
-	graph_edit.variables = data.get("Variables")
 	
 	for node in node_list:
 		if not node.has("ID"):

@@ -29,6 +29,8 @@ func _from_dict(dict):
 	
 	if speaker_id:
 		character_drop_node.select(speaker_id)
+	else:
+		graph_node.speaker_id = 0
 	display_speaker_name_node.text = display_speaker_name
 	sentence_edit_node.text = sentence
 	display_variant_node.text = display_variant

@@ -10,6 +10,7 @@ var character_asset_getter: Callable
 var text_box
 var choice_panel
 var character_asset_node
+var prev_char_asset
 
 var root_node_id: String
 var node_list: Array
@@ -84,14 +85,18 @@ func next():
 			text_box.text = node.get("Sentence")
 			
 			if character_asset_node:
-				character_asset_node.undisplay()
 				var texture = character_asset_getter.call(get_speaker(node.get("SpeakerID")))
-				if texture != null:
-					character_asset_node.set_texture(texture)
-					character_asset_node.show()
-					character_asset_node.display()
-				else:
-					character_asset_node.hide()
+				
+				if prev_char_asset == null or prev_char_asset != texture:
+					character_asset_node.undisplay()
+					
+					if texture != null:
+						prev_char_asset = texture
+						character_asset_node.set_texture(texture)
+						character_asset_node.show()
+						character_asset_node.display()
+					else:
+						character_asset_node.hide()
 			
 			var display_speaker_name = node.get("DisplaySpeakerName")
 			text_box.speaker_display = display_speaker_name if display_speaker_name else get_speaker(node.get("SpeakerID"))
@@ -120,18 +125,60 @@ func next():
 			next_id = node.get("NextID")
 			
 			var action = node.get("Action")
-			match action.get("$type"): # TODO: Process the action
+			match action.get("$type"):
 				"ActionOption":
-					pass
+					var option: Dictionary = find_node_from_id(action.get("OptionID"))
+					option["Enable"] = option.get("Value")
 				"ActionVariable":
-					pass
+					var variable = get_variable(action.get("Variable"))
+					
+					if variable == null:
+						print("[WARNING] Can't find variable. Skipping")
+						next()
+						return
+					
+					match action.get("Operator"):
+						"=":
+							variable["Value"] = action.get("Value")
+						"+":
+							variable["Value"] += action.get("Value")
+						"-":
+							variable["Value"] -= action.get("Value")
+						"*":
+							variable["Value"] *= action.get("Value")
+						"/":
+							if action.get("Value") != 0:
+								variable["Value"] /= action.get("Value")
+							else:
+								print("[WARNING] Can't divide by value 0")
 			
 			next()
 			return
-		"NodeCondidition":
-			# TODO: Process the condition
+		"NodeCondition":
+			var condition = node.get("Condition")
+			var variable = get_variable(condition.get("Variable"))
 			
-			next_id = node.get("IfNextID")
+			var if_nid = node.get("IfNextID")
+			var else_nid = node.get("ElseNextID")
+			var v_val = variable.get("Value")
+			var c_val = condition.get("Value")
+			next_id = if_nid
+			
+			if variable == null:
+				print("[WARNING] Can't find variable. Skipping")
+				next()
+				return
+			
+			match condition.get("Operator"):
+				"==":
+					next_id = if_nid if v_val == c_val else else_nid
+				">=":
+					next_id = if_nid if v_val >= c_val else else_nid
+				"<=":
+					next_id = if_nid if v_val <= c_val else else_nid
+				"!=":
+					next_id = if_nid if v_val != c_val else else_nid
+			
 			next()
 			return
 		"NodeEndPath":
@@ -164,6 +211,14 @@ func get_speaker(id: int) -> String:
 	if speaker.size() <= 0:
 		return ""
 	return speaker[0]["Reference"]
+
+
+func get_variable(name: String):
+	var variable = variables.filter(func (v): return v.get("Name") == name)
+	
+	if variable.size() <= 0:
+		return null
+	return variable[0]
 
 
 func _default_character_asset_getter(_character):
