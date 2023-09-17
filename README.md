@@ -29,6 +29,12 @@ You can find the doc [here](https://crewsaders.gitbook.io/monologue/).
 - **DiceRoll Node**<br>
 	To have a bit of random stuff.
 
+- **Action Node**<br>
+	Update variables or choice node's options.
+
+- **Condition Node**<br>
+	Check the value of a variable.
+
 - **End Path Node**<br>
 	This node represents the end of a path. It can be interpreted as an exit of the file.
 
@@ -56,9 +62,60 @@ You can find the doc [here](https://crewsaders.gitbook.io/monologue/).
 
 
 ## How it's interpreted
-You can write your own script or use the one in the example (MonologueProcess.gd).
+You can write your own script or use the **MonologueProcess** script [here](https://github.com/atomic-junky/Monologue/blob/main/Test/Scripts/MonologueProcess.gd).
 
-More soon.
+To use the **MonologueProcess** script:
+```swift
+@onready var text_box = $.../TextBox
+@onready var choice_panel = $.../ChoicePanel
+
+@onready var character_asset_node = $.../Asset
+
+var rng = RandomNumberGenerator.new()
+var Process
+
+
+func _ready():
+	var path = "PATH_OF_THE_STORY_FILE"
+	
+	Process = MonologueProcess.new(text_box, choice_panel, end_callback, action_callback, character_asset_node, get_character_asset)
+	Process.load_dialogue(path.get_basename())
+	Process.next()
+
+
+func _input(event):
+	if event.is_action_pressed("ui_accept") and text_box.complete and not choice_panel.visible:
+		Process.next()
+
+
+func end_callback():
+	pass
+
+
+func action_callback():
+	pass
+
+
+func get_character_asset(character, variant = null):
+	if character == "_NARRATOR":
+		return
+		
+	match character:
+		"character_01":
+			match variant:
+				"variant_01":
+					return preload("res://character_01/variant_01.png")
+				
+				"variant_02":
+					return preload("res://character_01/variant_02.png")
+		"character_02":
+			return preload("res://character_02.png")
+		"character_03":
+			return preload("res://character_03.png")
+	
+	return
+```
+
 
 
 ## More Support
