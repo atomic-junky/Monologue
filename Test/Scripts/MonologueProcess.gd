@@ -107,7 +107,10 @@ func next():
 			choice_panel.clear()
 			for option_id in node.get("OptionsID"):
 				var option = find_node_from_id(option_id)
-				if not option or option.get("Enable") == false:
+				if not option:
+					print("[WARNING] Can't find option with id: " + option_id)
+					continue
+				if option.get("Enable") == false:
 					continue
 				
 				choice_panel.add_button(option.get("Sentence"), option_callback.bind(option_id))
@@ -127,8 +130,15 @@ func next():
 			var action = node.get("Action")
 			match action.get("$type"):
 				"ActionOption":
+					print(action.get("OptionID"))
 					var option: Dictionary = find_node_from_id(action.get("OptionID"))
-					option["Enable"] = option.get("Value")
+					
+					if option == null:
+						print("[WARNING] Can't find option. Skipping")
+						next()
+						return
+					
+					option["Enable"] = action.get("Value")
 				"ActionVariable":
 					var variable = get_variable(action.get("Variable"))
 					
@@ -184,17 +194,19 @@ func next():
 		"NodeEndPath":
 			if end_callback != null:
 				return end_callback.call()
-			
-			text_box.text = "[color=blue][DEBUG] End of the dialogue[/color]"
-			text_box.update()
 
 
 func option_callback(option_id):
 	var option: Dictionary = find_node_from_id(option_id)
+	
+	if option == null:
+		print("[CRITICAL] Can't find option. Unexpected exit.")
+		return end_callback.call()
+	
 	next_id = option.get("NextID")
 	
 	if option.get("OneShot") == true:
-		node_list.erase(option)
+		option["Enable"] = false
 	
 	next()
 
@@ -202,7 +214,7 @@ func option_callback(option_id):
 func find_node_from_id(id):
 	var nodes = node_list.filter(func (node): return node.get("ID") == id)
 	if nodes.size() <= 0:
-		return false
+		return null
 	return nodes[0]
 
 
