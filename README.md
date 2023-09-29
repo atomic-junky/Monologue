@@ -30,7 +30,7 @@ You can find the doc [here](https://crewsaders.gitbook.io/monologue/).
 	To have a bit of random stuff.
 
 - **Action Node**<br>
-	Update variables or choice node's options.
+	Update variables, choice node's options or just custom event.
 
 - **Condition Node**<br>
 	Check the value of a variable.
@@ -47,6 +47,7 @@ You can find the doc [here](https://crewsaders.gitbook.io/monologue/).
 ## The JSON file format
 ```json
 {
+	"EditorVersion": "",
 	"RootNodeId": "", # The id of the root node (where all start)
 	"ListNodes": [ # Where all the nodes are stored
 		...
@@ -88,11 +89,11 @@ func _input(event):
 		Process.next()
 
 
-func end_callback():
+func end_callback(next_story):
 	pass
 
 
-func action_callback():
+func action_callback(action):
 	pass
 
 
