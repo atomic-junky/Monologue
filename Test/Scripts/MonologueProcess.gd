@@ -195,7 +195,7 @@ func next():
 			return
 		"NodeEndPath":
 			if end_callback != null:
-				return end_callback.call()
+				return end_callback.call(node.get("NextStoryName"))
 
 
 func option_callback(option_id):

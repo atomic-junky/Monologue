@@ -24,7 +24,7 @@ func _input(event):
 	if event.is_action_pressed("ui_accept") and text_box.complete and not choice_panel.visible:
 		Process.next()
 
-func end_callback():
+func end_callback(_next_story = null):
 	var menu_instance = preload("res://Test/Menu.tscn")
 	var menu_scene = menu_instance.instantiate()
 	
