@@ -3,6 +3,7 @@ extends GraphNode
 
 @onready var option_container = $OptionMarginContainer
 @onready var variable_container = $VariableMarginContainer
+@onready var custom_container = $CustomMarginContainer
 
 @onready var action_type_label = $ActionTypeMarginContainer/ActionTypeContainer/ActionTypeContainer/ActionTypeLabel
 @onready var option_id_label = $OptionMarginContainer/OptionContainer/OptionIdContainer/OptionIdLabel
@@ -10,6 +11,7 @@ extends GraphNode
 @onready var variable_name_label = $VariableMarginContainer/VariableContainer/VariableNameContainer/VariableNameLabel
 @onready var variable_operator_label = $VariableMarginContainer/VariableContainer/OperatorContainer/OperatorLabel
 @onready var variable_value_label = $VariableMarginContainer/VariableContainer/ValueContainer/ValueLabel
+@onready var custom_value_label = $CustomMarginContainer/CustomContainer/CustomValueContainer/CustomValueLabel
 
 var id = UUID.v4()
 var node_type = "NodeAction"
@@ -66,6 +68,11 @@ func _action_to_dict() -> Dictionary:
 			"OptionID": option_id,
 			"Value": value
 		}
+	elif action_type == "ActionCustom":
+		return {
+			"$type": action_type,
+			"Value": value
+		}
 		
 	# ActionVariable
 	return {
@@ -81,6 +88,7 @@ func update_preview():
 	
 	option_container.hide()
 	variable_container.hide()
+	custom_container.hide()
 	
 	match action_type:
 		"ActionOption":
@@ -92,6 +100,9 @@ func update_preview():
 			variable_operator_label.text = operator if operator else "operator"
 			variable_value_label.text = str(value) if value != null else "value"
 			variable_container.show()
+		"ActionCustom":
+			custom_value_label.text = str(value) if value else "nothing"
+			custom_container.show()
 
 
 func _on_close_request():

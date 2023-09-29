@@ -50,6 +50,9 @@ func _from_dict(dict: Dictionary):
 						number_edit.value = value
 					"String":
 						string_edit.text = value
+		"ActionCustom":
+			action_drop_node.select(2)
+			string_edit.text = action.get("Value", "")
 	
 	update_action()
 
@@ -97,7 +100,13 @@ func update_action():
 					string_edit.show()
 				_:
 					default_label.show()
-
+		"ActionCustom":
+			option_id_container.hide()
+			boolean_edit.hide()
+			number_edit.hide()
+			default_label.hide()
+			
+			string_edit.show()
 
 func update_graph_node(_value = null):
 	var action_type = action_drop_node.get_item_text(action_drop_node.selected)
@@ -118,6 +127,8 @@ func update_graph_node(_value = null):
 			if variable_drop_node.selected >= 0:
 				graph_node.variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 			graph_node.operator = operator_drop_node.get_item_text(operator_drop_node.selected)
+		"ActionCustom":
+			graph_node.custom_value_label.text = get_value()
 	
 	graph_node.update_preview()
 
@@ -126,6 +137,8 @@ func get_value():
 	var action_type = action_drop_node.get_item_text(action_drop_node.selected)
 	if action_type == "ActionOption":
 		return boolean_edit.button_pressed
+	elif action_type == "ActionCustom":
+		return string_edit.text
 		
 	if variable_drop_node.selected < 0:
 		return null

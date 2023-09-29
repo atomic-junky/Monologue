@@ -31,7 +31,8 @@ func end_callback():
 	get_tree().root.add_child(menu_scene)
 	queue_free()
 
-func action_callback():
+func action_callback(_action):
+	print("[INFO] Can't process custom action. Skipping")
 	pass
 
 func get_character_asset(character, variant = null):

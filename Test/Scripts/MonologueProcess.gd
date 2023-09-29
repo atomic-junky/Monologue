@@ -161,6 +161,8 @@ func next():
 								variable["Value"] /= action.get("Value")
 							else:
 								print("[WARNING] Can't divide by value 0")
+				"ActionCustom":
+					action_callback.call(action.get("Value"))
 			
 			next()
 			return

@@ -52,6 +52,15 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = ExtResource("2_25hre")
 slot/2/draw_stylebox = false
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
 script = ExtResource("3_fftd2")
 
 [node name="ActionTypeMarginContainer" type="MarginContainer" parent="."]
@@ -113,6 +122,7 @@ text = "value"
 label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="VariableMarginContainer" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_right = 10
@@ -151,6 +161,28 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
 layout_mode = 2
 text = "value
 "
+label_settings = SubResource("LabelSettings_v4ya3")
+
+[node name="CustomMarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="CustomContainer" type="HBoxContainer" parent="CustomMarginContainer"]
+layout_mode = 2
+
+[node name="DoLabel" type="Label" parent="CustomMarginContainer/CustomContainer"]
+layout_mode = 2
+text = "Do"
+
+[node name="CustomValueContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
+
+[node name="CustomValueLabel" type="Label" parent="CustomMarginContainer/CustomContainer/CustomValueContainer"]
+layout_mode = 2
+text = "nothing"
 label_settings = SubResource("LabelSettings_v4ya3")
 
 [connection signal="close_request" from="." to="." method="_on_close_request"]
