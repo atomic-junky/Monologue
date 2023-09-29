@@ -106,6 +106,7 @@ func _to_dict() -> Dictionary:
 	save_progress_bar.value += 1
 	
 	return {
+		"EditorVersion": ProjectSettings.get_setting("application/config/version", "unknown"),
 		"RootNodeID": root_dict.get("ID"),
 		"ListNodes": list_nodes,
 		"Characters": characters,
