@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c02gpa5cixyfm"]
+[gd_scene load_steps=14 format=3 uid="uid://c02gpa5cixyfm"]
 
 [ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_i5rqj"]
 [ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_25hre"]
@@ -6,15 +6,116 @@
 
 [sub_resource type="Theme" id="Theme_llmqa"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mlc1d"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kxqa"]
+bg_color = Color(0.117647, 0.137255, 0.180392, 1)
+border_width_top = 35
+border_color = Color(0.337255, 0.631373, 0.788235, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_top = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kkyig"]
 content_margin_left = 5.0
-content_margin_top = 2.0
 content_margin_right = 5.0
-content_margin_bottom = 2.0
 bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="LabelSettings" id="LabelSettings_v4ya3"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_awqig"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umba5"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k05xj"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c62mb"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldvoo"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mt5tg"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="ActionNode" type="GraphNode" groups=["graph_nodes"]]
 offset_right = 291.0
@@ -22,7 +123,9 @@ offset_bottom = 75.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme = SubResource("Theme_llmqa")
+theme_override_constants/separation = 5
 theme_override_constants/title_h_offset = 5
+theme_override_styles/frame = SubResource("StyleBoxFlat_0kxqa")
 title = "ActionNode"
 show_close = true
 slot/0/left_enabled = true
@@ -78,10 +181,10 @@ text = "Action"
 
 [node name="ActionTypeContainer" type="PanelContainer" parent="ActionTypeMarginContainer/ActionTypeContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
 
 [node name="ActionTypeLabel" type="Label" parent="ActionTypeMarginContainer/ActionTypeContainer/ActionTypeContainer"]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_kkyig")
 text = "action type"
 label_settings = SubResource("LabelSettings_v4ya3")
 
@@ -101,10 +204,10 @@ text = "Enable Option"
 
 [node name="OptionIdContainer" type="PanelContainer" parent="OptionMarginContainer/OptionContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
 
 [node name="OptionIdLabel" type="Label" parent="OptionMarginContainer/OptionContainer/OptionIdContainer"]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_awqig")
 text = "option id"
 label_settings = SubResource("LabelSettings_v4ya3")
 
@@ -114,10 +217,10 @@ text = "?"
 
 [node name="ValueContainer" type="PanelContainer" parent="OptionMarginContainer/OptionContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
 
 [node name="ValueLabel" type="Label" parent="OptionMarginContainer/OptionContainer/ValueContainer"]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_umba5")
 text = "value"
 label_settings = SubResource("LabelSettings_v4ya3")
 
@@ -137,25 +240,25 @@ text = "Do"
 
 [node name="VariableNameContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
 
 [node name="VariableNameLabel" type="Label" parent="VariableMarginContainer/VariableContainer/VariableNameContainer"]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_k05xj")
 text = "variable"
 label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="OperatorContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
 
 [node name="OperatorLabel" type="Label" parent="VariableMarginContainer/VariableContainer/OperatorContainer"]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_c62mb")
 text = "operator"
 label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="ValueContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ldvoo")
 
 [node name="ValueLabel" type="Label" parent="VariableMarginContainer/VariableContainer/ValueContainer"]
 layout_mode = 2
@@ -178,10 +281,10 @@ text = "Do"
 
 [node name="CustomValueContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
 
 [node name="CustomValueLabel" type="Label" parent="CustomMarginContainer/CustomContainer/CustomValueContainer"]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
 text = "nothing"
 label_settings = SubResource("LabelSettings_v4ya3")
 

@@ -1,9 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://coq74c18uq3d3"]
+[gd_scene load_steps=3 format=3 uid="uid://coq74c18uq3d3"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/ChoiceNode.gd" id="1_nn3v2"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4msmb"]
+bg_color = Color(0.117647, 0.137255, 0.180392, 1)
+border_width_top = 35
+border_color = Color(0.776471, 0.486275, 0.32549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_top = 5.0
+
 [node name="ChoiceNode" type="GraphNode" groups=["graph_nodes"]]
 theme_override_constants/separation = 10
+theme_override_styles/frame = SubResource("StyleBoxFlat_4msmb")
 title = "ChoiceNode"
 show_close = true
 script = ExtResource("1_nn3v2")

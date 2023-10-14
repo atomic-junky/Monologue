@@ -1,9 +1,9 @@
 extends GraphNode
 
 
-@onready var variable_label = $MarginIfContainer/IfContainer/VariableContainer/VariableLabel
-@onready var operator_label = $MarginIfContainer/IfContainer/OperatorContainer/OperatorLabel
-@onready var value_label = $MarginIfContainer/IfContainer/ValueContainer/ValueLabel
+@onready var variable_label = $MarginIfContainer/IfContainer/VariableLabel
+@onready var operator_label = $MarginIfContainer/IfContainer/OperatorLabel
+@onready var value_label = $MarginIfContainer/IfContainer/ValueLabel
 
 var id = UUID.v4()
 var node_type = "NodeCondition"

@@ -13,7 +13,7 @@ var display_variant = ""
 
 
 func _ready():
-	title = node_type
+	title = "💬 " + node_type
 	update_preview()
 
 

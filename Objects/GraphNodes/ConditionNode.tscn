@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dsv566w4evo8b"]
+[gd_scene load_steps=8 format=3 uid="uid://dsv566w4evo8b"]
 
 [ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="1_242j4"]
 [ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_dup0t"]
@@ -6,12 +6,29 @@
 
 [sub_resource type="Theme" id="Theme_llmqa"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mlc1d"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gm4be"]
+bg_color = Color(0.117647, 0.137255, 0.180392, 1)
+border_width_top = 35
+border_color = Color(0.443137, 0.701961, 0.321569, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_top = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sipot"]
 content_margin_left = 5.0
-content_margin_top = 2.0
 content_margin_right = 5.0
-content_margin_bottom = 2.0
 bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="LabelSettings" id="LabelSettings_v4ya3"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
@@ -23,6 +40,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 theme = SubResource("Theme_llmqa")
 theme_override_constants/title_h_offset = 5
+theme_override_styles/frame = SubResource("StyleBoxFlat_gm4be")
 title = "ConditionNode"
 show_close = true
 slot/0/left_enabled = true
@@ -57,30 +75,21 @@ layout_mode = 2
 layout_mode = 2
 text = "If"
 
-[node name="VariableContainer" type="PanelContainer" parent="MarginIfContainer/IfContainer"]
+[node name="VariableLabel" type="Label" parent="MarginIfContainer/IfContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
-
-[node name="VariableLabel" type="Label" parent="MarginIfContainer/IfContainer/VariableContainer"]
-layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_sipot")
 text = "variable"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="OperatorContainer" type="PanelContainer" parent="MarginIfContainer/IfContainer"]
+[node name="OperatorLabel" type="Label" parent="MarginIfContainer/IfContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
-
-[node name="OperatorLabel" type="Label" parent="MarginIfContainer/IfContainer/OperatorContainer"]
-layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_sipot")
 text = "condition"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="ValueContainer" type="PanelContainer" parent="MarginIfContainer/IfContainer"]
+[node name="ValueLabel" type="Label" parent="MarginIfContainer/IfContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_mlc1d")
-
-[node name="ValueLabel" type="Label" parent="MarginIfContainer/IfContainer/ValueContainer"]
-layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_sipot")
 text = "value"
 label_settings = SubResource("LabelSettings_v4ya3")
 

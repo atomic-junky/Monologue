@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cifg2nritn8t6"]
+[gd_scene load_steps=6 format=3 uid="uid://cifg2nritn8t6"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/NodeSentence.gd" id="1_at5jy"]
 [ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_hvs86"]
@@ -6,12 +6,23 @@
 
 [sub_resource type="Theme" id="Theme_llmqa"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ww03k"]
+bg_color = Color(0.117647, 0.137255, 0.180392, 1)
+border_width_top = 35
+border_color = Color(0.321569, 0.741176, 0.592157, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_top = 5.0
+
 [node name="SentenceNode" type="GraphNode" groups=["graph_nodes"]]
 custom_minimum_size = Vector2(400, 100)
 offset_right = 400.0
 offset_bottom = 100.0
 size_flags_vertical = 0
 theme = SubResource("Theme_llmqa")
+theme_override_styles/frame = SubResource("StyleBoxFlat_ww03k")
 title = "NodeSentence"
 show_close = true
 slot/0/left_enabled = true
