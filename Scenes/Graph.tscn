@@ -17,6 +17,10 @@
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knd4m"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
 bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
 border_width_left = 2
 border_width_top = 2
@@ -26,10 +30,6 @@ corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r02mm"]
 bg_color = Color(0.619608, 0.901961, 0.482353, 1)
@@ -47,6 +47,10 @@ font_color = Color(0.647059, 0.858824, 0.505882, 1)
 content_margin_left = 7.0
 content_margin_right = 7.0
 bg_color = Color(0.768627, 0.180392, 0.25098, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ehqk"]
 bg_color = Color(0.129412, 0.14902, 0.180392, 1)
@@ -86,84 +90,96 @@ grow_vertical = 2
 script = ExtResource("2_1tprk")
 file_path = "4.2.2023_2028"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MainContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
 theme_override_constants/separation = 7
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Header" type="HFlowContainer" parent="MarginContainer/MainContainer"]
 layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 10
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 10
 
-[node name="Config" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Config" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "Config"
 icon = ExtResource("2_47s6l")
 
-[node name="NewSentence" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="NewSentence" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Sentence +"
 icon = ExtResource("3_pk5un")
 
-[node name="NewChoice" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="NewChoice" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Choice +"
 icon = ExtResource("4_2u3tl")
 
-[node name="NewRoll" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="NewRoll" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New DiceRoll +"
 icon = ExtResource("5_qjglw")
 
-[node name="NewBridge" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="NewBridge" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Bridge +"
 icon = ExtResource("6_gcn4v")
 
-[node name="NewCondition" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="NewCondition" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Condition +"
 icon = ExtResource("7_nh0w0")
 
-[node name="NewAction" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="NewAction" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New Action +"
 icon = ExtResource("8_hffb8")
 
-[node name="NewEnd" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="NewEnd" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "New EndPath +"
 icon = ExtResource("8_hudw3")
 
-[node name="Save" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Save" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "Save"
 
-[node name="SaveProgressBar" type="ProgressBar" parent="VBoxContainer/HBoxContainer"]
+[node name="SaveProgressBarContainer" type="MarginContainer" parent="MarginContainer/MainContainer/Header"]
 visible = false
+layout_mode = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="SaveProgressBar" type="ProgressBar" parent="MarginContainer/MainContainer/Header/SaveProgressBarContainer"]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -173,31 +189,31 @@ step = 1.0
 rounded = true
 show_percentage = false
 
-[node name="SavedNotification" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="SavedNotification" type="Label" parent="MarginContainer/MainContainer/Header"]
 visible = false
 layout_mode = 2
 text = "✅ SAVED"
 label_settings = SubResource("LabelSettings_gptd3")
 vertical_alignment = 1
 
-[node name="TestBtnContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="TestBtnContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="Test" type="Button" parent="VBoxContainer/HBoxContainer/TestBtnContainer"]
+[node name="Test" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_tyw4k")
 theme_override_styles/focus = SubResource("StyleBoxFlat_tyw4k")
 text = "Test"
 
-[node name="Control" type="Control" parent="VBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/MainContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer/Control"]
+[node name="GraphEdit" type="GraphEdit" parent="MarginContainer/MainContainer/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -206,6 +222,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
+scroll_offset = Vector2(-1132, -32)
 connection_lines_curvature = 0.0
 connection_lines_thickness = 1.0
 zoom = 0.6
@@ -214,7 +231,7 @@ zoom_max = 1.0
 minimap_enabled = false
 script = ExtResource("2_fn1ag")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.629
@@ -229,37 +246,37 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 20
 
-[node name="SidePanelNodeDetails" type="PanelContainer" parent="VBoxContainer/Control/MarginContainer"]
+[node name="SidePanelNodeDetails" type="PanelContainer" parent="MarginContainer/MainContainer/Control/MarginContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0ehqk")
 script = ExtResource("9_cxmnj")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer"]
 layout_mode = 2
 
-[node name="PanelContainer" type="VBoxContainer" parent="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer"]
+[node name="PanelContainer" type="VBoxContainer" parent="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="LabelID" type="Label" parent="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
+[node name="LabelID" type="Label" parent="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "id"
 label_settings = SubResource("LabelSettings_p3pmt")
 
-[node name="TextureButton" type="TextureButton" parent="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_f42wd")
@@ -410,25 +427,25 @@ size_flags_vertical = 8
 label_settings = SubResource("LabelSettings_7mcdy")
 
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Config" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_config_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewSentence" to="." method="_on_new_sentence_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewChoice" to="." method="_on_NewOption_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewRoll" to="." method="_on_NewRoll_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewBridge" to="." method="_on_new_bridge_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewCondition" to="." method="_on_new_condition_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewAction" to="." method="_on_new_action_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NewEnd" to="." method="_on_new_end_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Save" to="." method="save"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/TestBtnContainer/Test" to="." method="_on_test_pressed"]
-[connection signal="child_exiting_tree" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_child_exiting_tree"]
-[connection signal="connection_request" from="VBoxContainer/Control/GraphEdit" to="." method="_on_GraphEdit_connection_request"]
-[connection signal="connection_to_empty" from="VBoxContainer/Control/GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
-[connection signal="disconnection_request" from="VBoxContainer/Control/GraphEdit" to="." method="_on_GraphEdit_disconnection_request"]
-[connection signal="node_deselected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/GraphEdit" method="_on_node_deselected"]
-[connection signal="node_deselected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_deselected"]
-[connection signal="node_selected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/GraphEdit" method="_on_node_selected"]
-[connection signal="node_selected" from="VBoxContainer/Control/GraphEdit" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_selected"]
-[connection signal="pressed" from="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="VBoxContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/Config" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_config_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewSentence" to="." method="_on_new_sentence_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewChoice" to="." method="_on_NewOption_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewRoll" to="." method="_on_NewRoll_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewBridge" to="." method="_on_new_bridge_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewCondition" to="." method="_on_new_condition_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewAction" to="." method="_on_new_action_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewEnd" to="." method="_on_new_end_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="_on_test_pressed"]
+[connection signal="child_exiting_tree" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_child_exiting_tree"]
+[connection signal="connection_request" from="MarginContainer/MainContainer/Control/GraphEdit" to="." method="_on_GraphEdit_connection_request"]
+[connection signal="connection_to_empty" from="MarginContainer/MainContainer/Control/GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
+[connection signal="disconnection_request" from="MarginContainer/MainContainer/Control/GraphEdit" to="." method="_on_GraphEdit_disconnection_request"]
+[connection signal="node_deselected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/GraphEdit" method="_on_node_deselected"]
+[connection signal="node_deselected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_deselected"]
+[connection signal="node_selected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/GraphEdit" method="_on_node_selected"]
+[connection signal="node_selected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_selected"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="GraphNodeSelecter" method="_on_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]

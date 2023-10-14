@@ -20,12 +20,12 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
-@onready var graph_edit: GraphEdit = $VBoxContainer/Control/GraphEdit
-@onready var saved_notification = $VBoxContainer/HBoxContainer/SavedNotification
+@onready var graph_edit: GraphEdit = $MarginContainer/MainContainer/Control/GraphEdit
+@onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
 @onready var graph_node_selecter = $GraphNodeSelecter
-@onready var save_progress_bar: ProgressBar = $VBoxContainer/HBoxContainer/SaveProgressBar
-@onready var save_button: Button = $VBoxContainer/HBoxContainer/Save
-@onready var test_button: Button = $VBoxContainer/HBoxContainer/TestBtnContainer/Test
+@onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
+@onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
+@onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
 
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
@@ -49,6 +49,9 @@ var picker_position
 func _ready():
 	var new_root_node = root_node.instantiate()
 	graph_edit.add_child(new_root_node)
+	
+	saved_notification.hide()
+	save_progress_bar.hide()
 	
 	# Load recent files
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
