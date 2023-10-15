@@ -14,6 +14,7 @@ expand_margin_top = 5.0
 
 [node name="ChoiceNode" type="GraphNode" groups=["graph_nodes"]]
 scale = Vector2(1.0021, 1)
+mouse_default_cursor_shape = 2
 theme_override_constants/separation = 15
 theme_override_styles/frame = SubResource("StyleBoxFlat_4msmb")
 title = "ChoiceNode"

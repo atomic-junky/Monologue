@@ -4,7 +4,7 @@ extends PanelContainer
 @onready var label_id = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LabelID
 @onready var panel_container = $MarginContainer/ScrollContainer/PanelContainer
 @onready var graph_edit = $"../../GraphEdit"
-@onready var control_node = $"../../../.."
+@onready var control_node = $"../../../../.."
 
 @onready var root_node_panel_instance = preload("res://Objects/SidePanelNodes/RootNodePanel.tscn")
 @onready var sentence_node_panel_instance = preload("res://Objects/SidePanelNodes/SentenceNodePanel.tscn")
@@ -77,6 +77,8 @@ func _on_config_pressed():
 	clear_current_panel()
 	
 	var root_node = control_node.root_node_ref
+	
+	root_node.selected = true
 
 	var new_panel = root_node_panel_instance.instantiate()
 	new_panel.graph_node = root_node

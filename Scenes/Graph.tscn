@@ -73,6 +73,11 @@ content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
 bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+anti_aliasing = false
 
 [sub_resource type="LabelSettings" id="LabelSettings_1l82f"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
@@ -174,12 +179,12 @@ theme_override_font_sizes/font_size = 12
 text = "Save"
 
 [node name="SaveProgressBarContainer" type="MarginContainer" parent="MarginContainer/MainContainer/Header"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="SaveProgressBar" type="ProgressBar" parent="MarginContainer/MainContainer/Header/SaveProgressBarContainer"]
+visible = false
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -222,7 +227,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
-scroll_offset = Vector2(-1132, -32)
+scroll_offset = Vector2(0, -33)
 connection_lines_curvature = 0.0
 connection_lines_thickness = 1.0
 zoom = 0.6
@@ -368,12 +373,14 @@ text = "Node EndPath"
 icon = ExtResource("8_hudw3")
 
 [node name="WelcomeWindow" type="Window" parent="."]
+transparent_bg = true
 initial_position = 2
 size = Vector2i(600, 150)
 wrap_controls = true
 unresizable = true
 borderless = true
 always_on_top = true
+transparent = true
 script = ExtResource("3_bs36t")
 
 [node name="PanelContainer" type="PanelContainer" parent="WelcomeWindow"]
@@ -424,6 +431,7 @@ theme_override_constants/separation = 10
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
+text = "v.X.X.X"
 label_settings = SubResource("LabelSettings_7mcdy")
 
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]

@@ -122,6 +122,7 @@ offset_right = 291.0
 offset_bottom = 75.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_default_cursor_shape = 2
 theme = SubResource("Theme_llmqa")
 theme_override_constants/separation = 5
 theme_override_constants/title_h_offset = 5

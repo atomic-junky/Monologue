@@ -25,6 +25,7 @@ font_color = Color(0.666667, 0.141176, 0.231373, 1)
 [node name="DiceRoll" type="GraphNode" groups=["graph_nodes"]]
 offset_right = 110.0
 offset_bottom = 100.0
+mouse_default_cursor_shape = 2
 theme_override_styles/frame = SubResource("StyleBoxFlat_tkdh8")
 title = "DiceRoll"
 show_close = true
