@@ -280,6 +280,15 @@ layout_mode = 2
 layout_mode = 2
 text = "Do"
 
+[node name="CustomTypeContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
+layout_mode = 2
+
+[node name="CustomTypeLabel" type="Label" parent="CustomMarginContainer/CustomContainer/CustomTypeContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
+text = "custom type"
+label_settings = SubResource("LabelSettings_v4ya3")
+
 [node name="CustomValueContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
 layout_mode = 2
 

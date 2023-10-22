@@ -4,12 +4,14 @@ extends VBoxContainer
 @onready var option_id_container = $OptionIDContainer
 @onready var variable_container = $VariableContainer
 @onready var operator_container = $OperatorContainer
+@onready var custom_container = $CustomContainer
 
 @onready var action_drop_node: OptionButton = $ActionTypeContainer/ActionTypeDrop
 @onready var option_id_edit: LineEdit = $OptionIDContainer/VBoxContainer/OptionIDEdit
 @onready var option_not_find = $OptionIDContainer/VBoxContainer/OptionNotFindLabel
 @onready var variable_drop_node: OptionButton = $VariableContainer/VariableDrop
 @onready var operator_drop_node: OptionButton = $OperatorContainer/OperatorDrop
+@onready var custom_drop_node: OptionButton = $CustomContainer/CustomDrop
 
 @onready var boolean_edit: CheckButton = $ValueContainer/BooleanEdit
 @onready var number_edit: SpinBox = $ValueContainer/NumberEdit
@@ -52,6 +54,14 @@ func _from_dict(dict: Dictionary):
 						string_edit.text = value
 		"ActionCustom":
 			action_drop_node.select(2)
+			match action.get("CustomType"):
+				"PlayMusic":
+					action_drop_node.select(0)
+				"UpdateBackground":
+					action_drop_node.select(1)
+				"Other":
+					action_drop_node.select(2)
+					
 			string_edit.text = action.get("Value", "")
 	
 	update_action()
@@ -63,6 +73,7 @@ func update_action():
 	option_id_container.hide()
 	variable_container.hide()
 	operator_container.hide()
+	custom_container.hide()
 	
 	match action_type:
 		"ActionOption":
@@ -106,6 +117,7 @@ func update_action():
 			number_edit.hide()
 			default_label.hide()
 			
+			custom_container.show()
 			string_edit.show()
 
 func update_graph_node(_value = null):
@@ -128,6 +140,7 @@ func update_graph_node(_value = null):
 				graph_node.variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 			graph_node.operator = operator_drop_node.get_item_text(operator_drop_node.selected)
 		"ActionCustom":
+			graph_node.custom_type = custom_drop_node.get_item_text(custom_drop_node.selected)
 			graph_node.custom_value_label.text = get_value()
 	
 	graph_node.update_preview()
@@ -135,28 +148,29 @@ func update_graph_node(_value = null):
 
 func get_value():
 	var action_type = action_drop_node.get_item_text(action_drop_node.selected)
-	if action_type == "ActionOption":
-		return boolean_edit.button_pressed
-	elif action_type == "ActionCustom":
-		return string_edit.text
-		
-	if variable_drop_node.selected < 0:
-		return null
-	
-	var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
-	if not variable_name:
-		return null
-	var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
-	
-	match variable.get("Type"):
-		"Boolean":
+	match action_type:
+		"ActionOption":
 			return boolean_edit.button_pressed
-		"Integer":
-			return number_edit.value
-		"String":
+		"ActionCustom":
 			return string_edit.text
-		_:
-			return null
+		"ActionVariable":
+			if variable_drop_node.selected < 0:
+				return null
+			
+			var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
+			if not variable_name:
+				return null
+			var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
+			
+			match variable.get("Type"):
+				"Boolean":
+					return boolean_edit.button_pressed
+				"Integer":
+					return number_edit.value
+				"String":
+					return string_edit.text
+				_:
+					return null
 
 
 func _on_action_type_drop_item_selected(_index):

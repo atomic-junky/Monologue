@@ -11,6 +11,7 @@ extends GraphNode
 @onready var variable_name_label = $VariableMarginContainer/VariableContainer/VariableNameContainer/VariableNameLabel
 @onready var variable_operator_label = $VariableMarginContainer/VariableContainer/OperatorContainer/OperatorLabel
 @onready var variable_value_label = $VariableMarginContainer/VariableContainer/ValueContainer/ValueLabel
+@onready var custom_type_label = $CustomMarginContainer/CustomContainer/CustomTypeContainer/CustomTypeLabel
 @onready var custom_value_label = $CustomMarginContainer/CustomContainer/CustomValueContainer/CustomValueLabel
 
 var id = UUID.v4()
@@ -20,6 +21,7 @@ var action_type: String = "ActionOption"
 var option_id: String = ""
 var variable_name: String = ""
 var operator: String = ""
+var custom_type: String = ""
 var value = false
 
 func _ready():
@@ -43,7 +45,7 @@ func _to_dict() -> Dictionary:
 func _from_dict(dict: Dictionary):
 	id = dict.get("ID")
 	
-	var action = dict.get("Action")
+	var action: Dictionary = dict.get("Action")
 	
 	action_type = action.get("$type")
 	match action_type:
@@ -52,6 +54,8 @@ func _from_dict(dict: Dictionary):
 		"ActionVariable":
 			operator = action.get("Operator")
 			variable_name = action.get("Variable")
+		"ActionCustom":
+			custom_type = action.get("CustomType", "")
 	value = action.get("Value")
 	
 	var _pos = dict.get("EditorPosition")
@@ -71,6 +75,7 @@ func _action_to_dict() -> Dictionary:
 	elif action_type == "ActionCustom":
 		return {
 			"$type": action_type,
+			"CustomType": custom_type,
 			"Value": value
 		}
 		
@@ -84,6 +89,8 @@ func _action_to_dict() -> Dictionary:
 
 
 func update_preview():
+	title = node_type
+	
 	action_type_label.text = action_type
 	
 	option_container.hide()
@@ -101,8 +108,16 @@ func update_preview():
 			variable_value_label.text = str(value) if value != null else "value"
 			variable_container.show()
 		"ActionCustom":
+			custom_type_label.text = custom_type if custom_type else "custom type"
 			custom_value_label.text = str(value) if value else "nothing"
 			custom_container.show()
+			
+			match custom_type:
+				"PlayMusic":
+					title = "🎵 " + node_type
+				"UpdateBackground":
+					title = "🖼️ " + node_type
+					
 
 
 func _on_close_request():

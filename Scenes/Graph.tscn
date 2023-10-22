@@ -195,7 +195,6 @@ rounded = true
 show_percentage = false
 
 [node name="SavedNotification" type="Label" parent="MarginContainer/MainContainer/Header"]
-visible = false
 layout_mode = 2
 text = "✅ SAVED"
 label_settings = SubResource("LabelSettings_gptd3")
@@ -227,7 +226,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
-scroll_offset = Vector2(0, -33)
+scroll_offset = Vector2(0, -44)
 connection_lines_curvature = 0.0
 connection_lines_thickness = 1.0
 zoom = 0.6

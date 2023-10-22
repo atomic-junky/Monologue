@@ -101,6 +101,27 @@ popup/item_3/id = 3
 popup/item_4/text = "/"
 popup/item_4/id = 4
 
+[node name="CustomContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CustomLabel" type="Label" parent="CustomContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Type"
+
+[node name="CustomDrop" type="OptionButton" parent="CustomContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+item_count = 3
+allow_reselect = true
+popup/item_0/text = "PlayMusic"
+popup/item_0/id = 0
+popup/item_1/text = "UpdateBackground"
+popup/item_1/id = 1
+popup/item_2/text = "Other"
+popup/item_2/id = 2
+
 [node name="ValueContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -134,6 +155,7 @@ label_settings = SubResource("LabelSettings_kddgl")
 [connection signal="text_changed" from="OptionIDContainer/VBoxContainer/OptionIDEdit" to="." method="update_graph_node"]
 [connection signal="item_selected" from="VariableContainer/VariableDrop" to="." method="update_graph_node"]
 [connection signal="item_selected" from="OperatorContainer/OperatorDrop" to="." method="_on_operator_drop_item_selected"]
+[connection signal="item_selected" from="CustomContainer/CustomDrop" to="." method="update_graph_node"]
 [connection signal="toggled" from="ValueContainer/BooleanEdit" to="." method="update_graph_node"]
 [connection signal="value_changed" from="ValueContainer/NumberEdit" to="." method="update_graph_node"]
 [connection signal="text_changed" from="ValueContainer/StringEdit" to="." method="update_graph_node"]
