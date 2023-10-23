@@ -5,26 +5,27 @@
 [ext_resource type="Script" path="res://Scripts/GraphNodes/DiceRoll.gd" id="4_4behm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tkdh8"]
+content_margin_top = 40.0
+content_margin_bottom = 10.0
 bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 35
+border_width_top = 30
 border_color = Color(0.388235, 0.380392, 0.796078, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-expand_margin_top = 5.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_i36fi"]
 line_spacing = 0.0
-font_color = Color(0.00784314, 0.509804, 0.32549, 1)
+font_color = Color(0.521569, 0.788235, 0.380392, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_fvgmo"]
 line_spacing = 0.0
-font_color = Color(0.666667, 0.141176, 0.231373, 1)
+font_color = Color(0.788235, 0.380392, 0.380392, 1)
 
 [node name="DiceRoll" type="GraphNode" groups=["graph_nodes"]]
-offset_right = 110.0
-offset_bottom = 100.0
+offset_right = 120.0
+offset_bottom = 110.0
 mouse_default_cursor_shape = 2
 theme_override_styles/frame = SubResource("StyleBoxFlat_tkdh8")
 title = "DiceRoll"

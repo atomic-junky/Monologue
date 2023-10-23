@@ -20,7 +20,7 @@ func _ready():
 	reset()
 
 
-func _process(delta):
+func _process(_delta):
 	if complete:
 		next_indicator.show()
 	

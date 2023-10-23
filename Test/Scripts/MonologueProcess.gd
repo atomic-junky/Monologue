@@ -82,7 +82,7 @@ func next():
 		"NodeSentence":
 			next_id = node.get("NextID")
 			
-			text_box.text = node.get("Sentence")
+			text_box.text = process_conditional_text(node.get("Sentence"))
 			
 			if character_asset_node:
 				var texture = character_asset_getter.call(get_speaker(node.get("SpeakerID")))
@@ -227,12 +227,49 @@ func get_speaker(id: int) -> String:
 	return speaker[0]["Reference"]
 
 
-func get_variable(name: String):
-	var variable = variables.filter(func (v): return v.get("Name") == name)
+func get_variable(var_name: String):
+	var variable = variables.filter(func (v): return v.get("Name") == var_name)
 	
 	if variable.size() <= 0:
 		return null
 	return variable[0]
+
+
+func process_conditional_text(text: String) -> String:
+	var regex = RegEx.new()
+	regex.compile("(?<=\\{{)(.*?)(?=\\}})")
+	var results = regex.search_all(text)
+	if not results:
+		return text
+	
+	for r in results:
+		var condition: String = r.get_string()
+		var original_condition: String = "{{" + condition + "}}"
+		condition = condition.strip_edges(true, true)
+		
+		var if_position = condition.find("if")
+		var then_position = condition.find("then")
+		var else_position = condition.find("else")
+		
+		var var_name = condition.substr(if_position+3, then_position - (if_position+3)).strip_edges(true, true)
+		var then_name = condition.substr(then_position+5, else_position - (then_position+5)).strip_edges(true, true).trim_prefix("\"").trim_suffix("\"")
+		var else_name = condition.substr(else_position+5).strip_edges(true, true).trim_prefix("\"").trim_suffix("\"")
+		
+		var variable = get_variable(var_name)
+		
+		if not variable:
+			print("[ERROR] Can't find the variable " + var_name)
+		
+		if variable.get("Type") != "Boolean":
+			print("[ERROR] The variable can only be of type Boolean (not " + variable.get("Type")  + ")")
+			return text
+		
+		if variable.get("Value") == true:
+			text = text.replace(original_condition, then_name)
+			continue
+		text = text.replace(original_condition, else_name)
+		
+	return text
 
 
 func _default_character_asset_getter(_character):

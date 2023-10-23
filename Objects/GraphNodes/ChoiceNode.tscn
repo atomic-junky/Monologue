@@ -3,16 +3,19 @@
 [ext_resource type="Script" path="res://Scripts/GraphNodes/ChoiceNode.gd" id="1_nn3v2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4msmb"]
+content_margin_top = 40.0
+content_margin_bottom = 10.0
 bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 35
+border_width_top = 30
 border_color = Color(0.776471, 0.486275, 0.32549, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-expand_margin_top = 5.0
 
 [node name="ChoiceNode" type="GraphNode" groups=["graph_nodes"]]
+offset_right = 320.0
+offset_bottom = 50.0
 scale = Vector2(1.0021, 1)
 mouse_default_cursor_shape = 2
 theme_override_constants/separation = 15

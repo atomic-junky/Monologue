@@ -71,8 +71,8 @@ func update_option_reference(index, dict):
 	child._from_dict(dict)
 
 
-func delete_option_reference(id):
-	var child = get_children().filter(func(node): return node.id == id)[0]
+func delete_option_reference(opt_id):
+	var child = get_children().filter(func(node): return node.id == opt_id)[0]
 	child.queue_free()
 
 
@@ -85,10 +85,6 @@ func get_all_options_id() -> Array:
 
 
 func connect_all_options(node_list: Array):
-	# Clear all slots
-	for child_idx in get_child_count():
-		var connections = get_parent().get_all_connections_from_slot(self.name, child_idx)
-	
 	var all_options = []
 	for child in get_children():
 		all_options.append(child)
@@ -112,7 +108,7 @@ func get_next_node(next_node_id):
 	return -1
 
 
-func _on_slot_updated(idx):
+func _on_slot_updated(_idx):
 	pass # Replace with function body.
 
 

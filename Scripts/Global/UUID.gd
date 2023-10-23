@@ -1,5 +1,7 @@
 extends Node
 
+class_name UUID
+
 const MODULO_8_BIT = 256
 
 static func getRandomInt():

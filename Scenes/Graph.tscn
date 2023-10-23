@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=28 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Texture2D" uid="uid://baiy1kygdapj1" path="res://Assets/Icons/config_icon.png" id="2_47s6l"]
@@ -59,6 +59,17 @@ bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 font_size = 10
 font_color = Color(0.635294, 0.635294, 0.635294, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qj61b"]
+bg_color = Color(0.128906, 0.148438, 0.179688, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 35.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
 [sub_resource type="GDScript" id="GDScript_n7pld"]
 script/source = "extends Window
 
@@ -66,6 +77,13 @@ script/source = "extends Window
 func _ready():
 	hide()
 "
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whi7p"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.128906, 0.148438, 0.179688, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wb4lr"]
 content_margin_left = 20.0
@@ -184,7 +202,6 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="SaveProgressBar" type="ProgressBar" parent="MarginContainer/MainContainer/Header/SaveProgressBarContainer"]
-visible = false
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -226,7 +243,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
-scroll_offset = Vector2(0, -44)
+scroll_offset = Vector2(0, -50)
 connection_lines_curvature = 0.0
 connection_lines_thickness = 1.0
 zoom = 0.6
@@ -299,13 +316,14 @@ color = Color(0, 0, 0, 0.196078)
 [node name="GraphNodeSelecter" type="Window" parent="."]
 title = "Graph Node Picker"
 position = Vector2i(0, 36)
-size = Vector2i(210, 225)
+size = Vector2i(210, 241)
 visible = false
 unresizable = true
 always_on_top = true
 popup_window = true
 extend_to_title = true
 content_scale_mode = 1
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_qj61b")
 script = SubResource("GDScript_n7pld")
 
 [node name="PanelContainer" type="PanelContainer" parent="GraphNodeSelecter"]
@@ -316,6 +334,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_whi7p")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GraphNodeSelecter/PanelContainer"]
 layout_mode = 2
@@ -454,7 +473,6 @@ label_settings = SubResource("LabelSettings_7mcdy")
 [connection signal="node_selected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_selected"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
-[connection signal="close_requested" from="GraphNodeSelecter" to="GraphNodeSelecter" method="_on_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/SentenceSelector" to="." method="_on_new_sentence_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ChoiceSelector" to="." method="_on_NewOption_pressed"]

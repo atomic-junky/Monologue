@@ -25,7 +25,7 @@ func _to_dict() -> Dictionary:
 		}
 	}
 
-func _from_dict(dict, global_dict):
+func _from_dict(dict, _global_dict):
 	_node_dict = dict
 	
 	id = dict.get("ID")

@@ -121,6 +121,7 @@ func update_action():
 			string_edit.show()
 
 func update_graph_node(_value = null):
+	update_action()
 	var action_type = action_drop_node.get_item_text(action_drop_node.selected)
 	graph_node.action_type = action_type
 	graph_node.value = get_value()

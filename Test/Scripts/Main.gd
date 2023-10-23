@@ -26,16 +26,16 @@ func _input(event):
 
 func end_callback(_next_story = null):
 	var menu_instance = preload("res://Test/Menu.tscn")
-	var menu_scene = menu_instance.instantiate()
+	var menu_scene_instance = menu_instance.instantiate()
 	
-	get_tree().root.add_child(menu_scene)
+	get_tree().root.add_child(menu_scene_instance)
 	queue_free()
 
 func action_callback(_action):
 	print("[INFO] Can't process custom action. Skipping")
 	pass
 
-func get_character_asset(character, variant = null):
+func get_character_asset(character, _variant = null):
 	if character == "_NARRATOR":
 		return
 		

@@ -8,6 +8,8 @@
 font_color = Color(0.686275, 0.686275, 0.686275, 1)
 
 [node name="OptionReference" type="PanelContainer"]
+offset_right = 320.0
+offset_bottom = 72.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_jqboc")
 script = ExtResource("1_me3e4")
 

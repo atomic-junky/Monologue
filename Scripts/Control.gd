@@ -381,9 +381,9 @@ func _on_new_file_btn_pressed():
 		output
 	)
 	
-	var file_path = output[0].trim_suffix("\r\n")
-	if file_path != "":
-		return await file_selected(file_path, 0)
+	var new_file_path = output[0].trim_suffix("\r\n")
+	if new_file_path != "":
+		return await file_selected(new_file_path, 0)
 
 
 func _on_open_file_btn_pressed():
@@ -394,12 +394,12 @@ func _on_open_file_btn_pressed():
 		output
 	)
 	
-	var file_path = output[0].trim_suffix("\r\n")
-	if file_path != "":
-		return await file_selected(file_path, 1)
+	var open_file_path = output[0].trim_suffix("\r\n")
+	if open_file_path != "":
+		return await file_selected(open_file_path, 1)
 
 
-func _on_graph_edit_connection_to_empty(from_node, from_port, release_position):
+func _on_graph_edit_connection_to_empty(from_node, from_port, _release_position):
 	graph_node_selecter.position = get_viewport().get_mouse_position()
 	graph_node_selecter.show()
 	

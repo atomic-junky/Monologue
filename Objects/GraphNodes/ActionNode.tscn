@@ -7,14 +7,15 @@
 [sub_resource type="Theme" id="Theme_llmqa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kxqa"]
+content_margin_top = 40.0
+content_margin_bottom = 10.0
 bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 35
+border_width_top = 30
 border_color = Color(0.337255, 0.631373, 0.788235, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-expand_margin_top = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kkyig"]
 content_margin_left = 5.0
@@ -118,8 +119,8 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="ActionNode" type="GraphNode" groups=["graph_nodes"]]
-offset_right = 291.0
-offset_bottom = 75.0
+offset_right = 300.0
+offset_bottom = 129.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2

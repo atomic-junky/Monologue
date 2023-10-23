@@ -7,14 +7,15 @@
 [sub_resource type="Theme" id="Theme_llmqa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ww03k"]
+content_margin_top = 40.0
+content_margin_bottom = 10.0
 bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 35
+border_width_top = 30
 border_color = Color(0.321569, 0.741176, 0.592157, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-expand_margin_top = 5.0
 
 [node name="SentenceNode" type="GraphNode" groups=["graph_nodes"]]
 custom_minimum_size = Vector2(400, 100)

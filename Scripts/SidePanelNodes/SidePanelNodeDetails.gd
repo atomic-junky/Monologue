@@ -22,7 +22,6 @@ func _ready():
 	hide()
 
 func clear_current_panel():
-	graph_edit.speakers
 	if current_panel:
 		current_panel.queue_free()
 		current_panel = null

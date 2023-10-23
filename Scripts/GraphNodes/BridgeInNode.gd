@@ -42,4 +42,3 @@ func _on_close_request():
 
 func _on_position_offset_changed():
 	return
-	print("dragging")

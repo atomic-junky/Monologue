@@ -5,14 +5,15 @@
 [ext_resource type="Texture2D" uid="uid://cm6p57snykipc" path="res://Assets/Icons/Exit.png" id="2_nabb1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_laahq"]
+content_margin_top = 40.0
+content_margin_bottom = 10.0
 bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 35
+border_width_top = 30
 border_color = Color(0.768627, 0.180392, 0.25098, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-expand_margin_top = 5.0
 
 [node name="EndPathNode" type="GraphNode"]
 offset_right = 240.0
