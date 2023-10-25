@@ -34,7 +34,7 @@ func _on_graph_edit_node_selected(node):
 		
 	clear_current_panel()
 	
-	var exceptions_nodes = ["NodeBridgeIn", "NodeBridgeOut"]
+	var exceptions_nodes = ["NodeBridgeIn", "NodeBridgeOut", "NodeComment"]
 	
 	if node.node_type in exceptions_nodes:
 		return

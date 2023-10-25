@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=30 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Texture2D" uid="uid://baiy1kygdapj1" path="res://Assets/Icons/config_icon.png" id="2_47s6l"]
@@ -14,7 +14,9 @@
 [ext_resource type="Texture2D" uid="uid://bjjp58wq1iexy" path="res://Assets/Icons/NodesIcons/Cog.svg" id="8_hffb8"]
 [ext_resource type="Texture2D" uid="uid://nqaces7g2h37" path="res://Assets/Icons/NodesIcons/Exit.svg" id="8_hudw3"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
+[ext_resource type="Texture2D" uid="uid://cey01pispk7gq" path="res://Assets/Icons/NodesIcons/Event.svg" id="10_2h2fa"]
 [ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/GraphEdit.tscn" id="10_qja7f"]
+[ext_resource type="Texture2D" uid="uid://ditykep1j7e7y" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knd4m"]
 content_margin_left = 0.0
@@ -189,6 +191,20 @@ theme_override_font_sizes/font_size = 12
 text = "New EndPath +"
 icon = ExtResource("8_hudw3")
 
+[node name="NewEvent" type="Button" parent="MarginContainer/MainContainer/Header"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "New Event +"
+icon = ExtResource("10_2h2fa")
+
+[node name="NewComment" type="Button" parent="MarginContainer/MainContainer/Header"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "New Comment +"
+icon = ExtResource("11_ppvxf")
+
 [node name="Save" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -261,12 +277,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-scroll_offset = Vector2(0, -23)
+scroll_offset = Vector2(0, -27)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -479,6 +490,8 @@ label_settings = SubResource("LabelSettings_7mcdy")
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/NewCondition" to="." method="_on_new_condition_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/NewAction" to="." method="_on_new_action_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/NewEnd" to="." method="_on_new_end_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewEvent" to="." method="_on_new_event_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewComment" to="." method="_on_new_comment_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="_on_test_pressed"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]

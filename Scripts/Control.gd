@@ -16,6 +16,7 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var bridge_out_node = preload("res://Objects/GraphNodes/BridgeOutNode.tscn")
 @onready var condition_node = preload("res://Objects/GraphNodes/ConditionNode.tscn")
 @onready var action_node = preload("res://Objects/GraphNodes/ActionNode.tscn")
+@onready var comment_node = preload("res://Objects/GraphNodes/CommentNode.tscn")
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
@@ -134,8 +135,9 @@ func file_selected(path, open_mode):
 	tab_bar.current_tab = tab_bar.tab_count - 2
 	
 	var graph_edit = get_current_graph_edit()
-	
+	graph_edit.control_node = self
 	graph_edit.file_path = path
+	
 	$WelcomeWindow.hide()
 	if open_mode == 0: #NEW
 		for node in graph_edit.get_children():
@@ -245,6 +247,8 @@ func load_project(path):
 				new_node = condition_node.instantiate()
 			"NodeAction":
 				new_node = action_node.instantiate()
+			"NodeComment":
+				new_node = comment_node.instantiate()
 		
 		if not new_node:
 			continue
@@ -373,6 +377,14 @@ func _on_new_action_pressed():
 	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
 
+func _on_new_event_pressed():
+	pass # Replace with function body.
+
+func _on_new_comment_pressed():
+	var node = comment_node.instantiate()
+	get_current_graph_edit().add_child(node)
+	center_node_in_graph_edit(node)
+
 func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
 	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size() <= 0:
 		get_current_graph_edit().connect_node(from, from_slot, to, to_slot)
@@ -482,3 +494,4 @@ func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 func tab_close_pressed(tab):
 	graph_edits.get_child(tab).queue_free()
 	tab_bar.remove_tab(tab)
+	tab_changed(tab)

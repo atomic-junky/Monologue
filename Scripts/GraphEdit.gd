@@ -11,6 +11,8 @@ var selection_mode = false
 var graphnode_selected = false
 var moving_mode = false
 
+var control_node
+
 func _input(event):
 	if event is InputEventMouseButton:
 		mouse_pressed = event.is_pressed()
@@ -75,7 +77,6 @@ func is_option_node_exciste(node_id):
 
 func _on_node_selected(_node):
 	graphnode_selected = true
-
 
 func _on_node_deselected(_node):
 	graphnode_selected = false
