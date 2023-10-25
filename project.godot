@@ -18,7 +18,7 @@ boot_splash/bg_color=Color(0.117647, 0.133333, 0.164706, 1)
 boot_splash/image="res://icon.png"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
-config/version="2.0.0-dev1"
+config/version="2.0.0-dev2"
 
 [autoload]
 
@@ -29,7 +29,7 @@ GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
 [display]
 
 window/size/viewport_width=1450
-window/size/viewport_height=700
+window/size/viewport_height=750
 window/per_pixel_transparency/allowed=true
 window/size/fullscreen=true
 

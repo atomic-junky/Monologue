@@ -20,7 +20,8 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
-@onready var graph_edits: TabContainer = $MarginContainer/MainContainer/Control/GraphEditTabContainer
+@onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
+@onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
 @onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
 @onready var graph_node_selecter = $GraphNodeSelecter
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
@@ -50,7 +51,6 @@ func _ready():
 	var new_root_node = root_node.instantiate()
 	get_current_graph_edit().add_child(new_root_node)
 	connect_graph_edit_signal(get_current_graph_edit())
-	graph_edits.tabs_visible = false
 	
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -82,8 +82,7 @@ func _ready():
 
 
 func get_current_graph_edit() -> GraphEdit:
-	return graph_edits.get_current_tab_control()
-
+	return graph_edits.get_child(tab_bar.current_tab)
 
 func _to_dict() -> Dictionary:
 	var list_nodes = []
@@ -129,6 +128,10 @@ func file_selected(path, open_mode):
 			return
 	
 	$NoInteractions.hide()
+	
+	tab_bar.add_tab(path.get_file())
+	tab_bar.move_tab(tab_bar.tab_count - 2, tab_bar.tab_count - 1)
+	tab_bar.current_tab = tab_bar.tab_count - 2
 	
 	var graph_edit = get_current_graph_edit()
 	
@@ -201,12 +204,12 @@ func save(is_test: bool = false):
 
 
 func load_project(path):
+	$NoInteractions.hide()
 	var graph_edit = get_current_graph_edit()
 	assert(FileAccess.file_exists(path))
 	
 	var file = FileAccess.get_file_as_string(path)
 	graph_edit.name = path.get_file().trim_suffix(".json")
-	graph_edits.tabs_visible = true
 	
 	var data = JSON.parse_string(file)
 	
@@ -447,24 +450,24 @@ func _on_graph_node_selecter_close_requested():
 	disable_picker_mode()
 
 
-func new_graph_edit_request(idx):
-	var node = graph_edits.get_tab_control(idx)
-	if node.name != "+":
+func tab_changed(_idx):
+	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
+		for ge in graph_edits.get_children():
+			ge.visible = graph_edits.get_child(tab_bar.current_tab) == ge
+		
 		return
 	
-	var new_graph_edit = graph_edit_inst.instantiate()
+	var new_graph_edit: GraphEdit = graph_edit_inst.instantiate()
 	var new_root_node = root_node.instantiate()
 	
-	new_graph_edit.connect("connection_to_empty", _on_graph_edit_connection_to_empty)
-	new_graph_edit.connect("connection_request", _on_graph_edit_connection_request)
-	new_graph_edit.connect("disconnection_request", _on_graph_edit_disconnection_request)
+	new_graph_edit.name = "new"
+	connect_graph_edit_signal(new_graph_edit)
 	
 	graph_edits.add_child(new_graph_edit)
 	new_graph_edit.add_child(new_root_node)
-
-	graph_edits.move_child(node, graph_edits.get_child_count())
 	
-	graph_edits.current_tab = graph_edits.get_tab_count() - 2
+	for ge in graph_edits.get_children():
+		ge.visible = ge == new_graph_edit
 
 	$WelcomeWindow.show()
 	$NoInteractions.show()
@@ -474,3 +477,8 @@ func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 	graph_edit.connect("connection_to_empty", _on_graph_edit_connection_to_empty)
 	graph_edit.connect("connection_request", _on_graph_edit_connection_request)
 	graph_edit.connect("disconnection_request", _on_graph_edit_disconnection_request)
+
+
+func tab_close_pressed(tab):
+	graph_edits.get_child(tab).queue_free()
+	tab_bar.remove_tab(tab)
