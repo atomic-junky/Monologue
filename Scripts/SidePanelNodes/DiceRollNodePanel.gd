@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/DiceRoll.svg")
+
+class_name DiceRollNodePanel
+
 extends VBoxContainer
 
 

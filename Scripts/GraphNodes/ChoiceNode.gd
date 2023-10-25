@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Multiple Choice.svg")
+
+class_name ChoiceNode
+
 extends GraphNode
 
 

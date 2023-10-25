@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Link.svg")
+
+class_name BridgeInNode
+
 extends GraphNode
 
 

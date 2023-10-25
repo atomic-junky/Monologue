@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Root.svg")
+
+class_name RootNode
+
 extends GraphNode
 
 

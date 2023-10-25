@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Exit.svg")
+
+class_name EndPathNodePanel
+
 extends VBoxContainer
 
 

@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Texture2D" uid="uid://baiy1kygdapj1" path="res://Assets/Icons/config_icon.png" id="2_47s6l"]
-[ext_resource type="Script" path="res://Scripts/GraphEdit.gd" id="2_fn1ag"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
 [ext_resource type="Texture2D" uid="uid://de64n4wjlnfi7" path="res://Assets/Icons/NodesIcons/Sentence.svg" id="3_pk5un"]
 [ext_resource type="Texture2D" uid="uid://c76t2ieqa3ac3" path="res://Assets/Icons/NodesIcons/Multiple Choice.svg" id="4_2u3tl"]
@@ -15,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://bjjp58wq1iexy" path="res://Assets/Icons/NodesIcons/Cog.svg" id="8_hffb8"]
 [ext_resource type="Texture2D" uid="uid://nqaces7g2h37" path="res://Assets/Icons/NodesIcons/Exit.svg" id="8_hudw3"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
+[ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/GraphEdit.tscn" id="10_qja7f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knd4m"]
 content_margin_left = 0.0
@@ -111,7 +111,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_1tprk")
-file_path = "4.2.2023_2028"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -234,31 +233,32 @@ text = "Test"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GraphEdit" type="GraphEdit" parent="MarginContainer/MainContainer/Control"]
+[node name="GraphEditTabContainer" type="TabContainer" parent="MarginContainer/MainContainer/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 3
-right_disconnects = true
+drag_to_rearrange_enabled = true
+
+[node name="Default" parent="MarginContainer/MainContainer/Control/GraphEditTabContainer" instance=ExtResource("10_qja7f")]
+layout_mode = 2
 scroll_offset = Vector2(0, -50)
-connection_lines_curvature = 0.0
-connection_lines_thickness = 1.0
-zoom = 0.6
-zoom_min = 0.035
-zoom_max = 1.0
-minimap_enabled = false
-script = ExtResource("2_fn1ag")
+
+[node name="+" type="Control" parent="MarginContainer/MainContainer/Control/GraphEditTabContainer"]
+visible = false
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.629
+anchor_top = 0.035
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 0.159973
+offset_left = -0.0280151
+offset_top = 0.0149994
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 2
@@ -463,14 +463,7 @@ label_settings = SubResource("LabelSettings_7mcdy")
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/NewEnd" to="." method="_on_new_end_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="_on_test_pressed"]
-[connection signal="child_exiting_tree" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_child_exiting_tree"]
-[connection signal="connection_request" from="MarginContainer/MainContainer/Control/GraphEdit" to="." method="_on_GraphEdit_connection_request"]
-[connection signal="connection_to_empty" from="MarginContainer/MainContainer/Control/GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
-[connection signal="disconnection_request" from="MarginContainer/MainContainer/Control/GraphEdit" to="." method="_on_GraphEdit_disconnection_request"]
-[connection signal="node_deselected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/GraphEdit" method="_on_node_deselected"]
-[connection signal="node_deselected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_deselected"]
-[connection signal="node_selected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/GraphEdit" method="_on_node_selected"]
-[connection signal="node_selected" from="MarginContainer/MainContainer/Control/GraphEdit" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_graph_edit_node_selected"]
+[connection signal="tab_clicked" from="MarginContainer/MainContainer/Control/GraphEditTabContainer" to="." method="new_graph_edit_request"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/Control/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]

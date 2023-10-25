@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Cog.svg")
+
+class_name ActionNode
+
 extends GraphNode
 
 

@@ -5,8 +5,8 @@ var dialog = {}
 var dialog_for_localisation = []
 
 const HISTORY_FILE_PATH: String = "user://history.save"
-@export var file_path: String
 
+@onready var graph_edit_inst = preload("res://Objects/GraphEdit.tscn")
 @onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
 @onready var sentence_node = preload("res://Objects/GraphNodes/SentenceNode.tscn")
 @onready var dice_roll_node = preload("res://Objects/GraphNodes/DiceRollNode.tscn")
@@ -20,7 +20,7 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
-@onready var graph_edit: GraphEdit = $MarginContainer/MainContainer/Control/GraphEdit
+@onready var graph_edits: TabContainer = $MarginContainer/MainContainer/Control/GraphEditTabContainer
 @onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
 @onready var graph_node_selecter = $GraphNodeSelecter
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
@@ -48,7 +48,9 @@ var picker_position
 
 func _ready():
 	var new_root_node = root_node.instantiate()
-	graph_edit.add_child(new_root_node)
+	get_current_graph_edit().add_child(new_root_node)
+	connect_graph_edit_signal(get_current_graph_edit())
+	graph_edits.tabs_visible = false
 	
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -74,19 +76,21 @@ func _ready():
 			recent_files_container.show()
 		else:
 			recent_files_container.hide()
-			
-	if not file_path.is_empty():
-		$WelcomeWindow.show()
-		
+	
+	$WelcomeWindow.show()
 	$NoInteractions.show()
+
+
+func get_current_graph_edit() -> GraphEdit:
+	return graph_edits.get_current_tab_control()
 
 
 func _to_dict() -> Dictionary:
 	var list_nodes = []
 	
-	save_progress_bar.max_value = graph_edit.get_children().size() + 1
+	save_progress_bar.max_value = get_current_graph_edit().get_children().size() + 1
 	
-	for node in graph_edit.get_children():
+	for node in get_current_graph_edit().get_children():
 		if node.is_queued_for_deletion():
 			continue
 		list_nodes.append(node._to_dict())
@@ -95,13 +99,12 @@ func _to_dict() -> Dictionary:
 				list_nodes.append(child._to_dict())
 		
 		save_progress_bar.value = list_nodes.size()
-		await get_tree().create_timer(0.01).timeout
 	
 	root_dict = get_root_dict(list_nodes)
 	root_node_ref = get_root_node_ref()
 	
-	var characters = graph_edit.speakers
-	if graph_edit.speakers.size() <= 0:
+	var characters = get_current_graph_edit().speakers
+	if get_current_graph_edit().speakers.size() <= 0:
 		characters.append({
 			"Reference": "_NARRATOR",
 			"ID": 0
@@ -113,14 +116,23 @@ func _to_dict() -> Dictionary:
 		"RootNodeID": root_dict.get("ID"),
 		"ListNodes": list_nodes,
 		"Characters": characters,
-		"Variables": graph_edit.variables
+		"Variables": get_current_graph_edit().variables
 	}
 
 
 func file_selected(path, open_mode):
+	for ge in graph_edits.get_children():
+		if not ge is GraphEdit:
+			continue
+		
+		if ge.file_path == path:
+			return
+	
 	$NoInteractions.hide()
 	
-	file_path = path
+	var graph_edit = get_current_graph_edit()
+	
+	graph_edit.file_path = path
 	$WelcomeWindow.hide()
 	if open_mode == 0: #NEW
 		for node in graph_edit.get_children():
@@ -158,7 +170,7 @@ func get_root_dict(nodes):
 
 
 func get_root_node_ref():
-	for node in graph_edit.get_children():
+	for node in get_current_graph_edit().get_children():
 		if !node.is_queued_for_deletion() and node.id == root_dict.get("ID"):
 			return node
 
@@ -169,8 +181,13 @@ func save(is_test: bool = false):
 	save_button.hide()
 	test_button.hide()
 	
-	var file = FileAccess.open(file_path, FileAccess.WRITE)
-	var data = JSON.stringify(await _to_dict(), "\t", false, true)
+	
+	var data = JSON.stringify(_to_dict(), "\t", false, true)
+	if not data: # Fail to load 
+		save_progress_bar.hide()
+		save_button.show()
+		test_button.show()
+	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
 	
@@ -184,9 +201,13 @@ func save(is_test: bool = false):
 
 
 func load_project(path):
+	var graph_edit = get_current_graph_edit()
 	assert(FileAccess.file_exists(path))
 	
 	var file = FileAccess.get_file_as_string(path)
+	graph_edit.name = path.get_file().trim_suffix(".json")
+	graph_edits.tabs_visible = true
+	
 	var data = JSON.parse_string(file)
 	
 	live_dict = data
@@ -276,7 +297,7 @@ func load_project(path):
 	
 	
 func get_node_by_id(id):
-	for node in graph_edit.get_children():
+	for node in get_current_graph_edit().get_children():
 		if node.id == id:
 			return node
 	
@@ -294,6 +315,7 @@ func get_options_nodes(node_list, options_id):
 ###############################
 
 func center_node_in_graph_edit(node):
+	var graph_edit = get_current_graph_edit()
 	if picker_mode:
 		node.position_offset = picker_position
 		graph_edit.connect_node(picker_from_node, picker_from_port, node.name, 0)
@@ -304,33 +326,33 @@ func center_node_in_graph_edit(node):
 
 func _on_new_sentence_pressed():
 	var node = sentence_node.instantiate()
-	graph_edit.add_child(node)
+	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
 
 func _on_NewOption_pressed():
 	var node = choice_node.instantiate()
-	graph_edit.add_child(node)
+	get_current_graph_edit().add_child(node)
 	node._on_created()
 	center_node_in_graph_edit(node)
 
 func _on_NewRoll_pressed():
 	var node = dice_roll_node.instantiate()
-	graph_edit.add_child(node)
+	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
 
 func _on_new_end_pressed():
 	var node = end_node.instantiate()
-	graph_edit.add_child(node)
+	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
 
 func _on_new_bridge_pressed():
-	var number = graph_edit.get_free_bridge_number()
+	var number = get_current_graph_edit().get_free_bridge_number()
 	
 	var in_node = bridge_in_node.instantiate()
 	var out_node = bridge_out_node.instantiate()
 	
-	graph_edit.add_child(in_node)
-	graph_edit.add_child(out_node)
+	get_current_graph_edit().add_child(in_node)
+	get_current_graph_edit().add_child(out_node)
 	
 	in_node.number_selector.value = number
 	out_node.number_selector.value = number
@@ -340,27 +362,27 @@ func _on_new_bridge_pressed():
 
 func _on_new_condition_pressed():
 	var node = condition_node.instantiate()
-	graph_edit.add_child(node)
+	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
 
 func _on_new_action_pressed():
 	var node = action_node.instantiate()
-	graph_edit.add_child(node)
+	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
 
-func _on_GraphEdit_connection_request(from, from_slot, to, to_slot):
-	if graph_edit.get_all_connections_from_slot(from, from_slot).size() <= 0:
-		graph_edit.connect_node(from, from_slot, to, to_slot)
+func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
+	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size() <= 0:
+		get_current_graph_edit().connect_node(from, from_slot, to, to_slot)
 
-func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
-	graph_edit.disconnect_node(from, from_slot, to, to_slot)
+func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
+	get_current_graph_edit().disconnect_node(from, from_slot, to, to_slot)
 
 
 func _on_test_pressed():
 	await save(true)
 	
 	var global_vars = get_node("/root/GlobalVariables")
-	global_vars.test_path = file_path
+	global_vars.test_path = get_current_graph_edit().file_path
 	
 	var test_instance = preload("res://Test/Menu.tscn")
 	var test_scene = test_instance.instantiate()
@@ -405,7 +427,7 @@ func _on_graph_edit_connection_to_empty(from_node, from_port, _release_position)
 	
 	picker_from_node = from_node
 	picker_from_port = from_port
-	picker_position = (get_local_mouse_position() + graph_edit.scroll_offset) / graph_edit.zoom
+	picker_position = (get_local_mouse_position() + get_current_graph_edit().scroll_offset) / get_current_graph_edit().zoom
 	
 	picker_mode = true
 	$NoInteractions.show()
@@ -424,3 +446,31 @@ func _on_graph_node_selecter_focus_exited():
 func _on_graph_node_selecter_close_requested():
 	disable_picker_mode()
 
+
+func new_graph_edit_request(idx):
+	var node = graph_edits.get_tab_control(idx)
+	if node.name != "+":
+		return
+	
+	var new_graph_edit = graph_edit_inst.instantiate()
+	var new_root_node = root_node.instantiate()
+	
+	new_graph_edit.connect("connection_to_empty", _on_graph_edit_connection_to_empty)
+	new_graph_edit.connect("connection_request", _on_graph_edit_connection_request)
+	new_graph_edit.connect("disconnection_request", _on_graph_edit_disconnection_request)
+	
+	graph_edits.add_child(new_graph_edit)
+	new_graph_edit.add_child(new_root_node)
+
+	graph_edits.move_child(node, graph_edits.get_child_count())
+	
+	graph_edits.current_tab = graph_edits.get_tab_count() - 2
+
+	$WelcomeWindow.show()
+	$NoInteractions.show()
+
+
+func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
+	graph_edit.connect("connection_to_empty", _on_graph_edit_connection_to_empty)
+	graph_edit.connect("connection_request", _on_graph_edit_connection_request)
+	graph_edit.connect("disconnection_request", _on_graph_edit_disconnection_request)

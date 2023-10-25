@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Multiple Choice.svg")
+
+class_name ChoiceNodePanel
+
 extends VBoxContainer
 
 const arrow_texture01 = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")

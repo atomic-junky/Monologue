@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://qdgl8co6qy6"]
+
+[ext_resource type="Script" path="res://Scripts/GraphEdit.gd" id="1_r0ncd"]
+
+[node name="GraphEdit" type="GraphEdit"]
+size_flags_vertical = 3
+right_disconnects = true
+connection_lines_curvature = 0.0
+connection_lines_thickness = 1.0
+zoom = 0.6
+zoom_min = 0.035
+zoom_max = 1.0
+minimap_enabled = false
+script = ExtResource("1_r0ncd")
+
+[connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
+[connection signal="node_selected" from="." to="." method="_on_node_selected"]

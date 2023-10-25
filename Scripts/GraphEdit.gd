@@ -1,6 +1,8 @@
 extends GraphEdit
 
 
+var file_path: String
+
 var speakers = []
 var variables = []
 var mouse_pressed = false

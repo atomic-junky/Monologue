@@ -3,6 +3,8 @@ extends Node
 class_name MonologueProcess
 
 
+var dir_path
+
 var end_callback: Callable
 var action_callback: Callable
 var character_asset_getter: Callable
@@ -11,6 +13,7 @@ var text_box
 var choice_panel
 var character_asset_node
 var prev_char_asset
+var background_node
 
 var root_node_id: String
 var node_list: Array
@@ -22,10 +25,11 @@ var next_id
 var rng = RandomNumberGenerator.new()
 
 
-func _init(_text_box, _choice_panel, _end_callback: Callable, _action_callback: Callable, _character_asset_node = null, _character_asset_getter: Callable = _default_character_asset_getter):
+func _init(_text_box, _choice_panel, _background_node, _end_callback: Callable, _action_callback: Callable, _character_asset_node = null, _character_asset_getter: Callable = _default_character_asset_getter):
 	text_box = _text_box
 	choice_panel = _choice_panel
 	character_asset_node = _character_asset_node
+	background_node = _background_node
 	
 	end_callback = _end_callback
 	action_callback = _action_callback
@@ -36,6 +40,9 @@ func _init(_text_box, _choice_panel, _end_callback: Callable, _action_callback: 
 
 func load_dialogue(dialogue_name):
 	var path = dialogue_name + ".json"
+	dir_path = path.replace("/", "\\").split("\\")
+	dir_path.remove_at(len(dir_path)-1)
+	dir_path = "\\".join(dir_path)
 	assert(FileAccess.file_exists(path), "Can't find dialogs file")
 	
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -53,7 +60,7 @@ func load_dialogue(dialogue_name):
 	
 	next_id = root_node_id
 	
-	print("[INFO] Dialogue " + dialogue_name + " loaded")
+	print("[INFO] Dialogue " + path + " loaded")
 
 
 func next():
@@ -130,7 +137,6 @@ func next():
 			var action = node.get("Action")
 			match action.get("$type"):
 				"ActionOption":
-					print(action.get("OptionID"))
 					var option: Dictionary = find_node_from_id(action.get("OptionID"))
 					
 					if option == null:
@@ -162,7 +168,20 @@ func next():
 							else:
 								print("[WARNING] Can't divide by value 0")
 				"ActionCustom":
-					action_callback.call(action.get("Value"))
+					match action.get("CustomType"):
+						"PlayMusic":
+							pass
+						"UpdateBackground":
+							var bg = Image.new()
+							var err = bg.load(dir_path + "\\assets\\backgrounds\\" + action.get("Value"))
+							
+							if err != OK:
+								print("[ERROR] Failed to load background (" + action.get("Value") + ")")
+							
+							var texture = ImageTexture.create_from_image(bg)
+							background_node.set_texture(texture)
+						"Other":
+							action_callback.call(action.get("Value"))
 			
 			next()
 			return

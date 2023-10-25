@@ -5,6 +5,7 @@ extends Control
 
 @onready var text_box = $CenterContainer/MarginContainer/Container/TextBox
 @onready var choice_panel = $CenterContainer/MarginContainer/Container/ChoicePanel
+@onready var background = $Background
 
 @onready var character_asset_node = $CharacterAssetContainer/Asset
 
@@ -16,7 +17,7 @@ func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
 	var path = global_vars.test_path
 	
-	Process = MonologueProcess.new(text_box, choice_panel, end_callback, action_callback, character_asset_node, get_character_asset)
+	Process = MonologueProcess.new(text_box, choice_panel, background, end_callback, action_callback, character_asset_node, get_character_asset)
 	Process.load_dialogue(path.get_basename())
 	Process.next()
 

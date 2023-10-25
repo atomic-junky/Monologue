@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Cog.svg")
+
+class_name ActionNodePanel
+
 extends VBoxContainer
 
 
@@ -32,6 +36,7 @@ func _ready():
 func _from_dict(dict: Dictionary):
 	id = dict.get("ID")
 	var action = dict.get("Action")
+	variables = graph_node.get_parent().variables
 	
 	match action.get("$type"):
 		"ActionOption":
@@ -41,9 +46,13 @@ func _from_dict(dict: Dictionary):
 		"ActionVariable":
 			action_drop_node.select(1)
 			
-			var variables_filter = graph_node.get_parent().variables.filter(func(v): return v.get("Name") == action.get("Variable"))
+			var variables_filter = variables.filter(func(v): return v.get("Name") == action.get("Variable"))
+			
 			if variables_filter.size() > 0:
 				var variable = variables_filter[0]
+				var variable_position = variables.find(variable)
+				variable_drop_node.select(variable_position)
+				
 				var value = action.get("Value")
 				match variable.get("Type"):
 					"Boolean":

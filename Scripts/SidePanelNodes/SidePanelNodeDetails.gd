@@ -3,7 +3,6 @@ extends PanelContainer
 
 @onready var label_id = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LabelID
 @onready var panel_container = $MarginContainer/ScrollContainer/PanelContainer
-@onready var graph_edit = $"../../GraphEdit"
 @onready var control_node = $"../../../../.."
 
 @onready var root_node_panel_instance = preload("res://Objects/SidePanelNodes/RootNodePanel.tscn")
@@ -28,6 +27,7 @@ func clear_current_panel():
 
 
 func _on_graph_edit_node_selected(node):
+	var graph_edit = control_node.get_current_graph_edit()
 	await get_tree().create_timer(0.05).timeout
 	if graph_edit.selection_mode or graph_edit.moving_mode:
 		return

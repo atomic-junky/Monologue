@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Condition.svg")
+
+class_name ConditionNode
+
 extends GraphNode
 
 

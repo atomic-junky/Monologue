@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Sentence.svg")
+
+class_name SetenceNode
+
 extends GraphNode
 
 
