@@ -406,7 +406,7 @@ func test_project():
 #  File selection  #
 ####################
 
-func _on_new_file_btn_pressed():
+func new_file():
 	var output = []
 	OS.execute(
 		"Powershell.exe",
@@ -419,7 +419,7 @@ func _on_new_file_btn_pressed():
 		return await file_selected(new_file_path, 0)
 
 
-func _on_open_file_btn_pressed():
+func open_file():
 	var output = []
 	OS.execute(
 		"Powershell.exe",
@@ -465,17 +465,7 @@ func tab_changed(_idx):
 		
 		return
 	
-	var new_graph_edit: GraphEdit = graph_edit_inst.instantiate()
-	var new_root_node = root_node.instantiate()
-	
-	new_graph_edit.name = "new"
-	connect_graph_edit_signal(new_graph_edit)
-	
-	graph_edits.add_child(new_graph_edit)
-	new_graph_edit.add_child(new_root_node)
-	
-	for ge in graph_edits.get_children():
-		ge.visible = ge == new_graph_edit
+	new_graph_edit()
 
 	$WelcomeWindow.show()
 	$NoInteractions.show()
@@ -496,11 +486,26 @@ func tab_close_pressed(tab):
 
 func _on_file_id_pressed(id):
 	match id:
-		0:
-			pass # OPEN
-		1:
-			pass # NEW
+		0: # Open file
+			new_graph_edit()
+			open_file()
+		1: # New file
+			new_graph_edit()
+			new_file()
 		3: # Config
 			side_panel_node.show_config()
 		4: # Test
 			test_project()
+
+func new_graph_edit():
+	var new_graph_edit: GraphEdit = graph_edit_inst.instantiate()
+	var new_root_node = root_node.instantiate()
+	
+	new_graph_edit.name = "new"
+	connect_graph_edit_signal(new_graph_edit)
+	
+	graph_edits.add_child(new_graph_edit)
+	new_graph_edit.add_child(new_root_node)
+	
+	for ge in graph_edits.get_children():
+		ge.visible = ge == new_graph_edit

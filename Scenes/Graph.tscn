@@ -553,5 +553,5 @@ label_settings = SubResource("LabelSettings_7mcdy")
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ConditionSelector" to="." method="add_node" binds= ["Condition"]]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ActionSelector" to="." method="add_node" binds= ["Action"]]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="." method="add_node" binds= ["EndPath"]]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="new_file"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="open_file"]
