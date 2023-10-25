@@ -24,3 +24,7 @@ func _from_dict(dict: Dictionary) -> void:
 	id = dict.get("ID")
 	
 	comment_edit.text = dict.get("Comment")
+
+
+func _on_close_request():
+	queue_free()

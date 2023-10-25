@@ -1,7 +1,6 @@
-[gd_scene load_steps=30 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=33 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
-[ext_resource type="Texture2D" uid="uid://baiy1kygdapj1" path="res://Assets/Icons/config_icon.png" id="2_47s6l"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
 [ext_resource type="Texture2D" uid="uid://de64n4wjlnfi7" path="res://Assets/Icons/NodesIcons/Sentence.svg" id="3_pk5un"]
 [ext_resource type="Texture2D" uid="uid://c76t2ieqa3ac3" path="res://Assets/Icons/NodesIcons/Multiple Choice.svg" id="4_2u3tl"]
@@ -17,6 +16,73 @@
 [ext_resource type="Texture2D" uid="uid://cey01pispk7gq" path="res://Assets/Icons/NodesIcons/Event.svg" id="10_2h2fa"]
 [ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/GraphEdit.tscn" id="10_qja7f"]
 [ext_resource type="Texture2D" uid="uid://ditykep1j7e7y" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
+content_margin_left = 5.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 3.0
+bg_color = Color(0.0859375, 0.101563, 0.125, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 2.0
+expand_margin_right = 5.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3npb4"]
+content_margin_left = 5.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 3.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 2.0
+expand_margin_right = 5.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ao7wf"]
+content_margin_left = 5.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 3.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 2.0
+expand_margin_right = 5.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ux1f6"]
+content_margin_left = 0.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+expand_margin_left = 1.0
+expand_margin_top = 2.0
+expand_margin_right = 1.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knd4m"]
 content_margin_left = 0.0
@@ -135,75 +201,92 @@ layout_mode = 2
 theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 10
 
+[node name="FileMenuBar" type="MenuBar" parent="MarginContainer/MainContainer/Header"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_22xm7")
+
+[node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/FileMenuBar"]
+size = Vector2i(119, 100)
+item_count = 9
+item_0/text = "Sentence"
+item_0/icon = ExtResource("3_pk5un")
+item_0/id = 0
+item_1/text = "Choice"
+item_1/icon = ExtResource("4_2u3tl")
+item_1/id = 1
+item_2/text = "DiceRoll"
+item_2/icon = ExtResource("5_qjglw")
+item_2/id = 2
+item_3/text = "Bridge"
+item_3/icon = ExtResource("6_gcn4v")
+item_3/id = 3
+item_4/text = "Condition"
+item_4/icon = ExtResource("7_nh0w0")
+item_4/id = 4
+item_5/text = "Action"
+item_5/icon = ExtResource("8_hffb8")
+item_5/id = 5
+item_6/text = "EndPath"
+item_6/icon = ExtResource("8_hudw3")
+item_6/id = 6
+item_7/text = "Event"
+item_7/icon = ExtResource("10_2h2fa")
+item_7/id = 7
+item_8/text = "Comment"
+item_8/icon = ExtResource("11_ppvxf")
+item_8/id = 8
+
 [node name="Config" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 text = "Config"
-icon = ExtResource("2_47s6l")
 
-[node name="NewSentence" type="Button" parent="MarginContainer/MainContainer/Header"]
+[node name="AddMenuBar" type="MenuBar" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
-text = "New Sentence +"
-icon = ExtResource("3_pk5un")
+theme_override_styles/normal = SubResource("StyleBoxFlat_22xm7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3npb4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ao7wf")
 
-[node name="NewChoice" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New Choice +"
-icon = ExtResource("4_2u3tl")
+[node name="Add" type="PopupMenu" parent="MarginContainer/MainContainer/Header/AddMenuBar"]
+size = Vector2i(119, 100)
+item_count = 9
+item_0/text = "Sentence"
+item_0/icon = ExtResource("3_pk5un")
+item_0/id = 0
+item_1/text = "Choice"
+item_1/icon = ExtResource("4_2u3tl")
+item_1/id = 1
+item_2/text = "DiceRoll"
+item_2/icon = ExtResource("5_qjglw")
+item_2/id = 2
+item_3/text = "Bridge"
+item_3/icon = ExtResource("6_gcn4v")
+item_3/id = 3
+item_4/text = "Condition"
+item_4/icon = ExtResource("7_nh0w0")
+item_4/id = 4
+item_5/text = "Action"
+item_5/icon = ExtResource("8_hffb8")
+item_5/id = 5
+item_6/text = "EndPath"
+item_6/icon = ExtResource("8_hudw3")
+item_6/id = 6
+item_7/text = "Event"
+item_7/icon = ExtResource("10_2h2fa")
+item_7/id = 7
+item_8/text = "Comment"
+item_8/icon = ExtResource("11_ppvxf")
+item_8/id = 8
 
-[node name="NewRoll" type="Button" parent="MarginContainer/MainContainer/Header"]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New DiceRoll +"
-icon = ExtResource("5_qjglw")
-
-[node name="NewBridge" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New Bridge +"
-icon = ExtResource("6_gcn4v")
-
-[node name="NewCondition" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New Condition +"
-icon = ExtResource("7_nh0w0")
-
-[node name="NewAction" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New Action +"
-icon = ExtResource("8_hffb8")
-
-[node name="NewEnd" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New EndPath +"
-icon = ExtResource("8_hudw3")
-
-[node name="NewEvent" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New Event +"
-icon = ExtResource("10_2h2fa")
-
-[node name="NewComment" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "New Comment +"
-icon = ExtResource("11_ppvxf")
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_ux1f6")
 
 [node name="Save" type="Button" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
@@ -277,7 +360,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
-scroll_offset = Vector2(0, -27)
+scroll_offset = Vector2(0, -23)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -482,16 +565,9 @@ text = "v.X.X.X"
 label_settings = SubResource("LabelSettings_7mcdy")
 
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
+[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/FileMenuBar/File" to="." method="_on_add_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Config" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_config_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewSentence" to="." method="_on_new_sentence_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewChoice" to="." method="_on_NewOption_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewRoll" to="." method="_on_NewRoll_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewBridge" to="." method="_on_new_bridge_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewCondition" to="." method="_on_new_condition_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewAction" to="." method="_on_new_action_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewEnd" to="." method="_on_new_end_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewEvent" to="." method="_on_new_event_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/NewComment" to="." method="_on_new_comment_pressed"]
+[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/AddMenuBar/Add" to="." method="_on_add_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="_on_test_pressed"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]

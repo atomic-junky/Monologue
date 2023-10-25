@@ -53,5 +53,5 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 scroll_fit_content_height = true
 
-[connection signal="close_request" from="." to="." method="_on_GraphNode_close_request"]
+[connection signal="close_request" from="." to="." method="_on_close_request"]
 [connection signal="resize_request" from="." to="." method="_on_GraphNode_resize_request"]

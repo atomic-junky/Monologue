@@ -1,3 +1,6 @@
+# FIXME: Side node panel don't work
+# FIXME: Choice node don't have the 2 defaults options when created
+
 extends Control
 
 
@@ -28,7 +31,7 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
 @onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
-
+@onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/AddMenuBar/Add
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
 
@@ -331,57 +334,47 @@ func center_node_in_graph_edit(node):
 	
 	node.position_offset = ((graph_edit.size/2) + graph_edit.scroll_offset) / graph_edit.zoom
 
-func _on_new_sentence_pressed():
-	var node = sentence_node.instantiate()
-	get_current_graph_edit().add_child(node)
-	center_node_in_graph_edit(node)
-
-func _on_NewOption_pressed():
-	var node = choice_node.instantiate()
-	get_current_graph_edit().add_child(node)
-	node._on_created()
-	center_node_in_graph_edit(node)
-
-func _on_NewRoll_pressed():
-	var node = dice_roll_node.instantiate()
-	get_current_graph_edit().add_child(node)
-	center_node_in_graph_edit(node)
-
-func _on_new_end_pressed():
-	var node = end_node.instantiate()
-	get_current_graph_edit().add_child(node)
-	center_node_in_graph_edit(node)
-
-func _on_new_bridge_pressed():
-	var number = get_current_graph_edit().get_free_bridge_number()
+func _on_add_id_pressed(id):
+	var node_name = add_menu_bar.get_item_text(id)
 	
-	var in_node = bridge_in_node.instantiate()
-	var out_node = bridge_out_node.instantiate()
+	if node_name == "Bridge":
+		var number = get_current_graph_edit().get_free_bridge_number()
 	
-	get_current_graph_edit().add_child(in_node)
-	get_current_graph_edit().add_child(out_node)
+		var in_node = bridge_in_node.instantiate()
+		var out_node = bridge_out_node.instantiate()
+		
+		get_current_graph_edit().add_child(in_node)
+		get_current_graph_edit().add_child(out_node)
+		
+		in_node.number_selector.value = number
+		out_node.number_selector.value = number
+		
+		center_node_in_graph_edit(in_node)
+		center_node_in_graph_edit(out_node)
+		
+	var node
+	match node_name:
+		"Sentence":
+			node = sentence_node
+		"Choice":
+			node = choice_node
+		"DiceRoll":
+			node = dice_roll_node
+		"Condition":
+			node = condition_node
+		"Action":
+			node = action_node
+		"EndPath":
+			node = end_node
+		"Event":
+			pass
+		"Comment":
+			node = comment_node
 	
-	in_node.number_selector.value = number
-	out_node.number_selector.value = number
+	if not node:
+		return
 	
-	center_node_in_graph_edit(in_node)
-	center_node_in_graph_edit(out_node)
-
-func _on_new_condition_pressed():
-	var node = condition_node.instantiate()
-	get_current_graph_edit().add_child(node)
-	center_node_in_graph_edit(node)
-
-func _on_new_action_pressed():
-	var node = action_node.instantiate()
-	get_current_graph_edit().add_child(node)
-	center_node_in_graph_edit(node)
-
-func _on_new_event_pressed():
-	pass # Replace with function body.
-
-func _on_new_comment_pressed():
-	var node = comment_node.instantiate()
+	node = node.instantiate()
 	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
 
