@@ -26,7 +26,7 @@ func clear_current_panel():
 		current_panel = null
 
 
-func _on_graph_edit_node_selected(node):
+func on_graph_node_selected(node):
 	var graph_edit = control_node.get_current_graph_edit()
 	await get_tree().create_timer(0.05).timeout
 	if graph_edit.selection_mode or graph_edit.moving_mode:
@@ -72,7 +72,7 @@ func _on_texture_button_pressed():
 	hide()
 
 
-func _on_config_pressed():
+func show_config():
 	clear_current_panel()
 	
 	var root_node = control_node.root_node_ref
@@ -95,5 +95,5 @@ func _on_graph_edit_child_exiting_tree(_node):
 	hide()
 
 
-func _on_graph_edit_node_deselected(_node):
+func on_graph_node_deselected(_node):
 	hide()

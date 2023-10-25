@@ -194,57 +194,14 @@ theme_override_constants/margin_bottom = 10
 
 [node name="MainContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 7
+theme_override_constants/separation = 15
 
 [node name="Header" type="HFlowContainer" parent="MarginContainer/MainContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 10
 
-[node name="FileMenuBar" type="MenuBar" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-theme_override_styles/normal = SubResource("StyleBoxFlat_22xm7")
-
-[node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/FileMenuBar"]
-size = Vector2i(119, 100)
-item_count = 9
-item_0/text = "Sentence"
-item_0/icon = ExtResource("3_pk5un")
-item_0/id = 0
-item_1/text = "Choice"
-item_1/icon = ExtResource("4_2u3tl")
-item_1/id = 1
-item_2/text = "DiceRoll"
-item_2/icon = ExtResource("5_qjglw")
-item_2/id = 2
-item_3/text = "Bridge"
-item_3/icon = ExtResource("6_gcn4v")
-item_3/id = 3
-item_4/text = "Condition"
-item_4/icon = ExtResource("7_nh0w0")
-item_4/id = 4
-item_5/text = "Action"
-item_5/icon = ExtResource("8_hffb8")
-item_5/id = 5
-item_6/text = "EndPath"
-item_6/icon = ExtResource("8_hudw3")
-item_6/id = 6
-item_7/text = "Event"
-item_7/icon = ExtResource("10_2h2fa")
-item_7/id = 7
-item_8/text = "Comment"
-item_8/icon = ExtResource("11_ppvxf")
-item_8/id = 8
-
-[node name="Config" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "Config"
-
-[node name="AddMenuBar" type="MenuBar" parent="MarginContainer/MainContainer/Header"]
+[node name="MenuBar" type="MenuBar" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
@@ -252,7 +209,22 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_22xm7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_3npb4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ao7wf")
 
-[node name="Add" type="PopupMenu" parent="MarginContainer/MainContainer/Header/AddMenuBar"]
+[node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
+size = Vector2i(119, 100)
+item_count = 5
+item_0/text = "Open"
+item_0/id = 0
+item_1/text = "New"
+item_1/id = 1
+item_2/text = ""
+item_2/id = 2
+item_2/separator = true
+item_3/text = "Edit Config"
+item_3/id = 3
+item_4/text = "Test File"
+item_4/id = 4
+
+[node name="Add" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 size = Vector2i(119, 100)
 item_count = 9
 item_0/text = "Sentence"
@@ -565,22 +537,21 @@ text = "v.X.X.X"
 label_settings = SubResource("LabelSettings_7mcdy")
 
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
-[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/FileMenuBar/File" to="." method="_on_add_id_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/Config" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_config_pressed"]
-[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/AddMenuBar/Add" to="." method="_on_add_id_pressed"]
+[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
+[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="_on_test_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
 [connection signal="tab_close_pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_close_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
-[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/SentenceSelector" to="." method="_on_new_sentence_pressed"]
-[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ChoiceSelector" to="." method="_on_NewOption_pressed"]
-[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/DiceRollSelector" to="." method="_on_NewRoll_pressed"]
-[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/BridgeSelector" to="." method="_on_new_bridge_pressed"]
-[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ConditionSelector" to="." method="_on_new_condition_pressed"]
-[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ActionSelector" to="." method="_on_new_action_pressed"]
-[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="." method="_on_new_end_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/SentenceSelector" to="." method="add_node" binds= ["Sentence"]]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ChoiceSelector" to="." method="add_node" binds= ["Choice"]]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/DiceRollSelector" to="." method="add_node" binds= ["DiceRoll"]]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/BridgeSelector" to="." method="add_node" binds= ["Bridge"]]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ConditionSelector" to="." method="add_node" binds= ["Condition"]]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ActionSelector" to="." method="add_node" binds= ["Action"]]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="." method="add_node" binds= ["EndPath"]]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]

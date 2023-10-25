@@ -26,12 +26,13 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
+@onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
 @onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
 @onready var graph_node_selecter = $GraphNodeSelecter
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
 @onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
-@onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/AddMenuBar/Add
+@onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Add
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
 
@@ -335,9 +336,11 @@ func center_node_in_graph_edit(node):
 	node.position_offset = ((graph_edit.size/2) + graph_edit.scroll_offset) / graph_edit.zoom
 
 func _on_add_id_pressed(id):
-	var node_name = add_menu_bar.get_item_text(id)
-	
-	if node_name == "Bridge":
+	var node_type = add_menu_bar.get_item_text(id)
+	add_node(node_type)
+
+func add_node(node_type):
+	if node_type == "Bridge":
 		var number = get_current_graph_edit().get_free_bridge_number()
 	
 		var in_node = bridge_in_node.instantiate()
@@ -353,7 +356,7 @@ func _on_add_id_pressed(id):
 		center_node_in_graph_edit(out_node)
 		
 	var node
-	match node_name:
+	match node_type:
 		"Sentence":
 			node = sentence_node
 		"Choice":
@@ -386,7 +389,7 @@ func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
 	get_current_graph_edit().disconnect_node(from, from_slot, to, to_slot)
 
 
-func _on_test_pressed():
+func test_project():
 	await save(true)
 	
 	var global_vars = get_node("/root/GlobalVariables")
@@ -482,9 +485,22 @@ func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 	graph_edit.connect("connection_to_empty", _on_graph_edit_connection_to_empty)
 	graph_edit.connect("connection_request", _on_graph_edit_connection_request)
 	graph_edit.connect("disconnection_request", _on_graph_edit_disconnection_request)
+	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
+	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
 
 
 func tab_close_pressed(tab):
 	graph_edits.get_child(tab).queue_free()
 	tab_bar.remove_tab(tab)
 	tab_changed(tab)
+
+func _on_file_id_pressed(id):
+	match id:
+		0:
+			pass # OPEN
+		1:
+			pass # NEW
+		3: # Config
+			side_panel_node.show_config()
+		4: # Test
+			test_project()
