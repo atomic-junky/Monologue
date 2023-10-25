@@ -17,6 +17,7 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var condition_node = preload("res://Objects/GraphNodes/ConditionNode.tscn")
 @onready var action_node = preload("res://Objects/GraphNodes/ActionNode.tscn")
 @onready var comment_node = preload("res://Objects/GraphNodes/CommentNode.tscn")
+@onready var event_node = preload("res://Objects/GraphNodes/EventNode.tscn")
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
@@ -250,6 +251,8 @@ func load_project(path):
 				new_node = action_node.instantiate()
 			"NodeComment":
 				new_node = comment_node.instantiate()
+			"NodeEvent":
+				new_node = event_node.instantiate()
 		
 		if not new_node:
 			continue
@@ -271,7 +274,7 @@ func load_project(path):
 		
 		var current_node = get_node_by_id(node.get("ID"))
 		match node.get("$type"):
-			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction":
+			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "EventNode":
 				if node.get("NextID") is String:
 					var next_node = get_node_by_id(node.get("NextID"))
 					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
@@ -367,7 +370,7 @@ func add_node(node_type):
 		"EndPath":
 			node = end_node
 		"Event":
-			pass
+			node = event_node
 		"Comment":
 			node = comment_node
 	

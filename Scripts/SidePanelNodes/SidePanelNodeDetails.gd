@@ -12,6 +12,7 @@ extends PanelContainer
 @onready var end_path_node_panel_instance = preload("res://Objects/SidePanelNodes/EndPathNodePanel.tscn")
 @onready var condition_node_panel_instance = preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
 @onready var action_node_panel_instance = preload("res://Objects/SidePanelNodes/ActionNodePanel.tscn")
+@onready var event_node_panel_instance = preload("res://Objects/SidePanelNodes/EventNodePanel.tscn")
 
 var selected_node = null
 var current_panel = null
@@ -57,6 +58,8 @@ func on_graph_node_selected(node):
 			new_panel = condition_node_panel_instance.instantiate()
 		"NodeAction":
 			new_panel = action_node_panel_instance.instantiate()
+		"NodeEvent":
+			new_panel = event_node_panel_instance.instantiate()
 	
 	new_panel.graph_node = node
 	
