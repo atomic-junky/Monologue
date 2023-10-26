@@ -274,7 +274,7 @@ func load_project(path):
 		
 		var current_node = get_node_by_id(node.get("ID"))
 		match node.get("$type"):
-			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "EventNode":
+			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent":
 				if node.get("NextID") is String:
 					var next_node = get_node_by_id(node.get("NextID"))
 					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)

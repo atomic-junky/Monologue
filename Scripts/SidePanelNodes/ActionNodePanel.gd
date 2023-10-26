@@ -65,11 +65,11 @@ func _from_dict(dict: Dictionary):
 			action_drop_node.select(2)
 			match action.get("CustomType"):
 				"PlayMusic":
-					action_drop_node.select(0)
+					custom_drop_node.select(0)
 				"UpdateBackground":
-					action_drop_node.select(1)
+					custom_drop_node.select(1)
 				"Other":
-					action_drop_node.select(2)
+					custom_drop_node.select(2)
 					
 			string_edit.text = action.get("Value", "")
 	
