@@ -68,6 +68,5 @@ func append_text_box():
 	add_child(new_text_box)
 	current_text_box = new_text_box
 	
-	current_text_box.grab_focus()
 	current_text_box.grab_click_focus()
 
