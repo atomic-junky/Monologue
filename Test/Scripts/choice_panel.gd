@@ -1,9 +1,6 @@
-extends HBoxContainer
+extends VBoxContainer
 
 var choice_button_instance = preload("res://Test/Objects/choice_button.tscn")
-
-@onready var left_container = $LeftContainer
-@onready var right_container = $RightContainer
 
 
 func add_button(text, callback: Callable):
@@ -13,14 +10,8 @@ func add_button(text, callback: Callable):
 	
 	new_button.pressed.connect(callback)
 	
-	if left_container.get_child_count() > right_container.get_child_count():
-		right_container.add_child(new_button)
-	else:
-		left_container.add_child(new_button)
+	add_child(new_button)
 
 func clear():
-	for child in left_container.get_children():
-		left_container.remove_child(child)
-		
-	for child in right_container.get_children():
-		right_container.remove_child(child)
+	for child in get_children():
+		child.queue_free()

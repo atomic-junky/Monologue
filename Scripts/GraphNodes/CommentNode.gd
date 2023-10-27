@@ -1,3 +1,7 @@
+@icon("res://Assets/Icons/NodesIcons/Comment.png")
+
+class_name CommentNpde
+
 extends GraphNode
 
 
@@ -7,9 +11,7 @@ var id = UUID.v4()
 var node_type = "NodeComment"
 
 
-func _to_dict() -> Dictionary:
-	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
-	
+func _to_dict() -> Dictionary:	
 	return {
 		"$type": node_type,
 		"ID": id,

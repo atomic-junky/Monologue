@@ -3,8 +3,8 @@ extends Control
 
 @onready var menu_scene = preload("res://Test/Menu.tscn").instantiate()
 
-@onready var text_box = $CenterContainer/MarginContainer/Container/TextBox
-@onready var choice_panel = $CenterContainer/MarginContainer/Container/ChoicePanel
+@onready var text_box = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
+@onready var choice_panel = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
 @onready var background = $Background
 
 @onready var character_asset_node = $CharacterAssetContainer/Asset

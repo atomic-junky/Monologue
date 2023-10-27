@@ -1,8 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://cj80aa4ckke2i"]
+[gd_scene load_steps=3 format=3 uid="uid://cj80aa4ckke2i"]
 
 [ext_resource type="FontFile" uid="uid://d38bcon155qfn" path="res://Test/Font/VT323-Regular.ttf" id="1_gxcb1"]
-[ext_resource type="StyleBox" uid="uid://b0rd1uqpyibre" path="res://Test/Theme/choice_box_texture_normal.tres" id="2_phtkd"]
-[ext_resource type="StyleBox" uid="uid://dhbxg8nnvjurm" path="res://Test/Theme/choice_box_texture_selected.tres" id="3_1fmqw"]
+
+[sub_resource type="GDScript" id="GDScript_vu8v5"]
+script/source = "extends Button
+
+var original_text: String = \"\"
+
+
+func _ready():
+	original_text = text
+
+func _on_mouse_entered():
+	text = \"> \" + original_text
+	
+	remove_theme_color_override(\"default_color\")
+	add_theme_color_override(\"default_color\", Color(\"ffffff\"))
+
+
+func _on_mouse_exited():
+	text = original_text
+
+	remove_theme_color_override(\"default_color\")
+	add_theme_color_override(\"default_color\", Color(\"cccccc\"))
+"
 
 [node name="ChoiceButton" type="Button"]
 texture_filter = 1
@@ -17,13 +38,14 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_fonts/font = ExtResource("1_gxcb1")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = ExtResource("2_phtkd")
-theme_override_styles/hover = ExtResource("3_1fmqw")
-theme_override_styles/pressed = ExtResource("3_1fmqw")
-theme_override_styles/focus = ExtResource("3_1fmqw")
 text = "It's a pretty long sentence but not that long so..."
+flat = true
 text_overrun_behavior = 4
 clip_text = true
+script = SubResource("GDScript_vu8v5")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

@@ -501,14 +501,14 @@ func _on_file_id_pressed(id):
 			test_project()
 
 func new_graph_edit():
-	var new_graph_edit: GraphEdit = graph_edit_inst.instantiate()
+	var graph_edit: GraphEdit = graph_edit_inst.instantiate()
 	var new_root_node = root_node.instantiate()
 	
-	new_graph_edit.name = "new"
-	connect_graph_edit_signal(new_graph_edit)
+	graph_edit.name = "new"
+	connect_graph_edit_signal(graph_edit)
 	
-	graph_edits.add_child(new_graph_edit)
-	new_graph_edit.add_child(new_root_node)
+	graph_edits.add_child(graph_edit)
+	graph_edit.add_child(new_root_node)
 	
 	for ge in graph_edits.get_children():
-		ge.visible = ge == new_graph_edit
+		ge.visible = ge == graph_edit
