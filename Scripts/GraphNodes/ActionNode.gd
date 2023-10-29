@@ -117,7 +117,7 @@ func update_preview():
 			custom_container.show()
 			
 			match custom_type:
-				"PlayMusic":
+				"PlayAudio":
 					title = "🎵 " + node_type
 				"UpdateBackground":
 					title = "🖼️ " + node_type

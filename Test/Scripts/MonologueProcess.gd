@@ -14,6 +14,7 @@ var choice_panel
 var character_asset_node
 var prev_char_asset
 var background_node
+var audio_player: AudioStreamPlayer
 
 var root_node_id: String
 var node_list: Array
@@ -25,11 +26,12 @@ var next_id
 var rng = RandomNumberGenerator.new()
 
 
-func _init(_text_box, _choice_panel, _background_node, _end_callback: Callable, _action_callback: Callable, _character_asset_node = null, _character_asset_getter: Callable = _default_character_asset_getter):
+func _init(_text_box, _choice_panel, _background_node, _audio_player: AudioStreamPlayer, _end_callback: Callable, _action_callback: Callable, _character_asset_node = null, _character_asset_getter: Callable = _default_character_asset_getter):
 	text_box = _text_box
 	choice_panel = _choice_panel
 	character_asset_node = _character_asset_node
 	background_node = _background_node
+	audio_player = _audio_player
 	
 	end_callback = _end_callback
 	action_callback = _action_callback
@@ -169,8 +171,13 @@ func next():
 								print("[WARNING] Can't divide by value 0")
 				"ActionCustom":
 					match action.get("CustomType"):
-						"PlayMusic":
-							pass
+						"PlayAudio":
+							var file = FileAccess.open(dir_path + "\\assets\\audios\\" + action.get("Value"), FileAccess.READ)
+							var sound = AudioStream.new()
+							sound.data = file.get_buffer(file.get_length())
+							
+							audio_player.stream = sound
+							audio_player.play()
 						"UpdateBackground":
 							var bg = Image.new()
 							var err = bg.load(dir_path + "\\assets\\backgrounds\\" + action.get("Value"))

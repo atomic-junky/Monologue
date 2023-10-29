@@ -29,7 +29,7 @@ jobs:
           relative_export_path: ./builds/
           wine_path: ${{ steps.wine_install.outputs.WINE_PATH }}
       - name: Create release
-        uses: ncipollo/release-action@v1.12.0
+        uses: ncipollo/release-action@v1.13.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
@@ -37,3 +37,4 @@ jobs:
           tag: ${{ github.ref_name }}
           artifacts: ${{ steps.export.outputs.build_directory }}/**/*
           replacesArtifacts: true
+          prerelease: ${{ contains(fromJSON('["dev", "pre", "alpha", "beta", "rc"]'), github.event_name) }}

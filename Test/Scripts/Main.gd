@@ -6,7 +6,7 @@ extends Control
 @onready var text_box = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
 @onready var choice_panel = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
 @onready var background = $Background
-
+@onready var audio_player = $AudioStreamPlayer
 @onready var character_asset_node = $CharacterAssetContainer/Asset
 
 var rng = RandomNumberGenerator.new()
@@ -17,7 +17,7 @@ func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
 	var path = global_vars.test_path
 	
-	Process = MonologueProcess.new(text_box, choice_panel, background, end_callback, action_callback, character_asset_node, get_character_asset)
+	Process = MonologueProcess.new(text_box, choice_panel, background, audio_player, end_callback, action_callback, character_asset_node, get_character_asset)
 	Process.load_dialogue(path.get_basename())
 	Process.next()
 

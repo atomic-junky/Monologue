@@ -96,3 +96,6 @@ script = ExtResource("4_sbftg")
 visible = false
 texture_filter = 1
 layout_mode = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -9.0
