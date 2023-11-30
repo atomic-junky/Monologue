@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Monologue"
+config/version="2.0.0-rc1"
 run/main_scene="res://Scenes/App.tscn"
-config/features=PackedStringArray("4.1")
+config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0.117647, 0.133333, 0.164706, 1)
 boot_splash/image="res://icon.png"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
-config/version="2.0.0-dev7"
 
 [autoload]
 
@@ -30,12 +30,30 @@ GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
 
 window/size/viewport_width=1450
 window/size/viewport_height=750
+window/stretch/scale_mode="integer"
 window/per_pixel_transparency/allowed=true
 window/size/fullscreen=true
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Assets/": "orange",
+"res://Examples/": "purple",
+"res://Objects/": "yellow",
+"res://Objects/GraphNodes/": "green",
+"res://Objects/SidePanelNodes/": "teal",
+"res://Objects/SubComponents/": "blue",
+"res://Scenes/": "yellow",
+"res://Scripts/": "yellow",
+"res://Scripts/GraphNodes/": "green",
+"res://Scripts/SidePanelNodes/": "teal",
+"res://Scripts/SubComponents/": "blue",
+"res://Test/": "red"
+}
 
 [gui]
 

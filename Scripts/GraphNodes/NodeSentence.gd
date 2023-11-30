@@ -1,4 +1,4 @@
-@icon("res://Assets/Icons/NodesIcons/Comment.svg")
+@icon("res://Assets/Icons/NodesIcons/Sentence.svg")
 
 class_name SetenceNode
 

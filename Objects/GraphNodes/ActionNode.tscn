@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c02gpa5cixyfm"]
+[gd_scene load_steps=15 format=3 uid="uid://c02gpa5cixyfm"]
 
 [ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_i5rqj"]
 [ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_25hre"]
@@ -6,16 +6,23 @@
 
 [sub_resource type="Theme" id="Theme_llmqa"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kxqa"]
-content_margin_top = 40.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bcq14"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 30
-border_color = Color(0.337255, 0.631373, 0.788235, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f44r"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.337255, 0.631373, 0.788235, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kkyig"]
 content_margin_left = 5.0
@@ -120,16 +127,14 @@ corner_radius_bottom_left = 5
 
 [node name="ActionNode" type="GraphNode" groups=["graph_nodes"]]
 offset_right = 300.0
-offset_bottom = 129.0
+offset_bottom = 116.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_llmqa")
-theme_override_constants/separation = 5
-theme_override_constants/title_h_offset = 5
-theme_override_styles/frame = SubResource("StyleBoxFlat_0kxqa")
+theme_override_styles/panel = SubResource("StyleBoxFlat_bcq14")
+theme_override_styles/titlebar = SubResource("StyleBoxFlat_2f44r")
 title = "ActionNode"
-show_close = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -170,9 +175,6 @@ script = ExtResource("3_fftd2")
 
 [node name="ActionTypeMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 0
 
 [node name="ActionTypeContainer" type="HBoxContainer" parent="ActionTypeMarginContainer"]
 layout_mode = 2
@@ -193,9 +195,6 @@ label_settings = SubResource("LabelSettings_v4ya3")
 [node name="OptionMarginContainer" type="MarginContainer" parent="."]
 visible = false
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
 
 [node name="OptionContainer" type="HBoxContainer" parent="OptionMarginContainer"]
 layout_mode = 2
@@ -229,9 +228,6 @@ label_settings = SubResource("LabelSettings_v4ya3")
 [node name="VariableMarginContainer" type="MarginContainer" parent="."]
 visible = false
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
 
 [node name="VariableContainer" type="HBoxContainer" parent="VariableMarginContainer"]
 layout_mode = 2
@@ -270,9 +266,6 @@ label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="CustomMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
 
 [node name="CustomContainer" type="HBoxContainer" parent="CustomMarginContainer"]
 layout_mode = 2
@@ -298,5 +291,3 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
 text = "nothing"
 label_settings = SubResource("LabelSettings_v4ya3")
-
-[connection signal="close_request" from="." to="." method="_on_close_request"]

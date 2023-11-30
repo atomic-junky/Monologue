@@ -11,7 +11,7 @@ var id = UUID.v4()
 var node_type = "NodeComment"
 
 
-func _to_dict() -> Dictionary:	
+func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,
 		"ID": id,

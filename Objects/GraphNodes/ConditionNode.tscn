@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dsv566w4evo8b"]
+[gd_scene load_steps=9 format=3 uid="uid://dsv566w4evo8b"]
 
 [ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="1_242j4"]
 [ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_dup0t"]
@@ -6,16 +6,23 @@
 
 [sub_resource type="Theme" id="Theme_llmqa"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gm4be"]
-content_margin_top = 40.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lxpkc"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 30
-border_color = Color(0.443137, 0.701961, 0.321569, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kiqyv"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.443137, 0.701961, 0.321569, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sipot"]
 content_margin_left = 5.0
@@ -41,10 +48,9 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_llmqa")
-theme_override_constants/title_h_offset = 5
-theme_override_styles/frame = SubResource("StyleBoxFlat_gm4be")
+theme_override_styles/panel = SubResource("StyleBoxFlat_lxpkc")
+theme_override_styles/titlebar = SubResource("StyleBoxFlat_kiqyv")
 title = "ConditionNode"
-show_close = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -67,8 +73,6 @@ script = ExtResource("3_vhhwe")
 
 [node name="MarginIfContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
 
 [node name="IfContainer" type="HBoxContainer" parent="MarginIfContainer"]
 layout_mode = 2
@@ -101,11 +105,7 @@ text = "then"
 
 [node name="MarginElseContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
 
 [node name="Label" type="Label" parent="MarginElseContainer"]
 layout_mode = 2
 text = "Else"
-
-[connection signal="close_request" from="." to="." method="_on_close_request"]

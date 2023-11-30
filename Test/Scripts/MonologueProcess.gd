@@ -20,8 +20,10 @@ var root_node_id: String
 var node_list: Array
 var characters: Array
 var variables: Array
+var events: Array
 
 var next_id
+var fallback_id
 
 var rng = RandomNumberGenerator.new()
 
@@ -59,6 +61,7 @@ func load_dialogue(dialogue_name):
 	node_list = data.get("ListNodes")
 	characters = data.get("Characters")
 	variables = data.get("Variables")
+	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	
 	next_id = root_node_id
 	
@@ -66,8 +69,41 @@ func load_dialogue(dialogue_name):
 
 
 func next():
+	# Check for an event
+	for event in events:
+		var condition = event.get("Condition")
+		var variable = get_variable(condition.get("Variable"))
+		
+		var v_val = variable.get("Value")
+		var c_val = condition.get("Value")
+		
+		if variable == null:
+			print("[WARNING] Can't find variable. Skipping")
+			next()
+			return
+			
+		var condition_pass: bool = false
+		match condition.get("Operator"):
+			"==":
+				condition_pass = v_val == c_val
+			">=":
+				condition_pass = v_val >= c_val
+			"<=":
+				condition_pass = v_val <= c_val
+			"!=":
+				condition_pass = v_val != c_val
+		if condition_pass:
+			fallback_id = next_id
+			next_id = event.get("NextID")
+			
+			events.erase(event)
+	
 	if next_id is float and next_id == -1:
-		if end_callback != null:
+		if fallback_id:
+			next_id = fallback_id
+			fallback_id = null
+		
+		elif end_callback != null:
 			return end_callback.call()
 	
 	var node = find_node_from_id(next_id)
@@ -106,6 +142,7 @@ func next():
 						character_asset_node.display()
 					else:
 						character_asset_node.hide()
+						prev_char_asset = null
 			
 			var display_speaker_name = node.get("DisplaySpeakerName")
 			text_box.speaker_display = display_speaker_name if display_speaker_name else get_speaker(node.get("SpeakerID"))

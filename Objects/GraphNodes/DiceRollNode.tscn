@@ -1,19 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://b6mcmodpmsacw"]
+[gd_scene load_steps=8 format=3 uid="uid://b6mcmodpmsacw"]
 
 [ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_sro87"]
 [ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_ruyti"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/DiceRollNode.gd" id="4_4behm"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tkdh8"]
-content_margin_top = 40.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njth6"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 30
-border_color = Color(0.388235, 0.380392, 0.796078, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0tncv"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.388235, 0.380392, 0.796078, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_i36fi"]
 line_spacing = 0.0
@@ -27,9 +34,9 @@ font_color = Color(0.788235, 0.380392, 0.380392, 1)
 offset_right = 120.0
 offset_bottom = 110.0
 mouse_default_cursor_shape = 2
-theme_override_styles/frame = SubResource("StyleBoxFlat_tkdh8")
+theme_override_styles/panel = SubResource("StyleBoxFlat_njth6")
+theme_override_styles/titlebar = SubResource("StyleBoxFlat_0tncv")
 title = "DiceRoll"
-show_close = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -53,8 +60,6 @@ script = ExtResource("4_4behm")
 [node name="PassContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
 
 [node name="PassLabel" type="Label" parent="PassContainer"]
 layout_mode = 2
@@ -66,13 +71,9 @@ label_settings = SubResource("LabelSettings_i36fi")
 [node name="FailContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
 
 [node name="FailLabel" type="Label" parent="FailContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Fail"
 label_settings = SubResource("LabelSettings_fvgmo")
-
-[connection signal="close_request" from="." to="." method="_on_close_request"]

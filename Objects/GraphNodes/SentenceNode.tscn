@@ -4,18 +4,23 @@
 [ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_hvs86"]
 [ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_5kymc"]
 
-[sub_resource type="Theme" id="Theme_llmqa"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ww03k"]
-content_margin_top = 40.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v075a"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0.117647, 0.137255, 0.180392, 1)
-border_width_top = 30
-border_color = Color(0.321569, 0.741176, 0.592157, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ryo67"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.321569, 0.741176, 0.592157, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="SentenceNode" type="GraphNode" groups=["graph_nodes"]]
 custom_minimum_size = Vector2(400, 100)
@@ -23,10 +28,9 @@ offset_right = 400.0
 offset_bottom = 100.0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
-theme = SubResource("Theme_llmqa")
-theme_override_styles/frame = SubResource("StyleBoxFlat_ww03k")
+theme_override_styles/panel = SubResource("StyleBoxFlat_v075a")
+theme_override_styles/titlebar = SubResource("StyleBoxFlat_ryo67")
 title = "NodeSentence"
-show_close = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -53,5 +57,4 @@ bbcode_enabled = true
 fit_content = true
 scroll_following = true
 
-[connection signal="close_request" from="." to="." method="_on_GraphNode_close_request"]
 [connection signal="resize_request" from="." to="." method="_on_GraphNode_resize_request"]
