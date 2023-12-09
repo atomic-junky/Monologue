@@ -72,6 +72,9 @@ func _from_dict(dict: Dictionary):
 					custom_drop_node.select(2)
 					
 			string_edit.text = action.get("Value", "")
+		"ActionTimer":
+			action_drop_node.select(3)
+			number_edit.value = action.get("Value", 0.0)
 	
 	update_action()
 
@@ -121,13 +124,13 @@ func update_action():
 				_:
 					default_label.show()
 		"ActionCustom":
-			option_id_container.hide()
-			boolean_edit.hide()
-			number_edit.hide()
-			default_label.hide()
-			
 			custom_container.show()
 			string_edit.show()
+		"ActionTimer":
+			boolean_edit.hide()
+			number_edit.show()
+			string_edit.hide()
+			default_label.hide()
 
 func update_graph_node(_value = null):
 	update_action()
@@ -152,6 +155,8 @@ func update_graph_node(_value = null):
 		"ActionCustom":
 			graph_node.custom_type = custom_drop_node.get_item_text(custom_drop_node.selected)
 			graph_node.custom_value_label.text = get_value()
+		"ActionTimer":
+			graph_node.value = get_value()
 	
 	graph_node.update_preview()
 
@@ -181,6 +186,8 @@ func get_value():
 					return string_edit.text
 				_:
 					return null
+		"ActionTimer":
+			return number_edit.value
 
 
 func _on_action_type_drop_item_selected(_index):

@@ -13,7 +13,8 @@ export.cfg
 .mono/
 data_*/
 mono_crash.*.json
-addons/editor_icon_previewer/
+addons/ColorPreview/
+addons/script-ide
 
 # Exports
 *.pck

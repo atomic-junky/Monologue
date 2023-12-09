@@ -1,13 +1,9 @@
-extends Node
+extends Control
 
 class_name MonologueProcess
 
 
 var dir_path
-
-var end_callback: Callable
-var action_callback: Callable
-var character_asset_getter: Callable
 
 var text_box
 var choice_panel
@@ -28,17 +24,7 @@ var fallback_id
 var rng = RandomNumberGenerator.new()
 
 
-func _init(_text_box, _choice_panel, _background_node, _audio_player: AudioStreamPlayer, _end_callback: Callable, _action_callback: Callable, _character_asset_node = null, _character_asset_getter: Callable = _default_character_asset_getter):
-	text_box = _text_box
-	choice_panel = _choice_panel
-	character_asset_node = _character_asset_node
-	background_node = _background_node
-	audio_player = _audio_player
-	
-	end_callback = _end_callback
-	action_callback = _action_callback
-	character_asset_getter = _character_asset_getter
-	
+func _init():
 	print("[INFO] Monologue Process initiated")
 
 
@@ -130,7 +116,7 @@ func next():
 			text_box.text = process_conditional_text(node.get("Sentence"))
 			
 			if character_asset_node:
-				var texture = character_asset_getter.call(get_speaker(node.get("SpeakerID")))
+				var texture = get_character_asset(get_speaker(node.get("SpeakerID")))
 				
 				if prev_char_asset == null or prev_char_asset != texture:
 					character_asset_node.undisplay()
@@ -226,7 +212,13 @@ func next():
 							background_node.set_texture(texture)
 						"Other":
 							action_callback.call(action.get("Value"))
-			
+				"ActionTimer":
+					var time_to_wait = action.get("Value", 0.0)
+					if not is_inside_tree():
+						print("[WARNING] MonologueProcess is not inside tree and can't create a timer...")
+					else:
+						await get_tree().create_timer(time_to_wait).timeout
+					
 			next()
 			return
 		"NodeCondition":
@@ -337,3 +329,12 @@ func process_conditional_text(text: String) -> String:
 
 func _default_character_asset_getter(_character):
 	return
+
+func end_callback(_next_story = null):
+	pass
+
+func action_callback(_action):
+	pass
+
+func get_character_asset(_character, _variant = null):
+	pass

@@ -1,29 +1,25 @@
-extends Control
+extends MonologueProcess
 
 
 @onready var menu_scene = preload("res://Test/Menu.tscn").instantiate()
 
-@onready var text_box = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
-@onready var choice_panel = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
-@onready var background = $Background
-@onready var audio_player = $AudioStreamPlayer
-@onready var character_asset_node = $CharacterAssetContainer/Asset
-
-var rng = RandomNumberGenerator.new()
-var Process
-
-
 func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
+	
+	text_box = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
+	choice_panel = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
+	background_node = $Background
+	audio_player = $AudioStreamPlayer
+	character_asset_node = $CharacterAssetContainer/Asset
+	
 	var path = global_vars.test_path
 	
-	Process = MonologueProcess.new(text_box, choice_panel, background, audio_player, end_callback, action_callback, character_asset_node, get_character_asset)
-	Process.load_dialogue(path.get_basename())
-	Process.next()
+	load_dialogue(path.get_basename())
+	next()
 
 func _input(event):
 	if event.is_action_pressed("ui_accept") and text_box.complete and not choice_panel.visible:
-		Process.next()
+		next()
 
 func end_callback(_next_story = null):
 	var menu_instance = preload("res://Test/Menu.tscn")

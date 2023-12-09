@@ -171,6 +171,15 @@ slot/3/right_type = 0
 slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
 script = ExtResource("3_fftd2")
 
 [node name="ActionTypeMarginContainer" type="MarginContainer" parent="."]
@@ -263,6 +272,30 @@ layout_mode = 2
 text = "value
 "
 label_settings = SubResource("LabelSettings_v4ya3")
+
+[node name="TimerMarginContainer" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="CustomContainer" type="HBoxContainer" parent="TimerMarginContainer"]
+layout_mode = 2
+
+[node name="DoLabel" type="Label" parent="TimerMarginContainer/CustomContainer"]
+layout_mode = 2
+text = "Wait"
+
+[node name="TimerValueContainer" type="PanelContainer" parent="TimerMarginContainer/CustomContainer"]
+layout_mode = 2
+
+[node name="TimerValueLabel" type="Label" parent="TimerMarginContainer/CustomContainer/TimerValueContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
+text = "0"
+label_settings = SubResource("LabelSettings_v4ya3")
+
+[node name="SecondsLabel" type="Label" parent="TimerMarginContainer/CustomContainer"]
+layout_mode = 2
+text = "seconds"
 
 [node name="CustomMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

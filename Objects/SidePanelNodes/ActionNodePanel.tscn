@@ -27,7 +27,7 @@ text = "Action type"
 [node name="ActionTypeDrop" type="OptionButton" parent="ActionTypeContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-item_count = 3
+item_count = 4
 selected = 0
 allow_reselect = true
 popup/item_0/text = "ActionOption"
@@ -36,6 +36,8 @@ popup/item_1/text = "ActionVariable"
 popup/item_1/id = 1
 popup/item_2/text = "ActionCustom"
 popup/item_2/id = 2
+popup/item_3/text = "ActionTimer"
+popup/item_3/id = 3
 
 [node name="OptionIDContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

@@ -8,6 +8,7 @@ extends GraphNode
 @onready var option_container = $OptionMarginContainer
 @onready var variable_container = $VariableMarginContainer
 @onready var custom_container = $CustomMarginContainer
+@onready var timer_container = $TimerMarginContainer
 
 @onready var action_type_label = $ActionTypeMarginContainer/ActionTypeContainer/ActionTypeContainer/ActionTypeLabel
 @onready var option_id_label = $OptionMarginContainer/OptionContainer/OptionIdContainer/OptionIdLabel
@@ -17,6 +18,7 @@ extends GraphNode
 @onready var variable_value_label = $VariableMarginContainer/VariableContainer/ValueContainer/ValueLabel
 @onready var custom_type_label = $CustomMarginContainer/CustomContainer/CustomTypeContainer/CustomTypeLabel
 @onready var custom_value_label = $CustomMarginContainer/CustomContainer/CustomValueContainer/CustomValueLabel
+@onready var wait_value_label = $TimerMarginContainer/CustomContainer/TimerValueContainer/TimerValueLabel
 
 var id = UUID.v4()
 var node_type = "NodeAction"
@@ -82,6 +84,11 @@ func _action_to_dict() -> Dictionary:
 			"CustomType": custom_type,
 			"Value": value
 		}
+	elif action_type == "ActionTimer":
+		return {
+			"$type": action_type,
+			"Value": value
+		}
 		
 	# ActionVariable
 	return {
@@ -100,6 +107,7 @@ func update_preview():
 	option_container.hide()
 	variable_container.hide()
 	custom_container.hide()
+	timer_container.hide()
 	
 	match action_type:
 		"ActionOption":
@@ -121,7 +129,9 @@ func update_preview():
 					title = "🎵 " + node_type
 				"UpdateBackground":
 					title = "🖼️ " + node_type
-					
+		"ActionTimer":
+			wait_value_label.text = str(value) if value else "0"
+			timer_container.show()
 
 
 func _on_close_request():
