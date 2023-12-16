@@ -41,3 +41,19 @@ jobs:
           artifacts: ${{ steps.export.outputs.build_directory }}/**/*
           replacesArtifacts: true
           prerelease: ${{ contains(fromJSON('["dev", "pre", "alpha", "beta", "rc"]'), github.event_name) }}
+          
+  
+  publish:
+    needs: export
+    name: Publish to Itch.io 🚀
+    runs-on: ubuntu-latest
+    steps:
+      - name: (Windows) Publish build on Itch.io
+        uses: manleydev/butler-publish-itchio-action@master
+        env:
+            BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+            CHANNEL: windows
+            ITCH_GAME: monologue
+            ITCH_USER: atomic-junky
+            PACKAGE: ./builds/
+            VERSION: $GITHUB_REF_NAME:1
