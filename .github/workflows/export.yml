@@ -55,6 +55,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Write release version
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo Version: $VERSION
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - uses: actions/download-artifact@v4
         with:
           name: build
@@ -67,6 +73,6 @@ jobs:
           itch_game: monologue
           itch_user: atomic-junky
           auto_channel: true
-          version: ${ GITHUB_REF_NAME:1 }
+          version: ${VERSION}
           files: |
             windows build/**/monologue_win_64.exe
