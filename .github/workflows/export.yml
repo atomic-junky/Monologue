@@ -67,6 +67,6 @@ jobs:
           itch_game: monologue
           itch_user: atomic-junky
           auto_channel: true
-          version: $GITHUB_REF_NAME:1
+          version: ${ GITHUB_REF_NAME:1 }
           files: |
             windows build/**/monologue_win_64.exe
