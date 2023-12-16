@@ -56,13 +56,13 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build
-          path: build/dists
+          path: build/
 
       - name: Deploy on itch.io
-        uses: josephbmanley/butler-publish-itchio-action@v1.0.3
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: Windows
-          ITCH_GAME: monologue
-          ITCH_USER: atomic-junky
-          PACKAGE: build/dists
+        uses: Ayowel/butler-to-itch@v1.0.0
+        with:
+          butler_key: ${{ secrets.BUTLER_CREDENTIALS }}
+          itch_game: monologue
+          itch_user: atomic-junky
+          auto_channel: true
+          files: build/monologue-*
