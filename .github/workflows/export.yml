@@ -67,4 +67,5 @@ jobs:
           itch_game: monologue
           itch_user: atomic-junky
           auto_channel: true
-          files: build/**/monologue_*
+          files: |
+            windows build/**/monologue_win_64.exe
