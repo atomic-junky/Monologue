@@ -44,6 +44,7 @@ jobs:
           
   
   publish:
+    permissions: read-all
     needs: export
     name: Publish to Itch.io 🚀
     runs-on: ubuntu-latest
@@ -51,7 +52,7 @@ jobs:
       - name: (Windows) Publish build on Itch.io
         uses: manleydev/butler-publish-itchio-action@master
         env:
-            BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+            BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY  }}
             CHANNEL: windows
             ITCH_GAME: monologue
             ITCH_USER: atomic-junky
