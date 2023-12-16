@@ -23,10 +23,16 @@ var fallback_id
 
 var rng = RandomNumberGenerator.new()
 
+signal node_reached(raw_node: Dictionary)
+signal option_choosed(raw_option: Dictionary)
+signal event_triggered(raw_event: Dictionary)
+signal end(raw_end)
+
 
 func _init():
 	print("[INFO] Monologue Process initiated")
-
+	node_reached.connect(_process_node)
+	end.connect(_default_end_process)
 
 func load_dialogue(dialogue_name):
 	var path = dialogue_name + ".json"
@@ -79,6 +85,7 @@ func next():
 			"!=":
 				condition_pass = v_val != c_val
 		if condition_pass:
+			event_triggered.emit(event)
 			fallback_id = next_id
 			next_id = event.get("NextID")
 			
@@ -89,11 +96,13 @@ func next():
 			next_id = fallback_id
 			fallback_id = null
 		
-		elif end_callback != null:
-			return end_callback.call()
+		end.emit(null)
 	
 	var node = find_node_from_id(next_id)
 	
+	node_reached.emit(node)
+	
+func _process_node(node: Dictionary):
 	choice_panel.hide()
 	choice_panel.clear()
 	
@@ -118,7 +127,7 @@ func next():
 			if character_asset_node:
 				var texture = get_character_asset(get_speaker(node.get("SpeakerID")))
 				
-				if prev_char_asset == null or prev_char_asset != texture:
+				if prev_char_asset == null or (texture != null and prev_char_asset != texture):
 					character_asset_node.undisplay()
 					
 					if texture != null:
@@ -159,43 +168,43 @@ func next():
 		"NodeAction":
 			next_id = node.get("NextID")
 			
-			var action = node.get("Action")
-			match action.get("$type"):
+			var raw_action = node.get("Action")
+			match raw_action.get("$type"):
 				"ActionOption":
-					var option: Dictionary = find_node_from_id(action.get("OptionID"))
+					var option: Dictionary = find_node_from_id(raw_action.get("OptionID"))
 					
 					if option == null:
 						print("[WARNING] Can't find option. Skipping")
 						next()
 						return
 					
-					option["Enable"] = action.get("Value")
+					option["Enable"] = raw_action.get("Value")
 				"ActionVariable":
-					var variable = get_variable(action.get("Variable"))
+					var variable = get_variable(raw_action.get("Variable"))
 					
 					if variable == null:
 						print("[WARNING] Can't find variable. Skipping")
 						next()
 						return
 					
-					match action.get("Operator"):
+					match raw_action.get("Operator"):
 						"=":
-							variable["Value"] = action.get("Value")
+							variable["Value"] = raw_action.get("Value")
 						"+":
-							variable["Value"] += action.get("Value")
+							variable["Value"] += raw_action.get("Value")
 						"-":
-							variable["Value"] -= action.get("Value")
+							variable["Value"] -= raw_action.get("Value")
 						"*":
-							variable["Value"] *= action.get("Value")
+							variable["Value"] *= raw_action.get("Value")
 						"/":
-							if action.get("Value") != 0:
-								variable["Value"] /= action.get("Value")
+							if raw_action.get("Value") != 0:
+								variable["Value"] /= raw_action.get("Value")
 							else:
 								print("[WARNING] Can't divide by value 0")
 				"ActionCustom":
-					match action.get("CustomType"):
+					match raw_action.get("CustomType"):
 						"PlayAudio":
-							var file = FileAccess.open(dir_path + "\\assets\\audios\\" + action.get("Value"), FileAccess.READ)
+							var file = FileAccess.open(dir_path + "\\assets\\audios\\" + raw_action.get("Value"), FileAccess.READ)
 							var sound = AudioStream.new()
 							sound.data = file.get_buffer(file.get_length())
 							
@@ -203,17 +212,15 @@ func next():
 							audio_player.play()
 						"UpdateBackground":
 							var bg = Image.new()
-							var err = bg.load(dir_path + "\\assets\\backgrounds\\" + action.get("Value"))
+							var err = bg.load(dir_path + "\\assets\\backgrounds\\" + raw_action.get("Value"))
 							
 							if err != OK:
-								print("[ERROR] Failed to load background (" + action.get("Value") + ")")
+								print("[ERROR] Failed to load background (" + raw_action.get("Value") + ")")
 							
 							var texture = ImageTexture.create_from_image(bg)
 							background_node.set_texture(texture)
-						"Other":
-							action_callback.call(action.get("Value"))
 				"ActionTimer":
-					var time_to_wait = action.get("Value", 0.0)
+					var time_to_wait = raw_action.get("Value", 0.0)
 					if not is_inside_tree():
 						print("[WARNING] MonologueProcess is not inside tree and can't create a timer...")
 					else:
@@ -249,16 +256,16 @@ func next():
 			next()
 			return
 		"NodeEndPath":
-			if end_callback != null:
-				return end_callback.call(node.get("NextStoryName"))
-
+			end.emit(node)
 
 func option_callback(option_id):
 	var option: Dictionary = find_node_from_id(option_id)
+	option_choosed.emit(option)
 	
 	if option == null:
 		print("[CRITICAL] Can't find option. Unexpected exit.")
-		return end_callback.call()
+		end.emit(null)
+		return
 	
 	next_id = option.get("NextID")
 	
@@ -267,13 +274,11 @@ func option_callback(option_id):
 	
 	next()
 
-
 func find_node_from_id(id):
 	var nodes = node_list.filter(func (node): return node.get("ID") == id)
 	if nodes.size() <= 0:
 		return null
 	return nodes[0]
-
 
 func get_speaker(id: int) -> String:
 	var speaker = characters.filter(func (c): return c["ID"] == id)
@@ -281,14 +286,12 @@ func get_speaker(id: int) -> String:
 		return ""
 	return speaker[0]["Reference"]
 
-
 func get_variable(var_name: String):
 	var variable = variables.filter(func (v): return v.get("Name") == var_name)
 	
 	if variable.size() <= 0:
 		return null
 	return variable[0]
-
 
 func process_conditional_text(text: String) -> String:
 	var regex = RegEx.new()
@@ -326,16 +329,13 @@ func process_conditional_text(text: String) -> String:
 		
 	return text
 
-
-func _default_character_asset_getter(_character):
-	return
-
-func end_callback(next_story = null):
-	if not next_story:
-		return false
+func _default_end_process(raw_end):
+	if not raw_end:
+		return
+		
+	var next_story = raw_end.get("NextStoryName")
 	
 	# Search in the same directory if the next story is in here.
-	var files = []
 	var dir = DirAccess.open(dir_path)
 	
 	if dir:
@@ -349,9 +349,6 @@ func end_callback(next_story = null):
 	
 	return dir != null
 
-
-func action_callback(_action):
-	pass
 
 func get_character_asset(_character, _variant = null):
 	pass

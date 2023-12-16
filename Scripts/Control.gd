@@ -409,7 +409,7 @@ func test_project():
 #  File selection  #
 ####################
 
-func new_file():
+func new_file_select():
 	var output = []
 	OS.execute(
 		"Powershell.exe",
@@ -418,22 +418,24 @@ func new_file():
 	)
 	
 	var new_file_path = output[0].trim_suffix("\r\n")
-	if new_file_path != "":
-		return await file_selected(new_file_path, 0)
+	return new_file_path if  new_file_path != "" else null
 
-
-func open_file():
-	var output = []
-	OS.execute(
-		"Powershell.exe",
-		["\"Add-Type -AssemblyName System.Windows.Forms ; $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{ InitialDirectory = [Environment]::GetFolderPath('Desktop') ; Filter = 'JSON file|*.json' } ; $null = $FileBrowser.ShowDialog() ; return $FileBrowser.FileName\""],
-		output
-	)
+func open_file_select():
+	var open_file_path = ""
 	
-	var open_file_path = output[0].trim_suffix("\r\n")
-	if open_file_path != "":
-		return await file_selected(open_file_path, 1)
+	match OS.get_name():
+		"Windows":
+			var output = []
+			OS.execute(
+				"Powershell.exe",
+				["\"Add-Type -AssemblyName System.Windows.Forms ; $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{ InitialDirectory = [Environment]::GetFolderPath('Desktop') ; Filter = 'JSON file|*.json' } ; $null = $FileBrowser.ShowDialog() ; return $FileBrowser.FileName\""],
+				output
+			)
+			
+			
+			open_file_path = output[0].trim_suffix("\r\n")
 
+	return open_file_path if open_file_path != "" else null
 
 func _on_graph_edit_connection_to_empty(from_node, from_port, _release_position):
 	graph_node_selecter.position = get_viewport().get_mouse_position()
@@ -490,11 +492,19 @@ func tab_close_pressed(tab):
 func _on_file_id_pressed(id):
 	match id:
 		0: # Open file
+			var new_file_path = open_file_select()
+			if new_file_path == null:
+				return
+				
 			new_graph_edit()
-			open_file()
+			return await file_selected(new_file_path, 1)
 		1: # New file
+			var new_file_path = new_file_select()
+			if new_file_path == null:
+				return
+				
 			new_graph_edit()
-			new_file()
+			return await file_selected(new_file_path, 1)
 		3: # Config
 			side_panel_node.show_config()
 		4: # Test
@@ -512,3 +522,19 @@ func new_graph_edit():
 	
 	for ge in graph_edits.get_children():
 		ge.visible = ge == graph_edit
+
+
+func _on_new_file_btn_pressed():
+	var new_file_path = new_file_select()
+	if new_file_path == null:
+		return
+		
+	return await file_selected(new_file_path, 1)
+
+
+func _on_open_file_btn_pressed():
+	var new_file_path = open_file_select()
+	if new_file_path == null:
+		return
+		
+	return await file_selected(new_file_path, 1)

@@ -38,12 +38,11 @@ grow_vertical = 2
 [node name="Asset" type="TextureRect" parent="CharacterAssetContainer"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.54
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -0.0800171
+offset_left = 56.0
 offset_top = 44.0
-offset_right = -38.9996
+offset_right = -41.0
 offset_bottom = -52.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -99,3 +98,5 @@ layout_mode = 2
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 volume_db = -9.0
+
+[connection signal="end" from="." to="." method="_on_end"]

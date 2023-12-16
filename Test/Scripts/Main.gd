@@ -21,27 +21,11 @@ func _input(event):
 	if event.is_action_pressed("ui_accept") and text_box.complete and not choice_panel.visible:
 		next()
 
-func end_callback(next_story = null):
-	var is_next_story: bool = super(next_story)
-	
-	if is_next_story:
-		return
-	
-	var menu_instance = preload("res://Test/Menu.tscn")
-	var menu_scene_instance = menu_instance.instantiate()
-	
-	get_tree().root.add_child(menu_scene_instance)
-	queue_free()
-
-func action_callback(_action):
-	print("[INFO] Can't process custom action. Skipping")
-	pass
-
 func get_character_asset(character, _variant = null):
 	if character == "_NARRATOR":
 		return
 		
-	rng.seed = hash(character)	
+	rng.seed = hash(character)
 	var rng_nbr = rng.randi_range(0, 5)
 	match  rng_nbr:
 		0:
@@ -58,3 +42,13 @@ func get_character_asset(character, _variant = null):
 			return preload("res://Test/Assets/AlbertoMielgo05.png")
 	
 	return
+
+
+func _on_end(raw_end):
+	if not raw_end or not raw_end.get("NextStoryName"):
+		var menu_instance = preload("res://Test/Menu.tscn")
+		var menu_scene_instance = menu_instance.instantiate()
+		
+		get_tree().root.add_child(menu_scene_instance)
+		queue_free()
+

@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.0.0-rc2",
+	"EditorVersion": "2.0.0-rc4",
 	"RootNodeID": "cbfb0a4b-7517-4411-a447-314d106fe280",
 	"ListNodes": [
 		{
@@ -101,15 +101,6 @@
 			"EditorPosition": {
 				"x": 0,
 				"y": 0
-			}
-		},
-		{
-			"$type": "NodeComment",
-			"ID": "11812fee-1f97-4b71-84b8-6df22dfda46e",
-			"Comment": "Write a message when the player save Mr.sharpener.",
-			"EditorPosition": {
-				"x": 0,
-				"y": 520
 			}
 		},
 		{
@@ -310,6 +301,15 @@
 			"EditorPosition": {
 				"x": 2580,
 				"y": -140
+			}
+		},
+		{
+			"$type": "NodeComment",
+			"ID": "11812fee-1f97-4b71-84b8-6df22dfda46e",
+			"Comment": "Write a message when the player save Mr.sharpener.",
+			"EditorPosition": {
+				"x": 0,
+				"y": 500
 			}
 		}
 	],

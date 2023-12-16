@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.0.0-rc2",
+	"EditorVersion": "2.0.0-rc3",
 	"RootNodeID": "cbfb0a4b-7517-4411-a447-314d106fe280",
 	"ListNodes": [
 		{
@@ -12,7 +12,7 @@
 				"Value": true
 			},
 			"EditorPosition": {
-				"x": 1320,
+				"x": 1200,
 				"y": 140
 			}
 		},
@@ -25,20 +25,8 @@
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
 			"EditorPosition": {
-				"x": 1680,
+				"x": 1560,
 				"y": 160
-			}
-		},
-		{
-			"$type": "NodeDiceRoll",
-			"ID": "8a2776c4-91a7-4d41-b5d7-9c581ad69605",
-			"Skill": "",
-			"Target": 50,
-			"PassID": "067f2655-e704-4fd5-bec7-e136d19a048d",
-			"FailID": "4405d244-2acf-4008-b712-0a2041ea9511",
-			"EditorPosition": {
-				"x": 1320,
-				"y": 0
 			}
 		},
 		{
@@ -50,7 +38,7 @@
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
 			"EditorPosition": {
-				"x": 1500,
+				"x": 1380,
 				"y": -120
 			}
 		},
@@ -59,17 +47,8 @@
 			"ID": "c5bed1c0-5981-4e6e-a96b-c97dca976356",
 			"NextStoryName": "",
 			"EditorPosition": {
-				"x": 2060,
+				"x": 1820,
 				"y": 0
-			}
-		},
-		{
-			"$type": "NodeEndPath",
-			"ID": "a0f15054-7355-4093-af2d-a97a875c2fe9",
-			"NextStoryName": "",
-			"EditorPosition": {
-				"x": 2060,
-				"y": -160
 			}
 		},
 		{
@@ -81,21 +60,8 @@
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
 			"EditorPosition": {
-				"x": 1500,
+				"x": 1380,
 				"y": 20
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
-			"NextID": "f6f21557-ad44-4b97-a5fe-ec4da6a4278c",
-			"Sentence": "Welcome in my Vault!",
-			"SpeakerID": 1,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"EditorPosition": {
-				"x": 440,
-				"y": 0
 			}
 		},
 		{
@@ -109,12 +75,67 @@
 		},
 		{
 			"$type": "NodeBridgeIn",
+			"ID": "2d5b66bd-4b97-422b-9395-73c1a01ac4fa",
+			"NextID": "7cf4528b-86eb-4160-958b-f8f0e264bc2b",
+			"NumberSelector": 1,
+			"EditorPosition": {
+				"x": 1640,
+				"y": 280
+			}
+		},
+		{
+			"$type": "NodeBridgeOut",
+			"ID": "7cf4528b-86eb-4160-958b-f8f0e264bc2b",
+			"NextID": "f6f21557-ad44-4b97-a5fe-ec4da6a4278c",
+			"NumberSelector": 1,
+			"EditorPosition": {
+				"x": 600,
+				"y": 140
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "f19ca553-55f3-41d1-87df-6e434bdb25db",
+			"NextID": "2d5b66bd-4b97-422b-9395-73c1a01ac4fa",
+			"Sentence": "There are satanic inscriptions",
+			"SpeakerID": 0,
+			"DisplaySpeakerName": "",
+			"DisplayVariant": "",
+			"EditorPosition": {
+				"x": 1200,
+				"y": 280
+			}
+		},
+		{
+			"$type": "NodeBridgeIn",
 			"ID": "e642bbaa-7db8-4138-a96e-6f12afc0e423",
 			"NextID": "7cf4528b-86eb-4160-958b-f8f0e264bc2b",
 			"NumberSelector": 1,
 			"EditorPosition": {
-				"x": 2160,
-				"y": 180
+				"x": 2000,
+				"y": 160
+			}
+		},
+		{
+			"$type": "NodeEndPath",
+			"ID": "a0f15054-7355-4093-af2d-a97a875c2fe9",
+			"NextStoryName": "",
+			"EditorPosition": {
+				"x": 1820,
+				"y": -160
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
+			"NextID": "f6f21557-ad44-4b97-a5fe-ec4da6a4278c",
+			"Sentence": "Welcome in my Vault!",
+			"SpeakerID": 1,
+			"DisplaySpeakerName": "",
+			"DisplayVariant": "",
+			"EditorPosition": {
+				"x": 380,
+				"y": 0
 			}
 		},
 		{
@@ -126,7 +147,7 @@
 				"8fac677e-859c-458f-bdf0-c35b774b48a0"
 			],
 			"EditorPosition": {
-				"x": 900,
+				"x": 820,
 				"y": 0
 			}
 		},
@@ -155,36 +176,15 @@
 			"OneShot": false
 		},
 		{
-			"$type": "NodeSentence",
-			"ID": "f19ca553-55f3-41d1-87df-6e434bdb25db",
-			"NextID": "2d5b66bd-4b97-422b-9395-73c1a01ac4fa",
-			"Sentence": "There are satanic inscriptions",
-			"SpeakerID": 0,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
+			"$type": "NodeDiceRoll",
+			"ID": "8a2776c4-91a7-4d41-b5d7-9c581ad69605",
+			"Skill": "",
+			"Target": 50,
+			"PassID": "067f2655-e704-4fd5-bec7-e136d19a048d",
+			"FailID": "4405d244-2acf-4008-b712-0a2041ea9511",
 			"EditorPosition": {
-				"x": 1320,
-				"y": 320
-			}
-		},
-		{
-			"$type": "NodeBridgeIn",
-			"ID": "2d5b66bd-4b97-422b-9395-73c1a01ac4fa",
-			"NextID": -1,
-			"NumberSelector": 2,
-			"EditorPosition": {
-				"x": 1760,
-				"y": 320
-			}
-		},
-		{
-			"$type": "NodeBridgeOut",
-			"ID": "7cf4528b-86eb-4160-958b-f8f0e264bc2b",
-			"NextID": "f6f21557-ad44-4b97-a5fe-ec4da6a4278c",
-			"NumberSelector": 1,
-			"EditorPosition": {
-				"x": 660,
-				"y": 140
+				"x": 1200,
+				"y": 0
 			}
 		}
 	],
