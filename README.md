@@ -3,7 +3,7 @@
 ### About
 Monologue is a powerful tool that allows you to create and edit dialogues in a node editor and then save them as a JSON file so you can use them anywhere.
 
-You can find the doc [here](https://crewsaders.gitbook.io/monologue/).
+You can find the wiki [here](https://github.com/atomic-junky/Monologue/wiki).
 
 
 ### Brief Steps to Start Your Story

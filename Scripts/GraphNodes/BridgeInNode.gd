@@ -17,10 +17,11 @@ func _ready():
 
 
 func _to_dict() -> Dictionary:
+	var next_node = get_parent().get_linked_bridge_node(number_selector.value)
 	return {
 		"$type": node_type,
 		"ID": id,
-		"NextID": get_parent().get_linked_bridge_node(number_selector.value).id,
+		"NextID": next_node.id if next_node else -1,
 		"NumberSelector": number_selector.value,
 		"EditorPosition": {
 			"x": position_offset.x,

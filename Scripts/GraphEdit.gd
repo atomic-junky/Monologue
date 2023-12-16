@@ -1,6 +1,8 @@
 extends GraphEdit
 
 
+@onready var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
+
 var file_path: String
 
 var speakers = []
@@ -80,3 +82,13 @@ func _on_node_selected(_node):
 
 func _on_node_deselected(_node):
 	graphnode_selected = false
+
+
+func _on_child_entered_tree(node: Node):
+	if node is RootNode or not node is GraphNode:
+		return
+	
+	var node_header = node.get_children(true)[0]
+	var close_btn: TextureButton = close_button.instantiate()
+	close_btn.connect("pressed", node.queue_free)
+	node_header.add_child(close_btn)

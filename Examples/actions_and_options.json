@@ -1,4 +1,5 @@
 {
+	"EditorVersion": "2.0.0-rc2",
 	"RootNodeID": "cbfb0a4b-7517-4411-a447-314d106fe280",
 	"ListNodes": [
 		{
@@ -107,16 +108,6 @@
 			}
 		},
 		{
-			"$type": "NodeBridgeOut",
-			"ID": "7cf4528b-86eb-4160-958b-f8f0e264bc2b",
-			"NextID": "f6f21557-ad44-4b97-a5fe-ec4da6a4278c",
-			"NumberSelector": 1,
-			"EditorPosition": {
-				"x": 660,
-				"y": 140
-			}
-		},
-		{
 			"$type": "NodeBridgeIn",
 			"ID": "e642bbaa-7db8-4138-a96e-6f12afc0e423",
 			"NextID": "7cf4528b-86eb-4160-958b-f8f0e264bc2b",
@@ -131,7 +122,8 @@
 			"ID": "f6f21557-ad44-4b97-a5fe-ec4da6a4278c",
 			"OptionsID": [
 				"ef2470ef-71ca-463e-85d4-810b3470905d",
-				"3246d4ae-e869-49af-904e-97e784890078"
+				"3246d4ae-e869-49af-904e-97e784890078",
+				"8fac677e-859c-458f-bdf0-c35b774b48a0"
 			],
 			"EditorPosition": {
 				"x": 900,
@@ -153,6 +145,47 @@
 			"Sentence": "Take a knife",
 			"Enable": true,
 			"OneShot": true
+		},
+		{
+			"$type": "NodeOption",
+			"ID": "8fac677e-859c-458f-bdf0-c35b774b48a0",
+			"NextID": "f19ca553-55f3-41d1-87df-6e434bdb25db",
+			"Sentence": "Look under the carpet",
+			"Enable": true,
+			"OneShot": false
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "f19ca553-55f3-41d1-87df-6e434bdb25db",
+			"NextID": "2d5b66bd-4b97-422b-9395-73c1a01ac4fa",
+			"Sentence": "There are satanic inscriptions",
+			"SpeakerID": 0,
+			"DisplaySpeakerName": "",
+			"DisplayVariant": "",
+			"EditorPosition": {
+				"x": 1320,
+				"y": 320
+			}
+		},
+		{
+			"$type": "NodeBridgeIn",
+			"ID": "2d5b66bd-4b97-422b-9395-73c1a01ac4fa",
+			"NextID": -1,
+			"NumberSelector": 2,
+			"EditorPosition": {
+				"x": 1760,
+				"y": 320
+			}
+		},
+		{
+			"$type": "NodeBridgeOut",
+			"ID": "7cf4528b-86eb-4160-958b-f8f0e264bc2b",
+			"NextID": "f6f21557-ad44-4b97-a5fe-ec4da6a4278c",
+			"NumberSelector": 1,
+			"EditorPosition": {
+				"x": 660,
+				"y": 140
+			}
 		}
 	],
 	"Characters": [

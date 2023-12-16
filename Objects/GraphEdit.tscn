@@ -24,5 +24,6 @@ minimap_enabled = false
 show_menu = false
 script = ExtResource("1_r0ncd")
 
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
 [connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
 [connection signal="node_selected" from="." to="." method="_on_node_selected"]

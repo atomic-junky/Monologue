@@ -330,8 +330,25 @@ func process_conditional_text(text: String) -> String:
 func _default_character_asset_getter(_character):
 	return
 
-func end_callback(_next_story = null):
-	pass
+func end_callback(next_story = null):
+	if not next_story:
+		return false
+	
+	# Search in the same directory if the next story is in here.
+	var files = []
+	var dir = DirAccess.open(dir_path)
+	
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir() and file_name == next_story + ".json":
+				load_dialogue(dir_path + "/" + next_story)
+				return true
+			file_name = dir.get_next()
+	
+	return dir != null
+
 
 func action_callback(_action):
 	pass
