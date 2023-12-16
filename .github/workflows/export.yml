@@ -12,7 +12,7 @@ jobs:
     name: Monologue export
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v4
       
       - name: Install wine
         id: wine_install
@@ -67,4 +67,4 @@ jobs:
           itch_game: monologue
           itch_user: atomic-junky
           auto_channel: true
-          files: build/monologue-*
+          files: build/**/monologue_*
