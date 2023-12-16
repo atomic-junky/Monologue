@@ -538,3 +538,9 @@ func _on_open_file_btn_pressed():
 		return
 		
 	return await file_selected(new_file_path, 1)
+
+
+func _on_help_id_pressed(id):
+	match id:
+		0:
+			OS.shell_open("https://github.com/atomic-junky/Monologue/wiki")

@@ -255,6 +255,12 @@ item_8/text = "Comment"
 item_8/icon = ExtResource("11_ppvxf")
 item_8/id = 8
 
+[node name="Help" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
+size = Vector2i(126, 247)
+item_count = 1
+item_0/text = "Wiki"
+item_0/id = 0
+
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 theme_override_constants/separation = 0
@@ -539,6 +545,7 @@ label_settings = SubResource("LabelSettings_7mcdy")
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
+[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]

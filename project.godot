@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Monologue"
-config/version="2.0.0-rc4"
+config/version="2.0.0-rc5"
 run/main_scene="res://Scenes/App.tscn"
 config/features=PackedStringArray("4.2")
 run/low_processor_mode=true

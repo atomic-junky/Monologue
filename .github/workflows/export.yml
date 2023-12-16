@@ -13,12 +13,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.3.0
+      
       - name: Install wine
         id: wine_install
         run: |
           sudo apt-get update
           sudo apt install wine64
           echo "WINE_PATH=$(which wine64)" >> $GITHUB_OUTPUT
+      
       - name: Export game
         id: export
         uses: firebelley/godot-export@v5.1.0
@@ -28,6 +30,7 @@ jobs:
           relative_project_path: ./
           relative_export_path: ./builds/
           wine_path: ${{ steps.wine_install.outputs.WINE_PATH }}
+      
       - name: Create release
         uses: ncipollo/release-action@v1.13.0
         with:
