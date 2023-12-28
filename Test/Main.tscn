@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnxbsvukyu6a2"]
+[gd_scene load_steps=5 format=3 uid="uid://dnxbsvukyu6a2"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_eeev0"]
-[ext_resource type="Texture2D" uid="uid://bspsn2fcjfc0c" path="res://Test/Assets/background.png" id="2_or8yp"]
 [ext_resource type="PackedScene" uid="uid://cffd4esx3hj6g" path="res://Test/Objects/choice_panel.tscn" id="3_hc36g"]
 [ext_resource type="Script" path="res://Test/Scripts/CharacterAsset.gd" id="4_hj7e0"]
 [ext_resource type="Script" path="res://Test/Scripts/text_box.gd" id="4_sbftg"]
@@ -23,7 +22,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_or8yp")
 expand_mode = 1
 stretch_mode = 6
 

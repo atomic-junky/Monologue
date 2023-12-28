@@ -2,15 +2,13 @@
 
 class_name DiceRollNodePanel
 
-extends VBoxContainer
+extends MonologueNodePanel
 
 
 @onready var target_number_node = $SubContainer/TargetNumber
 
-var graph_node
-
-var id = ""
 var target_number: int = 0
+
 
 func _from_dict(dict):
 	id = dict.get("ID")
@@ -24,4 +22,5 @@ func _on_target_number_value_changed(value):
 		target_number_node.value = target_number
 		return
 	target_number = value
-	graph_node.target_number = value
+	
+	change.emit(self)

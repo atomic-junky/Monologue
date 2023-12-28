@@ -84,8 +84,14 @@ func _ready():
 	$NoInteractions.show()
 
 
+func _shortcut_input(event):
+	if event.is_action_pressed("Save"):
+		save(false)
+
+
 func get_current_graph_edit() -> GraphEdit:
 	return graph_edits.get_child(tab_bar.current_tab)
+
 
 func _to_dict() -> Dictionary:
 	var list_nodes = []
@@ -224,6 +230,7 @@ func load_project(path):
 	for node in graph_edit.get_children():
 		node.queue_free()
 	graph_edit.clear_connections()
+	graph_edit.data = data
 	
 	var node_list = data.get("ListNodes")
 	root_dict = get_root_dict(node_list)
@@ -259,14 +266,7 @@ func load_project(path):
 		new_node.id = node.get("ID")
 		
 		graph_edit.add_child(new_node)
-		if node.get("$type") == "NodeRoot":
-			new_node._from_dict(node, node_list)
-		else:
-			new_node._from_dict(node)
-	
-	for node in node_list.filter(func(n): return n.get("$type") == "NodeChoice"):
-		var graph_node = get_node_by_id(node.get("ID"))
-		graph_node._options_from_dict(node, node_list)
+		new_node._from_dict(node)
 	
 	for node in node_list:
 		if not node.has("ID"):
@@ -279,7 +279,7 @@ func load_project(path):
 					var next_node = get_node_by_id(node.get("NextID"))
 					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
 			"NodeChoice":
-				current_node.connect_all_options(node_list)
+				current_node._update()
 			"NodeDiceRoll":
 				if node.get("PassID") is String:
 					var pass_node = get_node_by_id(node.get("PassID"))

@@ -12,7 +12,6 @@ extends PanelContainer
 @onready var end_path_node_panel_instance = preload("res://Objects/SidePanelNodes/EndPathNodePanel.tscn")
 @onready var condition_node_panel_instance = preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
 @onready var action_node_panel_instance = preload("res://Objects/SidePanelNodes/ActionNodePanel.tscn")
-@onready var event_node_panel_instance = preload("res://Objects/SidePanelNodes/EventNodePanel.tscn")
 
 var selected_node = null
 var current_panel = null
@@ -33,13 +32,6 @@ func on_graph_node_selected(node):
 	if graph_edit.selection_mode or graph_edit.moving_mode:
 		return
 		
-	clear_current_panel()
-	
-	var exceptions_nodes = ["NodeBridgeIn", "NodeBridgeOut", "NodeComment"]
-	
-	if node.node_type in exceptions_nodes:
-		return
-	
 	label_id.text = node.id
 
 	var new_panel = null
@@ -59,7 +51,12 @@ func on_graph_node_selected(node):
 		"NodeAction":
 			new_panel = action_node_panel_instance.instantiate()
 		"NodeEvent":
-			new_panel = event_node_panel_instance.instantiate()
+			new_panel = condition_node_panel_instance.instantiate()
+	
+	if new_panel == null:
+		return
+	
+	clear_current_panel()
 	
 	new_panel.graph_node = node
 	

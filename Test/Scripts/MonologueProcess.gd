@@ -24,6 +24,8 @@ var fallback_id
 var rng = RandomNumberGenerator.new()
 
 signal node_reached(raw_node: Dictionary)
+signal sentence(sentence: String, speaker: String, speaker_name: String)
+signal new_choice(choices: Array[Dictionary])
 signal option_choosed(raw_option: Dictionary)
 signal event_triggered(raw_event: Dictionary)
 signal end(raw_end)
@@ -104,7 +106,8 @@ func next():
 	
 func _process_node(node: Dictionary):
 	choice_panel.hide()
-	choice_panel.clear()
+	for child in choice_panel.get_children():
+		child.queue_free()
 	
 	match node.get("$type"):
 		"NodeRoot":
@@ -122,30 +125,17 @@ func _process_node(node: Dictionary):
 		"NodeSentence":
 			next_id = node.get("NextID")
 			
-			text_box.text = process_conditional_text(node.get("Sentence"))
+			var processed_sentence = process_conditional_text(node.get("Sentence"))
+			var speaker_name = node.get("DisplaySpeakerName") if node.get("DisplaySpeakerName") else get_speaker(node.get("SpeakerID"))
+			print()
 			
-			if character_asset_node:
-				var texture = get_character_asset(get_speaker(node.get("SpeakerID")))
-				
-				if prev_char_asset == null or (texture != null and prev_char_asset != texture):
-					character_asset_node.undisplay()
-					
-					if texture != null:
-						prev_char_asset = texture
-						character_asset_node.set_texture(texture)
-						character_asset_node.show()
-						character_asset_node.display()
-					else:
-						character_asset_node.hide()
-						prev_char_asset = null
-			
-			var display_speaker_name = node.get("DisplaySpeakerName")
-			text_box.speaker_display = display_speaker_name if display_speaker_name else get_speaker(node.get("SpeakerID"))
-			text_box.reset()
-			text_box.update()
-			text_box.display()
+			sentence.emit(
+				processed_sentence,
+				get_speaker(node.get("SpeakerID")),
+				speaker_name
+			)
 		"NodeChoice":
-			choice_panel.clear()
+			var options: Array = []
 			for option_id in node.get("OptionsID"):
 				var option = find_node_from_id(option_id)
 				if not option:
@@ -154,8 +144,8 @@ func _process_node(node: Dictionary):
 				if option.get("Enable") == false:
 					continue
 				
-				choice_panel.add_button(option.get("Sentence"), option_callback.bind(option_id))
-			choice_panel.show()
+				options.append(option)
+			new_choice.emit(options)
 		"NodeDiceRoll":
 			var roll = rng.randi_range(0, 100)
 			if roll <= node.get("Target"):
@@ -258,22 +248,6 @@ func _process_node(node: Dictionary):
 		"NodeEndPath":
 			end.emit(node)
 
-func option_callback(option_id):
-	var option: Dictionary = find_node_from_id(option_id)
-	option_choosed.emit(option)
-	
-	if option == null:
-		print("[CRITICAL] Can't find option. Unexpected exit.")
-		end.emit(null)
-		return
-	
-	next_id = option.get("NextID")
-	
-	if option.get("OneShot") == true:
-		option["Enable"] = false
-	
-	next()
-
 func find_node_from_id(id):
 	var nodes = node_list.filter(func (node): return node.get("ID") == id)
 	if nodes.size() <= 0:
@@ -350,5 +324,17 @@ func _default_end_process(raw_end):
 	return dir != null
 
 
-func get_character_asset(_character, _variant = null):
-	pass
+func option_selected(option):
+	option_choosed.emit(option)
+	
+	if option == null:
+		print("[CRITICAL] Can't find option. Unexpected exit.")
+		end.emit(null)
+		return
+	
+	next_id = option.get("NextID")
+	
+	if option.get("OneShot") == true:
+		option["Enable"] = false
+	
+	next()

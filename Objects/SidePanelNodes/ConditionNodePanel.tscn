@@ -77,8 +77,8 @@ layout_mode = 2
 text = "Please select a variable first"
 label_settings = SubResource("LabelSettings_kddgl")
 
-[connection signal="item_selected" from="IfContainer/VariableDrop" to="." method="_on_variable_drop_item_selected"]
-[connection signal="item_selected" from="OperatorContainer/OperatorDrop" to="." method="_on_operator_drop_item_selected"]
-[connection signal="toggled" from="ValueContainer/BooleanEdit" to="." method="update_graph_node"]
-[connection signal="value_changed" from="ValueContainer/NumberEdit" to="." method="update_graph_node"]
-[connection signal="text_changed" from="ValueContainer/StringEdit" to="." method="update_graph_node"]
+[connection signal="item_selected" from="IfContainer/VariableDrop" to="." method="update"]
+[connection signal="item_selected" from="OperatorContainer/OperatorDrop" to="." method="update"]
+[connection signal="toggled" from="ValueContainer/BooleanEdit" to="." method="update"]
+[connection signal="value_changed" from="ValueContainer/NumberEdit" to="." method="update"]
+[connection signal="text_changed" from="ValueContainer/StringEdit" to="." method="update"]

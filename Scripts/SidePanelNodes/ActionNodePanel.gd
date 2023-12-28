@@ -2,7 +2,7 @@
 
 class_name ActionNodePanel
 
-extends VBoxContainer
+extends MonologueNodePanel
 
 
 @onready var option_id_container = $OptionIDContainer
@@ -22,10 +22,8 @@ extends VBoxContainer
 @onready var string_edit: LineEdit = $ValueContainer/StringEdit
 @onready var default_label: Label = $ValueContainer/DefaultLabel
 
-var graph_node
-
-var id = UUID.v4()
 var variables: Array
+var action_type
 
 func _ready():
 	variables = graph_node.get_parent().variables
@@ -34,11 +32,14 @@ func _ready():
 		variable_drop_node.add_item(variable.get("Name"))
 
 func _from_dict(dict: Dictionary):
-	id = dict.get("ID")
-	var action = dict.get("Action")
 	variables = graph_node.get_parent().variables
 	
-	match action.get("$type"):
+	id = dict.get("ID")
+	
+	var action = dict.get("Action")
+	action_type =  action.get("$type")
+	
+	match action_type:
 		"ActionOption":
 			action_drop_node.select(0)
 			option_id_edit.text = action.get("OptionID", "")
@@ -79,21 +80,24 @@ func _from_dict(dict: Dictionary):
 	update_action()
 
 
-func update_action():
-	var action_type = action_drop_node.get_item_text(action_drop_node.selected)
+func update_action(_x = null):
+	action_type = action_drop_node.get_item_text(action_drop_node.selected)
 	
-	option_id_container.hide()
-	variable_container.hide()
-	operator_container.hide()
-	custom_container.hide()
+	for child in get_children():
+		if child == $ValueContainer:
+			for subchild in $ValueContainer.get_children():
+				subchild.hide()
+			continue
+			
+		child.hide()
+	
+	$ActionTypeContainer.show()
+	$ValueContainer/ValueLabel.show()
 	
 	match action_type:
 		"ActionOption":
 			option_id_container.show()
 			boolean_edit.show()
-			number_edit.hide()
-			string_edit.hide()
-			default_label.hide()
 		"ActionVariable":
 			variable_container.show()
 			operator_container.show()
@@ -103,10 +107,6 @@ func update_action():
 				return
 			var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
 			
-			boolean_edit.hide()
-			number_edit.hide()
-			string_edit.hide()
-			default_label.hide()
 			
 			var is_integer: bool = variable.get("Type") == "Integer"
 			operator_drop_node.set_item_disabled(1, !is_integer)
@@ -127,38 +127,9 @@ func update_action():
 			custom_container.show()
 			string_edit.show()
 		"ActionTimer":
-			boolean_edit.hide()
 			number_edit.show()
-			string_edit.hide()
-			default_label.hide()
-
-func update_graph_node(_value = null):
-	update_action()
-	var action_type = action_drop_node.get_item_text(action_drop_node.selected)
-	graph_node.action_type = action_type
-	graph_node.value = get_value()
 	
-	match action_type:
-		"ActionOption":
-			graph_node.option_id = option_id_edit.text
-			
-			var option_id = option_id_edit.text
-			if option_id != "":
-				var is_option_id_valid: bool = graph_node.get_parent().is_option_node_exciste(option_id)
-				option_not_find.visible = !is_option_id_valid
-			else:
-				option_not_find.hide()
-		"ActionVariable":
-			if variable_drop_node.selected >= 0:
-				graph_node.variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
-			graph_node.operator = operator_drop_node.get_item_text(operator_drop_node.selected)
-		"ActionCustom":
-			graph_node.custom_type = custom_drop_node.get_item_text(custom_drop_node.selected)
-			graph_node.custom_value_label.text = get_value()
-		"ActionTimer":
-			graph_node.value = get_value()
-	
-	graph_node.update_preview()
+	change.emit(self)
 
 
 func get_value():
@@ -192,13 +163,6 @@ func get_value():
 
 func _on_action_type_drop_item_selected(_index):
 	update_action()
-	update_graph_node()
-
 
 func _on_variable_drop_item_selected(_index):
 	update_action()
-	update_graph_node()
-
-
-func _on_operator_drop_item_selected(_index):
-	update_graph_node()

@@ -13,6 +13,8 @@ var selection_mode = false
 var graphnode_selected = false
 var moving_mode = false
 
+var data: Dictionary
+
 var control_node
 
 func _input(event):

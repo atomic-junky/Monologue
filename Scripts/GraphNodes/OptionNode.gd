@@ -1,5 +1,6 @@
-extends PanelContainer
+class_name OptionNode
 
+extends PanelContainer
 
 @onready var sentence_node = $MarginContainer/MainContainer/SentenceContainer/TextEdit
 @onready var enable_node: CheckBox = $MarginContainer/MainContainer/EnableBtn
@@ -42,8 +43,7 @@ func _from_dict(dict):
 
 func _on_delete_pressed():
 	queue_free()
-	var option_ref = graph_node.get_children().filter(func(opt): return opt.id == id)[0]
-	option_ref.queue_free()
+	update_ref()
 
 
 func _on_id_label_gui_input(event):
@@ -51,26 +51,11 @@ func _on_id_label_gui_input(event):
 		DisplayServer.clipboard_set(id)
 
 
-func _on_text_edit_text_changed():
-	sentence = sentence_node.text
-	update_ref()
-
-
-func _on_enable_btn_toggled(button_pressed):
-	enable = button_pressed
-	update_ref()
-
-
-func _on_one_shot_btn_toggled(button_pressed):
-	one_shot = button_pressed
-	update_ref()
-
-
 func update_ref():
-	if is_queued_for_deletion():
-		graph_node.delete_option_reference(id)
-		return
-	var option_ref = graph_node.get_children().filter(func(opt): return opt.id == id)[0]
-	var option_index = graph_node.get_children().find(option_ref)
+	id_label.text = id + " (click to copy)"
 	
-	graph_node.update_option_reference(option_index, _to_dict())
+	sentence = sentence_node.text
+	enable = enable_node.button_pressed
+	one_shot = one_shot_node.button_pressed
+	
+	panel_node.change.emit(panel_node)

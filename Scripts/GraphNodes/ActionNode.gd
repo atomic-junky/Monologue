@@ -2,7 +2,7 @@
 
 class_name ActionNode
 
-extends GraphNode
+extends MonologueGraphNode
 
 
 @onready var option_container = $OptionMarginContainer
@@ -20,9 +20,6 @@ extends GraphNode
 @onready var custom_value_label = $CustomMarginContainer/CustomContainer/CustomValueContainer/CustomValueLabel
 @onready var wait_value_label = $TimerMarginContainer/CustomContainer/TimerValueContainer/TimerValueLabel
 
-var id = UUID.v4()
-var node_type = "NodeAction"
-
 var action_type: String = "ActionOption"
 var option_id: String = ""
 var variable_name: String = ""
@@ -31,7 +28,8 @@ var custom_type: String = ""
 var value = false
 
 func _ready():
-	update_preview()
+	node_type = "NodeAction"
+	title = node_type
 
 func _to_dict() -> Dictionary:
 	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
@@ -64,12 +62,12 @@ func _from_dict(dict: Dictionary):
 			custom_type = action.get("CustomType", "")
 	value = action.get("Value")
 	
+	_update()
+	
 	var _pos = dict.get("EditorPosition")
 	position_offset.x = _pos.get("x")
 	position_offset.x = _pos.get("y")
 	
-	update_preview()
-
 
 func _action_to_dict() -> Dictionary:
 	if action_type == "ActionOption":
@@ -98,9 +96,35 @@ func _action_to_dict() -> Dictionary:
 		"Value": value
 	}
 
+func _on_close_request():
+	queue_free()
+	get_parent().clear_all_empty_connections()
 
-func update_preview():
-	title = node_type
+
+func _update(panel: ActionNodePanel = null):
+	if panel != null:
+		action_type = panel.action_type
+		value = panel.get_value()
+		
+		match action_type:
+			"ActionOption":
+				option_id = panel.option_id_edit.text
+				
+				if option_id != "":
+					var is_option_id_valid: bool = get_parent().is_option_node_exciste(option_id)
+					panel.option_not_find.visible = !is_option_id_valid
+				else:
+					panel.option_not_find.hide()
+			"ActionVariable":
+				if panel.variable_drop_node.selected >= 0:
+					variable_name = panel.variable_drop_node.get_item_text(panel.variable_drop_node.selected)
+				operator = panel.operator_drop_node.get_item_text(panel.operator_drop_node.selected)
+			"ActionCustom":
+				custom_type = panel.custom_drop_node.get_item_text(panel.custom_drop_node.selected)
+				custom_value_label.text = value
+			"ActionTimer":
+				pass
+	
 	
 	action_type_label.text = action_type
 	
@@ -132,8 +156,3 @@ func update_preview():
 		"ActionTimer":
 			wait_value_label.text = str(value) if value else "0"
 			timer_container.show()
-
-
-func _on_close_request():
-	queue_free()
-	get_parent().clear_all_empty_connections()

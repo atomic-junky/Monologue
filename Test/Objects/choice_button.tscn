@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cj80aa4ckke2i"]
 
-[ext_resource type="FontFile" uid="uid://d38bcon155qfn" path="res://Test/Font/VT323-Regular.ttf" id="1_gxcb1"]
+[ext_resource type="FontFile" uid="uid://co7dk40c370h8" path="res://Test/Font/VT323-Regular.ttf" id="1_gxcb1"]
 
 [sub_resource type="GDScript" id="GDScript_vu8v5"]
 script/source = "extends Button

@@ -2,7 +2,7 @@
 
 class_name ChoiceNode
 
-extends GraphNode
+extends MonologueGraphNode
 
 
 const arrow_texture01 = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
@@ -10,14 +10,11 @@ const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
 
 @onready var option_reference = preload("res://Objects/SubComponents/OptionReference.tscn")
 
-var _node_dict: Dictionary
-
-var id = UUID.v4()
-var node_type = "NodeChoice"
 var options = []
 
 
 func _ready():
+	node_type = "NodeChoice"
 	title = node_type
 
 
@@ -34,50 +31,15 @@ func _to_dict() -> Dictionary:
 
 
 func _from_dict(dict):
-	_node_dict = dict
-	
 	id = dict.get("ID")
 	
-
-func _on_created():
-	new_option_reference()
-	new_option_reference()
-
-
-func _options_from_dict(dict, global_dict):
-	var options_id = dict.get("OptionsID")
-	for opt_id in options_id:
-		var node = global_dict.filter(func(n): return n.get("ID") == opt_id)[0]
-		options.append(node)
-		new_option_reference(node)
-
-
-func new_option_reference(dict = null):
-	var new_ref = option_reference.instantiate()
-	if dict != null:
-		# If already exist
-		var node = get_children().filter(func(child): return child.id == id)
-		if node.size() > 0:
-			node._from_dict(dict)
-			return
+	var nodes = get_parent().data.get("ListNodes")
+	for option in dict.get("OptionsID"):
+		for node in nodes:
+			if node.get("ID") in option:
+				options.append(node)
 	
-	add_child(new_ref)
-	
-	if dict != null:
-		new_ref._from_dict(dict)
-	
-	var is_first = get_child_count() <= 1
-	set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true, 0, Color("ffffff"), arrow_texture01, arrow_texture02, false)
-
-
-func update_option_reference(index, dict):
-	var child = get_children()[index]
-	child._from_dict(dict)
-
-
-func delete_option_reference(opt_id):
-	var child = get_children().filter(func(node): return node.id == opt_id)[0]
-	child.queue_free()
+	_update()
 
 
 func get_all_options_id() -> Array:
@@ -88,34 +50,38 @@ func get_all_options_id() -> Array:
 	return ids
 
 
-func connect_all_options(node_list: Array):
-	var all_options = []
-	for child in get_children():
-		all_options.append(child)
-	
-	var index = 0
-	for option in all_options:
-		var raw_option = node_list.filter(func(node): return node.get("ID") == option.id)
-		if raw_option.size() <= 0:
-			continue
-		
-		var next_node = get_next_node(raw_option[0].get("NextID"))
-		if not next_node is int:
-			get_parent().connect_node(name, index, next_node.name, 0)
-		index+=1
-		
-func get_next_node(next_node_id):
+func get_graph_node(node_id):
 	for node in get_parent().get_children():
-		if not next_node_id is float and node.id == next_node_id:
+		if node_id is String and node.id == node_id:
 			return node
 	
 	return -1
 
-
-func _on_slot_updated(_idx):
-	pass # Replace with function body.
-
-
-func _on_close_request():
-	queue_free()
-	get_parent().clear_all_empty_connections()
+func _update(panel: ChoiceNodePanel = null):
+	if panel != null:
+		options.clear()
+		for option in panel.options_container.get_children():
+			if not option is OptionNode or option.is_queued_for_deletion():
+				continue
+			var opt_dict = option._to_dict()
+			options.append(opt_dict)
+	
+	for child in get_children():
+		remove_child(child)
+		child.queue_free()
+	
+	for option in options:
+		var new_ref = option_reference.instantiate()
+		new_ref._from_dict(option)
+		
+		add_child(new_ref)
+		new_ref.sentence_preview.text = option.get("Sentence")
+		
+		var is_first = get_child_count() <= 1
+		set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true, 0, Color("ffffff"), arrow_texture01, arrow_texture02, false)
+		
+		var next_node = get_graph_node(option.get("NextID"))
+		if not next_node is int:
+			get_parent().connect_node(name, options.find(option), next_node.name, 0)
+	
+	size.y = 0

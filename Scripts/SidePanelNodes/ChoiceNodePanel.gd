@@ -2,7 +2,7 @@
 
 class_name ChoiceNodePanel
 
-extends VBoxContainer
+extends MonologueNodePanel
 
 const arrow_texture01 = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
 const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
@@ -10,43 +10,28 @@ const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 @onready var options_container = $OptionsContainer
 
-var graph_node
-
-var id = UUID.v4()
-
 
 func _from_dict(dict):
 	id = dict.get("ID")
 	
-	for option in graph_node.get_children():
-		new_option(option._to_dict(), true)
+	for option in graph_node.options:
+		var opt_panel = option_panel.instantiate()
+		opt_panel.panel_node = self
+		opt_panel.graph_node = graph_node
+		
+		options_container.add_child(opt_panel)
+		opt_panel._from_dict(option)
+	
+	change.emit(self)
 
 
-func new_option(dict = null, init: bool = false):
+func new_option():
 	var option = option_panel.instantiate()
 	option.panel_node = self
 	option.graph_node = graph_node
 	
 	options_container.add_child(option)
-	option._from_dict(dict)
-	
-	if not init:
-		if not dict:
-			dict = option._to_dict()
-		update_all_options()
-		graph_node.new_option_reference(dict)
-	
-	graph_node.set_slot(get_child_count() - 1, false, 0, Color("ffffff"), true, 0, Color("ffffff"), arrow_texture01, arrow_texture02, false)
-
-
-func update_all_options():
-	var updated_options = []
-	for child in graph_node.get_children():
-		if child.is_queued_for_deletion():
-			continue
-		updated_options.append(child._to_dict())
-	
-	graph_node.options = updated_options
+	option.update_ref()
 
 
 func _on_add_option_pressed():

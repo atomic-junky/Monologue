@@ -35,10 +35,5 @@ func _to_dict():
 func _from_dict(dict):
 	id = dict.get("ID")
 	sentence = dict.get("Sentence")
-	set_label(sentence)
 	enable = dict.get("Enable")
 	one_shot = dict.get("OneShot")
-
-
-func set_label(text):
-	sentence_preview.text = text

@@ -2,17 +2,13 @@
 
 class_name BridgeOutNode
 
-extends GraphNode
+extends MonologueGraphNode
 
-
-var _node_dict: Dictionary
-
-var id = UUID.v4()
-var node_type = "NodeBridgeOut"
 @onready var number_selector = $MarginContainer/HBoxContainer/LinkNumber
 
 
 func _ready():
+	node_type = "NodeBridgeOut"
 	title = node_type
 
 
@@ -31,9 +27,7 @@ func _to_dict() -> Dictionary:
 	}
 
 
-func _from_dict(dict):
-	_node_dict = dict
-	
+func _from_dict(dict):	
 	id = dict.get("ID")
 	number_selector.value = dict.get("NumberSelector")
 	

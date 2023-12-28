@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://clxk4rmxxwgvh"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Menu.gd" id="1_e8xk2"]
-[ext_resource type="Texture2D" uid="uid://bspsn2fcjfc0c" path="res://Test/Assets/background.png" id="2_urm76"]
-[ext_resource type="Texture2D" uid="uid://dlpv0iwnf6xyc" path="res://Test/Assets/monologue_demo_title.png" id="3_mc5yl"]
+[ext_resource type="Texture2D" uid="uid://b1i4ciajw0urh" path="res://Test/Assets/monologue_title.png" id="2_g183e"]
+[ext_resource type="Texture2D" uid="uid://bvwarv5h1rmcb" path="res://Test/Assets/background01.png" id="2_i50y0"]
 [ext_resource type="PackedScene" uid="uid://cj80aa4ckke2i" path="res://Test/Objects/choice_button.tscn" id="4_qyh0i"]
 
 [node name="Menu" type="Control"]
@@ -22,21 +22,28 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_urm76")
+texture = ExtResource("2_i50y0")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Title" type="TextureRect" parent="."]
+visible = false
 texture_filter = 1
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
+anchor_top = 0.375
 anchor_right = 0.5
-offset_left = -278.0
-offset_top = 34.0
-offset_right = 277.0
-offset_bottom = 199.0
-texture = ExtResource("3_mc5yl")
-stretch_mode = 5
+anchor_bottom = 0.375
+offset_left = -295.0
+offset_top = -74.25
+offset_right = 295.0
+offset_bottom = 73.75
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_g183e")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1

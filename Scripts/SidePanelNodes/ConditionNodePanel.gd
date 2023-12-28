@@ -2,7 +2,7 @@
 
 class_name ConditionNodePanel
 
-extends VBoxContainer
+extends MonologueNodePanel
 
 
 @onready var variable_drop_node: OptionButton = $IfContainer/VariableDrop
@@ -13,9 +13,6 @@ extends VBoxContainer
 @onready var string_edit: LineEdit = $ValueContainer/StringEdit
 @onready var default_label: Label = $ValueContainer/DefaultLabel
 
-var graph_node
-
-var id = UUID.v4()
 var variables: Array
 
 func _ready():
@@ -82,15 +79,6 @@ func update_all_condition():
 			default_label.show()
 
 
-func update_graph_node(_value = null):
-	if variable_drop_node.selected >= 0:
-		graph_node.variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
-	graph_node.operator = operator_drop_node.get_item_text(operator_drop_node.selected)
-	graph_node.value = get_value()
-	
-	graph_node.update_preview()
-
-
 func get_value():
 	if variable_drop_node.selected < 0:
 		return null
@@ -111,11 +99,6 @@ func get_value():
 			return null
 
 
-func _on_variable_drop_item_selected(_index):
+func update(_x = null):
 	update_all_condition()
-	update_graph_node()
-
-
-func _on_operator_drop_item_selected(_index):
-	update_graph_node()
-
+	change.emit(self)

@@ -1,14 +1,12 @@
 @icon("res://Assets/Icons/NodesIcons/Sentence.svg")
 
-class_name SetenceNode
+class_name SentenceNode
 
-extends GraphNode
+extends MonologueGraphNode
 
 
-var _node_dict: Dictionary
+@onready var text_label = $MainContainer/TextLabelPreview
 
-var id = UUID.v4()
-var node_type = "NodeSentence"
 var loaded_text = ""
 var sentence = ""
 var speaker_id = 0
@@ -17,8 +15,8 @@ var display_variant = ""
 
 
 func _ready():
+	node_type = "NodeSentence"
 	title = node_type
-	update_preview()
 
 
 func _to_dict() -> Dictionary:
@@ -40,24 +38,23 @@ func _to_dict() -> Dictionary:
 
 
 func _from_dict(dict: Dictionary):
-	_node_dict = dict
-	
 	id = dict.get("ID")
 	sentence = dict.get("Sentence")
 	speaker_id = dict.get("SpeakerID")
 	display_speaker_name = dict.get("DisplaySpeakerName")
 	display_variant = dict.get("DisplayVariant", "")
 	
+	_update()
+	
 	position_offset.x = dict.EditorPosition.get("x")
 	position_offset.y = dict.EditorPosition.get("y")
+
+
+func _update(panel: SentenceNodePanel = null):
+	if panel != null:
+		sentence = panel.sentence
+		speaker_id = panel.speaker_id
+		display_speaker_name = panel.display_speaker_name
+		display_variant = panel.display_variant
 	
-	update_preview()
-
-
-func update_preview():
-	$MainContainer/TextLabelPreview.text = sentence
-
-
-func _on_GraphNode_close_request():
-	queue_free()
-	get_parent().clear_all_empty_connections()
+	text_label.text = sentence

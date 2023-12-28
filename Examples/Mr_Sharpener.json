@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.0.0-rc4",
+	"EditorVersion": "2.0.0-rc7",
 	"RootNodeID": "cbfb0a4b-7517-4411-a447-314d106fe280",
 	"ListNodes": [
 		{
@@ -39,34 +39,6 @@
 			}
 		},
 		{
-			"$type": "NodeChoice",
-			"ID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
-			"OptionsID": [
-				"db255a89-210b-4092-90fc-5f73578f4210",
-				"8d501872-3726-4697-bc51-a5e706ed4306"
-			],
-			"EditorPosition": {
-				"x": 1300,
-				"y": 0
-			}
-		},
-		{
-			"$type": "NodeOption",
-			"ID": "db255a89-210b-4092-90fc-5f73578f4210",
-			"NextID": "7e24e282-b823-45c9-8a5c-aec03fd1b64a",
-			"Sentence": "Dude, you need help I think",
-			"Enable": true,
-			"OneShot": true
-		},
-		{
-			"$type": "NodeOption",
-			"ID": "8d501872-3726-4697-bc51-a5e706ed4306",
-			"NextID": "55d5315b-896b-40c3-a59d-c890cebc15a7",
-			"Sentence": "I have a pencil...",
-			"Enable": true,
-			"OneShot": false
-		},
-		{
 			"$type": "NodeCondition",
 			"ID": "55d5315b-896b-40c3-a59d-c890cebc15a7",
 			"IfNextID": "907c77fb-5887-47da-bed4-a85b6cf50dc5",
@@ -92,15 +64,6 @@
 			"EditorPosition": {
 				"x": 2080,
 				"y": 260
-			}
-		},
-		{
-			"$type": "NodeRoot",
-			"ID": "cbfb0a4b-7517-4411-a447-314d106fe280",
-			"NextID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
-			"EditorPosition": {
-				"x": 0,
-				"y": 0
 			}
 		},
 		{
@@ -310,6 +273,43 @@
 			"EditorPosition": {
 				"x": 0,
 				"y": 500
+			}
+		},
+		{
+			"$type": "NodeChoice",
+			"ID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
+			"OptionsID": [
+				"db255a89-210b-4092-90fc-5f73578f4210",
+				"8d501872-3726-4697-bc51-a5e706ed4306"
+			],
+			"EditorPosition": {
+				"x": 1300,
+				"y": 0
+			}
+		},
+		{
+			"$type": "NodeOption",
+			"ID": "db255a89-210b-4092-90fc-5f73578f4210",
+			"NextID": "7e24e282-b823-45c9-8a5c-aec03fd1b64a",
+			"Sentence": "Dude, you need help I think",
+			"Enable": true,
+			"OneShot": true
+		},
+		{
+			"$type": "NodeOption",
+			"ID": "8d501872-3726-4697-bc51-a5e706ed4306",
+			"NextID": "55d5315b-896b-40c3-a59d-c890cebc15a7",
+			"Sentence": "I have a pencil...",
+			"Enable": true,
+			"OneShot": false
+		},
+		{
+			"$type": "NodeRoot",
+			"ID": "cbfb0a4b-7517-4411-a447-314d106fe280",
+			"NextID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
+			"EditorPosition": {
+				"x": 0,
+				"y": 0
 			}
 		}
 	],

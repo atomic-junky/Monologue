@@ -1,0 +1,179 @@
+[gd_scene load_steps=14 format=3 uid="uid://dmi21ydlsvlmk"]
+
+[ext_resource type="Script" path="res://Test/Scripts/Main2.gd" id="1_1rt3i"]
+[ext_resource type="Texture2D" uid="uid://myp7psgggq6p" path="res://Test/Assets/Dialog box overlay.png" id="1_t1bm7"]
+[ext_resource type="Texture2D" uid="uid://bm7rb274apl7e" path="res://Test/Assets/Dialog box tileset.png" id="2_3uyqb"]
+[ext_resource type="FontFile" uid="uid://dkb7hdulffd0v" path="res://Test/Font/unnamedfont.ttf" id="3_a2wki"]
+[ext_resource type="PackedScene" uid="uid://4p14yx4m2hva" path="res://Test/Objects/button.tscn" id="4_db4gy"]
+[ext_resource type="Theme" uid="uid://cbu6sgb4pms5c" path="res://Test/Assets/GothPxTheme.tres" id="5_ngbyh"]
+
+[sub_resource type="Gradient" id="Gradient_ob4h5"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.176471, 0.176471, 0.203922, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_uniwf"]
+gradient = SubResource("Gradient_ob4h5")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p4jfm"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hvqar"]
+texture = ExtResource("2_3uyqb")
+texture_margin_left = 16.0
+texture_margin_top = 9.0
+texture_margin_right = 13.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(16, 3, 42, 13)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6svjh"]
+content_margin_left = 16.0
+content_margin_top = 6.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_5344j"]
+line_spacing = 0.0
+font = ExtResource("3_a2wki")
+font_size = 6
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cjn11"]
+content_margin_left = 31.0
+texture = ExtResource("2_3uyqb")
+texture_margin_left = 31.0
+texture_margin_top = 7.0
+texture_margin_right = 31.0
+texture_margin_bottom = 7.0
+axis_stretch_vertical = 2
+region_rect = Rect2(16, 48, 80, 32)
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1125.0
+offset_bottom = -582.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4.462, 4.462)
+script = ExtResource("1_1rt3i")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_uniwf")
+
+[node name="DialogBoxOverlay" type="Sprite2D" parent="."]
+texture_filter = 3
+position = Vector2(0, 105.34)
+texture = ExtResource("1_t1bm7")
+centered = false
+
+[node name="TextBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.218
+anchor_top = 0.784
+anchor_right = 0.778
+anchor_bottom = 0.784
+offset_left = 0.149994
+offset_top = -51.712
+offset_right = 0.149979
+offset_bottom = 0.287994
+theme_override_constants/separation = 0
+
+[node name="Character" type="Panel" parent="TextBoxContainer"]
+texture_filter = 3
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_p4jfm")
+
+[node name="CharacterContainer" type="Control" parent="TextBoxContainer/Character"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CharacterBox" type="PanelContainer" parent="TextBoxContainer/Character/CharacterContainer"]
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 14.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_hvqar")
+
+[node name="Label" type="Label" parent="TextBoxContainer/Character/CharacterContainer"]
+clip_contents = true
+layout_mode = 0
+offset_left = 22.345
+offset_right = 61.585
+offset_bottom = 13.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6svjh")
+text = "Clara"
+label_settings = SubResource("LabelSettings_5344j")
+vertical_alignment = 1
+justification_flags = 35
+
+[node name="Text" type="Panel" parent="TextBoxContainer"]
+texture_filter = 3
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("5_ngbyh")
+theme_override_styles/panel = SubResource("StyleBoxTexture_cjn11")
+metadata/_edit_group_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextBoxContainer/Text"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.73348
+offset_top = 6.0
+offset_right = -8.26653
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("3_a2wki")
+theme_override_font_sizes/normal_font_size = 6
+bbcode_enabled = true
+text = "Most don't return the same from the lake of sorrows. This is when we need your expertise. We want you to fix them up ."
+
+[node name="OptionContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.744
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 8.008
+offset_right = -48.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 1
+columns = 2
+metadata/_edit_group_ = true
+
+[node name="Button" parent="OptionContainer" instance=ExtResource("4_db4gy")]
+custom_minimum_size = Vector2(114, 13)
+layout_mode = 2
+
+[node name="Button2" parent="OptionContainer" instance=ExtResource("4_db4gy")]
+layout_mode = 2
+
+[node name="Button3" parent="OptionContainer" instance=ExtResource("4_db4gy")]
+layout_mode = 2
+
+[node name="Button4" parent="OptionContainer" instance=ExtResource("4_db4gy")]
+layout_mode = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -9.0
+
+[connection signal="end" from="." to="." method="_on_end"]
+[connection signal="new_choice" from="." to="." method="_on_new_choice"]
+[connection signal="option_choosed" from="." to="." method="_on_option_choosed"]
+[connection signal="sentence" from="." to="." method="_on_sentence"]
+[connection signal="resized" from="TextBoxContainer/Character/CharacterContainer/Label" to="." method="character_resized"]

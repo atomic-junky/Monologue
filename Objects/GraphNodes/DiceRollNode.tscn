@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6mcmodpmsacw"]
+[gd_scene load_steps=9 format=3 uid="uid://b6mcmodpmsacw"]
 
 [ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_sro87"]
 [ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_ruyti"]
@@ -22,17 +22,21 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="LabelSettings" id="LabelSettings_01pik"]
+line_spacing = 0.0
+font_size = 10
+
 [sub_resource type="LabelSettings" id="LabelSettings_i36fi"]
 line_spacing = 0.0
-font_color = Color(0.521569, 0.788235, 0.380392, 1)
+font_color = Color(0.411765, 0.576471, 0.290196, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_fvgmo"]
 line_spacing = 0.0
 font_color = Color(0.788235, 0.380392, 0.380392, 1)
 
 [node name="DiceRoll" type="GraphNode" groups=["graph_nodes"]]
-offset_right = 120.0
-offset_bottom = 110.0
+offset_right = 119.0
+offset_bottom = 116.0
 mouse_default_cursor_shape = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_njth6")
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_0tncv")
@@ -57,20 +61,31 @@ slot/1/right_icon = ExtResource("2_ruyti")
 slot/1/draw_stylebox = false
 script = ExtResource("4_4behm")
 
-[node name="PassContainer" type="MarginContainer" parent="."]
+[node name="PassContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_vertical = 3
+alignment = 2
+
+[node name="PassValue" type="Label" parent="PassContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "(0%)"
+label_settings = SubResource("LabelSettings_01pik")
 
 [node name="PassLabel" type="Label" parent="PassContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_constants/outline_size = 0
 text = "Pass"
 label_settings = SubResource("LabelSettings_i36fi")
 
-[node name="FailContainer" type="MarginContainer" parent="."]
+[node name="FailContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_vertical = 3
+alignment = 2
+
+[node name="FailValue" type="Label" parent="FailContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "(0%)"
+label_settings = SubResource("LabelSettings_01pik")
 
 [node name="FailLabel" type="Label" parent="FailContainer"]
 layout_mode = 2

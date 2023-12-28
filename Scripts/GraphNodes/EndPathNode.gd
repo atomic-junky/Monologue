@@ -2,15 +2,14 @@
 
 class_name EndPathNode
 
-extends GraphNode
+extends MonologueGraphNode
 
 
-var node_type = "NodeEndPath"
-var id = UUID.v4()
 var next_story_name = ""
 
 
 func _ready():
+	node_type = "NodeEndPath"
 	title = node_type
 
 
@@ -34,3 +33,7 @@ func _from_dict(dict):
 func _on_close_request():
 	queue_free()
 	get_parent().clear_all_empty_connections()
+
+func _update(panel: EndPathNodePanel = null):
+	if panel != null:
+		next_story_name = panel.next_story_name

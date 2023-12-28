@@ -1,8 +1,8 @@
 @icon("res://Assets/Icons/NodesIcons/Sentence.svg")
 
-class_name SetenceNodePanel
+class_name SentenceNodePanel
 
-extends VBoxContainer
+extends MonologueNodePanel
 
 
 @onready var character_drop_node: OptionButton = $SpeakerContainer/SubContainer/CharacterDrop
@@ -10,9 +10,6 @@ extends VBoxContainer
 @onready var display_variant_node: LineEdit = $SpeakerContainer/DisplayVariantContainer/SubContainer/LineEdit
 @onready var sentence_edit_node: TextEdit = $SentenceContainer/TextEdit
 
-var graph_node
-
-var id = ""
 var sentence = ""
 var speaker_id = 0
 var display_speaker_name = ""
@@ -41,25 +38,27 @@ func _from_dict(dict):
 
 
 func _on_sentence_text_edit_changed():
-	assert(graph_node)
 	sentence = sentence_edit_node.text
 	graph_node.sentence = sentence
 	
-	graph_node.update_preview()
+	change.emit(self)
 
 
 func _on_display_name_line_edit_text_changed(new_text):
-	assert(graph_node)
 	display_speaker_name = new_text
 	graph_node.display_speaker_name = display_speaker_name
 	
-	graph_node.update_preview()
+	change.emit(self)
 
 
 func _on_character_drop_item_selected(index):
 	graph_node.speaker_id = index
+	
+	change.emit(self)
 
 
 func _on_line_edit_text_changed(new_text):
 	display_variant = new_text
 	graph_node.display_variant = new_text
+	
+	change.emit(self)

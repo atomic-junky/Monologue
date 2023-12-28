@@ -2,19 +2,20 @@
 
 class_name ConditionNode
 
-extends GraphNode
+extends MonologueGraphNode
 
 
 @onready var variable_label = $MarginIfContainer/IfContainer/VariableLabel
 @onready var operator_label = $MarginIfContainer/IfContainer/OperatorLabel
 @onready var value_label = $MarginIfContainer/IfContainer/ValueLabel
 
-var id = UUID.v4()
-var node_type = "NodeCondition"
-
 var variable_name: String = ""
 var operator: String = ""
 var value = null
+
+func _ready():
+	node_type = "NodeCondition"
+	title = node_type
 
 func _to_dict() -> Dictionary:
 	var if_next_id_node = get_parent().get_all_connections_from_slot(name, 0)
@@ -49,7 +50,7 @@ func _from_dict(dict: Dictionary):
 	position_offset.x = _pos.get("x")
 	position_offset.x = _pos.get("y")
 	
-	update_preview()
+	_update()
 
 
 func _condtion_to_dict() -> Dictionary:
@@ -60,7 +61,13 @@ func _condtion_to_dict() -> Dictionary:
 	}
 
 
-func update_preview():
+func _update(panel: ConditionNodePanel = null):
+	if panel != null:
+		if panel.variable_drop_node.selected >= 0:
+			variable_name = panel.variable_drop_node.get_item_text(panel.variable_drop_node.selected)
+		operator = panel.operator_drop_node.get_item_text(panel.operator_drop_node.selected)
+		value = panel.get_value()
+		
 	variable_label.text = variable_name
 	operator_label.text = operator
 	value_label.text = str(value)

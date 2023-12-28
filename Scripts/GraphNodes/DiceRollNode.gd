@@ -2,16 +2,17 @@
 
 class_name DiceRollNode
 
-extends GraphNode
+extends MonologueGraphNode
 
 
-var _node_dict: Dictionary
+@onready var pass_value = $PassContainer/PassValue
+@onready var fail_value = $FailContainer/FailValue
 
-var id = UUID.v4()
-var node_type = "NodeDiceRoll"
 var target_number = 0
 
+
 func _ready():
+	node_type = "NodeDiceRoll"
 	title = node_type
 
 
@@ -34,15 +35,17 @@ func _to_dict() -> Dictionary:
 
 
 func _from_dict(dict):
-	_node_dict = dict
-	
 	id = dict.get("ID")
 	target_number = dict.get("Target")
+	_update()
 	
 	position_offset.x = dict.EditorPosition.get("x")
 	position_offset.y = dict.EditorPosition.get("y")
 
 
-func _on_close_request():
-	queue_free()
-	get_parent().clear_all_empty_connections()
+func _update(panel: DiceRollNodePanel = null):
+	if panel != null:
+		target_number = panel.target_number
+	
+	pass_value.text = "(" + str(target_number) + "%)"
+	fail_value.text = "(" + str(100 - target_number) + "%)"

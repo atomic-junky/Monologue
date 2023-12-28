@@ -2,16 +2,14 @@
 
 class_name CommentNpde
 
-extends GraphNode
+extends MonologueGraphNode
 
 
 @onready var comment_edit = $MainContainer/CommentEdit
 
-var id = UUID.v4()
-var node_type = "NodeComment"
-
 
 func _to_dict() -> Dictionary:
+	node_type = "NodeComment"
 	return {
 		"$type": node_type,
 		"ID": id,

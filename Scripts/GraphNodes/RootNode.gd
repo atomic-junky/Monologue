@@ -2,17 +2,14 @@
 
 class_name RootNode
 
-extends GraphNode
+extends MonologueGraphNode
 
 
-var _node_dict: Dictionary
-
-var id = UUID.v4()
-var node_type = "NodeRoot"
 var characters = []
 
 
 func _ready():
+	node_type = "NodeRoot"
 	title = node_type
 
 
@@ -22,16 +19,14 @@ func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,
 		"ID": id,
-		"NextID": next_id_node[0].id if next_id_node else -1,
+		"NextID": next_id_node[0].id if next_id_node and next_id_node[0] else -1,
 		"EditorPosition": {
 			"x": position_offset.x,
 			"y": position_offset.y
 		}
 	}
 
-func _from_dict(dict, _global_dict):
-	_node_dict = dict
-	
+func _from_dict(dict):
 	id = dict.get("ID")
 	
 	var _pos = dict.get("EditorPosition")
