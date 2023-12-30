@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnxbsvukyu6a2"]
+[gd_scene load_steps=6 format=3 uid="uid://dnxbsvukyu6a2"]
 
-[ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_eeev0"]
-[ext_resource type="PackedScene" uid="uid://cffd4esx3hj6g" path="res://Test/Objects/choice_panel.tscn" id="3_hc36g"]
-[ext_resource type="Script" path="res://Test/Scripts/CharacterAsset.gd" id="4_hj7e0"]
-[ext_resource type="Script" path="res://Test/Scripts/text_box.gd" id="4_sbftg"]
+[ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_ubnh2"]
+[ext_resource type="Texture2D" uid="uid://x47witrev3aa" path="res://Test/Assets/background02.png" id="2_ea4bc"]
+[ext_resource type="Script" path="res://Test/Scripts/CharacterAsset.gd" id="2_jy7h5"]
+[ext_resource type="Script" path="res://Test/Scripts/text_box.gd" id="3_tgoc7"]
+[ext_resource type="PackedScene" uid="uid://cffd4esx3hj6g" path="res://Test/Objects/choice_panel.tscn" id="4_wcimc"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -12,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_eeev0")
+script = ExtResource("1_ubnh2")
 
 [node name="Background" type="TextureRect" parent="."]
 texture_filter = 1
@@ -22,6 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_ea4bc")
 expand_mode = 1
 stretch_mode = 6
 
@@ -46,7 +48,7 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
-script = ExtResource("4_hj7e0")
+script = ExtResource("2_jy7h5")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -87,9 +89,9 @@ alignment = 2
 [node name="TextBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer/ScrollContainer/Container"]
 layout_mode = 2
 theme_override_constants/separation = 50
-script = ExtResource("4_sbftg")
+script = ExtResource("3_tgoc7")
 
-[node name="ChoicePanel" parent="MarginContainer/MarginContainer/ScrollContainer/Container" instance=ExtResource("3_hc36g")]
+[node name="ChoicePanel" parent="MarginContainer/MarginContainer/ScrollContainer/Container" instance=ExtResource("4_wcimc")]
 visible = false
 texture_filter = 1
 layout_mode = 2

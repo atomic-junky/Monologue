@@ -59,13 +59,26 @@ grow_vertical = 0
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 
-[node name="TestButton" parent="CenterContainer/VBoxContainer" instance=ExtResource("4_qyh0i")]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
-text = "Test this story"
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+
+[node name="TestButtonGoth" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2" instance=ExtResource("4_qyh0i")]
+layout_mode = 2
+text = "Test this story (medieval skin)"
+
+[node name="TestButtonModern" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2" instance=ExtResource("4_qyh0i")]
+layout_mode = 2
+text = "Test this story (modern skin)"
 
 [node name="ReturnToEditorButton" parent="CenterContainer/VBoxContainer" instance=ExtResource("4_qyh0i")]
 layout_mode = 2
 text = "Return to the editor"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/TestButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2/TestButtonGoth" to="." method="_on_test_button_goth_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2/TestButtonModern" to="." method="_on_test_button_modern_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ReturnToEditorButton" to="." method="_on_return_to_editor_button_pressed"]

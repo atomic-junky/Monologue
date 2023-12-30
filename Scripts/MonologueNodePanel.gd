@@ -11,7 +11,7 @@ var id
 func _ready():
 	pass
 
-func _from_dict(dict: Dictionary):
+func _from_dict(_dict: Dictionary):
 	pass
 
 func _set_gn(new_gn):

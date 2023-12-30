@@ -3,15 +3,17 @@ extends MonologueProcess
 
 @onready var menu_scene = preload("res://Test/Menu.tscn").instantiate()
 
+@onready var option_container = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
+@onready var text_box = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
+@onready var choice_panel = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
+@onready var background_node = $Background
+@onready var audio_player = $AudioStreamPlayer
+@onready var character_asset_node = $CharacterAssetContainer/Asset
+
+var is_completed: bool = true
+
 func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
-	
-	text_box = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
-	choice_panel = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
-	background_node = $Background
-	audio_player = $AudioStreamPlayer
-	character_asset_node = $CharacterAssetContainer/Asset
-	
 	var path = global_vars.test_path
 	
 	load_dialogue(path.get_basename())

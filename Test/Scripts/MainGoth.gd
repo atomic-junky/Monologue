@@ -7,17 +7,15 @@ extends MonologueProcess
 @onready var option_container = $OptionContainer
 @onready var character_container = $TextBoxContainer/Character/CharacterContainer
 @onready var character_label = $TextBoxContainer/Character/CharacterContainer/Label
+@onready var text_box = $TextBoxContainer/Text/RichTextLabel
+@onready var choice_panel = $OptionContainer
+@onready var background_node = $Background
+@onready var audio_player = $AudioStreamPlayer
 
 var is_completed: bool = true
 
 func _ready():
-	var global_vars = get_node("/root/GlobalVariables")
-	
-	text_box = $TextBoxContainer/Text/RichTextLabel
-	choice_panel = $OptionContainer
-	background_node = $Background
-	audio_player = $AudioStreamPlayer
-	
+	var global_vars = get_node("/root/GlobalVariables")	
 	var path = global_vars.test_path
 	
 	load_dialogue(path.get_basename())
@@ -59,9 +57,9 @@ func _on_end(raw_end):
 		queue_free()
 
 
-func _on_sentence(sentence, speaker, speaker_name):
+func _on_sentence(text, speaker, speaker_name):
 	is_completed = false
-	text_box.text = sentence
+	text_box.text = text
 	
 	if not speaker.begins_with("_"):
 		character_container.show()
@@ -81,6 +79,10 @@ func _display_sentence():
 
 
 func _on_new_choice(options):
+	choice_panel.hide()
+	for child in choice_panel.get_children():
+		child.queue_free()
+		
 	for opt in options:
 		var new_opt = option.instantiate()
 		new_opt.text = opt.get("Sentence")
@@ -97,4 +99,4 @@ func _on_option_choosed(_raw_option):
 
 func character_resized():
 	var lb_x = $TextBoxContainer/Character/CharacterContainer/Label.size.x
-	$TextBoxContainer/Character/CharacterContainer/CharacterBox.size.x = lb_x - 12
+	$TextBoxContainer/Character/CharacterContainer/CharacterBox.size.x = lb_x + 12

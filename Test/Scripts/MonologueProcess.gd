@@ -5,12 +5,6 @@ class_name MonologueProcess
 
 var dir_path
 
-var text_box
-var choice_panel
-var character_asset_node
-var prev_char_asset
-var background_node
-var audio_player: AudioStreamPlayer
 
 var root_node_id: String
 var node_list: Array
@@ -29,6 +23,8 @@ signal new_choice(choices: Array[Dictionary])
 signal option_choosed(raw_option: Dictionary)
 signal event_triggered(raw_event: Dictionary)
 signal end(raw_end)
+signal update_background(background)
+signal play_audio(stream)
 
 
 func _init():
@@ -105,10 +101,6 @@ func next():
 	node_reached.emit(node)
 	
 func _process_node(node: Dictionary):
-	choice_panel.hide()
-	for child in choice_panel.get_children():
-		child.queue_free()
-	
 	match node.get("$type"):
 		"NodeRoot":
 			next_id = node.get("NextID")
@@ -198,8 +190,7 @@ func _process_node(node: Dictionary):
 							var sound = AudioStream.new()
 							sound.data = file.get_buffer(file.get_length())
 							
-							audio_player.stream = sound
-							audio_player.play()
+							play_audio.emit(sound)
 						"UpdateBackground":
 							var bg = Image.new()
 							var err = bg.load(dir_path + "\\assets\\backgrounds\\" + raw_action.get("Value"))
@@ -208,7 +199,7 @@ func _process_node(node: Dictionary):
 								print("[ERROR] Failed to load background (" + raw_action.get("Value") + ")")
 							
 							var texture = ImageTexture.create_from_image(bg)
-							background_node.set_texture(texture)
+							update_background.emit(texture)
 				"ActionTimer":
 					var time_to_wait = raw_action.get("Value", 0.0)
 					if not is_inside_tree():

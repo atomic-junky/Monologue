@@ -133,7 +133,7 @@ func update_action(_x = null):
 
 
 func get_value():
-	var action_type = action_drop_node.get_item_text(action_drop_node.selected)
+	action_type = action_drop_node.get_item_text(action_drop_node.selected)
 	match action_type:
 		"ActionOption":
 			return boolean_edit.button_pressed
