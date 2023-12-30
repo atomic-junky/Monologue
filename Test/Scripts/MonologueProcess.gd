@@ -98,7 +98,8 @@ func next():
 	
 	var node = find_node_from_id(next_id)
 	
-	monologue_node_reached.emit(node)
+	if node:
+		monologue_node_reached.emit(node)
 	
 func _process_node(node: Dictionary):
 	match node.get("$type"):
@@ -239,6 +240,9 @@ func _process_node(node: Dictionary):
 			monologue_end.emit(node)
 
 func find_node_from_id(id):
+	if not id is String:
+		return null
+		
 	var nodes = node_list.filter(func (node): return node.get("ID") == id)
 	if nodes.size() <= 0:
 		return null

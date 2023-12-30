@@ -82,6 +82,9 @@ func _on_monologue_sentence(sentence, speaker, speaker_name):
 		
 		character_container.hide()
 	
+	for tb: RichTextLabel in text_box_container.get_children():
+		tb.modulate = Color(1, 1, 1, 0.6)
+	
 	text_box_container.add_child(new_textbox)
 	
 	get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox.text), 0.5)
