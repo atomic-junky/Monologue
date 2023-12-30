@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://3k3dukisluyn"]
 
-[ext_resource type="Texture2D" uid="uid://coirxt3km0oht" path="res://Assets/Icons/trash_icon.png" id="2_du61s"]
+[ext_resource type="Texture2D" uid="uid://cupclxlgjwjmg" path="res://Assets/Icons/trash_icon.png" id="2_du61s"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/OptionNode.gd" id="4_5yoga"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_803ep"]

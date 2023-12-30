@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cwox6etsdpnh8"]
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/EndPathNodePanel.gd" id="1_tde0e"]
-[ext_resource type="FontFile" uid="uid://d36xxvn6xfq40" path="res://Assets/Fonts/NotoSans-Italic.ttf" id="2_8pysj"]
+[ext_resource type="FontFile" uid="uid://2eq6t1lcw61" path="res://Assets/Fonts/NotoSans-Italic.ttf" id="2_8pysj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_wvoxr"]
 font = ExtResource("2_8pysj")

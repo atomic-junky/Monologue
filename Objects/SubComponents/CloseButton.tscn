@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dspmmme0jspdx"]
 
-[ext_resource type="Texture2D" uid="uid://cx2kpptyyju8l" path="res://Assets/Icons/close_icon.png" id="1_qhyg4"]
+[ext_resource type="Texture2D" uid="uid://c7vdr4e0mxst6" path="res://Assets/Icons/close_icon.png" id="1_qhyg4"]
 
 [node name="CloseButton" type="TextureButton"]
 offset_right = 16.0

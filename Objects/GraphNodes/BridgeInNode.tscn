@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://b0eo5lvnrwidu"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/BridgeInNode.gd" id="1_8y1eo"]
-[ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_726p4"]
-[ext_resource type="Texture2D" uid="uid://cywufl2slityq" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_h62ch"]
+[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_726p4"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_h62ch"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgilu"]
 content_margin_left = 10.0

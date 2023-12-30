@@ -75,16 +75,16 @@ func _on_monologue_sentence(sentence, speaker, speaker_name):
 			character_container.position.x = -character_container.size.x
 			character_container.show()
 			character_container.texture = char_asset
-			await get_tree().create_tween().tween_property(character_container, "position:x", 50, 0.1)
+			get_tree().create_tween().tween_property(character_container, "position:x", 50, 0.1)
 	else:
 		character_container.position.x = 50
-		await get_tree().create_tween().tween_property(character_container, "position:x", -character_container.size.x, 0.1)
+		get_tree().create_tween().tween_property(character_container, "position:x", -character_container.size.x, 0.1)
 		
 		character_container.hide()
 	
 	text_box_container.add_child(new_textbox)
 	
-	await get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox.text), 0.5)
+	get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox.text), 0.5)
 
 
 func _on_monologue_new_choice(options):
@@ -98,7 +98,7 @@ func _on_monologue_new_choice(options):
 	choice_container.show()
 
 
-func _on_monologue_option_choosed(raw_option):
+func _on_monologue_option_choosed(_raw_option):
 	choice_container.hide()
 	for child in choice_container.get_children():
 		child.queue_free()

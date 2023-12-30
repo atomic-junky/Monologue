@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://cfimjp133kacy"]
 
 [ext_resource type="Script" path="res://Scripts/SubComponents/Variable.gd" id="1_287dt"]
-[ext_resource type="Texture2D" uid="uid://coirxt3km0oht" path="res://Assets/Icons/trash_icon.png" id="1_qgrst"]
-[ext_resource type="Texture2D" uid="uid://bl5yb5x0rivmo" path="res://Assets/Icons/bool_icon.png" id="2_1iil2"]
-[ext_resource type="Texture2D" uid="uid://qcd8ly7qhpse" path="res://Assets/Icons/int_icon.png" id="3_wmcdv"]
-[ext_resource type="Texture2D" uid="uid://dxckss1g02ogs" path="res://Assets/Icons/str_icon.png" id="4_5xlia"]
+[ext_resource type="Texture2D" uid="uid://cupclxlgjwjmg" path="res://Assets/Icons/trash_icon.png" id="1_qgrst"]
+[ext_resource type="Texture2D" uid="uid://cv4o31xq3mc01" path="res://Assets/Icons/bool_icon.png" id="2_1iil2"]
+[ext_resource type="Texture2D" uid="uid://br8gl4fjvfa84" path="res://Assets/Icons/int_icon.png" id="3_wmcdv"]
+[ext_resource type="Texture2D" uid="uid://bjbupmf3if01e" path="res://Assets/Icons/str_icon.png" id="4_5xlia"]
 
 [node name="Variable" type="PanelContainer"]
 offset_right = 271.0

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://co06oddlr5k5"]
 
-[ext_resource type="Texture2D" uid="uid://coirxt3km0oht" path="res://Assets/Icons/trash_icon.png" id="1_drvey"]
+[ext_resource type="Texture2D" uid="uid://cupclxlgjwjmg" path="res://Assets/Icons/trash_icon.png" id="1_drvey"]
 
 [sub_resource type="GDScript" id="GDScript_laerw"]
 script/source = "extends PanelContainer

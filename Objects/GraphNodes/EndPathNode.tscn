@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://c3t0igg4s2pne"]
 
-[ext_resource type="Texture2D" uid="uid://wi8pxdiqq765" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_0hn47"]
+[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_0hn47"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/EndPathNode.gd" id="1_vdup8"]
-[ext_resource type="Texture2D" uid="uid://cm6p57snykipc" path="res://Assets/Icons/Exit.png" id="2_nabb1"]
+[ext_resource type="Texture2D" uid="uid://h2e5al8yimr8" path="res://Assets/Icons/Exit.png" id="2_nabb1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7j4os"]
 content_margin_left = 10.0
