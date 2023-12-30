@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnxbsvukyu6a2"]
+[gd_scene load_steps=7 format=3 uid="uid://dnxbsvukyu6a2"]
 
-[ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_ubnh2"]
-[ext_resource type="Texture2D" uid="uid://x47witrev3aa" path="res://Test/Assets/background02.png" id="2_ea4bc"]
-[ext_resource type="Script" path="res://Test/Scripts/CharacterAsset.gd" id="2_jy7h5"]
-[ext_resource type="Script" path="res://Test/Scripts/text_box.gd" id="3_tgoc7"]
-[ext_resource type="PackedScene" uid="uid://cffd4esx3hj6g" path="res://Test/Objects/choice_panel.tscn" id="4_wcimc"]
+[ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_8rud0"]
+[ext_resource type="Texture2D" uid="uid://371ns5r4jx2n" path="res://Test/Assets/background02.png" id="2_jivd1"]
+[ext_resource type="Script" path="res://Test/Scripts/CharacterAsset.gd" id="3_xil5b"]
+[ext_resource type="Script" path="res://Test/Scripts/text_box.gd" id="4_huku6"]
+[ext_resource type="Script" path="res://Test/Scripts/choice_panel.gd" id="5_gll0q"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8kgr"]
+bg_color = Color(0.141176, 0.14902, 0.192157, 1)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -13,7 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ubnh2")
+script = ExtResource("1_8rud0")
 
 [node name="Background" type="TextureRect" parent="."]
 texture_filter = 1
@@ -23,7 +26,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_ea4bc")
+texture = ExtResource("2_jivd1")
 expand_mode = 1
 stretch_mode = 6
 
@@ -40,15 +43,15 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 56.0
-offset_top = 44.0
-offset_right = -41.0
-offset_bottom = -52.0
+offset_left = 50.0
+offset_top = 200.0
+offset_right = -75.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
-script = ExtResource("2_jy7h5")
+script = ExtResource("3_xil5b")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -64,6 +67,7 @@ theme_override_constants/margin_right = 25
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j8kgr")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -89,14 +93,19 @@ alignment = 2
 [node name="TextBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer/ScrollContainer/Container"]
 layout_mode = 2
 theme_override_constants/separation = 50
-script = ExtResource("3_tgoc7")
+script = ExtResource("4_huku6")
 
-[node name="ChoicePanel" parent="MarginContainer/MarginContainer/ScrollContainer/Container" instance=ExtResource("4_wcimc")]
+[node name="ChoiceContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer/ScrollContainer/Container"]
 visible = false
 texture_filter = 1
 layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("5_gll0q")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 volume_db = -9.0
 
-[connection signal="end" from="." to="." method="_on_end"]
+[connection signal="monologue_end" from="." to="." method="_on_monologue_end"]
+[connection signal="monologue_new_choice" from="." to="." method="_on_monologue_new_choice"]
+[connection signal="monologue_option_choosed" from="." to="." method="_on_monologue_option_choosed"]
+[connection signal="monologue_sentence" from="." to="." method="_on_monologue_sentence"]

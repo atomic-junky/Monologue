@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://clxk4rmxxwgvh"]
+[gd_scene load_steps=6 format=3 uid="uid://clxk4rmxxwgvh"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Menu.gd" id="1_e8xk2"]
-[ext_resource type="Texture2D" uid="uid://b1i4ciajw0urh" path="res://Test/Assets/monologue_title.png" id="2_g183e"]
-[ext_resource type="Texture2D" uid="uid://bvwarv5h1rmcb" path="res://Test/Assets/background01.png" id="2_i50y0"]
-[ext_resource type="PackedScene" uid="uid://cj80aa4ckke2i" path="res://Test/Objects/choice_button.tscn" id="4_qyh0i"]
+[ext_resource type="Texture2D" uid="uid://baauyg0vt3mws" path="res://Test/Assets/monologue_demo_title.png" id="2_bnydb"]
+[ext_resource type="PackedScene" uid="uid://cj80aa4ckke2i" path="res://Test/Objects/option_button.tscn" id="4_qmtb7"]
+
+[sub_resource type="Gradient" id="Gradient_qe2wi"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.176471, 0.2, 0.258824, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6uux6"]
+gradient = SubResource("Gradient_qe2wi")
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -22,12 +28,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_i50y0")
+texture = SubResource("GradientTexture1D_6uux6")
 expand_mode = 1
 stretch_mode = 6
 
 [node name="Title" type="TextureRect" parent="."]
-visible = false
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
@@ -41,7 +46,7 @@ offset_right = 295.0
 offset_bottom = 73.75
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_g183e")
+texture = ExtResource("2_bnydb")
 expand_mode = 5
 stretch_mode = 4
 
@@ -67,18 +72,13 @@ theme_override_constants/margin_bottom = 15
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 
-[node name="TestButtonGoth" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2" instance=ExtResource("4_qyh0i")]
+[node name="TestButtonModern" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2" instance=ExtResource("4_qmtb7")]
 layout_mode = 2
-text = "Test this story (medieval skin)"
+text = "Test this story"
 
-[node name="TestButtonModern" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2" instance=ExtResource("4_qyh0i")]
-layout_mode = 2
-text = "Test this story (modern skin)"
-
-[node name="ReturnToEditorButton" parent="CenterContainer/VBoxContainer" instance=ExtResource("4_qyh0i")]
+[node name="ReturnToEditorButton" parent="CenterContainer/VBoxContainer" instance=ExtResource("4_qmtb7")]
 layout_mode = 2
 text = "Return to the editor"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2/TestButtonGoth" to="." method="_on_test_button_goth_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2/TestButtonModern" to="." method="_on_test_button_modern_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ReturnToEditorButton" to="." method="_on_return_to_editor_button_pressed"]

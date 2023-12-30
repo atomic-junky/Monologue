@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cm2caiiwpfydd"]
 
-[ext_resource type="FontFile" uid="uid://j6tsu406eop" path="res://Test/Assets/SometypeMono-VariableFont_wght.ttf" id="2_x2e5y"]
+[ext_resource type="FontFile" uid="uid://mx60snunsrog" path="res://Test/Assets/SometypeMono-VariableFont_wght.ttf" id="2_x2e5y"]
 
 [node name="TextLabel" type="RichTextLabel"]
 texture_filter = 1

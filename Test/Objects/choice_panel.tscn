@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cffd4esx3hj6g"]
-
-[ext_resource type="Script" path="res://Test/Scripts/choice_panel.gd" id="1_aiat6"]
-
-[node name="ChoicePanel" type="VBoxContainer"]
-offset_right = 40.0
-offset_bottom = 40.0
-size_flags_horizontal = 3
-script = ExtResource("1_aiat6")

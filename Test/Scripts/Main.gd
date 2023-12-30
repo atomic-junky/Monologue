@@ -2,13 +2,14 @@ extends MonologueProcess
 
 
 @onready var menu_scene = preload("res://Test/Menu.tscn").instantiate()
+@onready var text_box = preload("res://Test/Objects/text_box.tscn")
+@onready var option_button = preload("res://Test/Objects/option_button.tscn")
 
-@onready var option_container = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
-@onready var text_box = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
-@onready var choice_panel = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoicePanel
+@onready var text_box_container = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
+@onready var choice_container = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoiceContainer
 @onready var background_node = $Background
 @onready var audio_player = $AudioStreamPlayer
-@onready var character_asset_node = $CharacterAssetContainer/Asset
+@onready var character_container = $CharacterAssetContainer/Asset
 
 var is_completed: bool = true
 
@@ -20,11 +21,11 @@ func _ready():
 	next()
 
 func _input(event):
-	if event.is_action_pressed("ui_accept") and text_box.complete and not choice_panel.visible:
+	if event.is_action_pressed("ui_accept") and is_completed and not choice_container.visible:
 		next()
 
-func get_character_asset(character, _variant = null):
-	if character == "_NARRATOR":
+func get_character_asset(character: String, _variant = null):
+	if character.begins_with("_"):
 		return
 		
 	rng.seed = hash(character)
@@ -46,7 +47,7 @@ func get_character_asset(character, _variant = null):
 	return
 
 
-func _on_end(raw_end):
+func _on_monologue_end(raw_end):
 	if not raw_end or not raw_end.get("NextStoryName"):
 		var menu_instance = preload("res://Test/Menu.tscn")
 		var menu_scene_instance = menu_instance.instantiate()
@@ -54,3 +55,50 @@ func _on_end(raw_end):
 		get_tree().root.add_child(menu_scene_instance)
 		queue_free()
 
+
+func _on_monologue_sentence(sentence, speaker, speaker_name):
+	# Textbox
+	var new_textbox: RichTextLabel = text_box.instantiate()
+	
+	if speaker_name.begins_with("_"):
+		new_textbox.text = sentence
+		new_textbox.visible_characters = 0
+	else:
+		new_textbox.text = "[color=e75a41]" + speaker_name + "[/color]\n"
+		new_textbox.text += sentence
+		new_textbox.visible_characters = len(speaker_name)
+	
+	# Speaker
+	var char_asset = get_character_asset(speaker, speaker_name)
+	if char_asset:
+		if not character_container.visible:
+			character_container.position.x = -character_container.size.x
+			character_container.show()
+			character_container.texture = char_asset
+			await get_tree().create_tween().tween_property(character_container, "position:x", 50, 0.1)
+	else:
+		character_container.position.x = 50
+		await get_tree().create_tween().tween_property(character_container, "position:x", -character_container.size.x, 0.1)
+		
+		character_container.hide()
+	
+	text_box_container.add_child(new_textbox)
+	
+	await get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox.text), 0.5)
+
+
+func _on_monologue_new_choice(options):
+	for option in options:
+		var new_option = option_button.instantiate()
+		new_option.text = option.get("Sentence")
+		new_option.connect("pressed", option_selected.bind(option))
+		
+		choice_container.add_child(new_option)
+	
+	choice_container.show()
+
+
+func _on_monologue_option_choosed(raw_option):
+	choice_container.hide()
+	for child in choice_container.get_children():
+		child.queue_free()

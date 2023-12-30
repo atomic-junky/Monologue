@@ -17,20 +17,20 @@ var fallback_id
 
 var rng = RandomNumberGenerator.new()
 
-signal node_reached(raw_node: Dictionary)
-signal sentence(sentence: String, speaker: String, speaker_name: String)
-signal new_choice(choices: Array[Dictionary])
-signal option_choosed(raw_option: Dictionary)
-signal event_triggered(raw_event: Dictionary)
-signal end(raw_end)
-signal update_background(background)
-signal play_audio(stream)
+signal monologue_node_reached(raw_node: Dictionary)
+signal monologue_sentence(sentence: String, speaker: String, speaker_name: String)
+signal monologue_new_choice(options: Array[Dictionary])
+signal monologue_option_choosed(raw_option: Dictionary)
+signal monologue_event_triggered(raw_event: Dictionary)
+signal monologue_end(raw_end)
+signal monologue_update_background(background)
+signal monologue_play_audio(stream)
 
 
 func _init():
 	print("[INFO] Monologue Process initiated")
-	node_reached.connect(_process_node)
-	end.connect(_default_end_process)
+	monologue_node_reached.connect(_process_node)
+	monologue_end.connect(_default_end_process)
 
 func load_dialogue(dialogue_name):
 	var path = dialogue_name + ".json"
@@ -83,7 +83,7 @@ func next():
 			"!=":
 				condition_pass = v_val != c_val
 		if condition_pass:
-			event_triggered.emit(event)
+			monologue_event_triggered.emit(event)
 			fallback_id = next_id
 			next_id = event.get("NextID")
 			
@@ -94,11 +94,11 @@ func next():
 			next_id = fallback_id
 			fallback_id = null
 		
-		end.emit(null)
+		monologue_end.emit(null)
 	
 	var node = find_node_from_id(next_id)
 	
-	node_reached.emit(node)
+	monologue_node_reached.emit(node)
 	
 func _process_node(node: Dictionary):
 	match node.get("$type"):
@@ -119,9 +119,8 @@ func _process_node(node: Dictionary):
 			
 			var processed_sentence = process_conditional_text(node.get("Sentence"))
 			var speaker_name = node.get("DisplaySpeakerName") if node.get("DisplaySpeakerName") else get_speaker(node.get("SpeakerID"))
-			print()
 			
-			sentence.emit(
+			monologue_sentence.emit(
 				processed_sentence,
 				get_speaker(node.get("SpeakerID")),
 				speaker_name
@@ -137,7 +136,7 @@ func _process_node(node: Dictionary):
 					continue
 				
 				options.append(option)
-			new_choice.emit(options)
+			monologue_new_choice.emit(options)
 		"NodeDiceRoll":
 			var roll = rng.randi_range(0, 100)
 			if roll <= node.get("Target"):
@@ -190,7 +189,7 @@ func _process_node(node: Dictionary):
 							var sound = AudioStream.new()
 							sound.data = file.get_buffer(file.get_length())
 							
-							play_audio.emit(sound)
+							monologue_play_audio.emit(sound)
 						"UpdateBackground":
 							var bg = Image.new()
 							var err = bg.load(dir_path + "\\assets\\backgrounds\\" + raw_action.get("Value"))
@@ -199,7 +198,7 @@ func _process_node(node: Dictionary):
 								print("[ERROR] Failed to load background (" + raw_action.get("Value") + ")")
 							
 							var texture = ImageTexture.create_from_image(bg)
-							update_background.emit(texture)
+							monologue_update_background.emit(texture)
 				"ActionTimer":
 					var time_to_wait = raw_action.get("Value", 0.0)
 					if not is_inside_tree():
@@ -237,7 +236,7 @@ func _process_node(node: Dictionary):
 			next()
 			return
 		"NodeEndPath":
-			end.emit(node)
+			monologue_end.emit(node)
 
 func find_node_from_id(id):
 	var nodes = node_list.filter(func (node): return node.get("ID") == id)
@@ -316,11 +315,11 @@ func _default_end_process(raw_end):
 
 
 func option_selected(option):
-	option_choosed.emit(option)
+	monologue_option_choosed.emit(option)
 	
 	if option == null:
 		print("[CRITICAL] Can't find option. Unexpected exit.")
-		end.emit(null)
+		monologue_end.emit(null)
 		return
 	
 	next_id = option.get("NextID")
