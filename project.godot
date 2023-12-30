@@ -55,6 +55,10 @@ folder_colors={
 "res://Test/": "red"
 }
 
+[filesystem]
+
+import/blender/enabled=false
+
 [gui]
 
 theme/custom="res://Assets/MainTheme.tres"
