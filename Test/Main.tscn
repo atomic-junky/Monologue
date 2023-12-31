@@ -1,13 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://dnxbsvukyu6a2"]
+[gd_scene load_steps=11 format=3 uid="uid://dnxbsvukyu6a2"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_8rud0"]
 [ext_resource type="Texture2D" uid="uid://371ns5r4jx2n" path="res://Test/Assets/background.png" id="2_0y34q"]
 [ext_resource type="Script" path="res://Test/Scripts/CharacterAsset.gd" id="3_xil5b"]
 [ext_resource type="Script" path="res://Test/Scripts/text_box.gd" id="4_huku6"]
 [ext_resource type="Script" path="res://Test/Scripts/choice_panel.gd" id="5_gll0q"]
+[ext_resource type="Script" path="res://Test/Scripts/Notification.gd" id="6_kev1j"]
+[ext_resource type="FontFile" uid="uid://dtcui621somwd" path="res://Test/Font/VT323-Regular.ttf" id="7_4y7hk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8kgr"]
 bg_color = Color(0.141176, 0.14902, 0.192157, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xalfy"]
+bg_color = Color(0.141176, 0.14902, 0.192157, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41p1n"]
+bg_color = Color(0.898039, 0.713726, 0.368627, 1)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -102,10 +110,49 @@ layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_gll0q")
 
+[node name="Notification" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 10.0
+offset_right = 150.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xalfy")
+script = ExtResource("6_kev1j")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Notification"]
+layout_mode = 2
+
+[node name="TimeLeft" type="PanelContainer" parent="Notification/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_41p1n")
+
+[node name="MarginContainer" type="MarginContainer" parent="Notification/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Notification/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("7_4y7hk")
+bbcode_enabled = true
+fit_content = true
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 volume_db = -9.0
 
 [connection signal="monologue_end" from="." to="." method="_on_monologue_end"]
+[connection signal="monologue_event_triggered" from="." to="." method="_on_monologue_event_triggered"]
 [connection signal="monologue_new_choice" from="." to="." method="_on_monologue_new_choice"]
 [connection signal="monologue_option_choosed" from="." to="." method="_on_monologue_option_choosed"]
+[connection signal="monologue_play_audio" from="." to="." method="_on_monologue_play_audio"]
 [connection signal="monologue_sentence" from="." to="." method="_on_monologue_sentence"]
+[connection signal="monologue_update_background" from="." to="." method="_on_monologue_update_background"]

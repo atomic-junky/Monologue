@@ -79,29 +79,30 @@ func _from_dict(dict: Dictionary):
 	
 	update_action()
 
+func hide_all(except_nodes: Array):
+	var exceptions = []
+	for node in except_nodes:
+		exceptions.append(node.name)
+	
+	for child in get_children():
+		if child.name in exceptions:
+			child.show()
+			continue
+			
+		if child == $ValueContainer:
+			for subchild in $ValueContainer.get_children():
+				subchild.visible = subchild.name in exceptions
+			continue
+			
+		child.hide()
 
 func update_action(_x = null):
 	action_type = action_drop_node.get_item_text(action_drop_node.selected)
 	
-	for child in get_children():
-		if child == $ValueContainer:
-			for subchild in $ValueContainer.get_children():
-				subchild.hide()
-			continue
-			
-		child.hide()
-	
-	$ActionTypeContainer.show()
-	$ValueContainer/ValueLabel.show()
-	
 	match action_type:
 		"ActionOption":
-			option_id_container.show()
-			boolean_edit.show()
+			hide_all([option_id_container, boolean_edit])
 		"ActionVariable":
-			variable_container.show()
-			operator_container.show()
-			
 			var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 			if not variable_name:
 				return
@@ -116,18 +117,20 @@ func update_action(_x = null):
 			
 			match variable.get("Type"):
 				"Boolean":
-					boolean_edit.show()
+					hide_all([boolean_edit, variable_container, operator_container])
 				"Integer":
-					number_edit.show()
+					hide_all([number_edit, variable_container, operator_container])
 				"String":
-					string_edit.show()
+					hide_all([string_edit, variable_container, operator_container])
 				_:
-					default_label.show()
+					hide_all([default_label, variable_container, operator_container])
 		"ActionCustom":
-			custom_container.show()
-			string_edit.show()
+			hide_all([custom_container, string_edit])
 		"ActionTimer":
-			number_edit.show()
+			hide_all([number_edit])
+	
+	$ActionTypeContainer.show()
+	$ValueContainer/ValueLabel.show()
 	
 	change.emit(self)
 

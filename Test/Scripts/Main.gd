@@ -105,3 +105,20 @@ func _on_monologue_option_choosed(_raw_option):
 	choice_container.hide()
 	for child in choice_container.get_children():
 		child.queue_free()
+
+
+func _on_monologue_event_triggered(raw_event):
+	var event_id = raw_event.get("ID").split("-")[0]
+	
+	var condition = raw_event.get("Condition")
+	var condition_display = str(condition.get("Variable")) + " " + str(condition.get("Operator")) + " " + str(condition.get("Value"))
+	
+	$Notification.debug("Event triggered [color=7f7f7f](" + event_id + ")[/color]\n" + "Condition: [color=7f7f7f]" + condition_display + "[/color]")
+
+
+func _on_monologue_update_background(path, _texture):
+	$Notification.debug("Update Background instruction received [color=7f7f7f](" + path + ")[/color]")
+
+
+func _on_monologue_play_audio(stream):
+	$Notification.debug("Play Audio instruction received [color=7f7f7f](" + stream.ressource_path + ")[/color]")

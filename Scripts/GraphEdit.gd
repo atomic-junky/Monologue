@@ -34,9 +34,18 @@ func get_all_connections_from_node(from_node: StringName):
 		if connection.get("from_node") == from_node:
 			var to = get_node_or_null(NodePath(connection.get("to_node")))
 			connections.append(to)
-
+	
 	return connections
 
+func get_all_connections_to_node(from_node: StringName):
+	var connections = []
+	
+	for connection in get_connection_list():
+		if connection.get("to_node") == from_node:
+			var from = get_node_or_null(NodePath(connection.get("from_node")))
+			connections.append(from)
+	
+	return connections
 
 func get_all_connections_from_slot(from_node: StringName, from_port: int):
 	var connections = []
@@ -47,14 +56,6 @@ func get_all_connections_from_slot(from_node: StringName, from_port: int):
 			connections.append(to)
 
 	return connections
-
-
-func clear_all_empty_connections():
-	for co in get_connection_list():
-		var to_name = co.get("to_nodes")
-		var node_ref = get_node_or_null(NodePath(to_name))
-		if node_ref == null or node_ref.is_queued_for_deletion():
-			disconnect_node(co.get("from_nodes"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
 
 func get_linked_bridge_node(target_number):
 	for node in get_children():
@@ -85,6 +86,19 @@ func _on_node_selected(_node):
 func _on_node_deselected(_node):
 	graphnode_selected = false
 
+func free_graphnode(node: GraphNode):
+	# Disconnect all empty connections
+	for n in get_all_connections_to_node(node.name):
+		for co in get_connection_list():
+			if co.get("from_node") == n.name and co.get("to_node") == node.name:
+				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
+	
+	for n in get_all_connections_from_node(node.name):
+		for co in get_connection_list():
+			if co.get("from_node") == node.name and co.get("to_node") == n.name:
+				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
+		
+	node.queue_free()
 
 func _on_child_entered_tree(node: Node):
 	if node is RootNode or not node is GraphNode:
@@ -92,5 +106,5 @@ func _on_child_entered_tree(node: Node):
 	
 	var node_header = node.get_children(true)[0]
 	var close_btn: TextureButton = close_button.instantiate()
-	close_btn.connect("pressed", node.queue_free)
+	close_btn.connect("pressed", free_graphnode.bind(node))
 	node_header.add_child(close_btn)

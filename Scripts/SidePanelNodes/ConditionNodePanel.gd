@@ -63,7 +63,6 @@ func update_all_condition():
 	string_edit.hide()
 	default_label.hide()
 	
-	
 	var is_integer: bool = variable.get("Type") == "Integer"
 	operator_drop_node.set_item_disabled(1, !is_integer)
 	operator_drop_node.set_item_disabled(2, !is_integer)
@@ -71,12 +70,16 @@ func update_all_condition():
 	match variable.get("Type"):
 		"Boolean":
 			boolean_edit.show()
+			boolean_edit.grab_focus()
 		"Integer":
 			number_edit.show()
+			number_edit.grab_focus()
 		"String":
 			string_edit.show()
+			string_edit.grab_focus()
 		_:
 			default_label.show()
+			default_label.grab_focus()
 
 
 func get_value():

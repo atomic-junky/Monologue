@@ -23,7 +23,7 @@ signal monologue_new_choice(options: Array[Dictionary])
 signal monologue_option_choosed(raw_option: Dictionary)
 signal monologue_event_triggered(raw_event: Dictionary)
 signal monologue_end(raw_end)
-signal monologue_update_background(background)
+signal monologue_update_background(path: String, background)
 signal monologue_play_audio(stream)
 
 
@@ -93,8 +93,8 @@ func next():
 		if fallback_id:
 			next_id = fallback_id
 			fallback_id = null
-		
-		monologue_end.emit(null)
+		else:
+			monologue_end.emit(null)
 	
 	var node = find_node_from_id(next_id)
 	
@@ -193,13 +193,17 @@ func _process_node(node: Dictionary):
 							monologue_play_audio.emit(sound)
 						"UpdateBackground":
 							var bg = Image.new()
-							var err = bg.load(dir_path + "\\assets\\backgrounds\\" + raw_action.get("Value"))
+							var texture = null
 							
-							if err != OK:
-								print("[ERROR] Failed to load background (" + raw_action.get("Value") + ")")
+							var full_path = dir_path + "\\assets\\backgrounds\\" + raw_action.get("Value")
+							if FileAccess.file_exists(full_path):
+								var err = bg.load(full_path)
+								if err != OK:
+									print("[WARNING] Failed to load background (" + raw_action.get("Value") + ")")
+								else:
+									texture = ImageTexture.create_from_image(bg)
 							
-							var texture = ImageTexture.create_from_image(bg)
-							monologue_update_background.emit(texture)
+							monologue_update_background.emit(raw_action.get("Value"), texture)
 				"ActionTimer":
 					var time_to_wait = raw_action.get("Value", 0.0)
 					if not is_inside_tree():

@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.0.0-rc8",
+	"EditorVersion": "2.0.0",
 	"RootNodeID": "cbfb0a4b-7517-4411-a447-314d106fe280",
 	"ListNodes": [
 		{
@@ -135,7 +135,7 @@
 		{
 			"$type": "NodeAction",
 			"ID": "8ac967a5-fa9c-4d72-b149-28296d409e06",
-			"NextID": "44244013-8168-4507-af13-7c24f62a75c2",
+			"NextID": "b539d88c-4032-4a18-a146-212a25741cd2",
 			"Action": {
 				"$type": "ActionVariable",
 				"Operator": "=",
@@ -144,16 +144,6 @@
 			},
 			"EditorPosition": {
 				"x": 2640,
-				"y": 0
-			}
-		},
-		{
-			"$type": "NodeBridgeIn",
-			"ID": "44244013-8168-4507-af13-7c24f62a75c2",
-			"NextID": "4f2d9e0e-4d3c-4bdd-a60e-2d2225604ad6",
-			"NumberSelector": 1,
-			"EditorPosition": {
-				"x": 3000,
 				"y": 0
 			}
 		},
@@ -309,6 +299,30 @@
 			"NextID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
 			"EditorPosition": {
 				"x": 0,
+				"y": 0
+			}
+		},
+		{
+			"$type": "NodeBridgeIn",
+			"ID": "44244013-8168-4507-af13-7c24f62a75c2",
+			"NextID": "4f2d9e0e-4d3c-4bdd-a60e-2d2225604ad6",
+			"NumberSelector": 1,
+			"EditorPosition": {
+				"x": 3360,
+				"y": 0
+			}
+		},
+		{
+			"$type": "NodeAction",
+			"ID": "b539d88c-4032-4a18-a146-212a25741cd2",
+			"NextID": "44244013-8168-4507-af13-7c24f62a75c2",
+			"Action": {
+				"$type": "ActionCustom",
+				"CustomType": "UpdateBackground",
+				"Value": "tree.png"
+			},
+			"EditorPosition": {
+				"x": 3000,
 				"y": 0
 			}
 		}

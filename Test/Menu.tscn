@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://clxk4rmxxwgvh"]
+[gd_scene load_steps=8 format=3 uid="uid://clxk4rmxxwgvh"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Menu.gd" id="1_e8xk2"]
 [ext_resource type="Texture2D" uid="uid://baauyg0vt3mws" path="res://Test/Assets/monologue_demo_title.png" id="2_bnydb"]
+[ext_resource type="FontFile" uid="uid://dtcui621somwd" path="res://Test/Font/VT323-Regular.ttf" id="4_drbhn"]
 [ext_resource type="PackedScene" uid="uid://cj80aa4ckke2i" path="res://Test/Objects/option_button.tscn" id="4_qmtb7"]
 
 [sub_resource type="Gradient" id="Gradient_qe2wi"]
@@ -10,6 +11,9 @@ colors = PackedColorArray(0.176471, 0.2, 0.258824, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_6uux6"]
 gradient = SubResource("Gradient_qe2wi")
+
+[sub_resource type="LabelSettings" id="LabelSettings_8nbey"]
+font_color = Color(0.498039, 0.498039, 0.498039, 1)
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -75,6 +79,14 @@ layout_mode = 2
 [node name="TestButtonModern" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2" instance=ExtResource("4_qmtb7")]
 layout_mode = 2
 text = "Test this story"
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_drbhn")
+theme_override_font_sizes/font_size = 14
+text = "(as this is a test, some features may not work as expected)"
+label_settings = SubResource("LabelSettings_8nbey")
+horizontal_alignment = 1
 
 [node name="ReturnToEditorButton" parent="CenterContainer/VBoxContainer" instance=ExtResource("4_qmtb7")]
 layout_mode = 2

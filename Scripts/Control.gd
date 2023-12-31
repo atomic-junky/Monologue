@@ -381,9 +381,6 @@ func add_node(node_type):
 	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
 	
-	if node_type == "Choice":
-		node._on_created()
-
 func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
 	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size() <= 0:
 		get_current_graph_edit().connect_node(from, from_slot, to, to_slot)
