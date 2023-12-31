@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.0.0",
+	"EditorVersion": "2.0.1",
 	"RootNodeID": "cbfb0a4b-7517-4411-a447-314d106fe280",
 	"ListNodes": [
 		{
@@ -318,7 +318,7 @@
 			"NextID": "44244013-8168-4507-af13-7c24f62a75c2",
 			"Action": {
 				"$type": "ActionCustom",
-				"CustomType": "UpdateBackground",
+				"CustomType": "Other",
 				"Value": "tree.png"
 			},
 			"EditorPosition": {

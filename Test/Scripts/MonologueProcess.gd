@@ -23,8 +23,9 @@ signal monologue_new_choice(options: Array[Dictionary])
 signal monologue_option_choosed(raw_option: Dictionary)
 signal monologue_event_triggered(raw_event: Dictionary)
 signal monologue_end(raw_end)
+signal monologue_play_audio(path: String, stream)
 signal monologue_update_background(path: String, background)
-signal monologue_play_audio(stream)
+signal monologue_custom_action(raw_action: Dictionary)
 
 
 func _init():
@@ -186,11 +187,14 @@ func _process_node(node: Dictionary):
 				"ActionCustom":
 					match raw_action.get("CustomType"):
 						"PlayAudio":
-							var file = FileAccess.open(dir_path + "\\assets\\audios\\" + raw_action.get("Value"), FileAccess.READ)
-							var sound = AudioStream.new()
-							sound.data = file.get_buffer(file.get_length())
+							var full_path = dir_path + "\\assets\\audios\\" + raw_action.get("Value")
+							var sound = null
+							if FileAccess.file_exists(full_path):
+								var file = FileAccess.open(full_path, FileAccess.READ)
+								sound = AudioStream.new()
+								sound.data = file.get_buffer(file.get_length())
 							
-							monologue_play_audio.emit(sound)
+							monologue_play_audio.emit(raw_action.get("Value"), sound)
 						"UpdateBackground":
 							var bg = Image.new()
 							var texture = null
@@ -204,6 +208,8 @@ func _process_node(node: Dictionary):
 									texture = ImageTexture.create_from_image(bg)
 							
 							monologue_update_background.emit(raw_action.get("Value"), texture)
+						"Other":
+							monologue_custom_action.emit(raw_action)
 				"ActionTimer":
 					var time_to_wait = raw_action.get("Value", 0.0)
 					if not is_inside_tree():

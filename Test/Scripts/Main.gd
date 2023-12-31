@@ -120,5 +120,9 @@ func _on_monologue_update_background(path, _texture):
 	$Notification.debug("Update Background instruction received [color=7f7f7f](" + path + ")[/color]")
 
 
-func _on_monologue_play_audio(stream):
-	$Notification.debug("Play Audio instruction received [color=7f7f7f](" + stream.ressource_path + ")[/color]")
+func _on_monologue_play_audio(path, _stream):
+	$Notification.debug("Play Audio instruction received [color=7f7f7f](" + path + ")[/color]")
+
+
+func _on_monologue_custom_action(raw_action):
+	$Notification.debug("Custom action received [color=7f7f7f](" + raw_action.get("Value") + ")[/color]")

@@ -149,6 +149,7 @@ fit_content = true
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 volume_db = -9.0
 
+[connection signal="monologue_custom_action" from="." to="." method="_on_monologue_custom_action"]
 [connection signal="monologue_end" from="." to="." method="_on_monologue_end"]
 [connection signal="monologue_event_triggered" from="." to="." method="_on_monologue_event_triggered"]
 [connection signal="monologue_new_choice" from="." to="." method="_on_monologue_new_choice"]

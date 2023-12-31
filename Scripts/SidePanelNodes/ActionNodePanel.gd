@@ -65,7 +65,9 @@ func _from_dict(dict: Dictionary):
 		"ActionCustom":
 			action_drop_node.select(2)
 			match action.get("CustomType"):
-				"PlayMusic":
+				"PlayAudio":
+					custom_drop_node.select(0)
+				"PlayMusic": # Compatibilty with version 2.0.0
 					custom_drop_node.select(0)
 				"UpdateBackground":
 					custom_drop_node.select(1)
