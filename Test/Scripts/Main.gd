@@ -53,6 +53,7 @@ func _on_monologue_end(raw_end):
 		var menu_scene_instance = menu_instance.instantiate()
 		
 		get_tree().root.add_child(menu_scene_instance)
+		SfxLoader.clear()
 		queue_free()
 
 

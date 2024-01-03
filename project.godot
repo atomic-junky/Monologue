@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Monologue"
-config/version="2.0.1"
+config/version="2.0.2"
 run/main_scene="res://Scenes/App.tscn"
 config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
@@ -25,6 +25,7 @@ config/icon="res://icon.png"
 uuid="*res://Scripts/Global/UUID.gd"
 Util="*res://Scripts/Global/Util.gd"
 GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
+SfxLoader="*res://Test/Scripts/SfxLoader.gd"
 
 [display]
 

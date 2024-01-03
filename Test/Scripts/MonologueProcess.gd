@@ -190,9 +190,8 @@ func _process_node(node: Dictionary):
 							var full_path = dir_path + "\\assets\\audios\\" + raw_action.get("Value")
 							var sound = null
 							if FileAccess.file_exists(full_path):
-								var file = FileAccess.open(full_path, FileAccess.READ)
-								sound = AudioStream.new()
-								sound.data = file.get_buffer(file.get_length())
+								var track = SfxLoader.load_track(full_path, raw_action.get("Pitch"), raw_action.get("Volume"))
+								track.loop = raw_action.get("Loop")
 							
 							monologue_play_audio.emit(raw_action.get("Value"), sound)
 						"UpdateBackground":

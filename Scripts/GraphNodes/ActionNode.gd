@@ -9,6 +9,7 @@ extends MonologueGraphNode
 @onready var variable_container = $VariableMarginContainer
 @onready var custom_container = $CustomMarginContainer
 @onready var timer_container = $TimerMarginContainer
+@onready var loop_value_container = $CustomMarginContainer/CustomContainer/LoopValueContainer
 
 @onready var action_type_label = $ActionTypeMarginContainer/ActionTypeContainer/ActionTypeContainer/ActionTypeLabel
 @onready var option_id_label = $OptionMarginContainer/OptionContainer/OptionIdContainer/OptionIdLabel
@@ -25,6 +26,9 @@ var option_id: String = ""
 var variable_name: String = ""
 var operator: String = ""
 var custom_type: String = ""
+var loop: bool = false
+var volume: float = 0.0
+var pitch: float = 1.0
 var value = false
 
 func _ready():
@@ -60,6 +64,10 @@ func _from_dict(dict: Dictionary):
 			variable_name = action.get("Variable")
 		"ActionCustom":
 			custom_type = action.get("CustomType", "")
+			if custom_type == "PlayAudio":
+				loop = action.get("Loop")
+				volume = action.get("Volume", 0.0)
+				pitch = action.get("Pitch", 1.0)
 	value = action.get("Value")
 	
 	_update()
@@ -77,6 +85,15 @@ func _action_to_dict() -> Dictionary:
 			"Value": value
 		}
 	elif action_type == "ActionCustom":
+		if custom_type == "PlayAudio":
+			return {
+				"$type": action_type,
+				"CustomType": custom_type,
+				"Value": value,
+				"Volume": volume,
+				"Pitch": pitch,
+				"Loop": loop
+			}
 		return {
 			"$type": action_type,
 			"CustomType": custom_type,
@@ -123,6 +140,9 @@ func _update(panel: ActionNodePanel = null):
 				if panel.variable_drop_node.selected >= 0:
 					custom_type = panel.custom_drop_node.get_item_text(panel.custom_drop_node.selected)
 				custom_value_label.text = value
+				loop = panel.loop_edit.button_pressed
+				volume = panel.volume_value
+				pitch = panel.pitch_value
 			"ActionTimer":
 				pass
 	
@@ -148,10 +168,12 @@ func _update(panel: ActionNodePanel = null):
 			custom_type_label.text = custom_type if custom_type else "custom type"
 			custom_value_label.text = str(value) if value else "nothing"
 			custom_container.show()
+			loop_value_container.hide()
 			
 			match custom_type:
 				"PlayAudio":
 					title = "🎵 " + node_type
+					loop_value_container.visible = loop
 				"UpdateBackground":
 					title = "🖼️ " + node_type
 		"ActionTimer":

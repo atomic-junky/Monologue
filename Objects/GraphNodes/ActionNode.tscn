@@ -324,3 +324,12 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
 text = "nothing"
 label_settings = SubResource("LabelSettings_v4ya3")
+
+[node name="LoopValueContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
+layout_mode = 2
+
+[node name="LoopValueLabel" type="Label" parent="CustomMarginContainer/CustomContainer/LoopValueContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
+text = "and loop"
+label_settings = SubResource("LabelSettings_v4ya3")

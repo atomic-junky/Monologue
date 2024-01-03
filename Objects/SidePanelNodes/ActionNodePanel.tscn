@@ -124,6 +124,90 @@ popup/item_1/id = 1
 popup/item_2/text = "Other"
 popup/item_2/id = 2
 
+[node name="AudioLoopContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AudioLabel" type="Label" parent="AudioLoopContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Loop?"
+
+[node name="BooleanEdit" type="CheckButton" parent="AudioLoopContainer"]
+layout_mode = 2
+
+[node name="AudioExtraContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="VolumeContainer" type="HBoxContainer" parent="AudioExtraContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VolumeLabel" type="Label" parent="AudioExtraContainer/VolumeContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Volume"
+
+[node name="VolumeSlider" type="HSlider" parent="AudioExtraContainer/VolumeContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = -80.0
+max_value = 24.0
+step = 0.25
+
+[node name="VolumeDisplay" type="Label" parent="AudioExtraContainer/VolumeContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "0db"
+label_settings = SubResource("LabelSettings_kddgl")
+
+[node name="VolumeReset" type="Button" parent="AudioExtraContainer/VolumeContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.768627, 0.180392, 0.25098, 1)
+text = "reset"
+flat = true
+
+[node name="PitchContainer" type="HBoxContainer" parent="AudioExtraContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PitchLabel" type="Label" parent="AudioExtraContainer/PitchContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Pitch"
+
+[node name="PitchSlider" type="HSlider" parent="AudioExtraContainer/PitchContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 4.0
+step = 0.1
+value = 1.0
+
+[node name="PitchDisplay" type="Label" parent="AudioExtraContainer/PitchContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_kddgl")
+
+[node name="PitchReset" type="Button" parent="AudioExtraContainer/PitchContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.768627, 0.180392, 0.25098, 1)
+text = "reset"
+flat = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="AudioExtraContainer"]
+
 [node name="ValueContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -158,6 +242,13 @@ label_settings = SubResource("LabelSettings_kddgl")
 [connection signal="item_selected" from="VariableContainer/VariableDrop" to="." method="update_graph_node"]
 [connection signal="item_selected" from="OperatorContainer/OperatorDrop" to="." method="_on_operator_drop_item_selected"]
 [connection signal="item_selected" from="CustomContainer/CustomDrop" to="." method="update_action"]
+[connection signal="toggled" from="AudioLoopContainer/BooleanEdit" to="." method="update_action"]
+[connection signal="drag_ended" from="AudioExtraContainer/VolumeContainer/VolumeSlider" to="." method="update_action"]
+[connection signal="value_changed" from="AudioExtraContainer/VolumeContainer/VolumeSlider" to="." method="_update_slider_value"]
+[connection signal="pressed" from="AudioExtraContainer/VolumeContainer/VolumeReset" to="." method="_on_volume_reset_pressed"]
+[connection signal="drag_ended" from="AudioExtraContainer/PitchContainer/PitchSlider" to="." method="update_action"]
+[connection signal="value_changed" from="AudioExtraContainer/PitchContainer/PitchSlider" to="." method="_update_slider_value"]
+[connection signal="pressed" from="AudioExtraContainer/PitchContainer/PitchReset" to="." method="_on_pitch_reset_pressed"]
 [connection signal="toggled" from="ValueContainer/BooleanEdit" to="." method="update_action"]
 [connection signal="value_changed" from="ValueContainer/NumberEdit" to="." method="update_action"]
 [connection signal="text_changed" from="ValueContainer/StringEdit" to="." method="update_action"]

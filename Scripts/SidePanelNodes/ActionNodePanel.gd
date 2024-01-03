@@ -9,6 +9,8 @@ extends MonologueNodePanel
 @onready var variable_container = $VariableContainer
 @onready var operator_container = $OperatorContainer
 @onready var custom_container = $CustomContainer
+@onready var audio_loop_container = $AudioLoopContainer
+@onready var audio_extra_container = $AudioExtraContainer
 
 @onready var action_drop_node: OptionButton = $ActionTypeContainer/ActionTypeDrop
 @onready var option_id_edit: LineEdit = $OptionIDContainer/VBoxContainer/OptionIDEdit
@@ -16,6 +18,7 @@ extends MonologueNodePanel
 @onready var variable_drop_node: OptionButton = $VariableContainer/VariableDrop
 @onready var operator_drop_node: OptionButton = $OperatorContainer/OperatorDrop
 @onready var custom_drop_node: OptionButton = $CustomContainer/CustomDrop
+@onready var loop_edit: CheckButton = $AudioLoopContainer/BooleanEdit
 
 @onready var boolean_edit: CheckButton = $ValueContainer/BooleanEdit
 @onready var number_edit: SpinBox = $ValueContainer/NumberEdit
@@ -24,6 +27,9 @@ extends MonologueNodePanel
 
 var variables: Array
 var action_type
+
+var volume_value: float = 0.0
+var pitch_value: float = 1.0
 
 func _ready():
 	variables = graph_node.get_parent().variables
@@ -67,6 +73,9 @@ func _from_dict(dict: Dictionary):
 			match action.get("CustomType"):
 				"PlayAudio":
 					custom_drop_node.select(0)
+					loop_edit.button_pressed = action.get("Loop")
+					volume_value = action.get("Volume")
+					pitch_value = action.get("Pitch")
 				"PlayMusic": # Compatibilty with version 2.0.0
 					custom_drop_node.select(0)
 				"UpdateBackground":
@@ -110,7 +119,6 @@ func update_action(_x = null):
 				return
 			var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
 			
-			
 			var is_integer: bool = variable.get("Type") == "Integer"
 			operator_drop_node.set_item_disabled(1, !is_integer)
 			operator_drop_node.set_item_disabled(2, !is_integer)
@@ -128,6 +136,11 @@ func update_action(_x = null):
 					hide_all([default_label, variable_container, operator_container])
 		"ActionCustom":
 			hide_all([custom_container, string_edit])
+			var custom_type = custom_drop_node.get_item_text(custom_drop_node.selected)
+			if custom_type == "PlayAudio":
+				audio_loop_container.show()
+				audio_extra_container.show()
+				_update_slider_value(volume_value, pitch_value)
 		"ActionTimer":
 			hide_all([number_edit])
 	
@@ -171,3 +184,17 @@ func _on_action_type_drop_item_selected(_index):
 
 func _on_variable_drop_item_selected(_index):
 	update_action()
+
+
+func _update_slider_value(volume = null, pitch = null):
+	volume_value = snapped(%VolumeSlider.value, 0.01) if not volume else volume
+	pitch_value = %PitchSlider.value if not pitch else pitch
+	
+	%VolumeDisplay.text = str(volume_value) + "db"
+	%PitchDisplay.text = str(pitch_value)
+
+func _on_pitch_reset_pressed():
+	%PitchSlider.value = 1
+
+func _on_volume_reset_pressed():
+	%VolumeSlider.value = 0

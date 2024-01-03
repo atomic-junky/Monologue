@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.0.1",
+	"EditorVersion": "2.0.2",
 	"RootNodeID": "cbfb0a4b-7517-4411-a447-314d106fe280",
 	"ListNodes": [
 		{
@@ -294,15 +294,6 @@
 			"OneShot": false
 		},
 		{
-			"$type": "NodeRoot",
-			"ID": "cbfb0a4b-7517-4411-a447-314d106fe280",
-			"NextID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
-			"EditorPosition": {
-				"x": 0,
-				"y": 0
-			}
-		},
-		{
 			"$type": "NodeBridgeIn",
 			"ID": "44244013-8168-4507-af13-7c24f62a75c2",
 			"NextID": "4f2d9e0e-4d3c-4bdd-a60e-2d2225604ad6",
@@ -318,11 +309,40 @@
 			"NextID": "44244013-8168-4507-af13-7c24f62a75c2",
 			"Action": {
 				"$type": "ActionCustom",
-				"CustomType": "Other",
-				"Value": "tree.png"
+				"CustomType": "PlayAudio",
+				"Value": "sound.mp3",
+				"Volume": 10,
+				"Pitch": 1,
+				"Loop": false
 			},
 			"EditorPosition": {
 				"x": 3000,
+				"y": 0
+			}
+		},
+		{
+			"$type": "NodeRoot",
+			"ID": "cbfb0a4b-7517-4411-a447-314d106fe280",
+			"NextID": "57c841c9-0ebf-464c-aa25-24c2f7dfb0a8",
+			"EditorPosition": {
+				"x": -420,
+				"y": 0
+			}
+		},
+		{
+			"$type": "NodeAction",
+			"ID": "57c841c9-0ebf-464c-aa25-24c2f7dfb0a8",
+			"NextID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
+			"Action": {
+				"$type": "ActionCustom",
+				"CustomType": "PlayAudio",
+				"Value": "on_the_road.mp3",
+				"Volume": -10,
+				"Pitch": 1.2,
+				"Loop": true
+			},
+			"EditorPosition": {
+				"x": -40,
 				"y": 0
 			}
 		}
