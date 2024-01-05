@@ -210,6 +210,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_3npb4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ao7wf")
 
 [node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
+transparent_bg = true
 size = Vector2i(119, 100)
 item_count = 5
 item_0/text = "Open"
@@ -338,6 +339,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
+scroll_offset = Vector2(0, -23)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1

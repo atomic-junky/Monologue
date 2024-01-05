@@ -129,6 +129,9 @@ func _to_dict() -> Dictionary:
 
 
 func file_selected(path, open_mode):
+	if not FileAccess.open(path, FileAccess.READ):
+		return
+	
 	for ge in graph_edits.get_children():
 		if not ge is GraphEdit:
 			continue
@@ -152,7 +155,7 @@ func file_selected(path, open_mode):
 			node.queue_free()
 		var new_root_node = root_node.instantiate()
 		graph_edit.add_child(new_root_node)
-		await save()
+		await save(true)
 	
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
 		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
@@ -188,7 +191,7 @@ func get_root_node_ref():
 			return node
 
 
-func save(is_test: bool = false):
+func save(quick: bool = false):
 	save_progress_bar.value = 0
 	save_progress_bar.show()
 	save_button.hide()
@@ -205,7 +208,7 @@ func save(is_test: bool = false):
 	file.close()
 	
 	saved_notification.show()
-	if !is_test:
+	if !quick:
 		await get_tree().create_timer(1.5).timeout
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -214,16 +217,22 @@ func save(is_test: bool = false):
 
 
 func load_project(path):
+	if not FileAccess.file_exists(path):
+		return
+		
 	$NoInteractions.hide()
 	var graph_edit = get_current_graph_edit()
-	assert(FileAccess.file_exists(path))
 	
 	var file = FileAccess.get_file_as_string(path)
 	graph_edit.name = path.get_file().trim_suffix(".json")
 	
 	var data = JSON.parse_string(file)
+	if not data:
+		data = _to_dict()
+		save(true)
 	
 	live_dict = data
+	
 	graph_edit.speakers = data.get("Characters")
 	graph_edit.variables = data.get("Variables")
 	
@@ -305,6 +314,13 @@ func load_project(path):
 			current_node.position_offset.y = node.EditorPosition.get("y")
 			
 	root_node_ref = get_root_node_ref()
+	
+	if not root_node_ref:
+		var new_root_node = root_node.instantiate()
+		get_current_graph_edit().add_child(new_root_node)
+		
+		save(true)
+		root_node_ref = get_root_node_ref()
 	
 	
 func get_node_by_id(id):
@@ -415,7 +431,10 @@ func new_file_select():
 	)
 	
 	var new_file_path = output[0].trim_suffix("\r\n")
-	return new_file_path if  new_file_path != "" else null
+	new_file_path if  new_file_path != "" else null
+	
+	FileAccess.open(new_file_path, FileAccess.WRITE) # create the file
+	return new_file_path
 
 func open_file_select():
 	var open_file_path = ""
@@ -501,7 +520,7 @@ func _on_file_id_pressed(id):
 				return
 				
 			new_graph_edit()
-			return await file_selected(new_file_path, 1)
+			return await file_selected(new_file_path, 0)
 		3: # Config
 			side_panel_node.show_config()
 		4: # Test
@@ -526,7 +545,7 @@ func _on_new_file_btn_pressed():
 	if new_file_path == null:
 		return
 		
-	return await file_selected(new_file_path, 1)
+	return await file_selected(new_file_path, 0)
 
 
 func _on_open_file_btn_pressed():
