@@ -137,8 +137,7 @@ func _update(panel: ActionNodePanel = null):
 					variable_name = panel.variable_drop_node.get_item_text(panel.variable_drop_node.selected)
 				operator = panel.operator_drop_node.get_item_text(panel.operator_drop_node.selected)
 			"ActionCustom":
-				if panel.variable_drop_node.selected >= 0:
-					custom_type = panel.custom_drop_node.get_item_text(panel.custom_drop_node.selected)
+				custom_type = panel.custom_drop_node.get_item_text(panel.custom_drop_node.selected)
 				custom_value_label.text = value
 				loop = panel.loop_edit.button_pressed
 				volume = panel.volume_value

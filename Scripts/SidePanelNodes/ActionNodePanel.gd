@@ -136,6 +136,8 @@ func update_action(_x = null):
 					hide_all([default_label, variable_container, operator_container])
 		"ActionCustom":
 			hide_all([custom_container, string_edit])
+			if custom_drop_node.selected <= -1:
+				custom_drop_node.selected = 2
 			var custom_type = custom_drop_node.get_item_text(custom_drop_node.selected)
 			if custom_type == "PlayAudio":
 				audio_loop_container.show()
