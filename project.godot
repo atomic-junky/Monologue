@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Monologue"
-config/version="2.0.4"
+config/version="2.1.0"
 run/main_scene="res://Scenes/App.tscn"
 config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
@@ -31,13 +31,12 @@ SfxLoader="*res://Test/Scripts/SfxLoader.gd"
 
 window/size/viewport_width=1450
 window/size/viewport_height=750
-window/stretch/scale_mode="integer"
 window/per_pixel_transparency/allowed=true
 window/size/fullscreen=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 

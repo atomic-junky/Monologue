@@ -5,10 +5,14 @@ extends MonologueProcess
 @onready var text_box = preload("res://Test/Objects/text_box.tscn")
 @onready var option_button = preload("res://Test/Objects/option_button.tscn")
 
-@onready var text_box_container = $MarginContainer/MarginContainer/ScrollContainer/Container/TextBoxContainer
-@onready var choice_container = $MarginContainer/MarginContainer/ScrollContainer/Container/ChoiceContainer
+# SidePanel nodes
+@onready var sp_text_box_container = $SidePanelContainer/MarginContainer/ScrollContainer/Container/ScrollContainer/TextBoxContainer
+@onready var sp_choice_container = $SidePanelContainer/MarginContainer/ScrollContainer/Container/ChoiceContainer
+# TextBox nodes
+@onready var tb_text_label = $TextBoxContainer/Panel/MarginContainer/Container/TextLabel
+@onready var tb_choice_container = $TextBoxContainer/Panel/MarginContainer/Container/ChoiceContainer
+
 @onready var background_node = $Background
-@onready var audio_player = $AudioStreamPlayer
 @onready var character_container = $CharacterAssetContainer/Asset
 
 var is_completed: bool = true
@@ -17,11 +21,12 @@ func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
 	var path = global_vars.test_path
 	
-	load_dialogue(path.get_basename())
-	next()
+	if path:
+		load_dialogue(path.get_basename())
+		next()
 
 func _input(event):
-	if event.is_action_pressed("ui_accept") and is_completed and not choice_container.visible:
+	if event.is_action_pressed("ui_accept") and is_completed and not sp_choice_container.visible:
 		next()
 
 func get_character_asset(character: String, _variant = null):
@@ -60,14 +65,22 @@ func _on_monologue_end(raw_end):
 func _on_monologue_sentence(sentence, speaker, speaker_name):
 	# Textbox
 	var new_textbox: RichTextLabel = text_box.instantiate()
+	tb_text_label.text = ""
 	
 	if speaker_name.begins_with("_"):
 		new_textbox.text = sentence
 		new_textbox.visible_characters = 0
+		
+		tb_text_label.text = sentence
+		tb_text_label.visible_characters = 0
 	else:
 		new_textbox.text = "[color=e75a41]" + speaker_name + "[/color]\n"
 		new_textbox.text += sentence
 		new_textbox.visible_characters = len(speaker_name)
+		
+		tb_text_label.text = "[color=e75a41]" + speaker_name + "[/color]\n"
+		tb_text_label.text += sentence
+		tb_text_label.visible_characters = len(speaker_name)
 	
 	# Speaker
 	var char_asset = get_character_asset(speaker, speaker_name)
@@ -83,12 +96,13 @@ func _on_monologue_sentence(sentence, speaker, speaker_name):
 		
 		character_container.hide()
 	
-	for tb: RichTextLabel in text_box_container.get_children():
+	for tb: RichTextLabel in sp_text_box_container.get_children():
 		tb.modulate = Color(1, 1, 1, 0.6)
 	
-	text_box_container.add_child(new_textbox)
+	sp_text_box_container.add_child(new_textbox)
 	
 	get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox.text), 0.5)
+	get_tree().create_tween().tween_property(tb_text_label, "visible_characters", len(tb_text_label.text), 0.5)
 
 
 func _on_monologue_new_choice(options):
@@ -97,14 +111,20 @@ func _on_monologue_new_choice(options):
 		new_option.text = option.get("Sentence")
 		new_option.connect("pressed", option_selected.bind(option))
 		
-		choice_container.add_child(new_option)
+		tb_choice_container.add_child(new_option)
+		sp_choice_container.add_child(new_option)
 	
-	choice_container.show()
+	tb_choice_container.show()
+	sp_choice_container.show()
 
 
 func _on_monologue_option_choosed(_raw_option):
-	choice_container.hide()
-	for child in choice_container.get_children():
+	tb_choice_container.hide()
+	sp_choice_container.hide()
+	
+	var childs = sp_choice_container.get_children()
+	childs.append_array(tb_choice_container.get_children())
+	for child in childs:
 		child.queue_free()
 
 
@@ -117,8 +137,12 @@ func _on_monologue_event_triggered(raw_event):
 	$Notification.debug("Event triggered [color=7f7f7f](" + event_id + ")[/color]\n" + "Condition: [color=7f7f7f]" + condition_display + "[/color]")
 
 
-func _on_monologue_update_background(path, _texture):
-	$Notification.debug("Update Background instruction received [color=7f7f7f](" + path + ")[/color]")
+func _on_monologue_update_background(path, texture):
+	
+	if texture:
+		background_node.texture = texture
+	else:
+		$Notification.debug("Update Background instruction received [color=7f7f7f](" + path + ")[/color]")
 
 
 func _on_monologue_play_audio(path, _stream):
@@ -127,3 +151,8 @@ func _on_monologue_play_audio(path, _stream):
 
 func _on_monologue_custom_action(raw_action):
 	$Notification.debug("Custom action received [color=7f7f7f](" + raw_action.get("Value") + ")[/color]")
+
+
+func _switch_mode_pressed(sp: bool = false):
+	$SidePanelContainer.visible = not sp
+	$TextBoxContainer.visible = sp
