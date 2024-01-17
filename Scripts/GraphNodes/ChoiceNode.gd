@@ -92,5 +92,3 @@ func _update(panel: ChoiceNodePanel = null):
 		var next_node = get_graph_node(option.get("NextID"))
 		if not next_node is int:
 			get_parent().connect_node(name, options.find(option), next_node.name, 0)
-	
-	size.y = 0

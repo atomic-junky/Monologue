@@ -8,6 +8,8 @@ extends MonologueProcess
 # SidePanel nodes
 @onready var sp_text_box_container = $SidePanelContainer/MarginContainer/ScrollContainer/Container/ScrollContainer/TextBoxContainer
 @onready var sp_choice_container = $SidePanelContainer/MarginContainer/ScrollContainer/Container/ChoiceContainer
+@onready var sp_scroll_container: ScrollContainer = $SidePanelContainer/MarginContainer/ScrollContainer/Container/ScrollContainer
+@onready var sp_scrollbar: ScrollBar = sp_scroll_container.get_v_scroll_bar()
 # TextBox nodes
 @onready var tb_text_label = $TextBoxContainer/Panel/MarginContainer/Container/TextLabel
 @onready var tb_choice_container = $TextBoxContainer/Panel/MarginContainer/Container/ChoiceContainer
@@ -21,6 +23,8 @@ func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
 	var path = global_vars.test_path
 	
+	sp_scrollbar.connect("changed", _handle_scrollbar_changed)
+	
 	if path:
 		load_dialogue(path.get_basename())
 		next()
@@ -28,6 +32,9 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("ui_accept") and is_completed and not sp_choice_container.visible:
 		next()
+
+func _handle_scrollbar_changed():
+	sp_scroll_container.scroll_vertical = int(sp_scrollbar.max_value)
 
 func get_character_asset(character: String, _variant = null):
 	if character.begins_with("_"):
@@ -105,14 +112,17 @@ func _on_monologue_sentence(sentence, speaker, speaker_name):
 	get_tree().create_tween().tween_property(tb_text_label, "visible_characters", len(tb_text_label.text), 0.5)
 
 
+func _instantiate_option(option):
+	var new_option = option_button.instantiate()
+	new_option.text = option.get("Sentence")
+	new_option.connect("pressed", option_selected.bind(option))
+	
+	return new_option
+
 func _on_monologue_new_choice(options):
 	for option in options:
-		var new_option = option_button.instantiate()
-		new_option.text = option.get("Sentence")
-		new_option.connect("pressed", option_selected.bind(option))
-		
-		tb_choice_container.add_child(new_option)
-		sp_choice_container.add_child(new_option)
+		tb_choice_container.add_child(_instantiate_option(option))
+		sp_choice_container.add_child(_instantiate_option(option))
 	
 	tb_choice_container.show()
 	sp_choice_container.show()

@@ -15,5 +15,9 @@ func _to_dict():
 func _update(_panel = null):
 	pass
 
+func _common_update(_x = null):
+	size.y = 0
+
 func _connect_to_panel(sgnl):
 	sgnl.connect(_update)
+	sgnl.connect(_common_update)
