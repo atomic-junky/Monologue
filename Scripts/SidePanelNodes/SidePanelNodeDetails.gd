@@ -1,7 +1,7 @@
 extends PanelContainer
 
 
-@onready var label_id = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LabelID
+@onready var line_edit_id = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID
 @onready var panel_container = $MarginContainer/ScrollContainer/PanelContainer
 @onready var control_node = $"../../../../.."
 
@@ -32,7 +32,7 @@ func on_graph_node_selected(node):
 	if graph_edit.selection_mode or graph_edit.moving_mode:
 		return
 		
-	label_id.text = node.id
+	line_edit_id.text = node.id
 
 	var new_panel = null
 	match node.node_type:
@@ -86,7 +86,7 @@ func show_config():
 	panel_container.add_child(new_panel)
 	new_panel._from_dict(root_node._to_dict())
 	
-	label_id.text = root_node.id
+	line_edit_id.text = root_node.id
 	
 	show()
 
@@ -97,3 +97,12 @@ func _on_graph_edit_child_exiting_tree(_node):
 
 func on_graph_node_deselected(_node):
 	hide()
+
+
+func _on_line_edit_id_text_changed(new_id):
+	if control_node.get_node_by_id(new_id):
+		line_edit_id.text = current_panel.id
+		return
+	
+	current_panel.id = new_id
+	current_panel.change.emit(current_panel)

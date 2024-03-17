@@ -327,6 +327,7 @@ func get_node_by_id(id):
 	for node in get_current_graph_edit().get_children():
 		if node.id == id:
 			return node
+	return null
 	
 func get_options_nodes(node_list, options_id):
 	var options = []
@@ -370,6 +371,8 @@ func add_node(node_type):
 		
 		center_node_in_graph_edit(in_node)
 		center_node_in_graph_edit(out_node)
+		in_node.position_offset.x -= in_node.size.x/2+10
+		out_node.position_offset.x += out_node.size.x/2+10
 		
 	var node
 	match node_type:
@@ -405,7 +408,7 @@ func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
 	get_current_graph_edit().disconnect_node(from, from_slot, to, to_slot)
 
 
-func test_project():
+func test_project(from_selected_node: bool = false):
 	await save(true)
 	
 	var global_vars = get_node("/root/GlobalVariables")
@@ -413,6 +416,9 @@ func test_project():
 	
 	var test_instance = preload("res://Test/Menu.tscn")
 	var test_scene = test_instance.instantiate()
+	
+	if from_selected_node:
+		test_scene._from_node_id = side_panel_node.current_panel.id
 	
 	get_tree().root.add_child(test_scene)
 	
