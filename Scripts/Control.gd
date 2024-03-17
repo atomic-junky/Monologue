@@ -370,6 +370,8 @@ func add_node(node_type):
 		
 		center_node_in_graph_edit(in_node)
 		center_node_in_graph_edit(out_node)
+		in_node.position_offset.x -= in_node.size.x/2+10
+		out_node.position_offset.x += out_node.size.x/2+10
 		
 	var node
 	match node_type:
