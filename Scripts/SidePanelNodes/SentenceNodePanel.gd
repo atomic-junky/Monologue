@@ -52,6 +52,7 @@ func _on_display_name_line_edit_text_changed(new_text):
 
 
 func _on_character_drop_item_selected(index):
+	speaker_id = index
 	graph_node.speaker_id = index
 	
 	change.emit(self)
