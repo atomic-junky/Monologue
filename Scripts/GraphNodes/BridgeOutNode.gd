@@ -27,7 +27,7 @@ func _to_dict() -> Dictionary:
 	}
 
 
-func _from_dict(dict):	
+func _from_dict(dict):
 	id = dict.get("ID")
 	number_selector.value = dict.get("NumberSelector")
 	

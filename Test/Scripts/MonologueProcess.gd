@@ -54,7 +54,7 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 	variables = data.get("Variables")
 	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	
-	next_id = custom_start_point if custom_start_point != null else root_node_id
+	next_id = custom_start_point if custom_start_point else root_node_id
 	
 	print("[INFO] Dialogue " + path + " loaded")
 

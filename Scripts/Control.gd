@@ -327,6 +327,7 @@ func get_node_by_id(id):
 	for node in get_current_graph_edit().get_children():
 		if node.id == id:
 			return node
+	return null
 	
 func get_options_nodes(node_list, options_id):
 	var options = []
