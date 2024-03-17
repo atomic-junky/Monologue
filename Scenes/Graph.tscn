@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=34 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -126,6 +126,15 @@ bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_p3pmt"]
 font_size = 10
 font_color = Color(0.635294, 0.635294, 0.635294, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28b4a"]
+content_margin_left = 7.0
+content_margin_right = 7.0
+bg_color = Color(0.768627, 0.180392, 0.25098, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qj61b"]
 bg_color = Color(0.128906, 0.148438, 0.179688, 1)
@@ -387,6 +396,14 @@ size_flags_horizontal = 3
 text = "id"
 label_settings = SubResource("LabelSettings_p3pmt")
 
+[node name="TFHBtn" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_28b4a")
+theme_override_styles/focus = SubResource("StyleBoxFlat_28b4a")
+text = "Test from here"
+
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -550,6 +567,7 @@ label_settings = SubResource("LabelSettings_7mcdy")
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
 [connection signal="tab_close_pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_close_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TFHBtn" to="." method="test_project" binds= [true]]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]

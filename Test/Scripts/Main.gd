@@ -17,6 +17,8 @@ extends MonologueProcess
 @onready var background_node = $Background
 @onready var character_container = $CharacterAssetContainer/Asset
 
+var _from_node_id = null
+
 var is_completed: bool = true
 
 func _ready():
@@ -26,8 +28,11 @@ func _ready():
 	sp_scrollbar.connect("changed", _handle_scrollbar_changed)
 	
 	if path:
-		load_dialogue(path.get_basename())
+		if _from_node_id:
+			_on_monologue_sentence("Skipped to the node " + _from_node_id + "!", "_DEBUG", "_DEBUG", true)
+		load_dialogue(path.get_basename(), _from_node_id)
 		next()
+		
 
 func _input(event):
 	if event.is_action_pressed("ui_accept") and is_completed and not sp_choice_container.visible:
@@ -61,15 +66,18 @@ func get_character_asset(character: String, _variant = null):
 
 func _on_monologue_end(raw_end):
 	if not raw_end or not raw_end.get("NextStoryName"):
-		var menu_instance = preload("res://Test/Menu.tscn")
-		var menu_scene_instance = menu_instance.instantiate()
-		
-		get_tree().root.add_child(menu_scene_instance)
-		SfxLoader.clear()
-		queue_free()
+		_exit()
 
+func _exit():
+	var menu_instance = preload("res://Test/Menu.tscn")
+	var menu_scene_instance = menu_instance.instantiate()
+	menu_scene_instance._from_node_id = _from_node_id
+	get_tree().root.add_child(menu_scene_instance)
+	
+	SfxLoader.clear()
+	queue_free()
 
-func _on_monologue_sentence(sentence, speaker, speaker_name):
+func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = false):
 	# Textbox
 	var new_textbox: RichTextLabel = text_box.instantiate()
 	tb_text_label.text = ""
@@ -107,6 +115,11 @@ func _on_monologue_sentence(sentence, speaker, speaker_name):
 		tb.modulate = Color(1, 1, 1, 0.6)
 	
 	sp_text_box_container.add_child(new_textbox)
+	
+	if instant:
+		new_textbox.visible_characters = len(new_textbox.text)
+		tb_text_label.visible_characters = len(tb_text_label.text)
+		return
 	
 	get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox.text), 0.5)
 	get_tree().create_tween().tween_property(tb_text_label, "visible_characters", len(tb_text_label.text), 0.5)

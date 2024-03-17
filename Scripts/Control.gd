@@ -407,7 +407,7 @@ func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
 	get_current_graph_edit().disconnect_node(from, from_slot, to, to_slot)
 
 
-func test_project():
+func test_project(from_selected_node: bool = false):
 	await save(true)
 	
 	var global_vars = get_node("/root/GlobalVariables")
@@ -415,6 +415,9 @@ func test_project():
 	
 	var test_instance = preload("res://Test/Menu.tscn")
 	var test_scene = test_instance.instantiate()
+	
+	if from_selected_node:
+		test_scene._from_node_id = side_panel_node.current_panel.id
 	
 	get_tree().root.add_child(test_scene)
 	

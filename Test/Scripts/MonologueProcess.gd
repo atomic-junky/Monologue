@@ -33,7 +33,7 @@ func _init():
 	monologue_node_reached.connect(_process_node)
 	monologue_end.connect(_default_end_process)
 
-func load_dialogue(dialogue_name):
+func load_dialogue(dialogue_name, custom_start_point = -1):
 	var path = dialogue_name + ".json"
 	dir_path = path.replace("/", "\\").split("\\")
 	dir_path.remove_at(len(dir_path)-1)
@@ -54,7 +54,7 @@ func load_dialogue(dialogue_name):
 	variables = data.get("Variables")
 	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	
-	next_id = root_node_id
+	next_id = custom_start_point if custom_start_point != null else root_node_id
 	
 	print("[INFO] Dialogue " + path + " loaded")
 
