@@ -36,7 +36,7 @@ window/size/fullscreen=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/html5_file_dialog/plugin.cfg")
 
 [file_customization]
 
