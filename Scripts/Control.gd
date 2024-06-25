@@ -73,7 +73,14 @@ func _ready():
 				data.erase(path)
 			for path in data.slice(0, 3):
 				var btn: Button = recent_file_button.instantiate()
-				btn.text = path.rsplit("\\", true, 1)[1]
+				var btn_text = path.replace("\\", "/")
+				btn_text = btn_text.replace("//", "/")
+				btn_text = btn_text.split("/")
+				if btn_text.size() >= 2:
+					btn_text = "/".join(btn_text.slice(btn_text.size()-2, btn_text.size()))
+				else:
+					btn_text = btn_text.back()
+				btn.text = btn_text
 				btn.pressed.connect(file_selected.bind(path, 1))
 				recent_files_button_container.add_child(btn)
 			recent_files_container.show()
@@ -156,7 +163,7 @@ func file_selected(path, open_mode):
 		var new_root_node = root_node.instantiate()
 		graph_edit.add_child(new_root_node)
 		await save(true)
-	
+
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
 		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
 	else:
@@ -197,12 +204,12 @@ func save(quick: bool = false):
 	save_button.hide()
 	test_button.hide()
 	
-	
 	var data = JSON.stringify(_to_dict(), "\t", false, true)
 	if not data: # Fail to load 
 		save_progress_bar.hide()
 		save_button.show()
 		test_button.show()
+	
 	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
@@ -223,10 +230,12 @@ func load_project(path):
 	$NoInteractions.hide()
 	var graph_edit = get_current_graph_edit()
 	
-	var file = FileAccess.get_file_as_string(path)
+	var file := FileAccess.get_file_as_string(path)
 	graph_edit.name = path.get_file().trim_suffix(".json")
 	
-	var data = JSON.parse_string(file)
+	var data := {}
+	data = JSON.parse_string(file)
+
 	if not data:
 		data = _to_dict()
 		save(true)
@@ -421,43 +430,32 @@ func test_project(from_selected_node: bool = false):
 		test_scene._from_node_id = side_panel_node.current_panel.id
 	
 	get_tree().root.add_child(test_scene)
-	
-
 
 ####################
 #  File selection  #
 ####################
 
 func new_file_select():
-	var output = []
-	OS.execute(
-		"Powershell.exe",
-		["\"Add-Type -AssemblyName System.Windows.Forms ; $SaveFileBrowser = New-Object System.Windows.Forms.SaveFileDialog -Property @{ InitialDirectory = [Environment]::GetFolderPath('Desktop') ; Filter = 'JSON file|*.json' } ; $null = $SaveFileBrowser.ShowDialog() ; return $SaveFileBrowser.FileName\""],
-		output
-	)
+	$FileDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	$FileDialog.title = "Crate New File"
+	$FileDialog.ok_button_text = "Crate"
+	$FileDialog.popup_centered()
+	var new_file_path = await $FileDialog.file_selected
+
+	if new_file_path:
+		FileAccess.open(new_file_path, FileAccess.WRITE)
+		return new_file_path
 	
-	var new_file_path = output[0].trim_suffix("\r\n")
-	new_file_path if  new_file_path != "" else null
-	
-	FileAccess.open(new_file_path, FileAccess.WRITE) # create the file
-	return new_file_path
+	return null
 
 func open_file_select():
-	var open_file_path = ""
-	
-	match OS.get_name():
-		"Windows":
-			var output = []
-			OS.execute(
-				"Powershell.exe",
-				["\"Add-Type -AssemblyName System.Windows.Forms ; $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{ InitialDirectory = [Environment]::GetFolderPath('Desktop') ; Filter = 'JSON file|*.json' } ; $null = $FileBrowser.ShowDialog() ; return $FileBrowser.FileName\""],
-				output
-			)
-			
-			
-			open_file_path = output[0].trim_suffix("\r\n")
-
-	return open_file_path if open_file_path != "" else null
+	$FileDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	$FileDialog.title = "Open File"
+	$FileDialog.ok_button_text = "Open"
+	$FileDialog.popup_centered()
+	var open_file = await $FileDialog.file_selected
+	if open_file: return open_file
+	return null
 
 func _on_graph_edit_connection_to_empty(from_node, from_port, _release_position):
 	graph_node_selecter.position = get_viewport().get_mouse_position()
@@ -514,21 +512,28 @@ func tab_close_pressed(tab):
 func _on_file_id_pressed(id):
 	match id:
 		0: # Open file
-			var new_file_path = open_file_select()
+			var new_file_path = await open_file_select()
 			if new_file_path == null:
 				return
 				
+			$WelcomeWindow.hide()
+			$FileDialog.hide()
 			new_graph_edit()
 			return await file_selected(new_file_path, 1)
+
 		1: # New file
-			var new_file_path = new_file_select()
+			var new_file_path = await new_file_select()
 			if new_file_path == null:
 				return
 				
+			$WelcomeWindow.hide()
+			$FileDialog.hide()
 			new_graph_edit()
 			return await file_selected(new_file_path, 0)
+
 		3: # Config
 			side_panel_node.show_config()
+
 		4: # Test
 			test_project()
 
@@ -547,7 +552,7 @@ func new_graph_edit():
 
 
 func _on_new_file_btn_pressed():
-	var new_file_path = new_file_select()
+	var new_file_path = await new_file_select()
 	if new_file_path == null:
 		return
 		
@@ -555,7 +560,7 @@ func _on_new_file_btn_pressed():
 
 
 func _on_open_file_btn_pressed():
-	var new_file_path = open_file_select()
+	var new_file_path = await open_file_select()
 	if new_file_path == null:
 		return
 		
