@@ -20,3 +20,6 @@ addons/script-ide
 *.exe
 *.x86_*
 *.tmp
+
+# VSCode
+.vscode/
