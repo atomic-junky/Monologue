@@ -73,12 +73,11 @@ func _ready():
 				data.erase(path)
 			for path in data.slice(0, 3):
 				var btn: Button = recent_file_button.instantiate()
-				var split_dir := "/" 
-				if OS.get_name() == "Windows":
-					split_dir = "//"
-				var btn_text = path.split(split_dir)
+				var btn_text = path.replace("\\", "/")
+				btn_text = btn_text.replace("//", "/")
+				btn_text = btn_text.split("/")
 				if btn_text.size() >= 2:
-					btn_text = split_dir.join(btn_text.slice(btn_text.size()-2, btn_text.size()))
+					btn_text = "/".join(btn_text.slice(btn_text.size()-2, btn_text.size()))
 				else:
 					btn_text = btn_text.back()
 				btn.text = btn_text
