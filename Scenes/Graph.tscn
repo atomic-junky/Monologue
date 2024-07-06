@@ -147,9 +147,31 @@ expand_margin_bottom = 5.0
 [sub_resource type="GDScript" id="GDScript_n7pld"]
 script/source = "extends Window
 
+@export var control_node : Control
 
 func _ready():
 	hide()
+
+func _on_sentence_selector_pressed():
+	control_node.add_node(\"Sentence\")
+
+func _on_choice_selector_pressed():
+	control_node.add_node(\"Choice\")
+
+func _on_dice_roll_selector_pressed():
+	control_node.add_node(\"DiceRoll\")
+
+func _on_bridge_selector_pressed():
+	control_node.add_node(\"Bridge\")
+
+func _on_condition_selector_pressed():
+	control_node.add_node(\"Condition\")
+
+func _on_action_selector_pressed():
+	control_node.add_node(\"Action\")
+
+func _on_end_path_selector_pressed():
+	control_node.add_node(\"EndPath\")
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whi7p"]
@@ -420,7 +442,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="GraphNodeSelecter" type="Window" parent="."]
+[node name="GraphNodeSelecter" type="Window" parent="." node_paths=PackedStringArray("control_node")]
 title = "Graph Node Picker"
 position = Vector2i(0, 36)
 size = Vector2i(210, 241)
@@ -432,6 +454,7 @@ extend_to_title = true
 content_scale_mode = 1
 theme_override_styles/embedded_border = SubResource("StyleBoxFlat_qj61b")
 script = SubResource("GDScript_n7pld")
+control_node = NodePath("..")
 
 [node name="PanelContainer" type="PanelContainer" parent="GraphNodeSelecter"]
 anchors_preset = 15
@@ -579,5 +602,12 @@ use_native_dialog = true
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/SentenceSelector" to="GraphNodeSelecter" method="_on_sentence_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ChoiceSelector" to="GraphNodeSelecter" method="_on_choice_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/DiceRollSelector" to="GraphNodeSelecter" method="_on_dice_roll_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/BridgeSelector" to="GraphNodeSelecter" method="_on_bridge_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ConditionSelector" to="GraphNodeSelecter" method="_on_condition_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ActionSelector" to="GraphNodeSelecter" method="_on_action_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="GraphNodeSelecter" method="_on_end_path_selector_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
