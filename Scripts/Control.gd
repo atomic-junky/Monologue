@@ -89,6 +89,8 @@ func _ready():
 	
 	$WelcomeWindow.show()
 	$NoInteractions.show()
+	
+	GlobalSignal.add_listener("add_graph_node", add_node)
 
 
 func _shortcut_input(event):
@@ -363,7 +365,7 @@ func center_node_in_graph_edit(node):
 
 func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
-	add_node(node_type)
+	GlobalSignal.emit("add_graph_node", [node_type])
 
 func add_node(node_type):
 	if node_type == "Bridge":
