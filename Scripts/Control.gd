@@ -77,7 +77,8 @@ func _ready():
 				btn_text = btn_text.replace("//", "/")
 				btn_text = btn_text.split("/")
 				if btn_text.size() >= 2:
-					btn_text = "/".join(btn_text.slice(btn_text.size()-2, btn_text.size()))
+					btn_text = btn_text.slice(-2, btn_text.size())
+					btn_text = btn_text[0].path_join(btn_text[1])
 				else:
 					btn_text = btn_text.back()
 				btn.text = btn_text
