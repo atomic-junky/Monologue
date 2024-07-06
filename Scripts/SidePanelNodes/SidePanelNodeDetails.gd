@@ -62,6 +62,7 @@ func on_graph_node_selected(node):
 	
 	if new_panel:
 		current_panel = new_panel
+		selected_node = node
 		panel_container.add_child(new_panel)
 		new_panel._from_dict(node._to_dict())
 		
@@ -106,3 +107,7 @@ func _on_line_edit_id_text_changed(new_id):
 	
 	current_panel.id = new_id
 	current_panel.change.emit(current_panel)
+
+
+func _on_tfh_btn_pressed():
+	GlobalSignal.emit("test_trigger", [selected_node.id])

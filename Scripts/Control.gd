@@ -92,6 +92,7 @@ func _ready():
 	$NoInteractions.show()
 	
 	GlobalSignal.add_listener("add_graph_node", add_node)
+	GlobalSignal.add_listener("test_trigger", test_project)
 
 
 func _shortcut_input(event):
@@ -420,7 +421,7 @@ func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
 	get_current_graph_edit().disconnect_node(from, from_slot, to, to_slot)
 
 
-func test_project(from_selected_node: bool = false):
+func test_project(from_node: String = "-1"):
 	await save(true)
 	
 	var global_vars = get_node("/root/GlobalVariables")
@@ -429,8 +430,8 @@ func test_project(from_selected_node: bool = false):
 	var test_instance = preload("res://Test/Menu.tscn")
 	var test_scene = test_instance.instantiate()
 	
-	if from_selected_node:
-		test_scene._from_node_id = side_panel_node.current_panel.id
+	if get_node_by_id(from_node) != null:
+		test_scene._from_node_id = from_node
 	
 	get_tree().root.add_child(test_scene)
 
@@ -538,7 +539,7 @@ func _on_file_id_pressed(id):
 			side_panel_node.show_config()
 
 		4: # Test
-			test_project()
+			GlobalSignal.emit("test_trigger")
 
 func new_graph_edit():
 	var graph_edit: GraphEdit = graph_edit_inst.instantiate()
