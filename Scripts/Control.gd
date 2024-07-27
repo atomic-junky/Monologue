@@ -369,8 +369,10 @@ func get_options_nodes(node_list, options_id):
 func center_node_in_graph_edit(node):
 	var graph_edit = get_current_graph_edit()
 	if picker_mode:
+		graph_edit.disconnect_connection_from_node(picker_from_node, picker_from_port)
 		node.position_offset = picker_position
 		graph_edit.connect_node(picker_from_node, picker_from_port, node.name, 0)
+		update_connection(graph_edit, picker_from_node, picker_from_port, node.name, 0)
 		disable_picker_mode()
 		return
 	
@@ -423,14 +425,25 @@ func add_node(node_type):
 	node = node.instantiate()
 	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
+
+func update_connection(graph_edit, from, from_slot, to, _to_slot, next = true):
+	var graph_node = graph_edit.get_node(NodePath(from))
+	if graph_node.has_method("update_next_id"):
+		if next:
+			graph_node.update_next_id(from_slot, graph_edit.get_node(NodePath(to)))
+		else:
+			graph_node.update_next_id(from_slot, null)
 	
 func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
-	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size() <= 0:
-		get_current_graph_edit().connect_node(from, from_slot, to, to_slot)
+	var current_graph_edit = get_current_graph_edit()
+	if current_graph_edit.get_all_connections_from_slot(from, from_slot).size() <= 0:
+		current_graph_edit.connect_node(from, from_slot, to, to_slot)
+	update_connection(current_graph_edit, from, from_slot, to, to_slot)
 
 func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
+	var current_graph_edit = get_current_graph_edit()
 	get_current_graph_edit().disconnect_node(from, from_slot, to, to_slot)
-
+	update_connection(current_graph_edit, from, from_slot, to, to_slot, false)
 
 func test_project(from_node: String = "-1"):
 	await save(true)
@@ -505,11 +518,14 @@ func tab_changed(_idx):
 	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
 		for ge in graph_edits.get_children():
 			ge.visible = graph_edits.get_child(tab_bar.current_tab) == ge
-		
 		return
 	
 	new_graph_edit()
-
+	var welcome_close_button = $WelcomeWindow/PanelContainer/CloseButton
+	if tab_bar.tab_count > 1:
+		welcome_close_button.show()
+	else:
+		welcome_close_button.hide()
 	$WelcomeWindow.show()
 	$NoInteractions.show()
 
@@ -521,11 +537,18 @@ func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
 	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
 
+func close_welcome_tab():
+	# check number of tabs as safety measure and for future hotkey command
+	if tab_bar.tab_count > 1:
+		tab_bar.select_previous_available()
+		$WelcomeWindow.hide()
+		$NoInteractions.hide()
 
 func tab_close_pressed(tab):
+	var ge = graph_edits.get_child(tab)
 	graph_edits.get_child(tab).queue_free()
+	await ge.tree_exited  # buggy if we switch tabs without waiting
 	tab_bar.remove_tab(tab)
-	tab_changed(tab)
 
 func _on_file_id_pressed(id):
 	match id:

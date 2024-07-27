@@ -11,6 +11,7 @@ var panel_node
 var graph_node
 
 var id = UUID.v4()
+var next_id = -1
 var node_type = "NodeOption"
 var sentence = ""
 var enable = true
@@ -21,6 +22,7 @@ func _to_dict():
 	return {
 		"$type": node_type,
 		"ID": id,
+		"NextID": next_id,
 		"Sentence": sentence,
 		"Enable": enable,
 		"OneShot": one_shot
@@ -30,6 +32,7 @@ func _to_dict():
 func _from_dict(dict):
 	if dict != null:
 		id = dict.get("ID")
+		next_id = dict.get("NextID")
 		sentence = dict.get("Sentence")
 		enable = dict.get("Enable")
 		one_shot = dict.get("OneShot")
@@ -42,6 +45,9 @@ func _from_dict(dict):
 
 
 func _on_delete_pressed():
+	# create a new option before deleting the last one to prevent zero options
+	if panel_node.options_container.get_child_count() == 1:
+		panel_node.new_option()
 	queue_free()
 	update_ref()
 
