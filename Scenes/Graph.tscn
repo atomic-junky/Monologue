@@ -503,7 +503,7 @@ icon = ExtResource("8_hudw3")
 [node name="WelcomeWindow" type="Window" parent="."]
 transparent_bg = true
 initial_position = 2
-size = Vector2i(600, 150)
+size = Vector2i(600, 300)
 wrap_controls = true
 unresizable = true
 borderless = true
