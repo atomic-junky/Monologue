@@ -511,14 +511,17 @@ func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
 
 func close_welcome_tab():
-	tab_bar.select_previous_available()
-	$WelcomeWindow.hide()
-	$NoInteractions.hide()
+	# check number of tabs as safety measure and for future hotkey command
+	if tab_bar.tab_count > 1:
+		tab_bar.select_previous_available()
+		$WelcomeWindow.hide()
+		$NoInteractions.hide()
 
 func tab_close_pressed(tab):
+	var ge = graph_edits.get_child(tab)
 	graph_edits.get_child(tab).queue_free()
+	await ge.tree_exited  # buggy if we switch tabs without waiting
 	tab_bar.remove_tab(tab)
-	tab_changed(tab)
 
 func _on_file_id_pressed(id):
 	match id:
