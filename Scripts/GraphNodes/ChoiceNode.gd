@@ -97,9 +97,8 @@ func _update(panel: ChoiceNodePanel = null):
 		var updated_options = []
 		for option in panel.options_container.get_children():
 			if option is OptionNode:
-				if option.is_queued_for_deletion():
-					link_option(find_option_dictionary(option.id), false)
-				else:
+				link_option(find_option_dictionary(option.id), false)
+				if not option.is_queued_for_deletion():
 					updated_options.append(option._to_dict())
 		options = updated_options
 	
