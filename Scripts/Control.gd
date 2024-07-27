@@ -358,7 +358,7 @@ func get_options_nodes(node_list, options_id):
 func center_node_in_graph_edit(node):
 	var graph_edit = get_current_graph_edit()
 	if picker_mode:
-		graph_edit.disconnect_all_connections_from_node(picker_from_node)
+		graph_edit.disconnect_connection_from_node(picker_from_node, picker_from_port)
 		node.position_offset = picker_position
 		graph_edit.connect_node(picker_from_node, picker_from_port, node.name, 0)
 		disable_picker_mode()
