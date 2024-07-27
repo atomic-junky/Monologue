@@ -504,11 +504,14 @@ func tab_changed(_idx):
 	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
 		for ge in graph_edits.get_children():
 			ge.visible = graph_edits.get_child(tab_bar.current_tab) == ge
-		
 		return
 	
 	new_graph_edit()
-
+	var welcome_close_button = $WelcomeWindow/PanelContainer/CloseButton
+	if tab_bar.tab_count > 1:
+		welcome_close_button.show()
+	else:
+		welcome_close_button.hide()
 	$WelcomeWindow.show()
 	$NoInteractions.show()
 
@@ -520,11 +523,18 @@ func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
 	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
 
+func close_welcome_tab():
+	# check number of tabs as safety measure and for future hotkey command
+	if tab_bar.tab_count > 1:
+		tab_bar.select_previous_available()
+		$WelcomeWindow.hide()
+		$NoInteractions.hide()
 
 func tab_close_pressed(tab):
+	var ge = graph_edits.get_child(tab)
 	graph_edits.get_child(tab).queue_free()
+	await ge.tree_exited  # buggy if we switch tabs without waiting
 	tab_bar.remove_tab(tab)
-	tab_changed(tab)
 
 func _on_file_id_pressed(id):
 	match id:
