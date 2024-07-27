@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=35 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/GraphEdit.tscn" id="10_qja7f"]
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
+[ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://Objects/SubComponents/CloseButton.tscn" id="17_af4y3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
 content_margin_left = 5.0
@@ -562,6 +563,12 @@ size_flags_vertical = 8
 text = "v.X.X.X"
 label_settings = SubResource("LabelSettings_7mcdy")
 
+[node name="CloseButton" parent="WelcomeWindow/PanelContainer" instance=ExtResource("17_af4y3")]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
 [node name="FileDialog" type="FileDialog" parent="."]
 initial_position = 2
 size = Vector2i(778, 450)
@@ -592,3 +599,4 @@ use_native_dialog = true
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="GraphNodeSelecter" method="_on_selector_btn_pressed" binds= ["EndPath"]]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CloseButton" to="." method="close_welcome_tab"]

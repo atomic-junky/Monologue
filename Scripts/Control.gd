@@ -491,11 +491,14 @@ func tab_changed(_idx):
 	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
 		for ge in graph_edits.get_children():
 			ge.visible = graph_edits.get_child(tab_bar.current_tab) == ge
-		
 		return
 	
 	new_graph_edit()
-
+	var welcome_close_button = $WelcomeWindow/PanelContainer/CloseButton
+	if tab_bar.tab_count > 1:
+		welcome_close_button.show()
+	else:
+		welcome_close_button.hide()
 	$WelcomeWindow.show()
 	$NoInteractions.show()
 
@@ -507,6 +510,10 @@ func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
 	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
 
+func close_welcome_tab():
+	tab_bar.select_previous_available()
+	$WelcomeWindow.hide()
+	$NoInteractions.hide()
 
 func tab_close_pressed(tab):
 	graph_edits.get_child(tab).queue_free()
