@@ -4,9 +4,10 @@ extends VBoxContainer
 
 signal change(panel)
 
-
 var graph_node: MonologueGraphNode = null : set = _set_gn
 var id
+## Reference to the Monologue side panel control.
+var side_panel
 
 func _ready():
 	pass

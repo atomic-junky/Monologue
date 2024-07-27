@@ -12,6 +12,7 @@ extends PanelContainer
 @onready var end_path_node_panel_instance = preload("res://Objects/SidePanelNodes/EndPathNodePanel.tscn")
 @onready var condition_node_panel_instance = preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
 @onready var action_node_panel_instance = preload("res://Objects/SidePanelNodes/ActionNodePanel.tscn")
+@onready var ribbon_instance = preload("res://Objects/SubComponents/Ribbon.tscn")
 
 var selected_node = null
 var current_panel = null
@@ -34,7 +35,7 @@ func on_graph_node_selected(node):
 		
 	line_edit_id.text = node.id
 
-	var new_panel = null
+	var new_panel: MonologueNodePanel = null
 	match node.node_type:
 		"NodeRoot":
 			new_panel = root_node_panel_instance.instantiate()
@@ -57,7 +58,7 @@ func on_graph_node_selected(node):
 		return
 	
 	clear_current_panel()
-	
+	new_panel.side_panel = self
 	new_panel.graph_node = node
 	
 	if new_panel:
@@ -111,3 +112,10 @@ func _on_line_edit_id_text_changed(new_id):
 
 func _on_tfh_btn_pressed():
 	GlobalSignal.emit("test_trigger", [selected_node.id])
+
+
+func _on_id_copy_pressed():
+	DisplayServer.clipboard_set(current_panel.id)
+	var ribbon = ribbon_instance.instantiate()
+	ribbon.position = get_viewport().get_mouse_position()
+	control_node.add_child(ribbon)

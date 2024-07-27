@@ -2,10 +2,11 @@ class_name OptionNode
 
 extends PanelContainer
 
+@onready var ribbon_instance = preload("res://Objects/SubComponents/Ribbon.tscn")
 @onready var sentence_node = $MarginContainer/MainContainer/SentenceContainer/TextEdit
 @onready var enable_node: CheckBox = $MarginContainer/MainContainer/EnableBtn
 @onready var one_shot_node: CheckBox = $MarginContainer/MainContainer/OneShotBtn
-@onready var id_label: Label = $MarginContainer/MainContainer/IDLabel
+@onready var id_line_edit: LineEdit = $MarginContainer/MainContainer/IDContainer/IDLineEdit
 
 var panel_node
 var graph_node
@@ -40,8 +41,7 @@ func _from_dict(dict):
 	sentence_node.text = sentence
 	enable_node.button_pressed = enable
 	one_shot_node.button_pressed = one_shot
-	
-	id_label.text = id + " (click to copy)"
+	id_line_edit.text = id
 
 
 func _on_delete_pressed():
@@ -52,14 +52,20 @@ func _on_delete_pressed():
 	update_ref()
 
 
-func _on_id_label_gui_input(event):
-	if event is InputEventMouseButton and event.pressed:
-		DisplayServer.clipboard_set(id)
+func _on_id_copy_pressed():
+	DisplayServer.clipboard_set(id)
+	var ribbon = ribbon_instance.instantiate()
+	ribbon.position = get_viewport().get_mouse_position()
+	panel_node.side_panel.control_node.add_child(ribbon)
+
+
+func _on_id_text_changed(new_id):
+	id = new_id
+	panel_node.change.emit(panel_node)
 
 
 func update_ref():
-	id_label.text = id + " (click to copy)"
-	
+	id_line_edit.text = id
 	sentence = sentence_node.text
 	enable = enable_node.button_pressed
 	one_shot = one_shot_node.button_pressed
