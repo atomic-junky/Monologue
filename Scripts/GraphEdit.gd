@@ -27,10 +27,9 @@ func _input(event):
 		selection_mode = true
 		moving_mode = graphnode_selected
 
-func disconnect_all_connections_from_node(from_node: StringName):
+func disconnect_connection_from_node(from_node: StringName, from_port: int):
 	for connection in get_connection_list():
 		if connection.get("from_node") == from_node:
-			var from_port = connection.get("from_port")
 			var to_node = connection.get("to_node")
 			var to_port = connection.get("to_port")
 			disconnect_node(from_node, from_port, to_node, to_port)
