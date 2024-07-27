@@ -5,6 +5,7 @@ var dialog = {}
 var dialog_for_localisation = []
 
 const HISTORY_FILE_PATH: String = "user://history.save"
+const MAX_FILENAME_LENGTH = 48
 
 @onready var graph_edit_inst = preload("res://Objects/GraphEdit.tscn")
 @onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
@@ -81,7 +82,8 @@ func _ready():
 					btn_text = btn_text[0].path_join(btn_text[1])
 				else:
 					btn_text = btn_text.back()
-				btn.text = btn_text
+				
+				btn.text = truncate_filename(btn_text)
 				btn.pressed.connect(file_selected.bind(path, 1))
 				recent_files_button_container.add_child(btn)
 			recent_files_container.show()
@@ -152,7 +154,7 @@ func file_selected(path, open_mode):
 	
 	$NoInteractions.hide()
 	
-	tab_bar.add_tab(path.get_file())
+	tab_bar.add_tab(truncate_filename(path.get_file()))
 	tab_bar.move_tab(tab_bar.tab_count - 2, tab_bar.tab_count - 1)
 	tab_bar.current_tab = tab_bar.tab_count - 2
 	
@@ -226,6 +228,12 @@ func save(quick: bool = false):
 	save_button.show()
 	test_button.show()
 
+## Left-truncate a given string based on MAX_FILENAME_LENGTH.
+func truncate_filename(filename: String):
+	var truncated = filename
+	if filename.length() > MAX_FILENAME_LENGTH:
+		truncated = "..." + filename.right(MAX_FILENAME_LENGTH - 3)
+	return truncated
 
 func load_project(path):
 	if not FileAccess.file_exists(path):
