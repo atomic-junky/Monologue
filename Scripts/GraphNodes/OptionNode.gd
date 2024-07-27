@@ -2,6 +2,7 @@ class_name OptionNode
 
 extends PanelContainer
 
+@onready var ribbon_instance = preload("res://Objects/SubComponents/Ribbon.tscn")
 @onready var sentence_node = $MarginContainer/MainContainer/SentenceContainer/TextEdit
 @onready var enable_node: CheckBox = $MarginContainer/MainContainer/EnableBtn
 @onready var one_shot_node: CheckBox = $MarginContainer/MainContainer/OneShotBtn
@@ -47,6 +48,9 @@ func _on_delete_pressed():
 
 func _on_id_copy_pressed():
 	DisplayServer.clipboard_set(id)
+	var ribbon = ribbon_instance.instantiate()
+	ribbon.position = get_viewport().get_mouse_position()
+	panel_node.side_panel.control_node.add_child(ribbon)
 
 
 func _on_id_text_changed(new_id):
