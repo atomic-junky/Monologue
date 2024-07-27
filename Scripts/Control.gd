@@ -361,6 +361,7 @@ func center_node_in_graph_edit(node):
 		graph_edit.disconnect_connection_from_node(picker_from_node, picker_from_port)
 		node.position_offset = picker_position
 		graph_edit.connect_node(picker_from_node, picker_from_port, node.name, 0)
+		update_connection(graph_edit, picker_from_node, picker_from_port, node.name, 0)
 		disable_picker_mode()
 		return
 	
@@ -413,14 +414,25 @@ func add_node(node_type):
 	node = node.instantiate()
 	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
+
+func update_connection(graph_edit, from, from_slot, to, _to_slot, next = true):
+	var graph_node = graph_edit.get_node(NodePath(from))
+	if graph_node.has_method("update_next_id"):
+		if next:
+			graph_node.update_next_id(from_slot, graph_edit.get_node(NodePath(to)))
+		else:
+			graph_node.update_next_id(from_slot, null)
 	
 func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
-	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size() <= 0:
-		get_current_graph_edit().connect_node(from, from_slot, to, to_slot)
+	var current_graph_edit = get_current_graph_edit()
+	if current_graph_edit.get_all_connections_from_slot(from, from_slot).size() <= 0:
+		current_graph_edit.connect_node(from, from_slot, to, to_slot)
+	update_connection(current_graph_edit, from, from_slot, to, to_slot)
 
 func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
+	var current_graph_edit = get_current_graph_edit()
 	get_current_graph_edit().disconnect_node(from, from_slot, to, to_slot)
-
+	update_connection(current_graph_edit, from, from_slot, to, to_slot, false)
 
 func test_project(from_node: String = "-1"):
 	await save(true)

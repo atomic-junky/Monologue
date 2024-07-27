@@ -30,6 +30,3 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_qg36p")
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_t5fox")
 title = "ChoiceNode"
 script = ExtResource("1_nn3v2")
-
-[connection signal="resize_request" from="." to="." method="_on_OptionNode_resize_request"]
-[connection signal="slot_updated" from="." to="." method="_on_slot_updated"]
