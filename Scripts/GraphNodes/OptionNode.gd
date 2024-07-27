@@ -45,6 +45,9 @@ func _from_dict(dict):
 
 
 func _on_delete_pressed():
+	# create a new option before deleting the last one to prevent zero options
+	if panel_node.options_container.get_child_count() == 1:
+		panel_node.new_option()
 	queue_free()
 	update_ref()
 
