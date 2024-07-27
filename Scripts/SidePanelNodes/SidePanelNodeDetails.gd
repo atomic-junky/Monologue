@@ -111,3 +111,7 @@ func _on_line_edit_id_text_changed(new_id):
 
 func _on_tfh_btn_pressed():
 	GlobalSignal.emit("test_trigger", [selected_node.id])
+
+
+func _on_id_copy_pressed():
+	DisplayServer.clipboard_set(current_panel.id)
