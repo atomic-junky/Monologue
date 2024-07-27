@@ -5,6 +5,7 @@ var dialog = {}
 var dialog_for_localisation = []
 
 const HISTORY_FILE_PATH: String = "user://history.save"
+const MAX_FILENAME_LENGTH = 48
 
 @onready var graph_edit_inst = preload("res://Objects/GraphEdit.tscn")
 @onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
@@ -19,7 +20,6 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var comment_node = preload("res://Objects/GraphNodes/CommentNode.tscn")
 @onready var event_node = preload("res://Objects/GraphNodes/EventNode.tscn")
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
-
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
@@ -33,8 +33,12 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Add
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
+@onready var file_dialog = $FileDialog
 
 var live_dict: Dictionary
+
+## Set to true if a file operation is triggered from Header instead of WelcomeWindow.
+var is_header_file_operation: bool = false
 
 var initial_pos = Vector2(40,40)
 var option_index = 0
@@ -81,7 +85,8 @@ func _ready():
 					btn_text = btn_text[0].path_join(btn_text[1])
 				else:
 					btn_text = btn_text.back()
-				btn.text = btn_text
+				
+				btn.text = truncate_filename(btn_text)
 				btn.pressed.connect(file_selected.bind(path, 1))
 				recent_files_button_container.add_child(btn)
 			recent_files_container.show()
@@ -152,7 +157,7 @@ func file_selected(path, open_mode):
 	
 	$NoInteractions.hide()
 	
-	tab_bar.add_tab(path.get_file())
+	tab_bar.add_tab(truncate_filename(path.get_file()))
 	tab_bar.move_tab(tab_bar.tab_count - 2, tab_bar.tab_count - 1)
 	tab_bar.current_tab = tab_bar.tab_count - 2
 	
@@ -226,6 +231,12 @@ func save(quick: bool = false):
 	save_button.show()
 	test_button.show()
 
+## Left-truncate a given string based on MAX_FILENAME_LENGTH.
+func truncate_filename(filename: String):
+	var truncated = filename
+	if filename.length() > MAX_FILENAME_LENGTH:
+		truncated = "..." + filename.right(MAX_FILENAME_LENGTH - 3)
+	return truncated
 
 func load_project(path):
 	if not FileAccess.file_exists(path):
@@ -453,26 +464,29 @@ func test_project(from_node: String = "-1"):
 ####################
 
 func new_file_select():
-	$FileDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-	$FileDialog.title = "Crate New File"
-	$FileDialog.ok_button_text = "Crate"
-	$FileDialog.popup_centered()
-	var new_file_path = await $FileDialog.file_selected
-
-	if new_file_path:
-		FileAccess.open(new_file_path, FileAccess.WRITE)
-		return new_file_path
-	
-	return null
+	file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	file_dialog.title = "Create New File"
+	file_dialog.ok_button_text = "Create"
+	file_dialog.popup_centered()
 
 func open_file_select():
-	$FileDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	$FileDialog.title = "Open File"
-	$FileDialog.ok_button_text = "Open"
-	$FileDialog.popup_centered()
-	var open_file = await $FileDialog.file_selected
-	if open_file: return open_file
-	return null
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	file_dialog.title = "Open File"
+	file_dialog.ok_button_text = "Open"
+	file_dialog.popup_centered()
+
+func _on_file_dialog_selected(path: String):
+	if is_header_file_operation:
+		$WelcomeWindow.hide()
+		file_dialog.hide()
+		new_graph_edit()
+	
+	match file_dialog.file_mode:
+		FileDialog.FILE_MODE_SAVE_FILE:
+			FileAccess.open(path, FileAccess.WRITE)
+			file_selected(path, 0)
+		FileDialog.FILE_MODE_OPEN_FILE:
+			file_selected(path, 1)
 
 func _on_graph_edit_connection_to_empty(from_node, from_port, _release_position):
 	graph_node_selecter.position = get_viewport().get_mouse_position()
@@ -539,24 +553,12 @@ func tab_close_pressed(tab):
 func _on_file_id_pressed(id):
 	match id:
 		0: # Open file
-			var new_file_path = await open_file_select()
-			if new_file_path == null:
-				return
-				
-			$WelcomeWindow.hide()
-			$FileDialog.hide()
-			new_graph_edit()
-			return await file_selected(new_file_path, 1)
+			is_header_file_operation = true
+			open_file_select()
 
 		1: # New file
-			var new_file_path = await new_file_select()
-			if new_file_path == null:
-				return
-				
-			$WelcomeWindow.hide()
-			$FileDialog.hide()
-			new_graph_edit()
-			return await file_selected(new_file_path, 0)
+			is_header_file_operation = true
+			new_file_select()
 
 		3: # Config
 			side_panel_node.show_config()
@@ -579,19 +581,13 @@ func new_graph_edit():
 
 
 func _on_new_file_btn_pressed():
-	var new_file_path = await new_file_select()
-	if new_file_path == null:
-		return
-		
-	return await file_selected(new_file_path, 0)
+	is_header_file_operation = false
+	new_file_select()
 
 
 func _on_open_file_btn_pressed():
-	var new_file_path = await open_file_select()
-	if new_file_path == null:
-		return
-		
-	return await file_selected(new_file_path, 1)
+	is_header_file_operation = false
+	open_file_select()
 
 
 func _on_help_id_pressed(id):
