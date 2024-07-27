@@ -36,7 +36,6 @@ func _to_dict() -> Dictionary:
 		}
 	}
 
-
 func _from_dict(dict):
 	id = dict.get("ID")
 	
@@ -50,6 +49,15 @@ func _from_dict(dict):
 	
 	_update()
 
+## Everytime the OptionNode updates from the panel to the ChoiceNode,
+## the reference to that dictionary item is different. This retrieves it by ID.
+func find_option_dictionary(search_id: String) -> Dictionary:
+	var result = {}
+	for option in options:
+		if option.get("ID") == search_id:
+			result = option
+			break
+	return result
 
 func get_all_options_id() -> Array:
 	var ids = []
@@ -58,22 +66,42 @@ func get_all_options_id() -> Array:
 			ids.append(child.id)
 	return ids
 
-
 func get_graph_node(node_id):
+	var graph_node = null
 	for node in get_parent().get_children():
 		if node_id is String and node.id == node_id:
-			return node
-	
-	return -1
+			graph_node = node
+	return graph_node
+
+func link_option(option_dictionary: Dictionary, establish_link: bool = true):
+	var option_index = options.find(option_dictionary)
+	var next_node = get_graph_node(option_dictionary.get("NextID"))
+	if next_node:
+		if establish_link:
+			get_parent().connect_node(name, option_index, next_node.name, 0)
+		else:
+			get_parent().disconnect_node(name, option_index, next_node.name, 0)
+
+func update_next_id(from_port: int, next_node: MonologueGraphNode):
+	if next_node:
+		# nodes should not have multiple next_nodes, so only update
+		# if there is no existing NextID
+		if str(options[from_port].get("NextID")) == "-1":
+			options[from_port]["NextID"] = next_node.id
+	else:
+		# if there is no next_node target, disconnect the NextID (set to -1)
+		options[from_port]["NextID"] = -1
 
 func _update(panel: ChoiceNodePanel = null):
 	if panel != null:
-		options.clear()
+		var updated_options = []
 		for option in panel.options_container.get_children():
-			if not option is OptionNode or option.is_queued_for_deletion():
-				continue
-			var opt_dict = option._to_dict()
-			options.append(opt_dict)
+			if option is OptionNode:
+				if option.is_queued_for_deletion():
+					link_option(find_option_dictionary(option.id), false)
+				else:
+					updated_options.append(option._to_dict())
+		options = updated_options
 	
 	for child in get_children():
 		remove_child(child)
@@ -89,6 +117,4 @@ func _update(panel: ChoiceNodePanel = null):
 		var is_first = get_child_count() <= 1
 		set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true, 0, Color("ffffff"), arrow_texture01, arrow_texture02, false)
 		
-		var next_node = get_graph_node(option.get("NextID"))
-		if not next_node is int:
-			get_parent().connect_node(name, options.find(option), next_node.name, 0)
+		link_option(option)
