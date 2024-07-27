@@ -52,6 +52,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="TextLabelPreview" type="RichTextLabel" parent="MainContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.72549, 0.72549, 0.72549, 1)
 bbcode_enabled = true
 fit_content = true
