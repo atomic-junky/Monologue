@@ -184,9 +184,11 @@ script = ExtResource("3_fftd2")
 
 [node name="ActionTypeMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ActionTypeContainer" type="HBoxContainer" parent="ActionTypeMarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ActionTypeLabel" type="Label" parent="ActionTypeMarginContainer/ActionTypeContainer"]
 layout_mode = 2
@@ -194,7 +196,7 @@ text = "Action"
 
 [node name="ActionTypeContainer" type="PanelContainer" parent="ActionTypeMarginContainer/ActionTypeContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="ActionTypeLabel" type="Label" parent="ActionTypeMarginContainer/ActionTypeContainer/ActionTypeContainer"]
 layout_mode = 2
@@ -205,9 +207,11 @@ label_settings = SubResource("LabelSettings_v4ya3")
 [node name="OptionMarginContainer" type="MarginContainer" parent="."]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 
 [node name="OptionContainer" type="HBoxContainer" parent="OptionMarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="OptionLabel" type="Label" parent="OptionMarginContainer/OptionContainer"]
 layout_mode = 2
@@ -215,7 +219,7 @@ text = "Enable Option"
 
 [node name="OptionIdContainer" type="PanelContainer" parent="OptionMarginContainer/OptionContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="OptionIdLabel" type="Label" parent="OptionMarginContainer/OptionContainer/OptionIdContainer"]
 layout_mode = 2
@@ -229,7 +233,7 @@ text = "?"
 
 [node name="ValueContainer" type="PanelContainer" parent="OptionMarginContainer/OptionContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="ValueLabel" type="Label" parent="OptionMarginContainer/OptionContainer/ValueContainer"]
 layout_mode = 2
@@ -240,9 +244,11 @@ label_settings = SubResource("LabelSettings_v4ya3")
 [node name="VariableMarginContainer" type="MarginContainer" parent="."]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 
 [node name="VariableContainer" type="HBoxContainer" parent="VariableMarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="DoLabel" type="Label" parent="VariableMarginContainer/VariableContainer"]
 layout_mode = 2
@@ -250,7 +256,7 @@ text = "Do"
 
 [node name="VariableNameContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="VariableNameLabel" type="Label" parent="VariableMarginContainer/VariableContainer/VariableNameContainer"]
 layout_mode = 2
@@ -260,7 +266,7 @@ label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="OperatorContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="OperatorLabel" type="Label" parent="VariableMarginContainer/VariableContainer/OperatorContainer"]
 layout_mode = 2
@@ -270,7 +276,7 @@ label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="ValueContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ldvoo")
 
 [node name="ValueLabel" type="Label" parent="VariableMarginContainer/VariableContainer/ValueContainer"]
@@ -282,9 +288,11 @@ label_settings = SubResource("LabelSettings_v4ya3")
 [node name="TimerMarginContainer" type="MarginContainer" parent="."]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 
 [node name="CustomContainer" type="HBoxContainer" parent="TimerMarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="DoLabel" type="Label" parent="TimerMarginContainer/CustomContainer"]
 layout_mode = 2
@@ -292,7 +300,7 @@ text = "Wait"
 
 [node name="TimerValueContainer" type="PanelContainer" parent="TimerMarginContainer/CustomContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="TimerValueLabel" type="Label" parent="TimerMarginContainer/CustomContainer/TimerValueContainer"]
 layout_mode = 2
@@ -306,9 +314,11 @@ text = "seconds"
 
 [node name="CustomMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="CustomContainer" type="HBoxContainer" parent="CustomMarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="DoLabel" type="Label" parent="CustomMarginContainer/CustomContainer"]
 layout_mode = 2
@@ -316,7 +326,7 @@ text = "Do"
 
 [node name="CustomTypeContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="CustomTypeLabel" type="Label" parent="CustomMarginContainer/CustomContainer/CustomTypeContainer"]
 layout_mode = 2
@@ -326,7 +336,7 @@ label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="CustomValueContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="CustomValueLabel" type="Label" parent="CustomMarginContainer/CustomContainer/CustomValueContainer"]
 layout_mode = 2
@@ -336,7 +346,7 @@ label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="LoopValueContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="LoopValueLabel" type="Label" parent="CustomMarginContainer/CustomContainer/LoopValueContainer"]
 layout_mode = 2
