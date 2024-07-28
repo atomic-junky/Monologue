@@ -352,6 +352,12 @@ func get_node_by_id(id):
 		if node.id == id:
 			return node
 	return null
+
+## Check if an option ID exists in the entirety of the current GraphEdit.
+func is_option_id_exists(id):
+	for node in get_current_graph_edit().get_children():
+		if node is ChoiceNode:
+			return not node.find_option_dictionary(id).is_empty()
 	
 func get_options_nodes(node_list, options_id):
 	var options = []

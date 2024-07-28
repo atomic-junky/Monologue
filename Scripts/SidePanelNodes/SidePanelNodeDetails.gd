@@ -35,7 +35,7 @@ func on_graph_node_selected(node):
 		
 	line_edit_id.text = node.id
 
-	var new_panel: MonologueNodePanel = null
+	var new_panel = null
 	match node.node_type:
 		"NodeRoot":
 			new_panel = root_node_panel_instance.instantiate()
@@ -58,10 +58,10 @@ func on_graph_node_selected(node):
 		return
 	
 	clear_current_panel()
-	new_panel.side_panel = self
-	new_panel.graph_node = node
-	
 	if new_panel:
+		if new_panel is MonologueNodePanel:
+			new_panel.side_panel = self
+		new_panel.graph_node = node
 		current_panel = new_panel
 		selected_node = node
 		panel_container.add_child(new_panel)
@@ -102,7 +102,7 @@ func on_graph_node_deselected(_node):
 
 
 func _on_line_edit_id_text_changed(new_id):
-	if control_node.get_node_by_id(new_id):
+	if control_node.get_node_by_id(new_id) or control_node.is_option_id_exists(new_id):
 		line_edit_id.text = current_panel.id
 		return
 	
