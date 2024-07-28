@@ -107,7 +107,10 @@ func _on_line_edit_id_text_changed(new_id):
 		return
 	
 	current_panel.id = new_id
-	current_panel.change.emit(current_panel)
+	if current_panel is MonologueNodePanel:
+		current_panel.change.emit(current_panel)
+	else:
+		current_panel.graph_node.id = new_id
 
 
 func _on_tfh_btn_pressed():
