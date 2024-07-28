@@ -10,6 +10,8 @@ var variables = []
 var mouse_pressed = false
 var selection_mode = false
 
+## The actively selected graphnode, for side panel updates.
+var active_graphnode: Node
 var graphnode_selected = false
 var moving_mode = false
 
@@ -87,10 +89,12 @@ func is_option_node_exciste(node_id):
 			return true
 	return false
 
-func _on_node_selected(_node):
+func _on_node_selected(node):
+	active_graphnode = node
 	graphnode_selected = true
 
 func _on_node_deselected(_node):
+	active_graphnode = null
 	graphnode_selected = false
 
 func free_graphnode(node: GraphNode):

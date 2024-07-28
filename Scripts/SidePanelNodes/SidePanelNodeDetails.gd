@@ -27,11 +27,12 @@ func clear_current_panel():
 		current_panel = null
 
 
-func on_graph_node_selected(node):
-	var graph_edit = control_node.get_current_graph_edit()
-	await get_tree().create_timer(0.1).timeout
-	if graph_edit.selection_mode or graph_edit.moving_mode:
-		return
+func on_graph_node_selected(node, bypass_modes: bool = false):
+	if not bypass_modes:
+		var graph_edit = control_node.get_current_graph_edit()
+		await get_tree().create_timer(0.1).timeout
+		if graph_edit.selection_mode or graph_edit.moving_mode:
+			return
 		
 	line_edit_id.text = node.id
 

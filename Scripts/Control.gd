@@ -523,7 +523,15 @@ func _on_graph_node_selecter_close_requested():
 func tab_changed(_idx):
 	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
 		for ge in graph_edits.get_children():
-			ge.visible = graph_edits.get_child(tab_bar.current_tab) == ge
+			if graph_edits.get_child(tab_bar.current_tab) == ge:
+				ge.visible = true
+				if ge.graphnode_selected:
+					side_panel_node.on_graph_node_selected(ge.active_graphnode, true)
+					side_panel_node.show()
+				else:
+					side_panel_node.hide()
+			else:
+				ge.visible = false
 		return
 	
 	new_graph_edit()
@@ -534,6 +542,7 @@ func tab_changed(_idx):
 		welcome_close_button.hide()
 	$WelcomeWindow.show()
 	$NoInteractions.show()
+	side_panel_node.hide()
 
 
 func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
