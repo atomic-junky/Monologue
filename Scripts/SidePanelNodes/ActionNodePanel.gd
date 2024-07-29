@@ -114,18 +114,19 @@ func update_action(_x = null):
 		"ActionOption":
 			hide_all([option_id_container, boolean_edit])
 		"ActionVariable":
-			var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
-			if not variable_name:
-				return
-			var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
+			var variable_type = ""
+			if variable_drop_node.has_selectable_items():
+				var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
+				var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
+				variable_type = variable.get("Type")
 			
-			var is_integer: bool = variable.get("Type") == "Integer"
+			var is_integer: bool = variable_type == "Integer"
 			operator_drop_node.set_item_disabled(1, !is_integer)
 			operator_drop_node.set_item_disabled(2, !is_integer)
 			operator_drop_node.set_item_disabled(3, !is_integer)
 			operator_drop_node.set_item_disabled(4, !is_integer)
 			
-			match variable.get("Type"):
+			match variable_type:
 				"Boolean":
 					hide_all([boolean_edit, variable_container, operator_container])
 				"Integer":

@@ -10,11 +10,13 @@ font_color = Color(0.686275, 0.686275, 0.686275, 1)
 [node name="OptionReference" type="PanelContainer"]
 offset_right = 320.0
 offset_bottom = 72.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_jqboc")
 script = ExtResource("1_me3e4")
 
 [node name="MainContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
@@ -22,6 +24,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Option" type="Label" parent="MainContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 0)

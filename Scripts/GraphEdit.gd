@@ -10,6 +10,8 @@ var variables = []
 var mouse_pressed = false
 var selection_mode = false
 
+## The actively selected graphnode, for side panel updates.
+var active_graphnode: Node
 var graphnode_selected = false
 var moving_mode = false
 
@@ -26,6 +28,13 @@ func _input(event):
 	if event is InputEventMouseMotion and mouse_pressed:
 		selection_mode = true
 		moving_mode = graphnode_selected
+
+func disconnect_connection_from_node(from_node: StringName, from_port: int):
+	for connection in get_connection_list():
+		if connection.get("from_node") == from_node:
+			var to_node = connection.get("to_node")
+			var to_port = connection.get("to_port")
+			disconnect_node(from_node, from_port, to_node, to_port)
 
 func get_all_connections_from_node(from_node: StringName):
 	var connections = []
@@ -80,10 +89,12 @@ func is_option_node_exciste(node_id):
 			return true
 	return false
 
-func _on_node_selected(_node):
+func _on_node_selected(node):
+	active_graphnode = node
 	graphnode_selected = true
 
 func _on_node_deselected(_node):
+	active_graphnode = null
 	graphnode_selected = false
 
 func free_graphnode(node: GraphNode):

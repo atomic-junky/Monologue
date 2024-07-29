@@ -12,6 +12,7 @@ extends PanelContainer
 @onready var end_path_node_panel_instance = preload("res://Objects/SidePanelNodes/EndPathNodePanel.tscn")
 @onready var condition_node_panel_instance = preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
 @onready var action_node_panel_instance = preload("res://Objects/SidePanelNodes/ActionNodePanel.tscn")
+@onready var ribbon_instance = preload("res://Objects/SubComponents/Ribbon.tscn")
 
 var selected_node = null
 var current_panel = null
@@ -26,11 +27,12 @@ func clear_current_panel():
 		current_panel = null
 
 
-func on_graph_node_selected(node):
-	var graph_edit = control_node.get_current_graph_edit()
-	await get_tree().create_timer(0.1).timeout
-	if graph_edit.selection_mode or graph_edit.moving_mode:
-		return
+func on_graph_node_selected(node, bypass_modes: bool = false):
+	if not bypass_modes:
+		var graph_edit = control_node.get_current_graph_edit()
+		await get_tree().create_timer(0.1).timeout
+		if graph_edit.selection_mode or graph_edit.moving_mode:
+			return
 		
 	line_edit_id.text = node.id
 
@@ -57,10 +59,10 @@ func on_graph_node_selected(node):
 		return
 	
 	clear_current_panel()
-	
-	new_panel.graph_node = node
-	
 	if new_panel:
+		if new_panel is MonologueNodePanel:
+			new_panel.side_panel = self
+		new_panel.graph_node = node
 		current_panel = new_panel
 		selected_node = node
 		panel_container.add_child(new_panel)
@@ -101,13 +103,23 @@ func on_graph_node_deselected(_node):
 
 
 func _on_line_edit_id_text_changed(new_id):
-	if control_node.get_node_by_id(new_id):
+	if control_node.get_node_by_id(new_id) or control_node.is_option_id_exists(new_id):
 		line_edit_id.text = current_panel.id
 		return
 	
 	current_panel.id = new_id
-	current_panel.change.emit(current_panel)
+	if current_panel is MonologueNodePanel:
+		current_panel.change.emit(current_panel)
+	else:
+		current_panel.graph_node.id = new_id
 
 
 func _on_tfh_btn_pressed():
 	GlobalSignal.emit("test_trigger", [selected_node.id])
+
+
+func _on_id_copy_pressed():
+	DisplayServer.clipboard_set(current_panel.id)
+	var ribbon = ribbon_instance.instantiate()
+	ribbon.position = get_viewport().get_mouse_position()
+	control_node.add_child(ribbon)
