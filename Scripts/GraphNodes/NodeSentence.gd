@@ -30,6 +30,7 @@ func _to_dict() -> Dictionary:
 		"SpeakerID": speaker_id,
 		"DisplaySpeakerName": display_speaker_name,
 		"DisplayVariant": display_variant,
+		"VoicelinePath": "",
 		"EditorPosition": {
 			"x": position_offset.x,
 			"y": position_offset.y

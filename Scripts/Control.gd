@@ -265,7 +265,7 @@ func load_project(path):
 	graph_edit.clear_connections()
 	graph_edit.data = data
 	
-	var node_list = data.get("ListNodes")
+	var node_list: Array = data.get("ListNodes")
 	root_dict = get_root_dict(node_list)
 	
 	for node in node_list:
@@ -293,6 +293,10 @@ func load_project(path):
 				new_node = comment_node.instantiate()
 			"NodeEvent":
 				new_node = event_node.instantiate()
+			"NodeOption":
+				continue
+			_:
+				push_error("Unknown node type %s" % node.get("$type"))
 		
 		if not new_node:
 			continue
@@ -302,8 +306,7 @@ func load_project(path):
 		new_node._from_dict(node)
 	
 	for node in node_list:
-		if not node.has("ID"):
-			continue
+		assert(node.has("ID"))
 		
 		var current_node = get_node_by_id(node.get("ID"))
 		match node.get("$type"):
@@ -329,16 +332,14 @@ func load_project(path):
 				if node.get("ElseNextID") is String:
 					var else_node = get_node_by_id(node.get("ElseNextID"))
 					graph_edit.connect_node(current_node.name, 1, else_node.name, 0)
-		
-		if not current_node: # OptionNode
-			continue
+			"NodeOption":
+				continue
 		
 		if node.has("EditorPosition"):
 			current_node.position_offset.x = node.EditorPosition.get("x")
 			current_node.position_offset.y = node.EditorPosition.get("y")
-			
+		
 	root_node_ref = get_root_node_ref()
-	
 	if not root_node_ref:
 		var new_root_node = root_node.instantiate()
 		get_current_graph_edit().add_child(new_root_node)
@@ -347,8 +348,13 @@ func load_project(path):
 		root_node_ref = get_root_node_ref()
 	
 	
+	
 func get_node_by_id(id):
 	for node in get_current_graph_edit().get_children():
+		if not node is GraphNode:
+			# push_warning("Node %s is not a GraphNode but is a child of a GraphEdit." % node)
+			continue
+			
 		if node.id == id:
 			return node
 	return null

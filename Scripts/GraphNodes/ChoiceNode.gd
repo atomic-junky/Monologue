@@ -68,7 +68,7 @@ func get_all_options_id() -> Array:
 
 func get_graph_node(node_id):
 	var graph_node = null
-	for node in get_parent().get_children():
+	for node in get_parent().get_children().filter(func(n): return n is GraphNode):
 		if node_id is String and node.id == node_id:
 			graph_node = node
 	return graph_node

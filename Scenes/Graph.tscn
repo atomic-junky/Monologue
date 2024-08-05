@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=37 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="14_8lefg"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 [ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://Objects/SubComponents/CloseButton.tscn" id="17_af4y3"]
+[ext_resource type="Script" path="res://Scripts/GlobalFileDialog.gd" id="20_2dvte"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
 content_margin_left = 5.0
@@ -584,6 +585,11 @@ access = 2
 filters = PackedStringArray("*.json")
 use_native_dialog = true
 
+[node name="FileDialogv2" type="FileDialog" parent="."]
+access = 2
+use_native_dialog = true
+script = ExtResource("20_2dvte")
+
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
@@ -610,3 +616,4 @@ use_native_dialog = true
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CloseButton" to="." method="close_welcome_tab"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_selected"]
+[connection signal="file_selected" from="FileDialogv2" to="FileDialogv2" method="_on_file_selected"]

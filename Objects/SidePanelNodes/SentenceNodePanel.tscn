@@ -1,9 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://bqeslfyg77nj6"]
+[gd_scene load_steps=6 format=3 uid="uid://bqeslfyg77nj6"]
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SentenceNodePanel.gd" id="1_626xh"]
+[ext_resource type="Texture2D" uid="uid://t1i3wy037vsu" path="res://Assets/Icons/folder_icon.png" id="2_vudiy"]
+[ext_resource type="Script" path="res://Scripts/FilePickerButton.gd" id="3_43bqn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_c5sko"]
 font_color = Color(0.521569, 0.521569, 0.521569, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxvmx"]
+content_margin_left = 5.0
+content_margin_right = 31.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="SentenceNodePanel" type="VBoxContainer"]
 offset_right = 500.0
@@ -81,7 +97,36 @@ size_flags_horizontal = 3
 wrap_mode = 1
 caret_blink = true
 
+[node name="SubContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TextLabel" type="Label" parent="SubContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Voiceline"
+
+[node name="LineEdit" type="LineEdit" parent="SubContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_vxvmx")
+editable = false
+structured_text_bidi_override = 2
+
+[node name="FilePickerButton" type="Button" parent="SubContainer/LineEdit" node_paths=PackedStringArray("linked_lined_edit")]
+layout_mode = 2
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+mouse_default_cursor_shape = 2
+icon = ExtResource("2_vudiy")
+flat = true
+script = ExtResource("3_43bqn")
+linked_lined_edit = NodePath("..")
+
 [connection signal="item_selected" from="SpeakerContainer/SubContainer/CharacterDrop" to="." method="_on_character_drop_item_selected"]
 [connection signal="text_changed" from="SpeakerContainer/DisplayNameContainer/SubContainer/LineEdit" to="." method="_on_display_name_line_edit_text_changed"]
 [connection signal="text_changed" from="SpeakerContainer/DisplayVariantContainer/SubContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="text_changed" from="SentenceContainer/TextEdit" to="." method="_on_sentence_text_edit_changed"]
+[connection signal="pressed" from="SubContainer/LineEdit/FilePickerButton" to="SubContainer/LineEdit/FilePickerButton" method="_on_pressed"]
