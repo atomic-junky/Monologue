@@ -8,18 +8,22 @@ var dialog_for_localisation = []
 const HISTORY_FILE_PATH: String = "user://history.save"
 const MAX_FILENAME_LENGTH = 48
 
+## Dictionary of Monologue node types and their corresponding classes.
+var node_class_dictionary = {
+	"Root": RootNode,
+	"BridgeIn": BridgeInNode,
+	"BridgeOut": BridgeOutNode,
+	"Choice": ChoiceNode,
+	"Comment": CommentNode,
+	"Condition": ConditionNode,
+	"DiceRoll": DiceRollNode,
+	"EndPath": EndPathNode,
+	"Event": EventNode,
+	"Sentence": SentenceNode,
+}
+
 @onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
-@onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
-@onready var sentence_node = preload("res://Objects/GraphNodes/SentenceNode.tscn")
-@onready var dice_roll_node = preload("res://Objects/GraphNodes/DiceRollNode.tscn")
-@onready var choice_node = preload("res://Objects/GraphNodes/ChoiceNode.tscn")
-@onready var end_node = preload("res://Objects/GraphNodes/EndPathNode.tscn")
-@onready var bridge_in_node = preload("res://Objects/GraphNodes/BridgeInNode.tscn")
-@onready var bridge_out_node = preload("res://Objects/GraphNodes/BridgeOutNode.tscn")
-@onready var condition_node = preload("res://Objects/GraphNodes/ConditionNode.tscn")
-@onready var action_node = preload("res://Objects/GraphNodes/ActionNode.tscn")
-@onready var comment_node = preload("res://Objects/GraphNodes/CommentNode.tscn")
-@onready var event_node = preload("res://Objects/GraphNodes/EventNode.tscn")
+# option_panel is not a MonologueGraphNode, it's an PanelContainer node
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
@@ -48,6 +52,7 @@ var option_index = 0
 var node_index = 0
 var all_nodes_index = 0
 
+var root_class = node_class_dictionary.get("Root")
 var root_node_ref
 var root_dict
 
@@ -58,7 +63,7 @@ var picker_position
 
 
 func _ready():
-	var new_root_node = root_node.instantiate()
+	var new_root_node = root_class.instance_from_type()
 	get_current_graph_edit().add_child(new_root_node)
 	connect_side_panel(get_current_graph_edit())
 	
@@ -99,9 +104,11 @@ func _ready():
 	welcome_window.show()
 	no_interactions_dimmer.show()
 	
-	GlobalSignal.add_listener("add_graph_node", add_node)
+	GlobalSignal.add_listener("add_graph_node", add_node_from_header)
 	GlobalSignal.add_listener("test_trigger", test_project)
 
+func add_node_from_header(node_type):
+	get_current_graph_edit().add_node(node_type)
 
 func _shortcut_input(event):
 	if event.is_action_pressed("Save"):
@@ -178,7 +185,7 @@ func file_selected(path, open_mode):
 	if open_mode == 0: #NEW
 		for node in graph_edit.get_children():
 			node.queue_free()
-		var new_root_node = root_node.instantiate()
+		var new_root_node = root_class.instance_from_type()
 		graph_edit.add_child(new_root_node)
 		await save(true)
 
@@ -278,30 +285,9 @@ func load_project(path):
 	root_dict = get_root_dict(node_list)
 	
 	for node in node_list:
-		var new_node
-		match node.get("$type"):
-			"NodeRoot":
-				new_node = root_node.instantiate()
-			"NodeSentence":
-				new_node = sentence_node.instantiate()
-			"NodeChoice":
-				new_node = choice_node.instantiate()
-			"NodeDiceRoll":
-				new_node = dice_roll_node.instantiate()
-			"NodeEndPath":
-				new_node = end_node.instantiate()
-			"NodeBridgeIn":
-				new_node = bridge_in_node.instantiate()
-			"NodeBridgeOut":
-				new_node = bridge_out_node.instantiate()
-			"NodeCondition":
-				new_node = condition_node.instantiate()
-			"NodeAction":
-				new_node = action_node.instantiate()
-			"NodeComment":
-				new_node = comment_node.instantiate()
-			"NodeEvent":
-				new_node = event_node.instantiate()
+		var node_type: String = node.get("$type")
+		var node_class = node_class_dictionary.get(node_type.trim_prefix("Node"))
+		var new_node = node_class.instance_from_type()
 		
 		if not new_node:
 			continue
@@ -349,7 +335,7 @@ func load_project(path):
 	root_node_ref = get_root_node_ref()
 	
 	if not root_node_ref:
-		var new_root_node = root_node.instantiate()
+		var new_root_node = root_class.instance_from_type()
 		get_current_graph_edit().add_child(new_root_node)
 		
 		save(true)
@@ -384,61 +370,6 @@ func get_options_nodes(node_list, options_id):
 func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
 	GlobalSignal.emit("add_graph_node", [node_type])
-
-## Adds a node of the given type to the current GraphEdit.
-## If [param track_history] is true, record this action in GraphEdit history.
-func add_node(node_type, track_history: bool = true):
-	var current_graph_edit = get_current_graph_edit()
-	if node_type == "Bridge":
-		var number = current_graph_edit.get_free_bridge_number()
-	
-		var in_node = bridge_in_node.instantiate()
-		var out_node = bridge_out_node.instantiate()
-		
-		current_graph_edit.add_child(in_node)
-		current_graph_edit.add_child(out_node)
-		
-		in_node.number_selector.value = number
-		out_node.number_selector.value = number
-		
-		current_graph_edit.center_node(in_node)
-		current_graph_edit.center_node(out_node)
-		in_node.position_offset.x -= in_node.size.x/2+10
-		out_node.position_offset.x += out_node.size.x/2+10
-		
-	var node
-	match node_type:
-		"Sentence":
-			node = sentence_node
-		"Choice":
-			node = choice_node
-		"DiceRoll":
-			node = dice_roll_node
-		"Condition":
-			node = condition_node
-		"Action":
-			node = action_node
-		"EndPath":
-			node = end_node
-		"Event":
-			node = event_node
-		"Comment":
-			node = comment_node
-	
-	if not node:
-		return
-	
-	node = node.instantiate()
-	current_graph_edit.add_child(node, true)
-	current_graph_edit.center_node(node)
-	
-	# if enabled, track the addition of this node into the graph history
-	if track_history:
-		var history = AddNodeHistory.new(current_graph_edit, node.name,
-				current_graph_edit.free_graphnode.bind(node),
-				add_node.bind(node_type, false))
-		current_graph_edit.action_queue.add(history)
-	return node
 
 
 func test_project(from_node: String = "-1"):
@@ -576,7 +507,7 @@ func _on_file_id_pressed(id):
 
 func new_graph_edit():
 	var graph_edit: MonologueGraphEdit = graph_edit_inst.instantiate()
-	var new_root_node = root_node.instantiate()
+	var new_root_node = root_class.instance_from_type()
 	
 	graph_edit.name = "new"
 	connect_side_panel(graph_edit)

@@ -1,7 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Link.svg")
 
 class_name BridgeOutNode
-
 extends MonologueGraphNode
 
 @onready var number_selector = $MarginContainer/HBoxContainer/LinkNumber
@@ -10,6 +9,10 @@ extends MonologueGraphNode
 func _ready():
 	node_type = "NodeBridgeOut"
 	title = node_type
+
+
+static func instance_from_type() -> MonologueGraphNode:
+	return preload("res://Objects/GraphNodes/BridgeOutNode.tscn").instantiate()
 
 
 func _to_dict() -> Dictionary:

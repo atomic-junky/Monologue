@@ -1,11 +1,15 @@
 @icon("res://Assets/Icons/NodesIcons/Comment.png")
 
-class_name CommentNpde
+class_name CommentNode
 
 extends MonologueGraphNode
 
 
 @onready var comment_edit = $MainContainer/CommentEdit
+
+
+static func instance_from_type() -> MonologueGraphNode:
+	return preload("res://Objects/GraphNodes/CommentNode.tscn").instantiate()
 
 
 func _to_dict() -> Dictionary:

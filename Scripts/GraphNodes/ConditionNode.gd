@@ -17,6 +17,11 @@ func _ready():
 	node_type = "NodeCondition"
 	title = node_type
 
+
+static func instance_from_type() -> MonologueGraphNode:
+	return preload("res://Objects/GraphNodes/ConditionNode.tscn").instantiate()
+
+
 func _to_dict() -> Dictionary:
 	var if_next_id_node = get_parent().get_all_connections_from_slot(name, 0)
 	var else_next_id_node = get_parent().get_all_connections_from_slot(name, 1)

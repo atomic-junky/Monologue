@@ -35,6 +35,11 @@ func _ready():
 	node_type = "NodeAction"
 	title = node_type
 
+
+static func instance_from_type() -> MonologueGraphNode:
+	return preload("res://Objects/GraphNodes/ActionNode.tscn").instance()
+
+
 func _to_dict() -> Dictionary:
 	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
 	

@@ -1,7 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
 
 class_name RootNode
-
 extends MonologueGraphNode
 
 
@@ -11,6 +10,10 @@ var characters = []
 func _ready():
 	node_type = "NodeRoot"
 	title = node_type
+
+
+static func instance_from_type() -> MonologueGraphNode:
+	return preload("res://Objects/GraphNodes/RootNode.tscn").instantiate()
 
 
 func _to_dict() -> Dictionary:

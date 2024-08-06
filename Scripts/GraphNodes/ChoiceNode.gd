@@ -25,6 +25,11 @@ func _ready():
 	
 	_update()
 
+
+static func instance_from_type() -> MonologueGraphNode:
+	return preload("res://Objects/GraphNodes/ChoiceNode.tscn").instantiate()
+
+
 func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,

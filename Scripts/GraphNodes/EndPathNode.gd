@@ -13,6 +13,10 @@ func _ready():
 	title = node_type
 
 
+static func instance_from_type() -> MonologueGraphNode:
+	return preload("res://Objects/GraphNodes/EndPathNode.tscn").instantiate()
+
+
 func _to_dict():
 	return {
 		"$type": node_type,

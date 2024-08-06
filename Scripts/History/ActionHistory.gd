@@ -4,10 +4,13 @@ class_name ActionHistory
 extends RefCounted
 
 
+## If present, triggers another action within this action as if they are one.
+var daisy_chain: ActionHistory
 ## Function to call on undo. Arguments should be bound beforehand.
 var _undo_callback: Callable
 ## Function to call on redo. Arguments should be bound beforehand.
 var _redo_callback: Callable
+
 
 
 ## Must have undo and redo [Callable] that has bound arguments.
