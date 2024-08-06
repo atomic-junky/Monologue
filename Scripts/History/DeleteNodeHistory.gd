@@ -6,11 +6,6 @@ extends AddNodeHistory
 
 func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 	super(graph, nodes)
-	
-	# store data of the deleted nodes immediately
-	for node in nodes:
-		restoration_data[node.name] = node._to_dict()
-	
 	# difference in this history is that the restoration directly calls
 	# graph edit's add_child() for each individual node
 	_redo_callback = func() -> Array[MonologueGraphNode]:

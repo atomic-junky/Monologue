@@ -83,15 +83,8 @@ func disconnect_from_node(from_node: StringName, from_port: int):
 ## If [param track_history] is true, it will be recorded in [member action_queue].
 func free_graphnode(node: GraphNode) -> Dictionary:
 	# Disconnect all empty connections
-	for n in get_all_connections_to_node(node.name):
-		for co in get_connection_list():
-			if co.get("from_node") == n.name and co.get("to_node") == node.name:
-				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
-	
-	for n in get_all_connections_from_node(node.name):
-		for co in get_connection_list():
-			if co.get("from_node") == node.name and co.get("to_node") == n.name:
-				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
+	for c in get_all_inbound_connections(node.name) + get_all_outbound_connections(node.name):
+		disconnect_node(c.get("from_node"), c.get("from_port"), c.get("to_node"), c.get("to_port"))
 	
 	# retrive node data before deletion
 	var node_data = node._to_dict()
@@ -99,23 +92,21 @@ func free_graphnode(node: GraphNode) -> Dictionary:
 	return node_data
 
 
-## Find all known connections from the given graphnode.
-func get_all_connections_from_node(from_node: StringName):
-	var connections = []
-	for connection in get_connection_list():
-		if connection.get("from_node") == from_node:
-			var to = get_node_or_null(NodePath(connection.get("to_node")))
-			connections.append(to)
-	return connections
-
-
-## Find all existing connections that connect to the given graphnode.
-func get_all_connections_to_node(from_node: StringName):
+## Find all other connections that connect to the given graphnode.
+func get_all_inbound_connections(from_node: StringName):
 	var connections = []
 	for connection in get_connection_list():
 		if connection.get("to_node") == from_node:
-			var from = get_node_or_null(NodePath(connection.get("from_node")))
-			connections.append(from)
+			connections.append(connection)
+	return connections
+
+
+## Find all connections that originate from the given graphnode.
+func get_all_outbound_connections(from_node: StringName):
+	var connections = []
+	for connection in get_connection_list():
+		if connection.get("from_node") == from_node:
+			connections.append(connection)
 	return connections
 
 
