@@ -1,4 +1,5 @@
 ## Represents the graph area which creates and connects MonologueGraphNodes.
+class_name MonologueGraphEdit
 extends GraphEdit
 
 

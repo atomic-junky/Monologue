@@ -5,13 +5,13 @@ extends ActionHistory
 
 
 ## Reference to the graph edit node that this action should apply to.
-var graph_edit: GraphEdit
+var graph_edit: MonologueGraphEdit
 ## The node's data.
 var node_data: Dictionary
 
 
-func _init(graph: GraphEdit, undo_function: Callable, redo_function: Callable):
-	super(undo_function, redo_function)
+func _init(graph: MonologueGraphEdit, undo_func: Callable, redo_func: Callable):
+	super(undo_func, redo_func)
 	graph_edit = graph
 
 

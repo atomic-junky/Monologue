@@ -1,3 +1,4 @@
+class_name MonologueControl
 extends Control
 
 
@@ -7,7 +8,7 @@ var dialog_for_localisation = []
 const HISTORY_FILE_PATH: String = "user://history.save"
 const MAX_FILENAME_LENGTH = 48
 
-@onready var graph_edit_inst = preload("res://Objects/GraphEdit.tscn")
+@onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
 @onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
 @onready var sentence_node = preload("res://Objects/GraphNodes/SentenceNode.tscn")
 @onready var dice_roll_node = preload("res://Objects/GraphNodes/DiceRollNode.tscn")
@@ -111,7 +112,7 @@ func _shortcut_input(event):
 	
 
 
-func get_current_graph_edit() -> GraphEdit:
+func get_current_graph_edit() -> MonologueGraphEdit:
 	return graph_edits.get_child(tab_bar.current_tab)
 
 
@@ -155,7 +156,7 @@ func file_selected(path, open_mode):
 		return
 	
 	for ge in graph_edits.get_children():
-		if not ge is GraphEdit:
+		if not ge is MonologueGraphEdit:
 			continue
 		
 		if ge.file_path == path:
@@ -563,7 +564,7 @@ func tab_changed(_idx):
 	side_panel_node.hide()
 
 
-func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
+func connect_graph_edit_signal(graph_edit: MonologueGraphEdit) -> void:
 	graph_edit.connect("connection_to_empty", _on_graph_edit_connection_to_empty)
 	graph_edit.connect("connection_request", _on_graph_edit_connection_request)
 	graph_edit.connect("disconnection_request", _on_graph_edit_disconnection_request)
@@ -600,7 +601,7 @@ func _on_file_id_pressed(id):
 			GlobalSignal.emit("test_trigger")
 
 func new_graph_edit():
-	var graph_edit: GraphEdit = graph_edit_inst.instantiate()
+	var graph_edit: MonologueGraphEdit = graph_edit_inst.instantiate()
 	var new_root_node = root_node.instantiate()
 	
 	graph_edit.name = "new"

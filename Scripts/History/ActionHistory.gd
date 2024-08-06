@@ -1,3 +1,4 @@
+## A reference object that stores callbacks for undo and redo functionality.
 class_name ActionHistory
 extends RefCounted
 ## Stores function callbacks that will be called on undo and redo.
