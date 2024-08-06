@@ -6,32 +6,40 @@ extends ActionHistory
 
 ## Reference to the graph edit node that this action should apply to.
 var graph_edit: MonologueGraphEdit
-## The node's name, for graph connections to know what to point to in redo.
-var node_name: String
-## The node's data.
-var node_data: Dictionary
+
+## List of node references to be deleted on undo.
+var deletion_nodes: Array[MonologueGraphNode]
+## Dictionary of node data to be restored on redo.
+var restoration_data: Dictionary
 
 
-func _init(graph: MonologueGraphEdit, name: String, 
-		undo_func: Callable, redo_func: Callable):
-	super(undo_func, redo_func)
+func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 	graph_edit = graph
-	node_name = name
-
-
-func undo():
-	# when node is deleted, save its values at the time for the redo
-	var dictionary = super.undo()
-	node_data = dictionary
+	deletion_nodes = nodes
+	_undo_callback = _delete_callback_for_tracked_nodes
+	_redo_callback = func() -> Array[MonologueGraphNode]:
+			# the first key is the node type to re-add, it will handle
+			# auxilliary creations (e.g. BridgeInNode)
+			var node_name = restoration_data.keys().front()
+			var node_type = restoration_data[node_name].get("$type")
+			return graph_edit.add_node(node_type.trim_prefix("Node"), false)
 
 
 func redo():
-	# repopulate node data
-	var readded_node = super.redo()
-	readded_node._from_dict(node_data)
-	readded_node.name = node_name
-	
-	# when you undo a node creation, it deletes the created node
-	# so when you redo, it creates a new node which is different from the undo
-	# therefore we have to update the undo callback to reference this redo node
-	_undo_callback = graph_edit.free_graphnode.bind(readded_node)
+	# track readded nodes and repopulate their data
+	deletion_nodes = super.redo()
+	# iterating this way, it will go through the same order in tracked_data
+	for i in range(deletion_nodes.size()):
+		var node_name = restoration_data.keys()[i]
+		var node_data = restoration_data[node_name]
+		deletion_nodes[i].name = node_name
+		deletion_nodes[i]._from_dict(node_data)
+	return deletion_nodes
+
+
+## This represents the undo callback after adding a node. It is defined this
+## way so that it reads [member deletion_nodes] which will be updated on
+## every redo, instead of bound arguments in the callback.
+func _delete_callback_for_tracked_nodes():
+	for node in deletion_nodes:
+		restoration_data[node.name] = graph_edit.free_graphnode(node)

@@ -42,18 +42,18 @@ func _input(event):
 
 ## Adds a node of the given type to the current GraphEdit.
 ## If [param track_history] is true, record this action in GraphEdit history.
-func add_node(node_type, track_history: bool = true) -> MonologueGraphNode:
+func add_node(node_type, track_history: bool = true) -> Array[MonologueGraphNode]:
 	var node_class = control_node.node_class_dictionary.get(node_type)
+	# new_node is the single selected node to be created
 	var new_node = node_class.instance_from_type()
-	new_node.add_to_graph(self)
+	# created_nodes include additional nodes from new_node, such as BridgeOut
+	var created_nodes: Array[MonologueGraphNode] = new_node.add_to_graph(self)
 	
-	# if enabled, track the addition of created nodes into the graph history
+	# if enabled, track the addition of created_nodes into the graph history
 	if track_history:
-		var history = AddNodeHistory.new(self, new_node.name,
-			free_graphnode.bind(new_node),
-			add_node.bind(node_type, false))
+		var history = AddNodeHistory.new(self, created_nodes)
 		action_queue.add(history)
-	return new_node
+	return created_nodes
 
 
 ## Centers the given graphnode or if [member control_node] is in picker mode,
@@ -81,7 +81,7 @@ func disconnect_from_node(from_node: StringName, from_port: int):
 
 ## Deletes the given graphnode and return its dictionary data.
 ## If [param track_history] is true, it will be recorded in [member action_queue].
-func free_graphnode(node: GraphNode, track_history: bool = false) -> Dictionary:
+func free_graphnode(node: GraphNode) -> Dictionary:
 	# Disconnect all empty connections
 	for n in get_all_connections_to_node(node.name):
 		for co in get_connection_list():
@@ -95,12 +95,7 @@ func free_graphnode(node: GraphNode, track_history: bool = false) -> Dictionary:
 	
 	# retrive node data before deletion
 	var node_data = node._to_dict()
-	node.queue_free()
-	
-	#if track_history:
-		#AddNodeHistory.new(self, node.name)
-		#action_queue.add()
-	
+	node.queue_free()	
 	return node_data
 
 

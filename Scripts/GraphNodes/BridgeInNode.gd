@@ -15,19 +15,19 @@ func _ready():
 
 ## BridgeIn is always created first in regards to its BridgeOut counterpart.
 ## When creating BridgeIn, automatically create BridgeOut.
-func add_to_graph(graph_edit: MonologueGraphEdit) -> MonologueGraphNode:
-	var in_node = super.add_to_graph(graph_edit)
+func add_to_graph(graph_edit: MonologueGraphEdit) -> Array[MonologueGraphNode]:
+	var created_nodes: Array[MonologueGraphNode] = []
+	created_nodes = super.add_to_graph(graph_edit)
 	var number = graph_edit.get_free_bridge_number()
-	in_node.number_selector.value = number
-	in_node.position_offset.x -= in_node.size.x / 2 + 10
+	created_nodes[0].number_selector.value = number
+	created_nodes[0].position_offset.x -= created_nodes[0].size.x / 2 + 10
 	
-	# create counterpart node
-	var out_node = BridgeOutNode.instance_from_type()
-	out_node.add_to_graph(graph_edit)
+	var out_node = BridgeOutNode.instance_from_type() # create counterpart
+	out_node.add_to_graph(graph_edit) # ignore return, use out_node
 	out_node.number_selector.value = number
 	out_node.position_offset.x += out_node.size.x / 2 + 10
-	
-	return in_node
+	created_nodes.append(out_node)
+	return created_nodes
 
 
 static func instance_from_type() -> MonologueGraphNode:

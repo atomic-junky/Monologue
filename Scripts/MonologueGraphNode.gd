@@ -10,10 +10,10 @@ var node_type: String = "NodeUnknown"
 
 ## Creates this graph node in the given graph edit.
 ## Returns an instance of itself as a result of the node creation.
-func add_to_graph(graph_edit: MonologueGraphEdit) -> MonologueGraphNode:
+func add_to_graph(graph_edit: MonologueGraphEdit) -> Array[MonologueGraphNode]:
 	graph_edit.add_child(self, true)
 	graph_edit.center_node(self)
-	return self
+	return [self]
 
 
 ## Should be overridden to instantiate its corresopnding node type.
