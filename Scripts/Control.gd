@@ -103,6 +103,12 @@ func _ready():
 func _shortcut_input(event):
 	if event.is_action_pressed("Save"):
 		save(false)
+	# IMPORTANT: order matters, redo must come first, undo second
+	elif event.is_action_pressed("Redo"):
+		get_current_graph_edit().action_queue.next()
+	elif event.is_action_pressed("Undo"):
+		get_current_graph_edit().action_queue.previous()
+	
 
 
 func get_current_graph_edit() -> GraphEdit:
@@ -388,15 +394,18 @@ func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
 	GlobalSignal.emit("add_graph_node", [node_type])
 
-func add_node(node_type):
+## Adds a node of the given type to the current GraphEdit.
+## If [param track_history] is true, record this action in GraphEdit history.
+func add_node(node_type, track_history: bool = true):
+	var current_graph_edit = get_current_graph_edit()
 	if node_type == "Bridge":
-		var number = get_current_graph_edit().get_free_bridge_number()
+		var number = current_graph_edit.get_free_bridge_number()
 	
 		var in_node = bridge_in_node.instantiate()
 		var out_node = bridge_out_node.instantiate()
 		
-		get_current_graph_edit().add_child(in_node)
-		get_current_graph_edit().add_child(out_node)
+		current_graph_edit.add_child(in_node)
+		current_graph_edit.add_child(out_node)
 		
 		in_node.number_selector.value = number
 		out_node.number_selector.value = number
@@ -429,8 +438,17 @@ func add_node(node_type):
 		return
 	
 	node = node.instantiate()
-	get_current_graph_edit().add_child(node)
+	current_graph_edit.add_child(node)
 	center_node_in_graph_edit(node)
+	
+	# if enabled, track the addition of this node into the graph history
+	if track_history:
+		var history = AddNodeHistory.new(current_graph_edit, 
+				current_graph_edit.free_graphnode.bind(node),
+				add_node.bind(node_type, false))
+		current_graph_edit.action_queue.add(history)
+	return node
+
 
 func update_connection(graph_edit, from, from_slot, to, _to_slot, next = true):
 	var graph_node = graph_edit.get_node(NodePath(from))

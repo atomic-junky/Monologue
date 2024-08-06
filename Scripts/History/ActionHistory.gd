@@ -17,10 +17,10 @@ func _init(undo_function: Callable, redo_function: Callable):
 
 
 ## General interface method for undo-ing.
-func undo():
-	_undo_callback.call_deferred()
+func undo() -> Variant:
+	return _undo_callback.call()
 
 
 ## General interface method for redo-ing.
-func redo():
-	_redo_callback.call_deferred()
+func redo() -> Variant:
+	return _redo_callback.call()
