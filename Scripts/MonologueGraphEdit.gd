@@ -51,8 +51,8 @@ func add_node(node_type, track_history: bool = true) -> Array[MonologueGraphNode
 	
 	# if enabled, track the addition of created_nodes into the graph history
 	if track_history:
-		var history = AddNodeHistory.new(self, created_nodes)
-		action_queue.add(history)
+		var add_history = AddNodeHistory.new(self, created_nodes)
+		action_queue.add(add_history)
 	return created_nodes
 
 
@@ -95,7 +95,7 @@ func free_graphnode(node: GraphNode) -> Dictionary:
 	
 	# retrive node data before deletion
 	var node_data = node._to_dict()
-	node.queue_free()	
+	node.queue_free()
 	return node_data
 
 
@@ -156,11 +156,13 @@ func is_option_node_exciste(node_id):
 	return false
 
 
+## Checks and ensure graph is ready before triggering undo.
 func trigger_undo():
 	if not connecting_mode:
 		action_queue.previous()
 
 
+## Checks and ensure graph is ready before triggering redo.
 func trigger_redo():
 	if not connecting_mode:
 		action_queue.next()
@@ -177,13 +179,18 @@ func update_next_connection(from_node, from_port, to_node, _to_port, next = true
 
 
 func _on_child_entered_tree(node: Node):
-	if node is RootNode or not node is GraphNode:
-		return
-	
-	var node_header = node.get_children(true)[0]
-	var close_button: TextureButton = close_button_scene.instantiate()
-	close_button.connect("pressed", free_graphnode.bind(node))
-	node_header.add_child(close_button)
+	if node is MonologueGraphNode and not node is RootNode:
+		var node_header = node.get_children(true)[0]
+		var close_button: TextureButton = close_button_scene.instantiate()
+		
+		var close_callback = func():
+				# add to action history when close_button is pressed
+				var delete_history = DeleteNodeHistory.new(self, [node])
+				action_queue.add(delete_history)
+				free_graphnode(node)
+		
+		close_button.connect("pressed", close_callback)
+		node_header.add_child(close_button)
 
 
 func _on_connection_drag_started(_from_node, _from_port, _is_output):

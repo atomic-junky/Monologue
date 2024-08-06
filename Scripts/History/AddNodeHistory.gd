@@ -43,3 +43,4 @@ func redo():
 func _delete_callback_for_tracked_nodes():
 	for node in deletion_nodes:
 		restoration_data[node.name] = graph_edit.free_graphnode(node)
+	return restoration_data
