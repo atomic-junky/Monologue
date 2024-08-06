@@ -9,7 +9,7 @@ var graph_edit: MonologueGraphEdit
 
 ## List of node references to be deleted on undo.
 var deletion_nodes: Array[MonologueGraphNode]
-## Dictionary of node data to be restored on redo.
+## Dictionary of node name keys to node data dicts to be restored on redo.
 var restoration_data: Dictionary
 ## Dictionary of inbound_connections to be restored on redo.
 var inbound_connections: Dictionary
@@ -25,6 +25,8 @@ func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 	for node in nodes:
 		_record_connections(node)
 		restoration_data[node.name] = node._to_dict()
+		if "options" in node:
+			restoration_data[node.name]["Options"] = node.options
 	
 	_undo_callback = _delete_callback_for_tracked_nodes
 	_redo_callback = func() -> Array[MonologueGraphNode]:
@@ -43,6 +45,12 @@ func redo():
 		var node_name = restoration_data.keys()[i]
 		var node_data = restoration_data[node_name]
 		deletion_nodes[i].name = node_name
+		
+		# restore options before dict if present
+		var options = node_data.get("Options")
+		if options:
+			deletion_nodes[i].options = options
+		
 		deletion_nodes[i]._from_dict(node_data)
 		_restore_connections(node_name)
 	return deletion_nodes
@@ -62,7 +70,7 @@ func _delete_callback_for_tracked_nodes():
 			node = graph_edit.get_node(restoration_data.keys()[i])
 		_record_connections(node)  # record connections first before freeing!!
 		restoration_data[node.name] = graph_edit.free_graphnode(node)
-	return restoration_data
+	return deletion_nodes
 
 
 ## Quick method to record all inbound and outbound connections of a given node.

@@ -80,14 +80,16 @@ func disconnect_from_node(from_node: StringName, from_port: int):
 
 
 ## Deletes the given graphnode and return its dictionary data.
-## If [param track_history] is true, it will be recorded in [member action_queue].
-func free_graphnode(node: GraphNode) -> Dictionary:
-	# Disconnect all empty connections
+func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	for c in get_all_inbound_connections(node.name) + get_all_outbound_connections(node.name):
 		disconnect_node(c.get("from_node"), c.get("from_port"), c.get("to_node"), c.get("to_port"))
 	
-	# retrive node data before deletion
+	# retrive node data before deletion, can be useful in some cases
 	var node_data = node._to_dict()
+	# tag options into the node_data without NextIDs
+	if "options" in node:
+		node_data.merge({"Options": node.options})
+	
 	node.queue_free()
 	return node_data
 
@@ -194,7 +196,7 @@ func _on_connection_drag_ended():
 
 func _on_connection_request(from_node, from_port, to_node, to_port):
 	if get_all_connections_from_slot(from_node, from_port).size() <= 0:
-		var history = ActionHistory.new(disconnect_node.bind(
+		var history = ActionHistory.new(_on_disconnection_request.bind(
 			from_node, from_port, to_node, to_port), connect_node.bind(
 			from_node, from_port, to_node, to_port))
 		connect_node(from_node, from_port, to_node, to_port)
@@ -219,7 +221,3 @@ func _on_node_selected(node):
 func _on_node_deselected(_node):
 	active_graphnode = null
 	graphnode_selected = false
-
-
-func _on_delete_nodes_request(nodes):
-	print(nodes)

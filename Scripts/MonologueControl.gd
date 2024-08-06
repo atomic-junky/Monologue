@@ -24,8 +24,6 @@ var node_class_dictionary = {
 }
 
 @onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
-# option_panel is not a MonologueGraphNode, it's an PanelContainer node
-@onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
@@ -288,12 +286,11 @@ func load_project(path):
 	for node in node_list:
 		var node_type: String = node.get("$type")
 		var node_class = node_class_dictionary.get(node_type.trim_prefix("Node"))
-		var new_node = node_class.instance_from_type()
-		
-		if not new_node:
+		if not node_class:
 			continue
-		new_node.id = node.get("ID")
 		
+		var new_node = node_class.instance_from_type()
+		new_node.id = node.get("ID")
 		graph_edit.add_child(new_node)
 		new_node._from_dict(node)
 	

@@ -19,11 +19,30 @@ func _ready():
 	
 	if len(options) <= 0:
 		for _i in range(2):
-			var opt_ref = option_reference.instantiate()
-			add_child(opt_ref)
-			options.append(opt_ref._to_dict())
+			create_option()
 	
 	_update()
+
+
+## Creates an option reference. If [param from_copy] is not specified,
+## a new option is created. Otherwise, it pulls the given option data
+## and tracks it if it does not already exist.
+func create_option(from_copy: Dictionary = {}):
+	var new_option = option_reference.instantiate()
+	add_child(new_option)
+	if not from_copy or from_copy.is_empty():
+		options.append(new_option._to_dict())
+	else:
+		# add to options list if it does not already exist
+		if not find_option_dictionary(from_copy.get("ID")):
+			options.append(from_copy)
+		
+		new_option._from_dict(from_copy)
+		new_option.sentence_preview.text = from_copy.get("Sentence")
+		var is_first = get_child_count() <= 1
+		set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true,
+				0, Color("ffffff"), arrow_texture01, arrow_texture02, false)
+		link_option(from_copy)
 
 
 static func instance_from_type() -> MonologueGraphNode:
@@ -44,15 +63,19 @@ func _to_dict() -> Dictionary:
 func _from_dict(dict):
 	id = dict.get("ID")
 	
-	options.clear()
-	
+	# get list of all nodes in the graph
 	var nodes = get_parent().data.get("ListNodes")
 	for option in dict.get("OptionsID"):
 		for node in nodes:
+			# if the OptionNode's ID is in NodeChoice's OptionIDs, track it
 			if node.get("ID") in option:
 				options.append(node)
 	
+	var editor_position = dict.get("EditorPosition")
+	position_offset.x = editor_position.get("x")
+	position_offset.y = editor_position.get("y")
 	_update()
+
 
 ## Everytime the OptionNode updates from the panel to the ChoiceNode,
 ## the reference to that dictionary item is different. This retrieves it by ID.
@@ -64,6 +87,7 @@ func find_option_dictionary(search_id: String) -> Dictionary:
 			break
 	return result
 
+
 func get_all_options_id() -> Array:
 	var ids = []
 	for child in get_children():
@@ -71,12 +95,14 @@ func get_all_options_id() -> Array:
 			ids.append(child.id)
 	return ids
 
+
 func get_graph_node(node_id):
 	var graph_node = null
 	for node in get_parent().get_children():
 		if node_id is String and node.id == node_id:
 			graph_node = node
 	return graph_node
+
 
 func link_option(option_dictionary: Dictionary, establish_link: bool = true):
 	var option_index = options.find(option_dictionary)
@@ -87,6 +113,7 @@ func link_option(option_dictionary: Dictionary, establish_link: bool = true):
 		else:
 			get_parent().disconnect_node(name, option_index, next_node.name, 0)
 
+
 func update_next_id(from_port: int, next_node: MonologueGraphNode):
 	if next_node:
 		# nodes should not have multiple next_nodes, so only update
@@ -96,6 +123,7 @@ func update_next_id(from_port: int, next_node: MonologueGraphNode):
 	else:
 		# if there is no next_node target, disconnect the NextID (set to -1)
 		options[from_port]["NextID"] = -1
+
 
 func _update(panel: ChoiceNodePanel = null):
 	if panel != null:
@@ -112,13 +140,4 @@ func _update(panel: ChoiceNodePanel = null):
 		child.queue_free()
 	
 	for option in options:
-		var new_ref = option_reference.instantiate()
-		new_ref._from_dict(option)
-		
-		add_child(new_ref)
-		new_ref.sentence_preview.text = option.get("Sentence")
-		
-		var is_first = get_child_count() <= 1
-		set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true, 0, Color("ffffff"), arrow_texture01, arrow_texture02, false)
-		
-		link_option(option)
+		create_option(option)
