@@ -15,8 +15,12 @@ var active_graphnode: Node
 var graphnode_selected = false
 var moving_mode = false
 
+## JSON dialogue data such as characters and variables.
 var data: Dictionary
+## Action queue history for undo/redo functionality.
+var action_queue: ActionQueue
 
+## Reference to the mother Control node that oversees all Monologue operations.
 var control_node
 
 func _input(event):

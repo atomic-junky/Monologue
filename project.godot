@@ -51,6 +51,7 @@ folder_colors={
 "res://Scenes/": "yellow",
 "res://Scripts/": "yellow",
 "res://Scripts/GraphNodes/": "green",
+"res://Scripts/History/": "teal",
 "res://Scripts/SidePanelNodes/": "teal",
 "res://Scripts/SubComponents/": "blue",
 "res://Test/": "red"
