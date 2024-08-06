@@ -35,6 +35,8 @@ const MAX_FILENAME_LENGTH = 48
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
 @onready var file_dialog = $FileDialog
+@onready var no_interactions_dimmer = $NoInteractions
+@onready var welcome_window = $WelcomeWindow
 
 var live_dict: Dictionary
 
@@ -58,7 +60,7 @@ var picker_position
 func _ready():
 	var new_root_node = root_node.instantiate()
 	get_current_graph_edit().add_child(new_root_node)
-	connect_graph_edit_signal(get_current_graph_edit())
+	connect_side_panel(get_current_graph_edit())
 	
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -94,8 +96,8 @@ func _ready():
 		else:
 			recent_files_container.hide()
 	
-	$WelcomeWindow.show()
-	$NoInteractions.show()
+	welcome_window.show()
+	no_interactions_dimmer.show()
 	
 	GlobalSignal.add_listener("add_graph_node", add_node)
 	GlobalSignal.add_listener("test_trigger", test_project)
@@ -106,9 +108,9 @@ func _shortcut_input(event):
 		save(false)
 	# IMPORTANT: order matters, redo must come first, undo second
 	elif event.is_action_pressed("Redo"):
-		get_current_graph_edit().action_queue.next()
+		get_current_graph_edit().trigger_redo()
 	elif event.is_action_pressed("Undo"):
-		get_current_graph_edit().action_queue.previous()
+		get_current_graph_edit().trigger_undo()
 	
 
 
@@ -162,7 +164,7 @@ func file_selected(path, open_mode):
 		if ge.file_path == path:
 			return
 	
-	$NoInteractions.hide()
+	no_interactions_dimmer.hide()
 	
 	tab_bar.add_tab(truncate_filename(path.get_file()))
 	tab_bar.move_tab(tab_bar.tab_count - 2, tab_bar.tab_count - 1)
@@ -172,7 +174,7 @@ func file_selected(path, open_mode):
 	graph_edit.control_node = self
 	graph_edit.file_path = path
 	
-	$WelcomeWindow.hide()
+	welcome_window.hide()
 	if open_mode == 0: #NEW
 		for node in graph_edit.get_children():
 			node.queue_free()
@@ -249,7 +251,7 @@ func load_project(path):
 	if not FileAccess.file_exists(path):
 		return
 		
-	$NoInteractions.hide()
+	no_interactions_dimmer.hide()
 	var graph_edit = get_current_graph_edit()
 	
 	var file := FileAccess.get_file_as_string(path)
@@ -379,18 +381,6 @@ func get_options_nodes(node_list, options_id):
 #  New node buttons callback  #
 ###############################
 
-func center_node_in_graph_edit(node):
-	var graph_edit = get_current_graph_edit()
-	if picker_mode:
-		graph_edit.disconnect_connection_from_node(picker_from_node, picker_from_port)
-		node.position_offset = picker_position
-		graph_edit.connect_node(picker_from_node, picker_from_port, node.name, 0)
-		update_connection(graph_edit, picker_from_node, picker_from_port, node.name, 0)
-		disable_picker_mode()
-		return
-	
-	node.position_offset = ((graph_edit.size/2) + graph_edit.scroll_offset) / graph_edit.zoom
-
 func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
 	GlobalSignal.emit("add_graph_node", [node_type])
@@ -411,8 +401,8 @@ func add_node(node_type, track_history: bool = true):
 		in_node.number_selector.value = number
 		out_node.number_selector.value = number
 		
-		center_node_in_graph_edit(in_node)
-		center_node_in_graph_edit(out_node)
+		current_graph_edit.center_node(in_node)
+		current_graph_edit.center_node(out_node)
 		in_node.position_offset.x -= in_node.size.x/2+10
 		out_node.position_offset.x += out_node.size.x/2+10
 		
@@ -439,36 +429,17 @@ func add_node(node_type, track_history: bool = true):
 		return
 	
 	node = node.instantiate()
-	current_graph_edit.add_child(node)
-	center_node_in_graph_edit(node)
+	current_graph_edit.add_child(node, true)
+	current_graph_edit.center_node(node)
 	
 	# if enabled, track the addition of this node into the graph history
 	if track_history:
-		var history = AddNodeHistory.new(current_graph_edit, 
+		var history = AddNodeHistory.new(current_graph_edit, node.name,
 				current_graph_edit.free_graphnode.bind(node),
 				add_node.bind(node_type, false))
 		current_graph_edit.action_queue.add(history)
 	return node
 
-
-func update_connection(graph_edit, from, from_slot, to, _to_slot, next = true):
-	var graph_node = graph_edit.get_node(NodePath(from))
-	if graph_node.has_method("update_next_id"):
-		if next:
-			graph_node.update_next_id(from_slot, graph_edit.get_node(NodePath(to)))
-		else:
-			graph_node.update_next_id(from_slot, null)
-	
-func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
-	var current_graph_edit = get_current_graph_edit()
-	if current_graph_edit.get_all_connections_from_slot(from, from_slot).size() <= 0:
-		current_graph_edit.connect_node(from, from_slot, to, to_slot)
-	update_connection(current_graph_edit, from, from_slot, to, to_slot)
-
-func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
-	var current_graph_edit = get_current_graph_edit()
-	get_current_graph_edit().disconnect_node(from, from_slot, to, to_slot)
-	update_connection(current_graph_edit, from, from_slot, to, to_slot, false)
 
 func test_project(from_node: String = "-1"):
 	await save(true)
@@ -502,7 +473,7 @@ func open_file_select():
 
 func _on_file_dialog_selected(path: String):
 	if is_header_file_operation:
-		$WelcomeWindow.hide()
+		welcome_window.hide()
 		file_dialog.hide()
 		new_graph_edit()
 	
@@ -513,22 +484,27 @@ func _on_file_dialog_selected(path: String):
 		FileDialog.FILE_MODE_OPEN_FILE:
 			file_selected(path, 1)
 
-func _on_graph_edit_connection_to_empty(from_node, from_port, _release_position):
+
+## Start the picker mode from a given node and port. Picker mode is where
+## a new node is created from another node through a connection to empty.
+func enable_picker_mode(from_node, from_port, _release_position):
 	graph_node_selecter.position = get_viewport().get_mouse_position()
 	graph_node_selecter.show()
-	
 	picker_from_node = from_node
 	picker_from_port = from_port
-	picker_position = (get_local_mouse_position() + get_current_graph_edit().scroll_offset) / get_current_graph_edit().zoom
 	
+	var graph_edit = get_current_graph_edit()
+	picker_position = (get_local_mouse_position() + graph_edit.scroll_offset) / graph_edit.zoom
 	picker_mode = true
-	$NoInteractions.show()
+	no_interactions_dimmer.show()
 
 
+## Exit picker mode. Picker mode is where a new node is created from another
+## node through a connection to empty.
 func disable_picker_mode():
 	graph_node_selecter.hide()
 	picker_mode = false
-	$NoInteractions.hide()
+	no_interactions_dimmer.hide()
 
 
 func _on_graph_node_selecter_focus_exited():
@@ -559,24 +535,22 @@ func tab_changed(_idx):
 		welcome_close_button.show()
 	else:
 		welcome_close_button.hide()
-	$WelcomeWindow.show()
-	$NoInteractions.show()
+	welcome_window.show()
+	no_interactions_dimmer.show()
 	side_panel_node.hide()
 
 
-func connect_graph_edit_signal(graph_edit: MonologueGraphEdit) -> void:
-	graph_edit.connect("connection_to_empty", _on_graph_edit_connection_to_empty)
-	graph_edit.connect("connection_request", _on_graph_edit_connection_request)
-	graph_edit.connect("disconnection_request", _on_graph_edit_disconnection_request)
+func connect_side_panel(graph_edit: MonologueGraphEdit) -> void:
 	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
 	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
+
 
 func close_welcome_tab():
 	# check number of tabs as safety measure and for future hotkey command
 	if tab_bar.tab_count > 1:
 		tab_bar.select_previous_available()
-		$WelcomeWindow.hide()
-		$NoInteractions.hide()
+		welcome_window.hide()
+		no_interactions_dimmer.hide()
 
 func tab_close_pressed(tab):
 	var ge = graph_edits.get_child(tab)
@@ -605,7 +579,7 @@ func new_graph_edit():
 	var new_root_node = root_node.instantiate()
 	
 	graph_edit.name = "new"
-	connect_graph_edit_signal(graph_edit)
+	connect_side_panel(graph_edit)
 	
 	graph_edits.add_child(graph_edit)
 	graph_edit.add_child(new_root_node)

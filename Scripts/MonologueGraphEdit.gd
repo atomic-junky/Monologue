@@ -3,10 +3,10 @@ class_name MonologueGraphEdit
 extends GraphEdit
 
 
-@onready var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
-
 ## Action queue history for undo/redo functionality.
 var action_queue: ActionQueue = ActionQueue.new()
+## Scene resource for the close button.
+var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
 ## JSON dialogue data such as characters and variables.
 var data: Dictionary
 ## The filepath to the dialogue JSON.
@@ -19,11 +19,12 @@ var variables = []
 ## The actively selected graphnode, for side panel updates.
 var active_graphnode: Node
 ## Reference to the mother Control node that oversees all Monologue operations.
-var control_node
+var control_node: MonologueControl
 ## Checks if a graphnode is currently selected.
 var graphnode_selected = false
 
 var mouse_pressed = false
+var connecting_mode = false
 var moving_mode = false
 var selection_mode = false
 
@@ -39,8 +40,22 @@ func _input(event):
 		moving_mode = graphnode_selected
 
 
+## Centers the given graphnode or if [member control_node] is in picker mode,
+## position and connect the newly created node from the picker.
+func center_node(node: MonologueGraphNode):
+	if control_node.picker_mode:
+		var args = [control_node.picker_from_node, control_node.picker_from_port, node.name, 0]
+		disconnect_from_node(args[0], args[1])
+		node.position_offset = control_node.picker_position
+		connect_node.callv(args)
+		update_next_connection.callv(args)
+		control_node.disable_picker_mode()
+	else:
+		node.position_offset = ((size / 2) + scroll_offset) / zoom
+
+
 ## Disconnect an existing connection of the given graphnode from a given port.
-func disconnect_connection_from_node(from_node: StringName, from_port: int):
+func disconnect_from_node(from_node: StringName, from_port: int):
 	for connection in get_connection_list():
 		if connection.get("from_node") == from_node:
 			var to_node = connection.get("to_node")
@@ -124,6 +139,63 @@ func is_option_node_exciste(node_id):
 	return false
 
 
+func trigger_undo():
+	if not connecting_mode:
+		action_queue.previous()
+
+
+func trigger_redo():
+	if not connecting_mode:
+		action_queue.next()
+
+
+## Updates a given connection's NextID if possible.
+func update_next_connection(from_node, from_port, to_node, _to_port, next = true):
+	var graph_node = get_node(NodePath(from_node))
+	if graph_node.has_method("update_next_id"):
+		if next:
+			graph_node.update_next_id(from_port, get_node(NodePath(to_node)))
+		else:
+			graph_node.update_next_id(from_port, null)
+
+
+func _on_child_entered_tree(node: Node):
+	if node is RootNode or not node is GraphNode:
+		return
+	
+	var node_header = node.get_children(true)[0]
+	var close_button: TextureButton = close_button_scene.instantiate()
+	close_button.connect("pressed", free_graphnode.bind(node))
+	node_header.add_child(close_button)
+
+
+func _on_connection_drag_started(_from_node, _from_port, _is_output):
+	connecting_mode = true
+
+
+func _on_connection_drag_ended():
+	connecting_mode = false
+
+
+func _on_connection_request(from_node, from_port, to_node, to_port):
+	if get_all_connections_from_slot(from_node, from_port).size() <= 0:
+		var history = ActionHistory.new(disconnect_node.bind(
+			from_node, from_port, to_node, to_port), connect_node.bind(
+			from_node, from_port, to_node, to_port))
+		connect_node(from_node, from_port, to_node, to_port)
+		action_queue.add(history)
+	update_next_connection(from_node, from_port, to_node, to_port)
+
+
+func _on_disconnection_request(from_node, from_port, to_node, to_port):
+	disconnect_node(from_node, from_port, to_node, to_port)
+	update_next_connection(from_node, from_port, to_node, to_port, false)
+
+
+func _on_connection_to_empty(from_node, from_port, release_position):
+	control_node.enable_picker_mode(from_node, from_port, release_position)
+
+
 func _on_node_selected(node):
 	active_graphnode = node
 	graphnode_selected = true
@@ -132,13 +204,3 @@ func _on_node_selected(node):
 func _on_node_deselected(_node):
 	active_graphnode = null
 	graphnode_selected = false
-
-
-func _on_child_entered_tree(node: Node):
-	if node is RootNode or not node is GraphNode:
-		return
-	
-	var node_header = node.get_children(true)[0]
-	var close_btn: TextureButton = close_button.instantiate()
-	close_btn.connect("pressed", free_graphnode.bind(node))
-	node_header.add_child(close_btn)
