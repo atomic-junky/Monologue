@@ -1,6 +1,6 @@
 class_name OptionNode
-
 extends PanelContainer
+
 
 @onready var ribbon_instance = preload("res://Objects/SubComponents/Ribbon.tscn")
 @onready var sentence_node = $MarginContainer/MainContainer/SentenceContainer/TextEdit
@@ -8,8 +8,8 @@ extends PanelContainer
 @onready var one_shot_node: CheckBox = $MarginContainer/MainContainer/OneShotBtn
 @onready var id_line_edit: LineEdit = $MarginContainer/MainContainer/IDContainer/IDLineEdit
 
-var panel_node
-var graph_node
+var panel_node: ChoiceNodePanel
+var graph_node: ChoiceNode
 
 var id = UUID.v4()
 var next_id = -1
@@ -44,12 +44,36 @@ func _from_dict(dict):
 	id_line_edit.text = id
 
 
-func _on_delete_pressed():
+## Deletes the current option. Returns a newly created option node if the
+## panel has no more options (the panel requires a minimum of 1 option).
+## Therefore, this method returns null on successful delete.
+func delete() -> OptionNode:
+	var renewed_option = null
 	# create a new option before deleting the last one to prevent zero options
 	if panel_node.options_container.get_child_count() == 1:
-		panel_node.new_option()
+		renewed_option = panel_node.new_option()
 	queue_free()
 	update_ref()
+	return renewed_option
+
+
+## Update referenced values in side panel.
+func update_ref():
+	id_line_edit.text = id
+	sentence = sentence_node.text
+	enable = enable_node.button_pressed
+	one_shot = one_shot_node.button_pressed
+	
+	panel_node.change.emit(panel_node)
+
+
+func _on_delete_pressed():
+	var message = "Delete option (id: %s)"
+	var undo_redo = graph_node.get_parent().undo_redo
+	var delete_history = DeleteOptionHistory.new(graph_node, self)
+	undo_redo.create_action(message % [id])
+	undo_redo.add_prepared_history(delete_history)
+	undo_redo.commit_action()
 
 
 func _on_id_copy_pressed():
@@ -67,13 +91,4 @@ func _on_id_text_changed(new_id):
 		return
 	
 	id = new_id
-	panel_node.change.emit(panel_node)
-
-
-func update_ref():
-	id_line_edit.text = id
-	sentence = sentence_node.text
-	enable = enable_node.button_pressed
-	one_shot = one_shot_node.button_pressed
-	
 	panel_node.change.emit(panel_node)
