@@ -215,7 +215,7 @@ func _on_connection_request(from_node, from_port, to_node, to_port):
 		
 		var history = ActionHistory.new(unlink, link)
 		action_queue.add(history)
-		connect.call()
+		link.call()
 
 
 func _on_disconnection_request(from_node, from_port, to_node, to_port):
@@ -225,7 +225,7 @@ func _on_disconnection_request(from_node, from_port, to_node, to_port):
 	
 	var history = ActionHistory.new(link, unlink)
 	action_queue.add(history)
-	disconnect.call()
+	unlink.call()
 
 
 func _on_connection_to_empty(from_node, from_port, release_position):
