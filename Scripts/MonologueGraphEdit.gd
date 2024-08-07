@@ -41,18 +41,19 @@ func _input(event):
 
 
 ## Adds a node of the given type to the current GraphEdit.
-## If [param track_history] is true, record this action in GraphEdit history.
-func add_node(node_type, track_history: bool = true) -> Array[MonologueGraphNode]:
+## If [param history] is true, record this action in GraphEdit history.
+func add_node(node_type, history: bool = true) -> Array[MonologueGraphNode]:
+	# get the correct Monologue node class from the given node_type
 	var node_class = control_node.node_class_dictionary.get(node_type)
-	# new_node is the single selected node to be created
+	# new_node is the node instance to be created
 	var new_node = node_class.instance_from_type()
-	# created_nodes include additional nodes from new_node, such as BridgeOut
+	# created_nodes include auxilliary nodes from new_node, such as BridgeOut
 	var created_nodes: Array[MonologueGraphNode] = new_node.add_to_graph(self)
 	
 	# if enabled, track the addition of created_nodes into the graph history
-	if track_history:
-		var add_history = AddNodeHistory.new(self, created_nodes)
-		action_queue.add(add_history)
+	if history:
+		var track_add = AddNodeHistory.new(self, created_nodes)
+		action_queue.add(track_add)
 	return created_nodes
 
 
@@ -60,18 +61,19 @@ func add_node(node_type, track_history: bool = true) -> Array[MonologueGraphNode
 ## position and connect the newly created node from the picker.
 func center_node(node: MonologueGraphNode):
 	if control_node.picker_mode:
-		var args = [control_node.picker_from_node, control_node.picker_from_port, node.name, 0]
-		disconnect_from_node(args[0], args[1])
+		var from_node = control_node.picker_from_node
+		var from_port = control_node.picker_from_port
+		disconnect_outbound_from_node(from_node, from_port)
+		
 		node.position_offset = control_node.picker_position
-		connect_node.callv(args)
-		update_next_connection.callv(args)
+		propagate_connection(from_node, from_port, node.name, 0)
 		control_node.disable_picker_mode()
 	else:
 		node.position_offset = ((size / 2) + scroll_offset) / zoom
 
 
-## Disconnect an existing connection of the given graphnode from a given port.
-func disconnect_from_node(from_node: StringName, from_port: int):
+## Disconnect all outbound connections of the given graphnode and port.
+func disconnect_outbound_from_node(from_node: StringName, from_port: int):
 	for connection in get_connection_list():
 		if connection.get("from_node") == from_node:
 			var to_node = connection.get("to_node")
@@ -81,8 +83,12 @@ func disconnect_from_node(from_node: StringName, from_port: int):
 
 ## Deletes the given graphnode and return its dictionary data.
 func free_graphnode(node: MonologueGraphNode) -> Dictionary:
-	for c in get_all_inbound_connections(node.name) + get_all_outbound_connections(node.name):
-		disconnect_node(c.get("from_node"), c.get("from_port"), c.get("to_node"), c.get("to_port"))
+	var inbound_connections = get_all_inbound_connections(node.name)
+	var outbound_connections = get_all_outbound_connections(node.name)
+	
+	for c in inbound_connections + outbound_connections:
+		disconnect_node(c.get("from_node"), c.get("from_port"),
+				c.get("to_node"), c.get("to_port"))
 	
 	# retrive node data before deletion, can be useful in some cases
 	var node_data = node._to_dict()
@@ -161,14 +167,19 @@ func trigger_redo():
 		action_queue.next()
 
 
-## Updates a given connection's NextID if possible.
-func update_next_connection(from_node, from_port, to_node, _to_port, next = true):
-	var graph_node = get_node(NodePath(from_node))
-	if graph_node.has_method("update_next_id"):
-		if next:
-			graph_node.update_next_id(from_port, get_node(NodePath(to_node)))
-		else:
-			graph_node.update_next_id(from_port, null)
+## Connects/disconnects and updates a given connection's NextID if possible.
+## If [param next] is true, establish connection and propagate NextIDs.
+## If it is false, destroy connection and clear all linked NextIDs.
+func propagate_connection(from_node, from_port, to_node, to_port, next = true):
+	if next:
+		connect_node(from_node, from_port, to_node, to_port)
+	else:
+		disconnect_node(from_node, from_port, to_node, to_port)
+	
+	var graph_node = get_node_or_null(NodePath(from_node))
+	if graph_node and graph_node.has_method("update_next_id"):
+		var target = get_node(NodePath(to_node)) if next else null
+		graph_node.update_next_id(from_port, target)
 
 
 func _on_child_entered_tree(node: Node):
@@ -195,18 +206,26 @@ func _on_connection_drag_ended():
 
 
 func _on_connection_request(from_node, from_port, to_node, to_port):
+	# in Monologue, nodes can only have ONE outbound connection
+	# so check to make sure there are no other connections before connecting
 	if get_all_connections_from_slot(from_node, from_port).size() <= 0:
-		var history = ActionHistory.new(_on_disconnection_request.bind(
-			from_node, from_port, to_node, to_port), connect_node.bind(
-			from_node, from_port, to_node, to_port))
-		connect_node(from_node, from_port, to_node, to_port)
+		var arguments = [from_node, from_port, to_node, to_port]
+		var link = propagate_connection.bindv(arguments)
+		var unlink = propagate_connection.bindv(arguments + [false])
+		
+		var history = ActionHistory.new(unlink, link)
 		action_queue.add(history)
-	update_next_connection(from_node, from_port, to_node, to_port)
+		connect.call()
 
 
 func _on_disconnection_request(from_node, from_port, to_node, to_port):
-	disconnect_node(from_node, from_port, to_node, to_port)
-	update_next_connection(from_node, from_port, to_node, to_port, false)
+	var arguments = [from_node, from_port, to_node, to_port]
+	var link = propagate_connection.bindv(arguments)
+	var unlink = propagate_connection.bindv(arguments + [false])
+	
+	var history = ActionHistory.new(link, unlink)
+	action_queue.add(history)
+	disconnect.call()
 
 
 func _on_connection_to_empty(from_node, from_port, release_position):
