@@ -1,7 +1,7 @@
 ## A special type of action history for handing creation and deletion
 ## of graph nodes.
 class_name AddNodeHistory
-extends ActionHistory
+extends MonologueHistory
 
 
 ## Reference to the graph edit node that this action should apply to.
@@ -21,7 +21,7 @@ func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 	graph_edit = graph
 	deletion_nodes = nodes
 	
-	# store node data
+	# store node data (JSON values, connections, and options)
 	for node in nodes:
 		_record_connections(node)
 		restoration_data[node.name] = node._to_dict()
@@ -40,17 +40,19 @@ func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 func redo():
 	# track readded nodes and repopulate their data
 	deletion_nodes = super.redo()
-	# iterating this way, it will go through the same order in tracked_data
+	# iterating this way, it will go through proper order in restoration_data
 	for i in range(deletion_nodes.size()):
 		var node_name = restoration_data.keys()[i]
 		var node_data = restoration_data[node_name]
+		
+		# restore node name
 		deletion_nodes[i].name = node_name
 		
-		# restore options before dict if present
+		# restore options if needed, must happen BEFORE restoring node data!
 		var options = node_data.get("Options")
-		if options:
-			deletion_nodes[i].options = options
+		if options: deletion_nodes[i].options = options
 		
+		# restore node data and connections
 		deletion_nodes[i]._from_dict(node_data)
 		_restore_connections(node_name)
 	return deletion_nodes
@@ -75,12 +77,17 @@ func _delete_callback_for_tracked_nodes():
 
 ## Quick method to record all inbound and outbound connections of a given node.
 func _record_connections(node: MonologueGraphNode):
-	inbound_connections[node.name] = graph_edit.get_all_inbound_connections(node.name)
-	outbound_connections[node.name] = graph_edit.get_all_outbound_connections(node.name)
+	var name = node.name
+	inbound_connections[name] = graph_edit.get_all_inbound_connections(name)
+	outbound_connections[name] = graph_edit.get_all_outbound_connections(name)
 
 
 ## Restore graph connections to a given node name.
 func _restore_connections(node_name: String):
-	for co in inbound_connections.get(node_name) + outbound_connections.get(node_name):
+	var inbound_links = inbound_connections.get(node_name)
+	var outbound_links = outbound_connections.get(node_name)
+	
+	var connections = inbound_links + outbound_links
+	for co in connections:
 		graph_edit.connect_node(co.get("from_node"), co.get("from_port"),
 				co.get("to_node"), co.get("to_port"))

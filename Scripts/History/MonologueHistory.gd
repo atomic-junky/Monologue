@@ -1,6 +1,6 @@
-## A reference object that stores callbacks for undo and redo functionality.
-## This is used instead of Godot's UndoRedo for more control over node data.
-class_name ActionHistory
+## A reference object that stores callbacks for undo and redo as a pair.
+## This streamlines some operations and provide more control over node data.
+class_name MonologueHistory
 extends RefCounted
 
 

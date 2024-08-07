@@ -3,8 +3,6 @@ class_name MonologueGraphEdit
 extends GraphEdit
 
 
-## Action queue history for undo/redo functionality.
-var action_queue: ActionQueue = ActionQueue.new()
 ## Scene resource for the close button.
 var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
 ## JSON dialogue data such as characters and variables.
@@ -15,6 +13,8 @@ var file_path: String
 var speakers = []
 ## List of dialogue variables in the JSON.
 var variables = []
+## Handles history recording for undo/redo functionality.
+var undo_redo := HistoryHandler.new()
 
 ## The actively selected graphnode, for side panel updates.
 var active_graphnode: Node
@@ -40,9 +40,9 @@ func _input(event):
 		moving_mode = graphnode_selected
 
 
-## Adds a node of the given type to the current GraphEdit.
-## If [param history] is true, record this action in GraphEdit history.
-func add_node(node_type, history: bool = true) -> Array[MonologueGraphNode]:
+## Adds a node of the given type to this graph.
+## If [param record] is true, record this action in history.
+func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	# get the correct Monologue node class from the given node_type
 	var node_class = control_node.node_class_dictionary.get(node_type)
 	# new_node is the node instance to be created
@@ -55,9 +55,11 @@ func add_node(node_type, history: bool = true) -> Array[MonologueGraphNode]:
 		center_node(new_node)
 	
 	# if enabled, track the addition of created_nodes into the graph history
-	if history:
-		var track_add = AddNodeHistory.new(self, created_nodes)
-		action_queue.add(track_add)
+	if record:
+		var addition = AddNodeHistory.new(self, created_nodes)
+		undo_redo.create_action("Add new %s" % [new_node.node_type])
+		undo_redo.add_prepared_history(addition)
+		undo_redo.commit_action(false)
 	return created_nodes
 
 
@@ -168,13 +170,13 @@ func is_option_node_exciste(node_id):
 ## Checks and ensure graph is ready before triggering undo.
 func trigger_undo():
 	if not connecting_mode:
-		action_queue.previous()
+		undo_redo.undo()
 
 
 ## Checks and ensure graph is ready before triggering redo.
 func trigger_redo():
 	if not connecting_mode:
-		action_queue.next()
+		undo_redo.redo()
 
 
 ## Connects/disconnects and updates a given connection's NextID if possible.
@@ -203,7 +205,10 @@ func _on_child_entered_tree(node: Node):
 		var close_callback = func():
 				# add to action history when close_button is pressed
 				var delete_history = DeleteNodeHistory.new(self, [node])
-				action_queue.add(delete_history)
+				var message = "Delete %s (id: %s)"
+				undo_redo.create_action(message % [node.node_type, node.id])
+				undo_redo.add_prepared_history(delete_history)
+				undo_redo.commit_action(false)
 				free_graphnode(node)
 		
 		close_button.connect("pressed", close_callback)
@@ -226,9 +231,11 @@ func _on_connection_request(from_node, from_port, to_node, to_port):
 		var link = propagate_connection.bindv(arguments)
 		var unlink = propagate_connection.bindv(arguments + [false])
 		
-		var history = ActionHistory.new(unlink, link)
-		action_queue.add(history)
-		link.call()
+		var message = "Connect %s port %d to %s port %d"
+		undo_redo.create_action(message % arguments)
+		undo_redo.add_do_method(link)
+		undo_redo.add_undo_method(unlink)
+		undo_redo.commit_action()
 
 
 func _on_disconnection_request(from_node, from_port, to_node, to_port):
@@ -236,9 +243,13 @@ func _on_disconnection_request(from_node, from_port, to_node, to_port):
 	var link = propagate_connection.bindv(arguments)
 	var unlink = propagate_connection.bindv(arguments + [false])
 	
-	var history = ActionHistory.new(link, unlink)
-	action_queue.add(history)
-	unlink.call()
+	# don't need to include to_port in message because Monologue enforces
+	# only ONE outbound connection from each node (i.e. to_port is always 0)
+	var message = "Disconnect %s from %s port %d"
+	undo_redo.create_action(message % [to_node, from_node, from_port])
+	undo_redo.add_do_method(unlink)
+	undo_redo.add_undo_method(link)
+	undo_redo.commit_action()
 
 
 func _on_connection_to_empty(from_node, from_port, release_position):

@@ -1,5 +1,5 @@
-## Similar to AddNodeHistory but does not use [method MonologueGraphEdit.add_node]
-## to restore nodes and instead uses the graph edit's add_child() method directly.
+## Like AddNodeHistory but doesn't use [method MonologueGraphEdit.add_node]
+## to restore nodes. It uses the graph edit's add_child() method directly.
 ## It also reverses the undo() and redo() functions.
 class_name DeleteNodeHistory
 extends AddNodeHistory
