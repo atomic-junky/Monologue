@@ -12,6 +12,7 @@ const MAX_FILENAME_LENGTH = 48
 ## Dictionary of Monologue node types and their corresponding classes.
 var node_class_dictionary = {
 	"Root": RootNode,
+	"Action": ActionNode,
 	"Bridge": BridgeInNode,  # this is needed for creation using add_node()
 	"BridgeIn": BridgeInNode,
 	"BridgeOut": BridgeOutNode,  # this is needed to load from .json

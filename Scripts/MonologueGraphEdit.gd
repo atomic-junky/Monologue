@@ -68,10 +68,12 @@ func connect_from_picker(node: MonologueGraphNode) -> bool:
 		var from_node = control_node.picker_from_node
 		var from_port = control_node.picker_from_port
 		disconnect_outbound_from_node(from_node, from_port)
+		
 		node.position_offset = control_node.picker_position
 		propagate_connection(from_node, from_port, node.name, 0)
 		control_node.disable_picker_mode()
 		return true
+	
 	return false
 
 

@@ -37,7 +37,7 @@ func _ready():
 
 
 static func instance_from_type() -> MonologueGraphNode:
-	return preload("res://Objects/GraphNodes/ActionNode.tscn").instance()
+	return preload("res://Objects/GraphNodes/ActionNode.tscn").instantiate()
 
 
 func _to_dict() -> Dictionary:
