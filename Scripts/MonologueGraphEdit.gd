@@ -50,6 +50,10 @@ func add_node(node_type, history: bool = true) -> Array[MonologueGraphNode]:
 	# created_nodes include auxilliary nodes from new_node, such as BridgeOut
 	var created_nodes: Array[MonologueGraphNode] = new_node.add_to_graph(self)
 	
+	# handle auto-connection from picker if needed, then reposition the node
+	if not connect_from_picker(new_node):
+		center_node(new_node)
+	
 	# if enabled, track the addition of created_nodes into the graph history
 	if history:
 		var track_add = AddNodeHistory.new(self, created_nodes)
@@ -57,19 +61,23 @@ func add_node(node_type, history: bool = true) -> Array[MonologueGraphNode]:
 	return created_nodes
 
 
-## Centers the given graphnode or if [member control_node] is in picker mode,
-## position and connect the newly created node from the picker.
-func center_node(node: MonologueGraphNode):
+## Connects the originating picker_from_node to the given [param node].
+## Returns true if connection from picker to the node is successful.
+func connect_from_picker(node: MonologueGraphNode) -> bool:
 	if control_node.picker_mode:
 		var from_node = control_node.picker_from_node
 		var from_port = control_node.picker_from_port
 		disconnect_outbound_from_node(from_node, from_port)
-		
 		node.position_offset = control_node.picker_position
 		propagate_connection(from_node, from_port, node.name, 0)
 		control_node.disable_picker_mode()
-	else:
-		node.position_offset = ((size / 2) + scroll_offset) / zoom
+		return true
+	return false
+
+
+## Centers the given node in the graph.
+func center_node(node: MonologueGraphNode):
+	node.position_offset = ((size / 2) + scroll_offset) / zoom
 
 
 ## Disconnect all outbound connections of the given graphnode and port.

@@ -12,7 +12,6 @@ var node_type: String = "NodeUnknown"
 ## Returns an instance of itself as a result of the node creation.
 func add_to_graph(graph_edit: MonologueGraphEdit) -> Array[MonologueGraphNode]:
 	graph_edit.add_child(self, true)
-	graph_edit.center_node(self)
 	return [self]
 
 

@@ -104,11 +104,15 @@ func _ready():
 	welcome_window.show()
 	no_interactions_dimmer.show()
 	
-	GlobalSignal.add_listener("add_graph_node", add_node_from_header)
+	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
 	GlobalSignal.add_listener("test_trigger", test_project)
 
-func add_node_from_header(node_type):
+
+## Function callback for when the user wants to add a node from global context.
+## Used by header menu and graph node selector (picker).
+func add_node_from_global(node_type):
 	get_current_graph_edit().add_node(node_type)
+
 
 func _shortcut_input(event):
 	if event.is_action_pressed("Save"):
