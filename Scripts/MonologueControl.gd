@@ -304,29 +304,29 @@ func load_project(path):
 		if not node.has("ID"):
 			continue
 		
-		var current_node = get_node_by_id(node.get("ID"))
+		var current_node = graph_edit.get_node_by_id(node.get("ID"))
 		match node.get("$type"):
 			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent":
 				if node.get("NextID") is String:
-					var next_node = get_node_by_id(node.get("NextID"))
+					var next_node = graph_edit.get_node_by_id(node.get("NextID"))
 					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
 			"NodeChoice":
 				current_node._update()
 			"NodeDiceRoll":
 				if node.get("PassID") is String:
-					var pass_node = get_node_by_id(node.get("PassID"))
+					var pass_node = graph_edit.get_node_by_id(node.get("PassID"))
 					graph_edit.connect_node(current_node.name, 0, pass_node.name, 0)
 				
 				if node.get("FailID") is String:
-					var fail_node = get_node_by_id(node.get("FailID"))
+					var fail_node = graph_edit.get_node_by_id(node.get("FailID"))
 					graph_edit.connect_node(current_node.name, 1, fail_node.name, 0)
 			"NodeCondition":
 				if node.get("IfNextID") is String:
-					var if_node = get_node_by_id(node.get("IfNextID"))
+					var if_node = graph_edit.get_node_by_id(node.get("IfNextID"))
 					graph_edit.connect_node(current_node.name, 0, if_node.name, 0)
 				
 				if node.get("ElseNextID") is String:
-					var else_node = get_node_by_id(node.get("ElseNextID"))
+					var else_node = graph_edit.get_node_by_id(node.get("ElseNextID"))
 					graph_edit.connect_node(current_node.name, 1, else_node.name, 0)
 		
 		if not current_node: # OptionNode
@@ -346,18 +346,9 @@ func load_project(path):
 		root_node_ref = get_root_node_ref()
 	
 	
-func get_node_by_id(id):
-	for node in get_current_graph_edit().get_children():
-		if node.id == id:
-			return node
-	return null
 
-## Check if an option ID exists in the entirety of the current GraphEdit.
-func is_option_id_exists(id):
-	for node in get_current_graph_edit().get_children():
-		if node is ChoiceNode:
-			return not node.find_option_dictionary(id).is_empty()
-	
+
+
 func get_options_nodes(node_list, options_id):
 	var options = []
 	
@@ -385,7 +376,7 @@ func test_project(from_node: String = "-1"):
 	var test_instance = preload("res://Test/Menu.tscn")
 	var test_scene = test_instance.instantiate()
 	
-	if get_node_by_id(from_node) != null:
+	if get_current_graph_edit().get_node_by_id(from_node) != null:
 		test_scene._from_node_id = from_node
 	
 	get_tree().root.add_child(test_scene)

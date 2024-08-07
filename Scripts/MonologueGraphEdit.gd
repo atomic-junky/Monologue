@@ -141,6 +141,13 @@ func get_all_connections_from_slot(from_node: StringName, from_port: int):
 	return connections
 
 
+func get_node_by_id(id: String) -> MonologueGraphNode:
+	for node in get_children():
+		if node.id == id:
+			return node
+	return null
+
+
 func get_linked_bridge_node(target_number):
 	for node in get_children():
 		if node.node_type == "NodeBridgeOut" and node.number_selector.value == target_number:
@@ -157,12 +164,13 @@ func get_free_bridge_number(_n=1, lp_max=50):
 	return _n
 
 
-func is_option_node_exciste(node_id):
+## Check if an option ID exists in the entirety of the graph.
+func is_option_id_exists(option_id: String):
 	for node in get_children():
 		if node.node_type != "NodeChoice":
 			continue
 		var node_options_id: Array = node.get_all_options_id()
-		if node_options_id.has(node_id):
+		if node_options_id.has(option_id):
 			return true
 	return false
 

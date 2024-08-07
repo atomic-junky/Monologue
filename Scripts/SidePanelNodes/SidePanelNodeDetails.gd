@@ -103,7 +103,8 @@ func on_graph_node_deselected(_node):
 
 
 func _on_line_edit_id_text_changed(new_id):
-	if control_node.get_node_by_id(new_id) or control_node.is_option_id_exists(new_id):
+	var graph = control_node.get_current_graph_edit()
+	if graph.get_node_by_id(new_id) or graph.is_option_id_exists(new_id):
 		line_edit_id.text = current_panel.id
 		return
 	

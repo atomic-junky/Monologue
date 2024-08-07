@@ -133,7 +133,7 @@ func _update(panel: ActionNodePanel = null):
 				option_id = panel.option_id_edit.text
 				
 				if option_id != "":
-					var is_option_id_valid: bool = get_parent().is_option_node_exciste(option_id)
+					var is_option_id_valid: bool = get_parent().is_option_id_exists(option_id)
 					panel.option_not_find.visible = !is_option_id_valid
 				else:
 					panel.option_not_find.hide()

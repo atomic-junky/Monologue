@@ -83,12 +83,19 @@ func _on_id_copy_pressed():
 	panel_node.side_panel.control_node.add_child(ribbon)
 
 
-func _on_id_text_changed(new_id):
-	# if the new_id exists in any node or option, revert to previous id
-	if panel_node.side_panel.control_node.is_option_id_exists(new_id) or \
-			panel_node.side_panel.control_node.get_node_by_id(new_id):
-		id_line_edit.text = id
-		return
+func _on_id_focus_exited():
+	_on_id_text_submitted(id_line_edit.text)
+
+
+func _on_id_text_submitted(new_id):
+	if new_id != id:
+		var graph: MonologueGraphEdit = graph_node.get_parent()
+		# if the new_id exists in any node or option, revert to previous id
+		if graph.is_option_id_exists(new_id) or graph.get_node_by_id(new_id):
+			id_line_edit.text = id
+			return
+		
+		id = new_id
+		panel_node.change.emit(panel_node)
 	
-	id = new_id
-	panel_node.change.emit(panel_node)
+	release_focus()
