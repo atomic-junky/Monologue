@@ -178,8 +178,11 @@ func propagate_connection(from_node, from_port, to_node, to_port, next = true):
 	
 	var graph_node = get_node_or_null(NodePath(from_node))
 	if graph_node and graph_node.has_method("update_next_id"):
-		var target = get_node(NodePath(to_node)) if next else null
-		graph_node.update_next_id(from_port, target)
+		if next:
+			var next_node = get_node_or_null(NodePath(to_node))
+			graph_node.update_next_id(from_port, next_node)
+		else:
+			graph_node.update_next_id(from_port, null)
 
 
 func _on_child_entered_tree(node: Node):
