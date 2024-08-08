@@ -16,6 +16,13 @@ var inbound_connections: Dictionary
 ## Dictionary of out_connections to be restored on redo.
 var outbound_connections: Dictionary
 
+## The disconnected node name when this new node was created from picker.
+var picker_from_node: String
+## The disconnected port when this new node was created from picker.
+var picker_from_port: int
+## The node names that picker_from_node was connected to on port 0.
+var picker_to_names: PackedStringArray
+
 
 func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 	graph_edit = graph
@@ -38,6 +45,8 @@ func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 
 
 func redo():
+	_revert_picker(false)
+	
 	# track readded nodes and repopulate their data
 	deletion_nodes = super.redo()
 	# iterating this way, it will go through proper order in restoration_data
@@ -61,6 +70,7 @@ func redo():
 		# restore graph node connections
 		_restore_connections(node_name)
 	
+	
 	return deletion_nodes
 
 
@@ -78,6 +88,8 @@ func _delete_callback_for_tracked_nodes():
 			node = graph_edit.get_node(restoration_data.keys()[i])
 		_record_connections(node)  # record connections first before freeing!!
 		restoration_data[node.name] = graph_edit.free_graphnode(node)
+	
+	_revert_picker()
 	return deletion_nodes
 
 
@@ -97,3 +109,15 @@ func _restore_connections(node_name: String):
 	for co in connections:
 		graph_edit.connect_node(co.get("from_node"), co.get("from_port"),
 				co.get("to_node"), co.get("to_port"))
+
+
+## Reverts the severed connection from when this node was created by picker.
+func _revert_picker(reconnect: bool = true):
+	if picker_from_node:
+		for to_name in picker_to_names:
+			if reconnect:
+				graph_edit.connect_node(
+						picker_from_node, picker_from_port, to_name, 0)
+			else:
+				graph_edit.disconnect_node(
+						picker_from_node, picker_from_port, to_name, 0)

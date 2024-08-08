@@ -43,6 +43,13 @@ func _input(event):
 ## Adds a node of the given type to this graph.
 ## If [param record] is true, record this action in history.
 func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
+	# if adding from picker, track existing to_nodes of the picker_from_node
+	var picker_to_names = []
+	if control_node.picker_mode:
+		for picker_to_node in get_all_connections_from_slot(
+				control_node.picker_from_node, control_node.picker_from_port):
+			picker_to_names.append(picker_to_node.name)
+	
 	# get the correct Monologue node class from the given node_type
 	var node_scene = control_node.scene_dictionary.get(node_type)
 	# new_node is the node instance to be created
@@ -56,6 +63,10 @@ func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	# if enabled, track the addition of created_nodes into the graph history
 	if record:
 		var addition = AddNodeHistory.new(self, created_nodes)
+		if not picker_to_names.is_empty():
+			addition.picker_from_node = control_node.picker_from_node
+			addition.picker_from_port = control_node.picker_from_port
+			addition.picker_to_names = picker_to_names
 		undo_redo.create_action("Add new %s" % [new_node.node_type])
 		undo_redo.add_prepared_history(addition)
 		undo_redo.commit_action(false)
@@ -139,6 +150,7 @@ func get_all_outbound_connections(from_node: StringName):
 
 ## Find connections of the given [param from_node] at its [param from_port].
 ## In Monologue's architecture, it should return a list with only 1 connection.
+## Returns an array of graph nodes.
 func get_all_connections_from_slot(from_node: StringName, from_port: int):
 	var connections = []
 	for connection in get_connection_list():
