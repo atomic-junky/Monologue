@@ -1,8 +1,7 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
 
 class_name RootNodePanel
-
-extends VBoxContainer
+extends MonologueNodePanel
 
 
 @onready var character_node = preload("res://Objects/SubComponents/Character.tscn")
@@ -11,10 +10,6 @@ extends VBoxContainer
 @onready var variable_node = preload("res://Objects/SubComponents/Variable.tscn")
 @onready var variables_container = $VariablesMainContainer/VariablesContainer
 
-var graph_node
-
-var id = ""
-
 
 func _ready():
 	for character in graph_node.get_parent().speakers:
@@ -22,6 +17,7 @@ func _ready():
 	
 	for variable in graph_node.get_parent().variables:
 		add_variable(true, variable)
+
 
 func _from_dict(dict):
 	id = dict.get("ID")
@@ -44,7 +40,6 @@ func add_character(reference: String = ""):
  
 func add_variable(init: bool = false, dict: Dictionary = {}):
 	var new_node = variable_node.instantiate()
-	new_node.update_callback = update_variables
 	variables_container.add_child(new_node)
 	
 	if init: # Called from _ready()
@@ -62,6 +57,8 @@ func add_variable(init: bool = false, dict: Dictionary = {}):
 				new_node.string_edit.text = dict.get("Value")
 	
 		new_node.update_value_edit()
+	
+	new_node.update_callback = update_variables
 
 
 ## Call the update_speakers function when a character node is updated
@@ -95,5 +92,5 @@ func update_variables():
 			continue
 		
 		updated_variables.append(child._to_dict())
-		
+	
 	graph_node.get_parent().variables = updated_variables

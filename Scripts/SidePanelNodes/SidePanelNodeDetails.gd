@@ -60,8 +60,7 @@ func on_graph_node_selected(node, bypass_modes: bool = false):
 	
 	clear_current_panel()
 	if new_panel:
-		if new_panel is MonologueNodePanel:
-			new_panel.side_panel = self
+		new_panel.side_panel = self
 		new_panel.graph_node = node
 		current_panel = new_panel
 		selected_node = node

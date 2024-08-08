@@ -8,7 +8,7 @@ extends PanelContainer
 @onready var number_edit = $MarginContainer/VBoxContainer/HBoxContainer3/NumberEdit
 @onready var string_edit = $MarginContainer/VBoxContainer/HBoxContainer3/StringEdit
 
-var update_callback: Callable
+var update_callback: Callable = func(): return
 
 
 func _ready():

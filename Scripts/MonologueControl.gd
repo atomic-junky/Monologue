@@ -10,7 +10,7 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 const MAX_FILENAME_LENGTH = 48
 
 ## Dictionary of Monologue node types and their corresponding classes.
-var scene_dictionary = {
+@onready var scene_dictionary = {
 	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),
 	"Action": preload("res://Objects/GraphNodes/ActionNode.tscn"),
 	"Bridge": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
@@ -53,7 +53,7 @@ var option_index = 0
 var node_index = 0
 var all_nodes_index = 0
 
-var root_scene = scene_dictionary.get("Root")
+@onready var root_scene = scene_dictionary.get("Root")
 var root_node_ref
 var root_dict
 
