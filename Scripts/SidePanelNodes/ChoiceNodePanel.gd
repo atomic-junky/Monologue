@@ -71,9 +71,9 @@ func new_option(from_copy: Dictionary = {}, index: int = -1) -> OptionNode:
 ## Adds latest option data changes into graph history, if any.
 func register_option_changes(note: String = "option data"):
 	var panel_options = get_panel_option_data()
+	
 	if panel_options.hash() != graph_node.options.hash():
 		var message = "Update %s for %s (id: %s)"
-		var undo_redo = graph_node.get_parent().undo_redo
 		undo_redo.create_action(message % [note, graph_node.node_type, id])
 		var changes: Array[PropertyChange] = [
 			PropertyChange.new("options", graph_node.options, panel_options)
@@ -86,7 +86,6 @@ func register_option_changes(note: String = "option data"):
 func _on_add_option_pressed():
 	var created_option = new_option()
 	
-	var undo_redo: HistoryHandler = graph_node.get_parent().undo_redo
 	undo_redo.create_action("Add new option to %s" % graph_node.id)
 	var option_history = AddOptionHistory.new(graph_node, created_option)
 	undo_redo.add_prepared_history(option_history)

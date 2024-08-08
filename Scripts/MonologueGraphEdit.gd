@@ -16,7 +16,7 @@ var variables = []
 ## Handles history recording for undo/redo functionality.
 var undo_redo := HistoryHandler.new()
 
-## The actively selected graphnode, for side panel updates.
+## The actively selected graphnode, for graph tab-switching updates.
 var active_graphnode: Node
 ## Reference to the mother Control node that oversees all Monologue operations.
 var control_node: MonologueControl

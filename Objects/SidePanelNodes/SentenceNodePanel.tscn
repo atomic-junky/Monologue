@@ -82,6 +82,7 @@ wrap_mode = 1
 caret_blink = true
 
 [connection signal="item_selected" from="SpeakerContainer/SubContainer/CharacterDrop" to="." method="_on_character_drop_item_selected"]
-[connection signal="text_changed" from="SpeakerContainer/DisplayNameContainer/SubContainer/LineEdit" to="." method="_on_display_name_line_edit_text_changed"]
-[connection signal="text_changed" from="SpeakerContainer/DisplayVariantContainer/SubContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="focus_exited" from="SpeakerContainer/DisplayNameContainer/SubContainer/LineEdit" to="." method="_on_display_name_focus_exited"]
+[connection signal="focus_exited" from="SpeakerContainer/DisplayVariantContainer/SubContainer/LineEdit" to="." method="_on_display_variant_focus_exited"]
+[connection signal="focus_exited" from="SentenceContainer/TextEdit" to="." method="_on_sentence_focus_exited"]
 [connection signal="text_changed" from="SentenceContainer/TextEdit" to="." method="_on_sentence_text_edit_changed"]
