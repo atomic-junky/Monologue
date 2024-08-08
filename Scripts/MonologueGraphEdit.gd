@@ -109,6 +109,14 @@ func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 		node_data.merge({"Options": node.options})
 	
 	node.queue_free()
+	
+	# if side panel is showing this node, close it since it's gone
+	var side_panel = control_node.side_panel_node
+	var current_panel = side_panel.current_panel
+	if current_panel and current_panel.graph_node == node:
+		side_panel.clear_current_panel()
+		side_panel.hide()
+	
 	return node_data
 
 

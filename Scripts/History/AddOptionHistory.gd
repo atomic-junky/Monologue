@@ -35,7 +35,7 @@ func _init(choice_node: ChoiceNode, option_node: OptionNode):
 func get_choice_panel() -> ChoiceNodePanel:
 	var choice_node = graph_edit.get_node(choice_node_name)
 	var current_panel = graph_edit.control_node.side_panel_node.current_panel
-	if current_panel.graph_node == choice_node:
+	if current_panel and current_panel.graph_node == choice_node:
 		# check if current side panel is a ChoiceNodePanel that is linked to
 		# the ChoiceNode that owns these tracked options
 		_destroy_panel = false
@@ -81,5 +81,5 @@ func restore_data() -> OptionNode:
 ## Renewed options are created when ChoiceNode has 0 options, so a "renewed"
 ## option is created to ensure there is a minimum of 1 option.
 ## This creation is tied to the deletion of the last option, so handle it.
-func delete_renewal(panel: ChoiceNodePanel):
+func delete_renewal(_panel: ChoiceNodePanel):
 	pass

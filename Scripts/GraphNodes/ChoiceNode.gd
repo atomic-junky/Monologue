@@ -127,7 +127,7 @@ func update_next_id(from_port: int, next_node: MonologueGraphNode):
 	
 	# if side panel is up, the NextID change needs to propagate to the panel
 	var panel = get_parent().control_node.side_panel_node.current_panel
-	if panel.graph_node == self:
+	if panel and self == panel.graph_node:
 		var option_id = options[from_port].get("ID")
 		var option_node: OptionNode = panel.get_option_node(option_id)
 		option_node.next_id = options[from_port].get("NextID")

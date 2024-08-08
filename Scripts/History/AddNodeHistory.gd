@@ -48,13 +48,19 @@ func redo():
 		# restore node name
 		deletion_nodes[i].name = node_name
 		
-		# restore options if needed, must happen BEFORE restoring node data!
-		var options = node_data.get("Options")
-		if options: deletion_nodes[i].options = options
-		
-		# restore node data and connections
+		# restore node data _from_dict()
 		deletion_nodes[i]._from_dict(node_data)
+		
+		# for ChoiceNode, _from_dict() clears options and loads from JSON save
+		# but it's okay, we can restore the changes in options from here
+		var options = node_data.get("Options")
+		if options:
+			deletion_nodes[i].options = options
+			deletion_nodes[i]._update()
+		
+		# restore graph node connections
 		_restore_connections(node_name)
+	
 	return deletion_nodes
 
 
