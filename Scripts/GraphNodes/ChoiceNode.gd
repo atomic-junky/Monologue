@@ -134,6 +134,17 @@ func update_next_id(from_port: int, next_node: MonologueGraphNode):
 		option_node.update_ref()
 
 
+## Updates the given option's UI text on the node. This is introduced because
+## of undo/redo functionality only triggering on focus_exited() for certain
+## text controls. This loses the smooth, real-time text update Monologue
+## used to have, and this is to maintain that user experience.
+func update_option_text(option_id, text):
+	for child in get_children():
+		if child is OptionReference and child.id == option_id:
+			child.sentence_preview.text = text
+			return
+
+
 func _update(panel: ChoiceNodePanel = null):
 	if panel != null:
 		panel.disconnect_all_option_links()

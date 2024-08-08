@@ -57,7 +57,7 @@ func delete() -> OptionNode:
 	return renewed_option
 
 
-## Update referenced values in side panel.
+## Save and update referenced values in side panel.
 func update_ref():
 	id_line_edit.text = id
 	sentence = sentence_node.text
@@ -100,3 +100,22 @@ func _on_id_text_submitted(new_id):
 		panel_node.change.emit(panel_node)
 	
 	release_focus()
+
+
+## Tracks changes to option data to be added to undo/redo history.
+func _on_option_data_control_change():
+	if sentence != sentence_node.text or \
+			enable != enable_node.button_pressed or \
+			one_shot != one_shot_node.button_pressed:
+		# if any option data was changed, update them
+		sentence = sentence_node.text
+		enable = enable_node.button_pressed
+		one_shot = one_shot_node.button_pressed
+		
+		# register the changes into history, then propagate it to node
+		panel_node.register_option_changes()
+		panel_node.change.emit(panel_node)
+
+
+func _on_sentence_text_changed():
+	graph_node.update_option_text(id, sentence_node.text)
