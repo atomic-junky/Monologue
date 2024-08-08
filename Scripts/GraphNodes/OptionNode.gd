@@ -96,6 +96,7 @@ func _on_id_text_submitted(new_id):
 			return
 		
 		id = new_id
+		panel_node.register_option_changes("new id " + new_id)
 		panel_node.change.emit(panel_node)
 	
 	release_focus()

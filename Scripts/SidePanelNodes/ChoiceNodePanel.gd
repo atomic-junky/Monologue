@@ -3,6 +3,7 @@
 class_name ChoiceNodePanel
 extends MonologueNodePanel
 
+
 const arrow_texture01 = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
 const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
 
@@ -23,6 +24,17 @@ func _from_dict(dict):
 		opt_panel._from_dict(option)
 	
 	change.emit(self)
+
+
+## Gets the latest information of all options in [member options_container].
+func get_latest_option_data():
+	var data = []
+	for option in options_container.get_children():
+		graph_node.link_option(
+				graph_node.find_option_dictionary(option.id), false)
+		if not option.is_queued_for_deletion():
+			data.append(option._to_dict())
+	return data
 
 
 ## Retrives a given option node by ID from [member options_container].
@@ -46,6 +58,20 @@ func new_option(from_copy: Dictionary = {}) -> OptionNode:
 	
 	option.update_ref()
 	return option
+
+
+## Adds latest option data into graph history.
+func register_option_changes(note: String = "option data"):
+	var latest_data = get_latest_option_data()
+	var message = "Update %s for %s (id: %s)"
+	var undo_redo = graph_node.get_parent().undo_redo
+	undo_redo.create_action(message % [note, graph_node.node_type, id])
+	var changes: Array[PropertyChange] = [
+		PropertyChange.new("options", graph_node.options, latest_data)
+	]
+	var option_change = PropertyHistory.new(graph_node, changes)
+	undo_redo.add_prepared_history(option_change)
+	undo_redo.commit_action(false)
 
 
 func _on_add_option_pressed():

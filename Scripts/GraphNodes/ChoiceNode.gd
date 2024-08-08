@@ -127,13 +127,7 @@ func update_next_id(from_port: int, next_node: MonologueGraphNode):
 
 func _update(panel: ChoiceNodePanel = null):
 	if panel != null:
-		var updated_options = []
-		for option in panel.options_container.get_children():
-			if option is OptionNode:
-				link_option(find_option_dictionary(option.id), false)
-				if not option.is_queued_for_deletion():
-					updated_options.append(option._to_dict())
-		options = updated_options
+		options = panel.get_latest_option_data()
 	
 	for child in get_children():
 		remove_child(child)
