@@ -68,6 +68,14 @@ func _from_dict(dict: Dictionary):
 						number_edit.value = value
 					"String":
 						string_edit.text = value
+					
+			var operator_str: String = action.get("Operator")
+			var operator_id := 0
+			for op in operator_drop_node.item_count:
+				if operator_drop_node.get_item_text(op) == operator_str:
+					operator_id = op
+			operator_drop_node.select(operator_id)
+
 		"ActionCustom":
 			action_drop_node.select(2)
 			match action.get("CustomType"):
