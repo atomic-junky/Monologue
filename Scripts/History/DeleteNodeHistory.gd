@@ -13,8 +13,8 @@ func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 			var created_nodes: Array[MonologueGraphNode] = []
 			for name in restoration_data.keys():
 				var type = restoration_data[name].get("$type").trim_prefix("Node")
-				var node = graph_edit.control_node.node_class_dictionary.get(type)
-				var inst = node.instance_from_type()
+				var node = graph_edit.control_node.scene_dictionary.get(type)
+				var inst = node.instantiate()
 				graph_edit.add_child(inst)
 				created_nodes.append(inst)
 			return created_nodes

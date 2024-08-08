@@ -45,10 +45,6 @@ func create_option(from_copy: Dictionary = {}):
 		link_option(from_copy)
 
 
-static func instance_from_type() -> MonologueGraphNode:
-	return preload("res://Objects/GraphNodes/ChoiceNode.tscn").instantiate()
-
-
 func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,

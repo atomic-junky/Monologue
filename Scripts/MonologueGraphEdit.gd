@@ -44,15 +44,14 @@ func _input(event):
 ## If [param record] is true, record this action in history.
 func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	# get the correct Monologue node class from the given node_type
-	var node_class = control_node.node_class_dictionary.get(node_type)
+	var node_scene = control_node.scene_dictionary.get(node_type)
 	# new_node is the node instance to be created
-	var new_node = node_class.instance_from_type()
+	var new_node = node_scene.instantiate()
 	# created_nodes include auxilliary nodes from new_node, such as BridgeOut
 	var created_nodes: Array[MonologueGraphNode] = new_node.add_to_graph(self)
 	
 	# handle auto-connection from picker if needed, then reposition the node
-	if not connect_from_picker(new_node):
-		center_node(new_node)
+	connect_from_picker(new_node)
 	
 	# if enabled, track the addition of created_nodes into the graph history
 	if record:

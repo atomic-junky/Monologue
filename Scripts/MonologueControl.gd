@@ -10,19 +10,19 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 const MAX_FILENAME_LENGTH = 48
 
 ## Dictionary of Monologue node types and their corresponding classes.
-var node_class_dictionary = {
-	"Root": RootNode,
-	"Action": ActionNode,
-	"Bridge": BridgeInNode,  # this is needed for creation using add_node()
-	"BridgeIn": BridgeInNode,
-	"BridgeOut": BridgeOutNode,  # this is needed to load from .json
-	"Choice": ChoiceNode,
-	"Comment": CommentNode,
-	"Condition": ConditionNode,
-	"DiceRoll": DiceRollNode,
-	"EndPath": EndPathNode,
-	"Event": EventNode,
-	"Sentence": SentenceNode,
+var scene_dictionary = {
+	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),
+	"Action": preload("res://Objects/GraphNodes/ActionNode.tscn"),
+	"Bridge": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
+	"BridgeIn": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
+	"BridgeOut": preload("res://Objects/GraphNodes/BridgeOutNode.tscn"),
+	"Choice": preload("res://Objects/GraphNodes/ChoiceNode.tscn"),
+	"Comment": preload("res://Objects/GraphNodes/CommentNode.tscn"),
+	"Condition": preload("res://Objects/GraphNodes/ConditionNode.tscn"),
+	"DiceRoll": preload("res://Objects/GraphNodes/DiceRollNode.tscn"),
+	"EndPath": preload("res://Objects/GraphNodes/EndPathNode.tscn"),
+	"Event": preload("res://Objects/GraphNodes/EventNode.tscn"),
+	"Sentence": preload("res://Objects/GraphNodes/SentenceNode.tscn"),
 }
 
 @onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
@@ -53,7 +53,7 @@ var option_index = 0
 var node_index = 0
 var all_nodes_index = 0
 
-var root_class = node_class_dictionary.get("Root")
+var root_scene = scene_dictionary.get("Root")
 var root_node_ref
 var root_dict
 
@@ -64,7 +64,7 @@ var picker_position
 
 
 func _ready():
-	var new_root_node = root_class.instance_from_type()
+	var new_root_node = root_scene.instantiate()
 	get_current_graph_edit().add_child(new_root_node)
 	connect_side_panel(get_current_graph_edit())
 	
@@ -190,7 +190,7 @@ func file_selected(path, open_mode):
 	if open_mode == 0: #NEW
 		for node in graph_edit.get_children():
 			node.queue_free()
-		var new_root_node = root_class.instance_from_type()
+		var new_root_node = root_scene.instantiate()
 		graph_edit.add_child(new_root_node)
 		await save(true)
 
@@ -292,11 +292,11 @@ func load_project(path):
 	# create nodes from JSON data
 	for node in node_list:
 		var node_type: String = node.get("$type")
-		var node_class = node_class_dictionary.get(node_type.trim_prefix("Node"))
-		if not node_class:
+		var node_scene = scene_dictionary.get(node_type.trim_prefix("Node"))
+		if not node_scene:
 			continue
 		
-		var new_node = node_class.instance_from_type()
+		var new_node = node_scene.instantiate()
 		new_node.id = node.get("ID")
 		graph_edit.add_child(new_node)
 		new_node._from_dict(node)
@@ -341,7 +341,7 @@ func load_project(path):
 	root_node_ref = get_root_node_ref()
 	
 	if not root_node_ref:
-		var new_root_node = root_class.instance_from_type()
+		var new_root_node = root_scene.instantiate()
 		get_current_graph_edit().add_child(new_root_node)
 		
 		save(true)
@@ -501,7 +501,7 @@ func _on_file_id_pressed(id):
 
 func new_graph_edit():
 	var graph_edit: MonologueGraphEdit = graph_edit_inst.instantiate()
-	var new_root_node = root_class.instance_from_type()
+	var new_root_node = root_scene.instantiate()
 	
 	graph_edit.name = "new"
 	connect_side_panel(graph_edit)

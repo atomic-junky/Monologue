@@ -18,10 +18,6 @@ func _ready():
 	title = node_type
 
 
-static func instance_from_type() -> MonologueGraphNode:
-	return preload("res://Objects/GraphNodes/EventNode.tscn").instantiate()
-
-
 func _to_dict() -> Dictionary:
 	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
 	

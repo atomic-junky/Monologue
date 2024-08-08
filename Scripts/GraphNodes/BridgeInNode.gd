@@ -5,6 +5,7 @@ class_name BridgeInNode
 extends MonologueGraphNode
 
 
+@onready var bridge_out = preload("res://Objects/GraphNodes/BridgeOutNode.tscn")
 ## Spinner control which selects what number to bridge to.
 @onready var number_selector: SpinBox = $MarginContainer/HBoxContainer/LinkNumber
 
@@ -23,16 +24,12 @@ func add_to_graph(graph_edit: MonologueGraphEdit) -> Array[MonologueGraphNode]:
 	created_nodes[0].number_selector.value = number
 	created_nodes[0].position_offset.x -= created_nodes[0].size.x / 2 + 10
 	
-	var out_node = BridgeOutNode.instance_from_type() # create counterpart
+	var out_node = bridge_out.instantiate() # create counterpart
 	out_node.add_to_graph(graph_edit) # ignore return, use out_node
 	out_node.number_selector.value = number
 	out_node.position_offset.x += out_node.size.x / 2 + 10
 	created_nodes.append(out_node)
 	return created_nodes
-
-
-static func instance_from_type() -> MonologueGraphNode:
-	return preload("res://Objects/GraphNodes/BridgeInNode.tscn").instantiate()
 
 
 func _to_dict() -> Dictionary:

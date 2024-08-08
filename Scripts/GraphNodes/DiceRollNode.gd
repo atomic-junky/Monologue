@@ -16,10 +16,6 @@ func _ready():
 	title = node_type
 
 
-static func instance_from_type() -> MonologueGraphNode:
-	return preload("res://Objects/GraphNodes/DiceRollNode.tscn").instantiate()
-
-
 func _to_dict() -> Dictionary:
 	var pass_id_node = get_parent().get_all_connections_from_slot(name, 0)
 	var fail_id_node = get_parent().get_all_connections_from_slot(name, 1)
