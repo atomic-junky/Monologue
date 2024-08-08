@@ -203,6 +203,7 @@ func propagate_connection(from_node, from_port, to_node, to_port, next = true):
 			graph_node.update_next_id(from_port, next_node)
 		else:
 			graph_node.update_next_id(from_port, null)
+			
 
 
 func _on_child_entered_tree(node: Node):

@@ -26,12 +26,17 @@ func _from_dict(dict):
 	change.emit(self)
 
 
-## Gets the latest information of all options in [member options_container].
-func get_latest_option_data():
-	var data = []
+## Disconnects all option graph connections. Used to refresh the UI.
+func disconnect_all_option_links():
 	for option in options_container.get_children():
 		graph_node.link_option(
 				graph_node.find_option_dictionary(option.id), false)
+
+
+## Gets the panel information of all options in [member options_container].
+func get_panel_option_data():
+	var data = []
+	for option in options_container.get_children():
 		if not option.is_queued_for_deletion():
 			data.append(option._to_dict())
 	return data
@@ -46,11 +51,14 @@ func get_option_node(option_id: String):
 
 ## Creates a new option. If given a [param from_copy], its data will be
 ## applied to the newly created option node.
-func new_option(from_copy: Dictionary = {}) -> OptionNode:
+func new_option(from_copy: Dictionary = {}, index: int = -1) -> OptionNode:
 	var option = option_panel.instantiate()
 	option.panel_node = self
 	option.graph_node = graph_node
 	options_container.add_child(option)
+	
+	if index >= 0:
+		options_container.move_child(option, index)
 	
 	# restore data AFTER add_child(), the UI needs to be ready to update!
 	if not from_copy.is_empty():
@@ -60,18 +68,19 @@ func new_option(from_copy: Dictionary = {}) -> OptionNode:
 	return option
 
 
-## Adds latest option data into graph history.
+## Adds latest option data changes into graph history, if any.
 func register_option_changes(note: String = "option data"):
-	var latest_data = get_latest_option_data()
-	var message = "Update %s for %s (id: %s)"
-	var undo_redo = graph_node.get_parent().undo_redo
-	undo_redo.create_action(message % [note, graph_node.node_type, id])
-	var changes: Array[PropertyChange] = [
-		PropertyChange.new("options", graph_node.options, latest_data)
-	]
-	var option_change = PropertyHistory.new(graph_node, changes)
-	undo_redo.add_prepared_history(option_change)
-	undo_redo.commit_action(false)
+	var panel_options = get_panel_option_data()
+	if panel_options.hash() != graph_node.options.hash():
+		var message = "Update %s for %s (id: %s)"
+		var undo_redo = graph_node.get_parent().undo_redo
+		undo_redo.create_action(message % [note, graph_node.node_type, id])
+		var changes: Array[PropertyChange] = [
+			PropertyChange.new("options", graph_node.options, panel_options)
+		]
+		var option_change = PropertyHistory.new(graph_node, changes)
+		undo_redo.add_prepared_history(option_change)
+		undo_redo.commit_action(false)
 
 
 func _on_add_option_pressed():

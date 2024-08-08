@@ -289,6 +289,7 @@ func load_project(path):
 	var node_list = data.get("ListNodes")
 	root_dict = get_root_dict(node_list)
 	
+	# create nodes from JSON data
 	for node in node_list:
 		var node_type: String = node.get("$type")
 		var node_class = node_class_dictionary.get(node_type.trim_prefix("Node"))
@@ -300,6 +301,7 @@ func load_project(path):
 		graph_edit.add_child(new_node)
 		new_node._from_dict(node)
 	
+	# load connections for the created nodes
 	for node in node_list:
 		if not node.has("ID"):
 			continue
@@ -344,9 +346,6 @@ func load_project(path):
 		
 		save(true)
 		root_node_ref = get_root_node_ref()
-	
-	
-
 
 
 func get_options_nodes(node_list, options_id):

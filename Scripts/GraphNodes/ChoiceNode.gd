@@ -65,9 +65,10 @@ func _from_dict(dict):
 	
 	# get list of all nodes in the graph
 	var nodes = get_parent().data.get("ListNodes")
+	options.clear()
 	for option in dict.get("OptionsID"):
 		for node in nodes:
-			# if the OptionNode's ID is in NodeChoice's OptionIDs, track it
+			# if the OptionNode's ID is in NodeChoice's OptionIDs, add it
 			if node.get("ID") in option:
 				options.append(node)
 	
@@ -123,15 +124,26 @@ func update_next_id(from_port: int, next_node: MonologueGraphNode):
 	else:
 		# if there is no next_node target, disconnect the NextID (set to -1)
 		options[from_port]["NextID"] = -1
+	
+	# if side panel is up, the NextID change needs to propagate to the panel
+	var panel = get_parent().control_node.side_panel_node.current_panel
+	if panel.graph_node == self:
+		var option_id = options[from_port].get("ID")
+		var option_node: OptionNode = panel.get_option_node(option_id)
+		option_node.next_id = options[from_port].get("NextID")
+		option_node.update_ref()
 
 
 func _update(panel: ChoiceNodePanel = null):
 	if panel != null:
-		options = panel.get_latest_option_data()
+		panel.disconnect_all_option_links()
+		options = panel.get_panel_option_data()
 	
+	# remove all OptionReferences from ChoiceNode
 	for child in get_children():
 		remove_child(child)
 		child.queue_free()
 	
+	# regenerate options
 	for option in options:
 		create_option(option)

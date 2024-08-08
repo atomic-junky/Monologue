@@ -4,6 +4,7 @@
 class_name BridgeInNode
 extends MonologueGraphNode
 
+
 ## Spinner control which selects what number to bridge to.
 @onready var number_selector: SpinBox = $MarginContainer/HBoxContainer/LinkNumber
 

@@ -3,6 +3,7 @@
 class_name BridgeOutNode
 extends MonologueGraphNode
 
+
 @onready var number_selector = $MarginContainer/HBoxContainer/LinkNumber
 
 

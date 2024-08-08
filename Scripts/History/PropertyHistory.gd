@@ -23,7 +23,6 @@ func change_properties():
 	var node: MonologueGraphNode = graph_edit.get_node(node_name)
 	for change in changes:
 		node[change.property] = change.after
-	node._update()
 	refresh_panel(node)
 
 
@@ -31,11 +30,11 @@ func revert_properties():
 	var node: MonologueGraphNode = graph_edit.get_node(node_name)
 	for change in changes:
 		node[change.property] = change.before
-	node._update()
 	refresh_panel(node)
 
 
 ## If currently opened side panel is for the given node, refresh it.
+## Otherwise, select that node to open its side panel.
 func refresh_panel(node: MonologueGraphNode):
 	var side_panel = graph_edit.control_node.side_panel_node
 	side_panel.clear_current_panel()
@@ -43,3 +42,4 @@ func refresh_panel(node: MonologueGraphNode):
 		side_panel.on_graph_node_selected(node, true)
 	else:
 		graph_edit.set_selected(node)
+	node._update(side_panel.current_panel)
