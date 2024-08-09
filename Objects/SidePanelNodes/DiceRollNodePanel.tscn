@@ -22,5 +22,3 @@ allow_lesser = true
 update_on_text_changed = true
 suffix = "%"
 custom_arrow_step = 1.0
-
-[connection signal="value_changed" from="SubContainer/TargetNumber" to="." method="_on_target_number_value_changed"]

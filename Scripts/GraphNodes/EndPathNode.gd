@@ -34,6 +34,7 @@ func _on_close_request():
 	queue_free()
 	get_parent().clear_all_empty_connections()
 
+
 func _update(panel: EndPathNodePanel = null):
 	if panel != null:
 		next_story_name = panel.next_story_name
