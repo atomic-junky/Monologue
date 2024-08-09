@@ -3,25 +3,18 @@ class_name MonologueGraphEdit
 extends GraphEdit
 
 
-## Scene resource for the close button.
 var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
-## JSON dialogue data such as characters and variables.
 var data: Dictionary
-## The filepath to the dialogue JSON.
 var file_path: String
-## List of dialogue speakers (characters) in the JSON.
-var speakers = []
-## List of dialogue variables in the JSON.
-var variables = []
-## Handles history recording for undo/redo functionality.
 var undo_redo := HistoryHandler.new()
+
+var speakers = []
+var variables = []
 
 ## The actively selected graphnode, for graph tab-switching updates.
 var active_graphnode: Node
-## Reference to the mother Control node that oversees all Monologue operations.
-var control_node: MonologueControl
-## Checks if a graphnode is currently selected.
 var graphnode_selected = false
+var control_node: MonologueControl
 
 var mouse_pressed = false
 var connecting_mode = false
@@ -34,6 +27,7 @@ func _input(event):
 		mouse_pressed = event.is_pressed()
 	moving_mode = false
 	selection_mode = false
+	
 	# check if user is selecting and dragging a graphnode
 	if event is InputEventMouseMotion and mouse_pressed:
 		selection_mode = true
@@ -41,7 +35,6 @@ func _input(event):
 
 
 ## Adds a node of the given type to this graph.
-## If [param record] is true, record this action in history.
 func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	# if adding from picker, track existing to_nodes of the picker_from_node
 	var picker_to_names = []
@@ -52,8 +45,10 @@ func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	
 	# get the correct Monologue node class from the given node_type
 	var node_scene = control_node.scene_dictionary.get(node_type)
+	
 	# new_node is the node instance to be created
 	var new_node = node_scene.instantiate()
+	
 	# created_nodes include auxilliary nodes from new_node, such as BridgeOut
 	var created_nodes: Array[MonologueGraphNode] = new_node.add_to_graph(self)
 	
@@ -67,6 +62,7 @@ func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 			addition.picker_from_node = control_node.picker_from_node
 			addition.picker_from_port = control_node.picker_from_port
 			addition.picker_to_names = picker_to_names
+		
 		undo_redo.create_action("Add new %s" % [new_node.node_type])
 		undo_redo.add_prepared_history(addition)
 		undo_redo.commit_action(false)
@@ -160,19 +156,6 @@ func get_all_connections_from_slot(from_node: StringName, from_port: int):
 	return connections
 
 
-func get_node_by_id(id: String) -> MonologueGraphNode:
-	for node in get_children():
-		if node.id == id:
-			return node
-	return null
-
-
-func get_linked_bridge_node(target_number):
-	for node in get_children():
-		if node.node_type == "NodeBridgeOut" and node.number_selector.value == target_number:
-			return node
-
-
 func get_free_bridge_number(_n=1, lp_max=50):
 	for node in get_children():
 		if (node.node_type == "NodeBridgeOut" or node.node_type == "NodeBridgeIn") and node.number_selector.value == _n:
@@ -181,6 +164,19 @@ func get_free_bridge_number(_n=1, lp_max=50):
 				
 			return get_free_bridge_number(_n+1, lp_max-1)
 	return _n
+
+
+func get_linked_bridge_node(target_number):
+	for node in get_children():
+		if node.node_type == "NodeBridgeOut" and node.number_selector.value == target_number:
+			return node
+
+
+func get_node_by_id(id: String) -> MonologueGraphNode:
+	for node in get_children():
+		if node.id == id:
+			return node
+	return null
 
 
 ## Check if an option ID exists in the entirety of the graph.

@@ -4,69 +4,96 @@ class_name RootNodePanel
 extends MonologueNodePanel
 
 
+var character_count: int
 @onready var character_node = preload("res://Objects/SubComponents/Character.tscn")
 @onready var characters_container = $CharactersMainContainer/CharactersContainer
 
+var variable_count: int
 @onready var variable_node = preload("res://Objects/SubComponents/Variable.tscn")
 @onready var variables_container = $VariablesMainContainer/VariablesContainer
 
 
 func _ready():
-	for character in graph_node.get_parent().speakers:
-		add_character(character.get("Reference"))
-	
-	for variable in graph_node.get_parent().variables:
-		add_variable(true, variable)
+	reload_characters()
+	reload_variables()
 
 
 func _from_dict(dict):
 	id = dict.get("ID")
 
 
-func add_character(reference: String = ""):
+func add_character(reference: String = "", update: bool = true):
 	var new_node = character_node.instantiate()
 	characters_container.add_child(new_node)
 	
 	var node_id = characters_container.get_children().find(new_node)
-	var ref_input: LineEdit = new_node.ref_input
-	
-	ref_input.text = reference
-	ref_input.text_changed.connect(text_submitted_callback)
+	new_node.character_name = reference
 	new_node.id = node_id
-	new_node.root_node = self
+	new_node.root_panel = self
 	
-	update_speakers()
+	if update:
+		update_speakers()
+	return new_node._to_dict()
 
  
-func add_variable(init: bool = false, dict: Dictionary = {}):
+func add_variable(dict: Dictionary = {}, update: bool = true):
 	var new_node = variable_node.instantiate()
 	variables_container.add_child(new_node)
 	
-	if init: # Called from _ready()
-		new_node.name_input.text = dict.get("Name")
-		
+	if dict:
+		new_node.current_name = dict.get("Name")
 		match dict.get("Type"):
 			"Boolean":
-				new_node.type_selection.select(0)
+				new_node.current_type_index = 0
 				new_node.boolean_edit.button_pressed = dict.get("Value")
 			"Integer":
-				new_node.type_selection.select(1)
+				new_node.current_type_index = 1
 				new_node.number_edit.value = dict.get("Value")
 			"String":
-				new_node.type_selection.select(2)
-				new_node.string_edit.text = dict.get("Value")
-	
+				new_node.current_type_index = 2
+				new_node.current_text = dict.get("Value")
 		new_node.update_value_edit()
-	
 	new_node.update_callback = update_variables
+	
+	if update:
+		update_variables()
+	return new_node._to_dict()
 
 
-## Call the update_speakers function when a character node is updated
-func text_submitted_callback(_new_text):
-	update_speakers()
+func get_character_node(character_id):
+	for node in characters_container.get_children():
+		if node.id == character_id:
+			return node
+	return null
 
 
-## Update the GraphEdit speakers variable based on all character nodes
+func get_variable_node(variable_name):
+	for node in variables_container.get_children():
+		if node.current_name == variable_name:
+			return node
+	return null
+
+
+func reload_characters():
+	for child in characters_container.get_children():
+		child.queue_free()
+	
+	var reloaded = []
+	for character in graph_node.speakers:
+		reloaded.append(add_character(character.get("Reference"), false))
+	return reloaded
+
+
+func reload_variables():
+	for child in variables_container.get_children():
+		child.queue_free()
+	
+	var reloaded = []
+	for variable in graph_node.variables:
+		reloaded.append(add_variable(variable, false))
+	return reloaded
+
+
 func update_speakers():
 	var all_nodes = characters_container.get_children()
 	var updated_speakers = []
@@ -76,13 +103,11 @@ func update_speakers():
 			continue
 		
 		child.id = all_nodes.find(child)
-		
 		updated_speakers.append(child._to_dict())
-		
-	graph_node.get_parent().speakers = updated_speakers
+	
+	_on_node_property_change(updated_speakers, "speakers")
 
 
-## Update the GraphEdit variables variable based on all variables nodes
 func update_variables():
 	var all_nodes = variables_container.get_children()
 	var updated_variables = []
@@ -93,4 +118,12 @@ func update_variables():
 		
 		updated_variables.append(child._to_dict())
 	
-	graph_node.get_parent().variables = updated_variables
+	_on_node_property_change(updated_variables, "variables")
+
+
+func update_controls():
+	for i in graph_node.speakers.size():
+		characters_container.get_child(i)._from_dict(graph_node.speakers[i])
+	
+	for j in graph_node.variables.size():
+		variables_container.get_child(j)._from_dict(graph_node.variables[j])

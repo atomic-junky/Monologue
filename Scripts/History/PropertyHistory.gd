@@ -51,4 +51,3 @@ func refresh_panel(node: MonologueGraphNode):
 			side_panel.current_panel.change.emit(side_panel.current_panel)
 	else:
 		graph_edit.set_selected(node)
-	

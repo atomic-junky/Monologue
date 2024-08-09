@@ -9,8 +9,8 @@ var dialog_for_localisation = []
 const HISTORY_FILE_PATH: String = "user://history.save"
 const MAX_FILENAME_LENGTH = 48
 
-## Dictionary of Monologue node types and their corresponding classes.
-@onready var scene_dictionary = {
+## Dictionary of Monologue node types and their corresponding scenes.
+var scene_dictionary = {
 	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),
 	"Action": preload("res://Objects/GraphNodes/ActionNode.tscn"),
 	"Bridge": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
@@ -43,6 +43,7 @@ const MAX_FILENAME_LENGTH = 48
 @onready var no_interactions_dimmer = $NoInteractions
 @onready var welcome_window = $WelcomeWindow
 
+var root_scene = scene_dictionary.get("Root")
 var live_dict: Dictionary
 
 ## Set to true if a file operation is triggered from Header instead of WelcomeWindow.
@@ -52,10 +53,6 @@ var initial_pos = Vector2(40,40)
 var option_index = 0
 var node_index = 0
 var all_nodes_index = 0
-
-@onready var root_scene = scene_dictionary.get("Root")
-var root_node_ref
-var root_dict
 
 var picker_mode: bool = false
 var picker_from_node
@@ -109,12 +106,6 @@ func _ready():
 	GlobalSignal.add_listener("test_trigger", test_project)
 
 
-## Function callback for when the user wants to add a node from global context.
-## Used by header menu and graph node selector (picker).
-func add_node_from_global(node_type):
-	get_current_graph_edit().add_node(node_type)
-
-
 func _shortcut_input(event):
 	if event.is_action_pressed("Save"):
 		save(false)
@@ -123,19 +114,15 @@ func _shortcut_input(event):
 		get_current_graph_edit().trigger_redo()
 	elif event.is_action_pressed("Undo"):
 		get_current_graph_edit().trigger_undo()
-	
-
-
-func get_current_graph_edit() -> MonologueGraphEdit:
-	return graph_edits.get_child(tab_bar.current_tab)
 
 
 func _to_dict() -> Dictionary:
-	var list_nodes = []
+	var list_nodes: Array[Dictionary] = []
+	var graph_edit = get_current_graph_edit()
+	save_progress_bar.max_value = graph_edit.get_children().size() + 1
 	
-	save_progress_bar.max_value = get_current_graph_edit().get_children().size() + 1
-	
-	for node in get_current_graph_edit().get_children():
+	# compile all node data of the current graph edit
+	for node in graph_edit.get_children():
 		if node.is_queued_for_deletion():
 			continue
 		list_nodes.append(node._to_dict())
@@ -145,11 +132,9 @@ func _to_dict() -> Dictionary:
 		
 		save_progress_bar.value = list_nodes.size()
 	
-	root_dict = get_root_dict(list_nodes)
-	root_node_ref = get_root_node_ref()
-	
-	var characters = get_current_graph_edit().speakers
-	if get_current_graph_edit().speakers.size() <= 0:
+	# build data for dialogue speakers
+	var characters = graph_edit.speakers
+	if graph_edit.speakers.size() <= 0:
 		characters.append({
 			"Reference": "_NARRATOR",
 			"ID": 0
@@ -158,11 +143,195 @@ func _to_dict() -> Dictionary:
 	
 	return {
 		"EditorVersion": ProjectSettings.get_setting("application/config/version", "unknown"),
-		"RootNodeID": root_dict.get("ID"),
+		"RootNodeID": get_root_dict(list_nodes).get("ID"),
 		"ListNodes": list_nodes,
 		"Characters": characters,
-		"Variables": get_current_graph_edit().variables
+		"Variables": graph_edit.variables
 	}
+
+
+func connect_side_panel(graph_edit: MonologueGraphEdit) -> void:
+	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
+	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
+
+
+func get_current_graph_edit() -> MonologueGraphEdit:
+	return graph_edits.get_child(tab_bar.current_tab)
+
+
+func get_root_dict(nodes):
+	for node in nodes:
+		if node.get("$type") == "NodeRoot":
+			return node
+
+
+func load_project(path):
+	if not FileAccess.file_exists(path):
+		return
+	
+	no_interactions_dimmer.hide()
+	var graph_edit = get_current_graph_edit()
+	
+	var file := FileAccess.get_file_as_string(path)
+	graph_edit.name = path.get_file().trim_suffix(".json")
+	var data := {}
+	data = JSON.parse_string(file)
+
+	if not data:
+		data = _to_dict()
+		save(true)
+	
+	live_dict = data
+	graph_edit.speakers = data.get("Characters")
+	graph_edit.variables = data.get("Variables")
+	
+	for node in graph_edit.get_children():
+		node.queue_free()
+	graph_edit.clear_connections()
+	graph_edit.data = data
+	
+	var node_list = data.get("ListNodes")
+	var root_dict = get_root_dict(node_list)
+	
+	# create nodes from JSON data
+	for node in node_list:
+		var node_type: String = node.get("$type")
+		var node_scene = scene_dictionary.get(node_type.trim_prefix("Node"))
+		if not node_scene:
+			continue
+		
+		var new_node = node_scene.instantiate()
+		new_node.id = node.get("ID")
+		graph_edit.add_child(new_node)
+		new_node._from_dict(node)
+	
+	# load connections for the created nodes
+	for node in node_list:
+		if not node.has("ID"):
+			continue
+		
+		var current_node = graph_edit.get_node_by_id(node.get("ID"))
+		match node.get("$type"):
+			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent":
+				if node.get("NextID") is String:
+					var next_node = graph_edit.get_node_by_id(node.get("NextID"))
+					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
+			"NodeChoice":
+				current_node._update()
+			"NodeDiceRoll":
+				if node.get("PassID") is String:
+					var pass_node = graph_edit.get_node_by_id(node.get("PassID"))
+					graph_edit.connect_node(current_node.name, 0, pass_node.name, 0)
+				
+				if node.get("FailID") is String:
+					var fail_node = graph_edit.get_node_by_id(node.get("FailID"))
+					graph_edit.connect_node(current_node.name, 1, fail_node.name, 0)
+			"NodeCondition":
+				if node.get("IfNextID") is String:
+					var if_node = graph_edit.get_node_by_id(node.get("IfNextID"))
+					graph_edit.connect_node(current_node.name, 0, if_node.name, 0)
+				
+				if node.get("ElseNextID") is String:
+					var else_node = graph_edit.get_node_by_id(node.get("ElseNextID"))
+					graph_edit.connect_node(current_node.name, 1, else_node.name, 0)
+		
+		if not current_node: # OptionNode
+			continue
+		
+		if node.has("EditorPosition"):
+			current_node.position_offset.x = node.EditorPosition.get("x")
+			current_node.position_offset.y = node.EditorPosition.get("y")
+	
+	var root_node = graph_edit.get_node_by_id(root_dict.get("ID"))
+	if not root_node:
+		var new_root_node = root_scene.instantiate()
+		get_current_graph_edit().add_child(new_root_node)
+		save(true)
+
+
+func save(quick: bool = false):
+	save_progress_bar.value = 0
+	save_progress_bar.show()
+	save_button.hide()
+	test_button.hide()
+	
+	var data = JSON.stringify(_to_dict(), "\t", false, true)
+	if not data: # Fail to load 
+		save_progress_bar.hide()
+		save_button.show()
+		test_button.show()
+	
+	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
+	file.store_string(data)
+	file.close()
+	
+	saved_notification.show()
+	if !quick:
+		await get_tree().create_timer(1.5).timeout
+	saved_notification.hide()
+	save_progress_bar.hide()
+	save_button.show()
+	test_button.show()
+
+###############################
+#  New node buttons callback  #
+###############################
+
+func _on_add_id_pressed(id):
+	var node_type = add_menu_bar.get_item_text(id)
+	GlobalSignal.emit("add_graph_node", [node_type])
+
+
+## Function callback for when the user wants to add a node from global context.
+## Used by header menu and graph node selector (picker).
+func add_node_from_global(node_type):
+	get_current_graph_edit().add_node(node_type)
+
+
+func test_project(from_node: String = "-1"):
+	await save(true)
+	
+	var global_vars = get_node("/root/GlobalVariables")
+	global_vars.test_path = get_current_graph_edit().file_path
+	
+	var test_instance = preload("res://Test/Menu.tscn")
+	var test_scene = test_instance.instantiate()
+	
+	if get_current_graph_edit().get_node_by_id(from_node) != null:
+		test_scene._from_node_id = from_node
+	
+	get_tree().root.add_child(test_scene)
+
+####################
+#  File selection  #
+####################
+
+func new_file_select():
+	file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	file_dialog.title = "Create New File"
+	file_dialog.ok_button_text = "Create"
+	file_dialog.popup_centered()
+
+
+func open_file_select():
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	file_dialog.title = "Open File"
+	file_dialog.ok_button_text = "Open"
+	file_dialog.popup_centered()
+
+
+func _on_file_dialog_selected(path: String):
+	if is_header_file_operation:
+		welcome_window.hide()
+		file_dialog.hide()
+		new_graph_edit()
+	
+	match file_dialog.file_mode:
+		FileDialog.FILE_MODE_SAVE_FILE:
+			FileAccess.open(path, FileAccess.WRITE)
+			file_selected(path, 0)
+		FileDialog.FILE_MODE_OPEN_FILE:
+			file_selected(path, 1)
 
 
 func file_selected(path, open_mode):
@@ -216,199 +385,16 @@ func file_selected(path, open_mode):
 	load_project(path)
 
 
-func get_root_dict(nodes):
-	for node in nodes:
-		if node.get("$type") == "NodeRoot":
-			return node
-
-
-func get_root_node_ref():
-	for node in get_current_graph_edit().get_children():
-		if !node.is_queued_for_deletion() and node.id == root_dict.get("ID"):
-			return node
-
-
-func save(quick: bool = false):
-	save_progress_bar.value = 0
-	save_progress_bar.show()
-	save_button.hide()
-	test_button.hide()
-	
-	var data = JSON.stringify(_to_dict(), "\t", false, true)
-	if not data: # Fail to load 
-		save_progress_bar.hide()
-		save_button.show()
-		test_button.show()
-	
-	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
-	file.store_string(data)
-	file.close()
-	
-	saved_notification.show()
-	if !quick:
-		await get_tree().create_timer(1.5).timeout
-	saved_notification.hide()
-	save_progress_bar.hide()
-	save_button.show()
-	test_button.show()
-
-## Left-truncate a given string based on MAX_FILENAME_LENGTH.
+## Left-truncate a given filename string based on MAX_FILENAME_LENGTH.
 func truncate_filename(filename: String):
 	var truncated = filename
 	if filename.length() > MAX_FILENAME_LENGTH:
 		truncated = "..." + filename.right(MAX_FILENAME_LENGTH - 3)
 	return truncated
 
-func load_project(path):
-	if not FileAccess.file_exists(path):
-		return
-		
-	no_interactions_dimmer.hide()
-	var graph_edit = get_current_graph_edit()
-	
-	var file := FileAccess.get_file_as_string(path)
-	graph_edit.name = path.get_file().trim_suffix(".json")
-	
-	var data := {}
-	data = JSON.parse_string(file)
-
-	if not data:
-		data = _to_dict()
-		save(true)
-	
-	live_dict = data
-	
-	graph_edit.speakers = data.get("Characters")
-	graph_edit.variables = data.get("Variables")
-	
-	for node in graph_edit.get_children():
-		node.queue_free()
-	graph_edit.clear_connections()
-	graph_edit.data = data
-	
-	var node_list = data.get("ListNodes")
-	root_dict = get_root_dict(node_list)
-	
-	# create nodes from JSON data
-	for node in node_list:
-		var node_type: String = node.get("$type")
-		var node_scene = scene_dictionary.get(node_type.trim_prefix("Node"))
-		if not node_scene:
-			continue
-		
-		var new_node = node_scene.instantiate()
-		new_node.id = node.get("ID")
-		graph_edit.add_child(new_node)
-		new_node._from_dict(node)
-	
-	# load connections for the created nodes
-	for node in node_list:
-		if not node.has("ID"):
-			continue
-		
-		var current_node = graph_edit.get_node_by_id(node.get("ID"))
-		match node.get("$type"):
-			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent":
-				if node.get("NextID") is String:
-					var next_node = graph_edit.get_node_by_id(node.get("NextID"))
-					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
-			"NodeChoice":
-				current_node._update()
-			"NodeDiceRoll":
-				if node.get("PassID") is String:
-					var pass_node = graph_edit.get_node_by_id(node.get("PassID"))
-					graph_edit.connect_node(current_node.name, 0, pass_node.name, 0)
-				
-				if node.get("FailID") is String:
-					var fail_node = graph_edit.get_node_by_id(node.get("FailID"))
-					graph_edit.connect_node(current_node.name, 1, fail_node.name, 0)
-			"NodeCondition":
-				if node.get("IfNextID") is String:
-					var if_node = graph_edit.get_node_by_id(node.get("IfNextID"))
-					graph_edit.connect_node(current_node.name, 0, if_node.name, 0)
-				
-				if node.get("ElseNextID") is String:
-					var else_node = graph_edit.get_node_by_id(node.get("ElseNextID"))
-					graph_edit.connect_node(current_node.name, 1, else_node.name, 0)
-		
-		if not current_node: # OptionNode
-			continue
-		
-		if node.has("EditorPosition"):
-			current_node.position_offset.x = node.EditorPosition.get("x")
-			current_node.position_offset.y = node.EditorPosition.get("y")
-			
-	root_node_ref = get_root_node_ref()
-	
-	if not root_node_ref:
-		var new_root_node = root_scene.instantiate()
-		get_current_graph_edit().add_child(new_root_node)
-		
-		save(true)
-		root_node_ref = get_root_node_ref()
-
-
-func get_options_nodes(node_list, options_id):
-	var options = []
-	
-	for node in node_list:
-		if node.get("ID") in options_id:
-			options.append(node)
-	return options
-
-
-###############################
-#  New node buttons callback  #
-###############################
-
-func _on_add_id_pressed(id):
-	var node_type = add_menu_bar.get_item_text(id)
-	GlobalSignal.emit("add_graph_node", [node_type])
-
-
-func test_project(from_node: String = "-1"):
-	await save(true)
-	
-	var global_vars = get_node("/root/GlobalVariables")
-	global_vars.test_path = get_current_graph_edit().file_path
-	
-	var test_instance = preload("res://Test/Menu.tscn")
-	var test_scene = test_instance.instantiate()
-	
-	if get_current_graph_edit().get_node_by_id(from_node) != null:
-		test_scene._from_node_id = from_node
-	
-	get_tree().root.add_child(test_scene)
-
-####################
-#  File selection  #
-####################
-
-func new_file_select():
-	file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-	file_dialog.title = "Create New File"
-	file_dialog.ok_button_text = "Create"
-	file_dialog.popup_centered()
-
-func open_file_select():
-	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	file_dialog.title = "Open File"
-	file_dialog.ok_button_text = "Open"
-	file_dialog.popup_centered()
-
-func _on_file_dialog_selected(path: String):
-	if is_header_file_operation:
-		welcome_window.hide()
-		file_dialog.hide()
-		new_graph_edit()
-	
-	match file_dialog.file_mode:
-		FileDialog.FILE_MODE_SAVE_FILE:
-			FileAccess.open(path, FileAccess.WRITE)
-			file_selected(path, 0)
-		FileDialog.FILE_MODE_OPEN_FILE:
-			file_selected(path, 1)
-
+##################################
+#  Graph node selecter (picker)  #
+##################################
 
 ## Start the picker mode from a given node and port. Picker mode is where
 ## a new node is created from another node through a connection to empty.
@@ -439,6 +425,31 @@ func _on_graph_node_selecter_focus_exited():
 func _on_graph_node_selecter_close_requested():
 	disable_picker_mode()
 
+###############################
+#  Tab-switching and closing  #
+###############################
+
+func close_welcome_tab():
+	# check number of tabs as safety measure and for future hotkey command
+	if tab_bar.tab_count > 1:
+		tab_bar.select_previous_available()
+		welcome_window.hide()
+		no_interactions_dimmer.hide()
+
+
+func new_graph_edit():
+	var graph_edit: MonologueGraphEdit = graph_edit_inst.instantiate()
+	var new_root_node = root_scene.instantiate()
+	
+	graph_edit.name = "new"
+	connect_side_panel(graph_edit)
+	
+	graph_edits.add_child(graph_edit)
+	graph_edit.add_child(new_root_node)
+	
+	for ge in graph_edits.get_children():
+		ge.visible = ge == graph_edit
+
 
 func tab_changed(_idx):
 	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
@@ -465,23 +476,15 @@ func tab_changed(_idx):
 	side_panel_node.hide()
 
 
-func connect_side_panel(graph_edit: MonologueGraphEdit) -> void:
-	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
-	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
-
-
-func close_welcome_tab():
-	# check number of tabs as safety measure and for future hotkey command
-	if tab_bar.tab_count > 1:
-		tab_bar.select_previous_available()
-		welcome_window.hide()
-		no_interactions_dimmer.hide()
-
 func tab_close_pressed(tab):
 	var ge = graph_edits.get_child(tab)
 	graph_edits.get_child(tab).queue_free()
 	await ge.tree_exited  # buggy if we switch tabs without waiting
 	tab_bar.remove_tab(tab)
+
+#################
+#  Header menu  #
+#################
 
 func _on_file_id_pressed(id):
 	match id:
@@ -498,19 +501,6 @@ func _on_file_id_pressed(id):
 
 		4: # Test
 			GlobalSignal.emit("test_trigger")
-
-func new_graph_edit():
-	var graph_edit: MonologueGraphEdit = graph_edit_inst.instantiate()
-	var new_root_node = root_scene.instantiate()
-	
-	graph_edit.name = "new"
-	connect_side_panel(graph_edit)
-	
-	graph_edits.add_child(graph_edit)
-	graph_edit.add_child(new_root_node)
-	
-	for ge in graph_edits.get_children():
-		ge.visible = ge == graph_edit
 
 
 func _on_new_file_btn_pressed():
