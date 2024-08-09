@@ -125,6 +125,15 @@ func _to_dict() -> Dictionary:
 	for node in graph_edit.get_children():
 		if node.is_queued_for_deletion():
 			continue
+		
+		# if side panel is still open, release the focus so that some
+		# text controls trigger the focus_exited() signal to update
+		if side_panel_node.visible and side_panel_node.selected_node == node:
+			var refocus = get_viewport().gui_get_focus_owner()
+			if refocus:
+				refocus.release_focus()
+				refocus.grab_focus()
+		
 		list_nodes.append(node._to_dict())
 		if node.node_type == "NodeChoice":
 			for child in node.get_children():
