@@ -123,9 +123,10 @@ func _on_variable_selected(index):
 	var operator = operator_drop_node.get_item_text(operator_drop_node.selected)
 	var value = get_value()
 	
-	var properties = ["variable_name", "operator", "value"]
-	var values = [variable_name, operator, value]
-	_on_node_property_changes(properties, values)
+	if value != null:
+		var properties = ["variable_name", "operator", "value"]
+		var values = [variable_name, operator, value]
+		_on_node_property_changes(properties, values)
 
 
 func _on_operator_selected(index):

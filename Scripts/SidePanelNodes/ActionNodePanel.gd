@@ -36,6 +36,10 @@ func _ready():
 	
 	for variable in variables:
 		variable_drop_node.add_item(variable.get("Name"))
+	
+	var inner_edit: LineEdit = number_edit.get_line_edit()
+	inner_edit.connect("focus_exited", _on_individual_value_changed)
+	inner_edit.connect("text_submitted", _on_individual_value_changed)
 
 
 func _from_dict(dict: Dictionary):
@@ -101,7 +105,8 @@ func _from_dict(dict: Dictionary):
 
 
 func hide_all(except_nodes: Array):
-	var exceptions = []
+	# for this panel, action_type and value label is always shown
+	var exceptions = ["ActionTypeContainer", "ValueLabel"]
 	for node in except_nodes:
 		exceptions.append(node.name)
 	
@@ -116,9 +121,6 @@ func hide_all(except_nodes: Array):
 			continue
 			
 		child.hide()
-	
-	$ActionTypeContainer.show()
-	$ValueContainer/ValueLabel.show()
 
 
 func update_action(_x = null):
@@ -132,25 +134,40 @@ func update_action(_x = null):
 			update_variable()
 		
 		"ActionCustom":
-			hide_all([custom_container, string_edit])
-			if custom_drop_node.selected <= -1:
-				custom_drop_node.selected = 2
-			var custom_type = custom_drop_node.get_item_text(custom_drop_node.selected)
-			if custom_type == "PlayAudio":
-				audio_loop_container.show()
-				audio_extra_container.show()
-				_update_slider_value(volume_value, pitch_value)
+			update_custom(custom_drop_node.selected, false)
 		
 		"ActionTimer":
 			hide_all([number_edit])
 	
-	change.emit(self)
+	var value = get_value()
+	if value != null:
+		_on_node_property_changes(["action_type", "value"], [action_type, value])
 
 
-func update_variable(_selected_index = -1):
+func update_custom(custom_index, record = true):
+	hide_all([custom_container, string_edit])
+	
+	if custom_drop_node.selected >= 0:
+		var custom_type = custom_drop_node.get_item_text(custom_index)
+		if custom_type == "PlayAudio":
+			audio_loop_container.show()
+			audio_extra_container.show()
+			%VolumeSlider.value = volume_value
+			_update_volume_display_value(volume_value)
+			%PitchSlider.value = pitch_value
+			_update_pitch_display_value(pitch_value)
+		
+		if record:
+			_on_node_property_changes(["custom_type"], [custom_type])
+	else:
+		custom_drop_node.selected = 2
+
+
+func update_variable(variable_index = -1):
+	var variable_name = ""
 	var variable_type = ""
 	if variable_drop_node.has_selectable_items():
-		var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
+		variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 		var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
 		variable_type = variable.get("Type")
 	
@@ -172,15 +189,27 @@ func update_variable(_selected_index = -1):
 			hide_all([string_edit, variable_container, operator_container])
 		_:
 			hide_all([default_label, variable_container, operator_container])
+	
+	if variable_index >= 0 and variable_name:
+		var operator = operator_drop_node.get_item_text(operator_drop_node.selected)
+		var value = get_value()
+		
+		if value != null:
+			var properties = ["variable_name", "operator", "value"]
+			var values = [variable_name, operator, value]
+			_on_node_property_changes(properties, values)
 
 
 func get_value():
 	action_type = action_drop_node.get_item_text(action_drop_node.selected)
+	
 	match action_type:
 		"ActionOption":
 			return boolean_edit.button_pressed
+		
 		"ActionCustom":
 			return string_edit.text
+		
 		"ActionVariable":
 			if variable_drop_node.selected < 0:
 				return null
@@ -188,8 +217,8 @@ func get_value():
 			var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 			if not variable_name:
 				return null
-			var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
 			
+			var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
 			match variable.get("Type"):
 				"Boolean":
 					return boolean_edit.button_pressed
@@ -199,29 +228,50 @@ func get_value():
 					return string_edit.text
 				_:
 					return null
+		
 		"ActionTimer":
 			return number_edit.value
 
 
-func _on_action_type_drop_item_selected(_index):
-	update_action()
+func _on_individual_value_changed(_new_value = null):
+	var value = get_value()
+	if value != null:
+		_on_node_property_changes(["value"], [value])
 
 
-func _on_variable_drop_item_selected(_index):
-	update_action()
+func _on_operator_selected(index):
+	var operator = operator_drop_node.get_item_text(index)
+	_on_node_property_changes(["operator"], [operator])
+
+func _on_option_id_focus_exited():
+	_on_option_id_text_submitted(option_id_edit.text)
+
+func _on_option_id_text_submitted(new_text):
+	_on_node_property_changes(["option_id"], [new_text])
 
 
-func _update_slider_value(volume = null, pitch = null):
-	volume_value = snapped(%VolumeSlider.value, 0.01) if not volume else volume
-	pitch_value = %PitchSlider.value if not pitch else pitch
-	
-	%VolumeDisplay.text = str(volume_value) + "db"
-	%PitchDisplay.text = str(pitch_value)
-
+# audio controls
+func _on_loop_toggled(toggled_on: bool):
+	_on_node_property_changes(["loop"], [toggled_on])
 
 func _on_pitch_reset_pressed():
 	%PitchSlider.value = 1
+	_on_pitch_slider_release()
 
+func _on_pitch_slider_release(_value_on_release = 1.0):
+	_on_node_property_changes(["pitch"], [pitch_value])
 
 func _on_volume_reset_pressed():
 	%VolumeSlider.value = 0
+	_on_volume_slider_release()
+
+func _on_volume_slider_release(_value_on_release = 0.0):
+	_on_node_property_changes(["volume"], [volume_value])
+
+func _update_pitch_display_value(new_pitch):
+	pitch_value = new_pitch
+	%PitchDisplay.text = str(new_pitch)
+
+func _update_volume_display_value(new_volume):
+	volume_value = new_volume
+	%VolumeDisplay.text = str(new_volume) + "db"

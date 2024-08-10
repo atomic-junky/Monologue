@@ -29,7 +29,7 @@ var custom_type: String = ""
 var loop: bool = false
 var volume: float = 0.0
 var pitch: float = 1.0
-var value = false
+var value: Variant = false
 
 func _ready():
 	node_type = "NodeAction"
