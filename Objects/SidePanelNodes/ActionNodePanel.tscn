@@ -239,7 +239,7 @@ label_settings = SubResource("LabelSettings_kddgl")
 
 [connection signal="item_selected" from="ActionTypeContainer/ActionTypeDrop" to="." method="update_action"]
 [connection signal="text_changed" from="OptionIDContainer/VBoxContainer/OptionIDEdit" to="." method="update_graph_node"]
-[connection signal="item_selected" from="VariableContainer/VariableDrop" to="." method="update_graph_node"]
+[connection signal="item_selected" from="VariableContainer/VariableDrop" to="." method="update_variable"]
 [connection signal="item_selected" from="OperatorContainer/OperatorDrop" to="." method="_on_operator_drop_item_selected"]
 [connection signal="item_selected" from="CustomContainer/CustomDrop" to="." method="update_action"]
 [connection signal="toggled" from="AudioLoopContainer/BooleanEdit" to="." method="update_action"]

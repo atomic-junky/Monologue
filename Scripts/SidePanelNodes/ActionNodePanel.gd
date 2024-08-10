@@ -1,7 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Cog.svg")
 
 class_name ActionNodePanel
-
 extends MonologueNodePanel
 
 
@@ -31,15 +30,15 @@ var action_type
 var volume_value: float = 0.0
 var pitch_value: float = 1.0
 
+
 func _ready():
 	variables = graph_node.get_parent().variables
 	
 	for variable in variables:
 		variable_drop_node.add_item(variable.get("Name"))
 
+
 func _from_dict(dict: Dictionary):
-	variables = graph_node.get_parent().variables
-	
 	id = dict.get("ID")
 	
 	var action = dict.get("Action")
@@ -50,9 +49,9 @@ func _from_dict(dict: Dictionary):
 			action_drop_node.select(0)
 			option_id_edit.text = action.get("OptionID", "")
 			boolean_edit.button_pressed = action.get("Value", false)
+		
 		"ActionVariable":
 			action_drop_node.select(1)
-			
 			var variables_filter = variables.filter(func(v): return v.get("Name") == action.get("Variable"))
 			
 			if variables_filter.size() > 0:
@@ -68,16 +67,17 @@ func _from_dict(dict: Dictionary):
 						number_edit.value = value
 					"String":
 						string_edit.text = value
-					
+			
 			var operator_str: String = action.get("Operator")
 			var operator_id := 0
 			for op in operator_drop_node.item_count:
 				if operator_drop_node.get_item_text(op) == operator_str:
 					operator_id = op
 			operator_drop_node.select(operator_id)
-
+		
 		"ActionCustom":
 			action_drop_node.select(2)
+			
 			match action.get("CustomType"):
 				"PlayAudio":
 					custom_drop_node.select(0)
@@ -90,13 +90,15 @@ func _from_dict(dict: Dictionary):
 					custom_drop_node.select(1)
 				"Other":
 					custom_drop_node.select(2)
-					
+			
 			string_edit.text = action.get("Value", "")
+		
 		"ActionTimer":
 			action_drop_node.select(3)
 			number_edit.value = action.get("Value", 0.0)
 	
 	update_action()
+
 
 func hide_all(except_nodes: Array):
 	var exceptions = []
@@ -114,6 +116,10 @@ func hide_all(except_nodes: Array):
 			continue
 			
 		child.hide()
+	
+	$ActionTypeContainer.show()
+	$ValueContainer/ValueLabel.show()
+
 
 func update_action(_x = null):
 	action_type = action_drop_node.get_item_text(action_drop_node.selected)
@@ -121,28 +127,10 @@ func update_action(_x = null):
 	match action_type:
 		"ActionOption":
 			hide_all([option_id_container, boolean_edit])
+		
 		"ActionVariable":
-			var variable_type = ""
-			if variable_drop_node.has_selectable_items():
-				var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
-				var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
-				variable_type = variable.get("Type")
-			
-			var is_integer: bool = variable_type == "Integer"
-			operator_drop_node.set_item_disabled(1, !is_integer)
-			operator_drop_node.set_item_disabled(2, !is_integer)
-			operator_drop_node.set_item_disabled(3, !is_integer)
-			operator_drop_node.set_item_disabled(4, !is_integer)
-			
-			match variable_type:
-				"Boolean":
-					hide_all([boolean_edit, variable_container, operator_container])
-				"Integer":
-					hide_all([number_edit, variable_container, operator_container])
-				"String":
-					hide_all([string_edit, variable_container, operator_container])
-				_:
-					hide_all([default_label, variable_container, operator_container])
+			update_variable()
+		
 		"ActionCustom":
 			hide_all([custom_container, string_edit])
 			if custom_drop_node.selected <= -1:
@@ -152,13 +140,38 @@ func update_action(_x = null):
 				audio_loop_container.show()
 				audio_extra_container.show()
 				_update_slider_value(volume_value, pitch_value)
+		
 		"ActionTimer":
 			hide_all([number_edit])
 	
-	$ActionTypeContainer.show()
-	$ValueContainer/ValueLabel.show()
-	
 	change.emit(self)
+
+
+func update_variable(_selected_index = -1):
+	var variable_type = ""
+	if variable_drop_node.has_selectable_items():
+		var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
+		var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
+		variable_type = variable.get("Type")
+	
+	var is_integer: bool = variable_type == "Integer"
+	var blocked_index = [1, 2, 3, 4]  # items blocked if is_integer == false
+	for index in blocked_index:
+		operator_drop_node.set_item_disabled(index, !is_integer)
+	
+	# reset if invalid operator is selected for the updated variable type
+	if !is_integer and blocked_index.has(operator_drop_node.selected):
+		operator_drop_node.selected = 0
+	
+	match variable_type:
+		"Boolean":
+			hide_all([boolean_edit, variable_container, operator_container])
+		"Integer":
+			hide_all([number_edit, variable_container, operator_container])
+		"String":
+			hide_all([string_edit, variable_container, operator_container])
+		_:
+			hide_all([default_label, variable_container, operator_container])
 
 
 func get_value():
@@ -193,6 +206,7 @@ func get_value():
 func _on_action_type_drop_item_selected(_index):
 	update_action()
 
+
 func _on_variable_drop_item_selected(_index):
 	update_action()
 
@@ -204,8 +218,10 @@ func _update_slider_value(volume = null, pitch = null):
 	%VolumeDisplay.text = str(volume_value) + "db"
 	%PitchDisplay.text = str(pitch_value)
 
+
 func _on_pitch_reset_pressed():
 	%PitchSlider.value = 1
+
 
 func _on_volume_reset_pressed():
 	%VolumeSlider.value = 0

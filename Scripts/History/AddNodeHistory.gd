@@ -20,7 +20,7 @@ var outbound_connections: Dictionary
 var picker_from_node: String
 ## The disconnected port when this new node was created from picker.
 var picker_from_port: int
-## The node names that picker_from_node was connected to on port 0.
+## The node names that picker_from_node was connected to on to_port 0.
 var picker_to_names: PackedStringArray
 
 
