@@ -38,7 +38,7 @@ func _from_dict(dict):
 
 
 func _on_character_drop_item_selected(index):
-	_on_node_property_change(index, "speaker_id")
+	_on_node_property_changes(["speaker_id"], [index])
 
 
 func _on_display_name_focus_exited():
@@ -46,7 +46,7 @@ func _on_display_name_focus_exited():
 
 
 func _on_display_name_text_submitted(new_text):
-	_on_node_property_change(new_text, "display_speaker_name")
+	_on_node_property_changes(["display_speaker_name"], new_text)
 
 
 func _on_display_variant_focus_exited():
@@ -54,12 +54,12 @@ func _on_display_variant_focus_exited():
 
 
 func _on_display_variant_text_submitted(new_text):
-	_on_node_property_change(new_text, "display_variant")
+	_on_node_property_changes(["display_variant"], [new_text])
 
 
 func _on_sentence_focus_exited():
 	var new_text = sentence_edit_node.text
-	_on_node_property_change(new_text, "sentence")
+	_on_node_property_changes(["sentence"], [new_text])
 
 
 func _on_sentence_text_edit_changed():
