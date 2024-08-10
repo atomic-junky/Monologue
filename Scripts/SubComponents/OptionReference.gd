@@ -1,3 +1,4 @@
+## An item in ChoiceNode which previews options in the graph.
 class_name OptionReference
 extends PanelContainer
 

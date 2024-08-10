@@ -44,36 +44,12 @@ func _from_dict(dict):
 	id_line_edit.text = id
 
 
-## Deletes the current option. Returns a newly created option node if the
-## panel has no more options (the panel requires a minimum of 1 option).
-## Therefore, this method returns null on successful delete.
-func delete() -> OptionNode:
-	var renewed_option = null
+func _on_delete_pressed():
 	# create a new option before deleting the last one to prevent zero options
 	if panel_node.options_container.get_child_count() == 1:
-		renewed_option = panel_node.new_option()
+		panel_node.new_option()
 	queue_free()
-	update_ref()
-	return renewed_option
-
-
-## Save and update referenced values in side panel.
-func update_ref():
-	id_line_edit.text = id
-	sentence = sentence_node.text
-	enable = enable_node.button_pressed
-	one_shot = one_shot_node.button_pressed
-	
-	panel_node.change.emit(panel_node)
-
-
-func _on_delete_pressed():
-	var message = "Delete option (id: %s)"
-	var undo_redo = graph_node.get_parent().undo_redo
-	var delete_history = DeleteOptionHistory.new(graph_node, self)
-	undo_redo.create_action(message % [id])
-	undo_redo.add_prepared_history(delete_history)
-	undo_redo.commit_action()
+	panel_node.save_options()
 
 
 func _on_id_copy_pressed():
@@ -96,26 +72,25 @@ func _on_id_text_submitted(new_id):
 			return
 		
 		id = new_id
-		panel_node.register_option_changes("new id " + new_id)
-		panel_node.change.emit(panel_node)
+		panel_node.save_options()
 	
 	release_focus()
 
 
 ## Tracks changes to option data to be added to undo/redo history.
 func _on_option_data_control_change():
+	# optimal to check value changes here before save_options()
 	if sentence != sentence_node.text or \
 			enable != enable_node.button_pressed or \
 			one_shot != one_shot_node.button_pressed:
-		# if any option data was changed, update them
+		
 		sentence = sentence_node.text
 		enable = enable_node.button_pressed
 		one_shot = one_shot_node.button_pressed
-		
-		# register the changes into history, then propagate it to node
-		panel_node.register_option_changes()
-		panel_node.change.emit(panel_node)
+		panel_node.save_options()
 
 
 func _on_sentence_text_changed():
-	graph_node.update_option_text(id, sentence_node.text)
+	var option_reference = graph_node.get_option_reference(id)
+	if option_reference:
+		option_reference.sentence_preview.text = sentence_node.text

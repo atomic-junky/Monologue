@@ -55,6 +55,7 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	selected_node = node
 	panel_container.add_child(new_panel)
 	new_panel._from_dict(node._to_dict())
+	# this is for undo/redo to propagate gui updates back to its graph node
 	node._update(new_panel)
 	
 	show()
