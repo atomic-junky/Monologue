@@ -77,7 +77,7 @@ func pick_and_center(nodes: Array[MonologueGraphNode]):
 		offset = control_node.picker_position
 	
 	for node in nodes:
-		node.position_offset = offset
+		node.position_offset = offset - node.size / 2
 		offset += Vector2(node.size.x + 10, 0)
 
 

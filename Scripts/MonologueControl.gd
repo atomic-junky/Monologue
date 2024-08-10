@@ -411,8 +411,8 @@ func enable_picker_mode(from_node, from_port, _release_position):
 	picker_from_node = from_node
 	picker_from_port = from_port
 	
-	var graph_edit = get_current_graph_edit()
-	picker_position = (get_local_mouse_position() + graph_edit.scroll_offset) / graph_edit.zoom
+	var graph = get_current_graph_edit()
+	picker_position = (graph.get_local_mouse_position() + graph.scroll_offset) / graph.zoom
 	picker_mode = true
 	no_interactions_dimmer.show()
 

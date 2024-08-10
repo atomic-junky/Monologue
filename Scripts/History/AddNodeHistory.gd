@@ -70,7 +70,6 @@ func redo():
 		# restore graph node connections
 		_restore_connections(node_name)
 	
-	
 	return deletion_nodes
 
 
