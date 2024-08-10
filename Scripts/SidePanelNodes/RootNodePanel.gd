@@ -29,7 +29,7 @@ func add_character(reference: String = "", update: bool = true):
 	var node_id = characters_container.get_children().find(new_node)
 	new_node.character_name = reference
 	new_node.id = node_id
-	new_node.root_panel = self
+	new_node.update_callback = update_speakers
 	
 	if update:
 		update_speakers()

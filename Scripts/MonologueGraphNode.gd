@@ -8,11 +8,8 @@ var id: String = UUID.v4()
 var node_type: String = "NodeUnknown"
 
 
-## Creates this graph node in the given graph edit. This is useful for stuff
-## like BridgeIn and BridgeOut, where multiple nodes are created at once.
-func add_to_graph(graph_edit: MonologueGraphEdit) -> Array[MonologueGraphNode]:
-	graph_edit.add_child(self, true)
-	graph_edit.center_node(self)
+func add_to(graph) -> Array[MonologueGraphNode]:
+	graph.add_child(self, true)
 	return [self]
 
 

@@ -1,5 +1,3 @@
-## Mother control UI element that oversees all Monologue operations.
-class_name MonologueControl
 extends Control
 
 

@@ -5,7 +5,6 @@ class_name BridgeInNode
 extends MonologueGraphNode
 
 
-@onready var bridge_out = preload("res://Objects/GraphNodes/BridgeOutNode.tscn")
 ## Spinner control which selects what number to bridge to.
 @onready var number_selector: SpinBox = $MarginContainer/HBoxContainer/LinkNumber
 
@@ -13,23 +12,6 @@ extends MonologueGraphNode
 func _ready():
 	node_type = "NodeBridgeIn"
 	title = node_type
-
-
-## BridgeIn is always created first in regards to its BridgeOut counterpart.
-## When creating BridgeIn, automatically create BridgeOut.
-func add_to_graph(graph_edit: MonologueGraphEdit) -> Array[MonologueGraphNode]:
-	var created_nodes: Array[MonologueGraphNode] = []
-	created_nodes = super.add_to_graph(graph_edit)
-	var number = graph_edit.get_free_bridge_number()
-	created_nodes[0].number_selector.value = number
-	created_nodes[0].position_offset.x -= created_nodes[0].size.x / 2 + 10
-	
-	var out_node = bridge_out.instantiate() # create counterpart
-	out_node.add_to_graph(graph_edit) # ignore return, use out_node
-	out_node.number_selector.value = number
-	out_node.position_offset.x += out_node.size.x / 2 + 10
-	created_nodes.append(out_node)
-	return created_nodes
 
 
 func _to_dict() -> Dictionary:
@@ -52,6 +34,19 @@ func _from_dict(dict):
 	
 	position_offset.x = dict.EditorPosition.get("x")
 	position_offset.y = dict.EditorPosition.get("y")
+
+
+func add_to(graph):
+	var created = super.add_to(graph)
+	var number = graph.get_free_bridge_number()
+	number_selector.value = number
+	
+	var bridge_out = graph.control_node.scene_dictionary.get("BridgeOut").instantiate()
+	bridge_out.add_to(graph)
+	bridge_out.number_selector.value = number
+	created.append(bridge_out)
+	
+	return created
 
 
 func _on_close_request():

@@ -4,7 +4,7 @@ extends PanelContainer
 @onready var ref_input = $MarginContainer/HBoxContainer2/LineEdit
 
 var id = -1
-var root_panel: RootNodePanel
+var update_callback: Callable = GlobalVariables.empty_callback
 var character_name : set = set_character_name, get = get_character_name
 
 
@@ -31,7 +31,7 @@ func get_character_name():
 
 func _on_delete_pressed():
 	queue_free()
-	root_panel.update_speakers()
+	update_callback.call()
 
 
 func _on_line_edit_focus_exited():
@@ -41,4 +41,4 @@ func _on_line_edit_focus_exited():
 func _on_line_edit_text_submitted(new_text):
 	if character_name != new_text:
 		character_name = new_text
-		root_panel.update_speakers()
+		update_callback.call()
