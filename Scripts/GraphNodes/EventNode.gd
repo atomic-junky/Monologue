@@ -47,7 +47,7 @@ func _from_dict(dict: Dictionary):
 	
 	var _pos = dict.get("EditorPosition")
 	position_offset.x = _pos.get("x")
-	position_offset.x = _pos.get("y")
+	position_offset.y = _pos.get("y")
 	
 	_update()
 

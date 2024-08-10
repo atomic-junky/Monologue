@@ -53,7 +53,7 @@ func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	var created_nodes: Array[MonologueGraphNode] = new_node.add_to_graph(self)
 	
 	# handle auto-connection from picker if needed, then reposition the node
-	connect_from_picker(new_node)
+	connect_from_picker(created_nodes)
 	
 	# if enabled, track the addition of created_nodes into the graph history
 	if record:
@@ -69,16 +69,19 @@ func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	return created_nodes
 
 
-## Connects the originating picker_from_node to the given [param node].
-## Returns true if connection from picker to the node is successful.
-func connect_from_picker(node: MonologueGraphNode) -> bool:
+## Connect picker_from_node to the first element of [param nodes], reposition the rest.
+func connect_from_picker(nodes: Array[MonologueGraphNode]):
 	if control_node.picker_mode:
 		var from_node = control_node.picker_from_node
 		var from_port = control_node.picker_from_port
 		disconnect_outbound_from_node(from_node, from_port)
+		propagate_connection(from_node, from_port, nodes[0].name, 0)
 		
-		node.position_offset = control_node.picker_position
-		propagate_connection(from_node, from_port, node.name, 0)
+		var offset = control_node.picker_position
+		for node in nodes:
+			node.position_offset = offset
+			offset += Vector2(node.size.x + 10, 0)
+		
 		control_node.disable_picker_mode()
 		return true
 	
