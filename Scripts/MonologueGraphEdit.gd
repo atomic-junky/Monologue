@@ -8,6 +8,7 @@ var control_node
 var data: Dictionary
 var file_path: String
 var undo_redo := HistoryHandler.new()
+var version = undo_redo.get_version()
 
 var speakers = []
 var variables = []
@@ -19,6 +20,11 @@ var mouse_pressed = false
 var connecting_mode = false
 var moving_mode = false
 var selection_mode = false
+
+
+func _ready():
+	#undo_redo.connect("version_changed")
+	pass
 
 
 func _input(event):
@@ -159,6 +165,10 @@ func is_option_id_exists(option_id: String):
 	return false
 
 
+func is_unsaved():
+	return version != undo_redo.get_version()
+
+
 ## Connect picker_from_node to [param node] if needed, reposition nodes.
 func pick_and_center(nodes: Array[MonologueGraphNode]):
 	var offset = ((size / 2) + scroll_offset) / zoom  # center of graph
@@ -203,6 +213,10 @@ func trigger_undo():
 func trigger_redo():
 	if not connecting_mode:
 		undo_redo.redo()
+
+
+func update_version():
+	version = undo_redo.get_version()
 
 
 func _on_child_entered_tree(node: Node):

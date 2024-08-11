@@ -1,6 +1,9 @@
 extends Node
 
 
+const MAX_FILENAME_LENGTH = 48
+
+
 func check_config_file(path: String):
 	assert(FileAccess.file_exists(path))
 	
@@ -34,3 +37,11 @@ func is_equal(a: Variant, b: Variant) -> bool:
 				return a == b
 	
 	return false
+
+
+## Left-truncate a given filename string based on MAX_FILENAME_LENGTH.
+func truncate_filename(filename: String):
+	var truncated = filename
+	if filename.length() > MAX_FILENAME_LENGTH:
+		truncated = "..." + filename.right(MAX_FILENAME_LENGTH - 3)
+	return truncated

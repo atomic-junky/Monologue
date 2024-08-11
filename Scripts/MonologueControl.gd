@@ -5,7 +5,6 @@ var dialog = {}
 var dialog_for_localisation = []
 
 const HISTORY_FILE_PATH: String = "user://history.save"
-const MAX_FILENAME_LENGTH = 48
 
 ## Dictionary of Monologue node types and their corresponding scenes.
 var scene_dictionary = {
@@ -24,6 +23,7 @@ var scene_dictionary = {
 }
 
 @onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
+@onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
@@ -44,6 +44,7 @@ var live_dict: Dictionary
 
 ## Set to true if a file operation is triggered from Header instead of WelcomeWindow.
 var is_header_file_operation: bool = false
+var is_closing_all_tabs: bool = false
 
 var initial_pos = Vector2(40,40)
 var option_index = 0
@@ -57,6 +58,7 @@ var picker_position
 
 
 func _ready():
+	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
 	var new_root_node = root_scene.instantiate()
 	get_current_graph_edit().add_child(new_root_node)
 	connect_side_panel(get_current_graph_edit())
@@ -88,7 +90,7 @@ func _ready():
 				else:
 					btn_text = btn_text.back()
 				
-				btn.text = truncate_filename(btn_text)
+				btn.text = Util.truncate_filename(btn_text)
 				btn.pressed.connect(file_selected.bind(path, 1))
 				%RecentFilesButtonContainer.add_child(btn)
 			%RecentFilesContainer.show()
@@ -269,6 +271,7 @@ func save(quick: bool = false):
 	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
+	get_current_graph_edit().update_version()
 	
 	saved_notification.show()
 	if !quick:
@@ -352,7 +355,7 @@ func file_selected(path, open_mode):
 	
 	no_interactions_dimmer.hide()
 	
-	tab_bar.add_tab(truncate_filename(path.get_file()))
+	tab_bar.add_tab(Util.truncate_filename(path.get_file()))
 	tab_bar.move_tab(tab_bar.tab_count - 2, tab_bar.tab_count - 1)
 	tab_bar.current_tab = tab_bar.tab_count - 2
 	
@@ -388,14 +391,6 @@ func file_selected(path, open_mode):
 		file.store_string(JSON.stringify(data.slice(0, 10)))
 	
 	load_project(path)
-
-
-## Left-truncate a given filename string based on MAX_FILENAME_LENGTH.
-func truncate_filename(filename: String):
-	var truncated = filename
-	if filename.length() > MAX_FILENAME_LENGTH:
-		truncated = "..." + filename.right(MAX_FILENAME_LENGTH - 3)
-	return truncated
 
 ##################################
 #  Graph node selecter (picker)  #
@@ -434,8 +429,20 @@ func _on_graph_node_selecter_close_requested():
 #  Tab-switching and closing  #
 ###############################
 
+func _close_tab(graph_edit, tab_index, save_first = false):
+	if save_first:
+		save(true)
+	graph_edit.queue_free()
+	await graph_edit.tree_exited  # buggy if we switch tabs without waiting
+	tab_bar.remove_tab(tab_index)
+	
+	if tab_bar.tab_count == 0:
+		get_tree().quit()
+	elif is_closing_all_tabs:
+		tab_close_pressed(0)
+
+
 func close_welcome_tab():
-	# check number of tabs as safety measure and for future hotkey command
 	if tab_bar.tab_count > 1:
 		tab_bar.select_previous_available()
 		welcome_window.hide()
@@ -443,17 +450,17 @@ func close_welcome_tab():
 
 
 func new_graph_edit():
-	var graph_edit: MonologueGraphEdit = graph_edit_inst.instantiate()
+	var new_graph: MonologueGraphEdit = graph_edit_inst.instantiate()
 	var new_root_node = root_scene.instantiate()
 	
-	graph_edit.name = "new"
-	connect_side_panel(graph_edit)
+	new_graph.name = "new"
+	connect_side_panel(new_graph)
 	
-	graph_edits.add_child(graph_edit)
-	graph_edit.add_child(new_root_node)
+	graph_edits.add_child(new_graph)
+	new_graph.add_child(new_root_node)
 	
 	for ge in graph_edits.get_children():
-		ge.visible = ge == graph_edit
+		ge.visible = ge == new_graph
 
 
 func tab_changed(_idx):
@@ -483,9 +490,19 @@ func tab_changed(_idx):
 
 func tab_close_pressed(tab):
 	var ge = graph_edits.get_child(tab)
-	graph_edits.get_child(tab).queue_free()
-	await ge.tree_exited  # buggy if we switch tabs without waiting
-	tab_bar.remove_tab(tab)
+	if ge.is_unsaved():  # prompt user if there are unsaved changes
+		disable_picker_mode()
+		tab_bar.current_tab = tab
+		var save_prompt = prompt_scene.instantiate()
+		save_prompt.connect("ready", no_interactions_dimmer.show)
+		save_prompt.connect("tree_exited", no_interactions_dimmer.hide)
+		save_prompt.connect("confirmed", _close_tab.bind(ge, tab, true))
+		save_prompt.connect("cancelled", set.bind("is_closing_all_tabs", false))
+		save_prompt.connect("denied", _close_tab.bind(ge, tab))
+		add_child(save_prompt)
+		save_prompt.prompt_save(ge.file_path)
+	else:
+		_close_tab(ge, tab)
 
 #################
 #  Header menu  #
@@ -522,3 +539,11 @@ func _on_help_id_pressed(id):
 	match id:
 		0:
 			OS.shell_open("https://github.com/atomic-junky/Monologue/wiki")
+
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		is_closing_all_tabs = true
+		tab_close_pressed(0)
+		# tab_close_pressed() will call _close_tab() which starts a recursion
+		# if is_closing_all_tabs is true; final quit is handled by _close_tab()
