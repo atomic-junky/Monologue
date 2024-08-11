@@ -27,7 +27,7 @@ func _set_gn(new_gn):
 	undo_redo = graph_node.get_parent().undo_redo
 
 
-func _on_node_property_changes(properties: Array, values: Array) -> bool:
+func _on_node_property_change(properties: Array, values: Array) -> bool:
 	if undo_redo and values.size() == properties.size():
 		var has_changes = false
 		# only register undo/redo history if there are actual changes
@@ -47,7 +47,7 @@ func _on_node_property_changes(properties: Array, values: Array) -> bool:
 				var modification = PropertyChange.new(property, graph_node[property], value)
 				change_list.append(modification)
 			
-			var history = PropertyHistory.new(graph_node, change_list, false)
+			var history = PropertyHistory.new(graph_node, change_list)
 			undo_redo.add_prepared_history(history)
 			undo_redo.commit_action()
 			

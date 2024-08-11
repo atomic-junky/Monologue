@@ -126,16 +126,16 @@ func _on_variable_selected(index):
 	if value != null:
 		var properties = ["variable_name", "operator", "value"]
 		var values = [variable_name, operator, value]
-		_on_node_property_changes(properties, values)
+		_on_node_property_change(properties, values)
 
 
 func _on_operator_selected(index):
 	var operator = operator_drop_node.get_item_text(index)
-	_on_node_property_changes(["operator"], [operator])
+	_on_node_property_change(["operator"], [operator])
 
 
 func _on_value_changed(_new_value = null):
 	# important to do null checks here due to falsy values
 	var value = get_value()
 	if value != null:
-		_on_node_property_changes(["value"], [value])
+		_on_node_property_change(["value"], [value])

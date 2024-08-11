@@ -105,7 +105,7 @@ func update_speakers():
 		child.id = all_nodes.find(child)
 		updated_speakers.append(child._to_dict())
 	
-	_on_node_property_changes(["speakers"], [updated_speakers])
+	_on_node_property_change(["speakers"], [updated_speakers])
 
 
 func update_variables():
@@ -118,7 +118,7 @@ func update_variables():
 		
 		updated_variables.append(child._to_dict())
 	
-	_on_node_property_changes(["variables"], [updated_variables])
+	_on_node_property_change(["variables"], [updated_variables])
 
 
 func update_controls():

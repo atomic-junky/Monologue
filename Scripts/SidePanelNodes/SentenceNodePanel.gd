@@ -16,8 +16,7 @@ var display_variant = ""
 
 
 func _ready():
-	var graph_edit: MonologueGraphEdit = graph_node.get_parent()
-	for speaker in graph_edit.speakers:
+	for speaker in graph_node.get_parent().speakers:
 		character_drop_node.add_item(speaker.get("Reference"), speaker.get("ID"))
 
 
@@ -28,17 +27,17 @@ func _from_dict(dict):
 	display_speaker_name = dict.get("DisplaySpeakerName")
 	display_variant = dict.get("DisplayVariant")
 	
-	if speaker_id:
-		character_drop_node.selected = speaker_id
-	else:
+	if speaker_id >= character_drop_node.item_count:  # avoid falsy check
 		graph_node.speaker_id = 0
+	else:
+		character_drop_node.selected = speaker_id
 	display_speaker_name_node.text = display_speaker_name
 	sentence_edit_node.text = sentence
 	display_variant_node.text = display_variant
 
 
 func _on_character_drop_item_selected(index):
-	_on_node_property_changes(["speaker_id"], [index])
+	_on_node_property_change(["speaker_id"], [index])
 
 
 func _on_display_name_focus_exited():
@@ -46,7 +45,7 @@ func _on_display_name_focus_exited():
 
 
 func _on_display_name_text_submitted(new_text):
-	_on_node_property_changes(["display_speaker_name"], new_text)
+	_on_node_property_change(["display_speaker_name"], [new_text])
 
 
 func _on_display_variant_focus_exited():
@@ -54,12 +53,12 @@ func _on_display_variant_focus_exited():
 
 
 func _on_display_variant_text_submitted(new_text):
-	_on_node_property_changes(["display_variant"], [new_text])
+	_on_node_property_change(["display_variant"], [new_text])
 
 
 func _on_sentence_focus_exited():
 	var new_text = sentence_edit_node.text
-	_on_node_property_changes(["sentence"], [new_text])
+	_on_node_property_change(["sentence"], [new_text])
 
 
 func _on_sentence_text_edit_changed():

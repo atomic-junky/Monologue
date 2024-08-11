@@ -57,7 +57,7 @@ func reload_options():
 
 ## Adds latest option data changes into graph history, if any.
 func save_options():
-	_on_node_property_changes(["options"], [get_options_data()])
+	_on_node_property_change(["options"], [get_options_data()])
 	change.emit(self)
 
 

@@ -35,8 +35,6 @@ var scene_dictionary = {
 @onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
 @onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Add
-@onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
-@onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
 @onready var file_dialog = $FileDialog
 @onready var no_interactions_dimmer = $NoInteractions
 @onready var welcome_window = $WelcomeWindow
@@ -69,7 +67,7 @@ func _ready():
 	# Load recent files
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
 		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
-		recent_files_container.hide()
+		%RecentFilesContainer.hide()
 	else:
 		var file = FileAccess.open(HISTORY_FILE_PATH, FileAccess.READ)
 		var raw_data = file.get_as_text()
@@ -92,10 +90,10 @@ func _ready():
 				
 				btn.text = truncate_filename(btn_text)
 				btn.pressed.connect(file_selected.bind(path, 1))
-				recent_files_button_container.add_child(btn)
-			recent_files_container.show()
+				%RecentFilesButtonContainer.add_child(btn)
+			%RecentFilesContainer.show()
 		else:
-			recent_files_container.hide()
+			%RecentFilesContainer.hide()
 	
 	welcome_window.show()
 	no_interactions_dimmer.show()

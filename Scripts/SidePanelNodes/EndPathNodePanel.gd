@@ -22,4 +22,4 @@ func _on_next_story_focus_exited():
 
 func _on_next_story_text_submitted(new_text):
 	next_story_name = new_text
-	_on_node_property_changes(["next_story_name"], [new_text])
+	_on_node_property_change(["next_story_name"], [new_text])

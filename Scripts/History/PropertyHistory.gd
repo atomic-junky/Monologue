@@ -8,16 +8,12 @@ var graph_edit: MonologueGraphEdit
 var node_name: String
 ## List of property changes to make on [member node_name].
 var changes: Array[PropertyChange]
-## If true, node panel should be rebuilt on every property update.
-var is_panel_remake: bool
 
 
-func _init(node: MonologueGraphNode, change_list: Array[PropertyChange],
-		recreate_panel: bool = true):
+func _init(node: MonologueGraphNode, change_list: Array[PropertyChange]):
 	graph_edit = node.get_parent()
 	node_name = node.name
 	changes = change_list
-	is_panel_remake = recreate_panel
 	
 	_undo_callback = revert_properties
 	_redo_callback = change_properties
@@ -42,12 +38,8 @@ func revert_properties():
 func refresh_panel(node: MonologueGraphNode):
 	var side_panel = graph_edit.control_node.side_panel_node
 	if side_panel.visible and side_panel.selected_node == node:
-		if is_panel_remake:
-			# completely rebuild the panel
-			side_panel.on_graph_node_selected(node, true)
-		else:
-			# otherwise, update existing controls using panel's _from_dict()
-			side_panel.current_panel._from_dict(node._to_dict())
-			side_panel.current_panel.change.emit(side_panel.current_panel)
+		# update existing controls using panel's _from_dict()
+		side_panel.current_panel._from_dict(node._to_dict())
+		side_panel.current_panel.change.emit(side_panel.current_panel)
 	else:
 		graph_edit.set_selected(node)

@@ -34,5 +34,5 @@ func _on_target_number_submitted(new_value):
 		return
 	
 	target_number = new_number
-	_on_node_property_changes(["target_number"], [new_number])
+	_on_node_property_change(["target_number"], [new_number])
 	get_viewport().gui_release_focus()

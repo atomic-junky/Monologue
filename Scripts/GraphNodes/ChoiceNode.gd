@@ -95,12 +95,8 @@ func link_option(option_dict: Dictionary, link: bool = true):
 
 func update_next_id(from_port: int, next_node: MonologueGraphNode):
 	if next_node:
-		# nodes should not have multiple next_nodes, so only update
-		# if there is no existing NextID (i.e. is integer -1)
-		if not options[from_port].get("NextID") is String:
-			options[from_port]["NextID"] = next_node.id
+		options[from_port]["NextID"] = next_node.id
 	else:
-		# if there is no next_node target, disconnect the NextID (set to -1)
 		options[from_port]["NextID"] = -1
 	
 	# if side panel is up, the NextID change needs to propagate to the panel

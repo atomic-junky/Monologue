@@ -4,6 +4,7 @@ extends GraphEdit
 
 
 var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
+var control_node
 var data: Dictionary
 var file_path: String
 var undo_redo := HistoryHandler.new()
@@ -12,10 +13,8 @@ var speakers = []
 var variables = []
 
 ## The actively selected graphnode, for graph tab-switching updates.
-var active_graphnode: Node
+var active_graphnode: MonologueGraphNode
 var graphnode_selected = false
-var control_node
-
 var mouse_pressed = false
 var connecting_mode = false
 var moving_mode = false
@@ -65,22 +64,6 @@ func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	return created_nodes
 
 
-## Connect picker_from_node to [param node] if needed, reposition nodes.
-func pick_and_center(nodes: Array[MonologueGraphNode]):
-	var offset = ((size / 2) + scroll_offset) / zoom  # center of graph
-	if control_node.picker_mode:
-		var from_node = control_node.picker_from_node
-		var from_port = control_node.picker_from_port
-		disconnect_outbound_from_node(from_node, from_port)
-		propagate_connection(from_node, from_port, nodes[0].name, 0)
-		control_node.disable_picker_mode()
-		offset = control_node.picker_position
-	
-	for node in nodes:
-		node.position_offset = offset - node.size / 2
-		offset += Vector2(node.size.x + 10, 0)
-
-
 ## Disconnect all outbound connections of the given graphnode and port.
 func disconnect_outbound_from_node(from_node: StringName, from_port: int):
 	for connection in get_connection_list():
@@ -94,17 +77,14 @@ func disconnect_outbound_from_node(from_node: StringName, from_port: int):
 func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	var inbound_connections = get_all_inbound_connections(node.name)
 	var outbound_connections = get_all_outbound_connections(node.name)
-	
 	for c in inbound_connections + outbound_connections:
 		disconnect_node(c.get("from_node"), c.get("from_port"),
 				c.get("to_node"), c.get("to_port"))
 	
-	# retrive node data before deletion, can be useful in some cases
 	var node_data = node._to_dict()
-	# tag options into the node_data without NextIDs
 	if "options" in node:
-		node_data.merge({"Options": node.options})
-	
+		# tag options into the node_data without NextIDs
+		node_data.merge({ "Options": node.options })
 	node.queue_free()
 	
 	# if side panel is showing this node, close it since it's gone
@@ -136,8 +116,6 @@ func get_all_outbound_connections(from_node: StringName):
 
 
 ## Find connections of the given [param from_node] at its [param from_port].
-## In Monologue's architecture, it should return a list with only 1 connection.
-## Returns an array of graph nodes.
 func get_all_connections_from_slot(from_node: StringName, from_port: int):
 	var connections = []
 	for connection in get_connection_list():
@@ -181,16 +159,20 @@ func is_option_id_exists(option_id: String):
 	return false
 
 
-## Checks and ensure graph is ready before triggering undo.
-func trigger_undo():
-	if not connecting_mode:
-		undo_redo.undo()
-
-
-## Checks and ensure graph is ready before triggering redo.
-func trigger_redo():
-	if not connecting_mode:
-		undo_redo.redo()
+## Connect picker_from_node to [param node] if needed, reposition nodes.
+func pick_and_center(nodes: Array[MonologueGraphNode]):
+	var offset = ((size / 2) + scroll_offset) / zoom  # center of graph
+	if control_node.picker_mode:
+		var from_node = control_node.picker_from_node
+		var from_port = control_node.picker_from_port
+		disconnect_outbound_from_node(from_node, from_port)
+		propagate_connection(from_node, from_port, nodes[0].name, 0)
+		control_node.disable_picker_mode()
+		offset = control_node.picker_position
+	
+	for node in nodes:
+		node.position_offset = offset - node.size / 2
+		offset += Vector2(node.size.x + 10, 0)
 
 
 ## Connects/disconnects and updates a given connection's NextID if possible.
@@ -209,7 +191,18 @@ func propagate_connection(from_node, from_port, to_node, to_port, next = true):
 			graph_node.update_next_id(from_port, next_node)
 		else:
 			graph_node.update_next_id(from_port, null)
-			
+
+
+## Checks and ensure graph is ready before triggering undo.
+func trigger_undo():
+	if not connecting_mode:
+		undo_redo.undo()
+
+
+## Checks and ensure graph is ready before triggering redo.
+func trigger_redo():
+	if not connecting_mode:
+		undo_redo.redo()
 
 
 func _on_child_entered_tree(node: Node):
@@ -218,7 +211,6 @@ func _on_child_entered_tree(node: Node):
 		var close_button: TextureButton = close_button_scene.instantiate()
 		
 		var close_callback = func():
-				# add to action history when close_button is pressed
 				var delete_history = DeleteNodeHistory.new(self, [node])
 				var message = "Delete %s (id: %s)"
 				undo_redo.create_action(message % [node.node_type, node.id])
@@ -239,31 +231,22 @@ func _on_connection_drag_ended():
 
 
 func _on_connection_request(from_node, from_port, to_node, to_port):
-	# in Monologue, nodes can only have ONE outbound connection
 	# so check to make sure there are no other connections before connecting
 	if get_all_connections_from_slot(from_node, from_port).size() <= 0:
 		var arguments = [from_node, from_port, to_node, to_port]
-		var link = propagate_connection.bindv(arguments)
-		var unlink = propagate_connection.bindv(arguments + [false])
-		
 		var message = "Connect %s port %d to %s port %d"
 		undo_redo.create_action(message % arguments)
-		undo_redo.add_do_method(link)
-		undo_redo.add_undo_method(unlink)
+		undo_redo.add_do_method(propagate_connection.bindv(arguments))
+		undo_redo.add_undo_method(propagate_connection.bindv(arguments + [false]))
 		undo_redo.commit_action()
 
 
 func _on_disconnection_request(from_node, from_port, to_node, to_port):
 	var arguments = [from_node, from_port, to_node, to_port]
-	var link = propagate_connection.bindv(arguments)
-	var unlink = propagate_connection.bindv(arguments + [false])
-	
-	# don't need to include to_port in message because Monologue enforces
-	# only ONE outbound connection from each node (i.e. to_port is always 0)
 	var message = "Disconnect %s from %s port %d"
 	undo_redo.create_action(message % [to_node, from_node, from_port])
-	undo_redo.add_do_method(unlink)
-	undo_redo.add_undo_method(link)
+	undo_redo.add_do_method(propagate_connection.bindv(arguments + [false]))
+	undo_redo.add_undo_method(propagate_connection.bindv(arguments))
 	undo_redo.commit_action()
 
 

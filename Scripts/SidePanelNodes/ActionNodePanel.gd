@@ -141,7 +141,7 @@ func update_action(_x = null):
 	
 	var value = get_value()
 	if value != null:
-		_on_node_property_changes(["action_type", "value"], [action_type, value])
+		_on_node_property_change(["action_type", "value"], [action_type, value])
 
 
 func update_custom(custom_index, record = true):
@@ -158,7 +158,7 @@ func update_custom(custom_index, record = true):
 			_update_pitch_display_value(pitch_value)
 		
 		if record:
-			_on_node_property_changes(["custom_type"], [custom_type])
+			_on_node_property_change(["custom_type"], [custom_type])
 	else:
 		custom_drop_node.selected = 2
 
@@ -197,7 +197,7 @@ func update_variable(variable_index = -1):
 		if value != null:
 			var properties = ["variable_name", "operator", "value"]
 			var values = [variable_name, operator, value]
-			_on_node_property_changes(properties, values)
+			_on_node_property_change(properties, values)
 
 
 func get_value():
@@ -236,37 +236,37 @@ func get_value():
 func _on_individual_value_changed(_new_value = null):
 	var value = get_value()
 	if value != null:
-		_on_node_property_changes(["value"], [value])
+		_on_node_property_change(["value"], [value])
 
 
 func _on_operator_selected(index):
 	var operator = operator_drop_node.get_item_text(index)
-	_on_node_property_changes(["operator"], [operator])
+	_on_node_property_change(["operator"], [operator])
 
 func _on_option_id_focus_exited():
 	_on_option_id_text_submitted(option_id_edit.text)
 
 func _on_option_id_text_submitted(new_text):
-	_on_node_property_changes(["option_id"], [new_text])
+	_on_node_property_change(["option_id"], [new_text])
 
 
 # audio controls
 func _on_loop_toggled(toggled_on: bool):
-	_on_node_property_changes(["loop"], [toggled_on])
+	_on_node_property_change(["loop"], [toggled_on])
 
 func _on_pitch_reset_pressed():
 	%PitchSlider.value = 1
 	_on_pitch_slider_release()
 
 func _on_pitch_slider_release(_value_on_release = 1.0):
-	_on_node_property_changes(["pitch"], [pitch_value])
+	_on_node_property_change(["pitch"], [pitch_value])
 
 func _on_volume_reset_pressed():
 	%VolumeSlider.value = 0
 	_on_volume_slider_release()
 
 func _on_volume_slider_release(_value_on_release = 0.0):
-	_on_node_property_changes(["volume"], [volume_value])
+	_on_node_property_change(["volume"], [volume_value])
 
 func _update_pitch_display_value(new_pitch):
 	pitch_value = new_pitch

@@ -106,7 +106,8 @@ func _restore_connections(node_name: String):
 	
 	var connections = inbound_links + outbound_links
 	for co in connections:
-		graph_edit.connect_node(co.get("from_node"), co.get("from_port"),
+		graph_edit.propagate_connection(
+				co.get("from_node"), co.get("from_port"),
 				co.get("to_node"), co.get("to_port"))
 
 
@@ -115,8 +116,8 @@ func _revert_picker(reconnect: bool = true):
 	if picker_from_node:
 		for to_name in picker_to_names:
 			if reconnect:
-				graph_edit.connect_node(
+				graph_edit.propagate_connection(
 						picker_from_node, picker_from_port, to_name, 0)
 			else:
-				graph_edit.disconnect_node(
-						picker_from_node, picker_from_port, to_name, 0)
+				graph_edit.disconnect_node(picker_from_node, picker_from_port, to_name, 0)
+
