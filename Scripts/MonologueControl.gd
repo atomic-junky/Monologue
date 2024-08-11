@@ -5,6 +5,7 @@ var dialog = {}
 var dialog_for_localisation = []
 
 const HISTORY_FILE_PATH: String = "user://history.save"
+const UNSAVED_FILE_SUFFIX: String = "*"
 
 ## Dictionary of Monologue node types and their corresponding scenes.
 var scene_dictionary = {
@@ -362,6 +363,7 @@ func file_selected(path, open_mode):
 	var graph_edit = get_current_graph_edit()
 	graph_edit.control_node = self
 	graph_edit.file_path = path
+	graph_edit.undo_redo.connect("version_changed", update_tab_savestate.bind(graph_edit))
 	
 	welcome_window.hide()
 	if open_mode == 0: #NEW
@@ -468,7 +470,7 @@ func tab_changed(_idx):
 		for ge in graph_edits.get_children():
 			if graph_edits.get_child(tab_bar.current_tab) == ge:
 				ge.visible = true
-				if ge.graphnode_selected:
+				if ge.graphnode_selected and ge.active_graphnode:
 					side_panel_node.on_graph_node_selected(ge.active_graphnode, true)
 					side_panel_node.show()
 				else:
@@ -503,6 +505,14 @@ func tab_close_pressed(tab):
 		save_prompt.prompt_save(ge.file_path)
 	else:
 		_close_tab(ge, tab)
+
+
+func update_tab_savestate(graph_edit):
+	var index = graph_edit.get_index()
+	var trim = tab_bar.get_tab_title(index).trim_suffix(UNSAVED_FILE_SUFFIX)
+	var title = trim + UNSAVED_FILE_SUFFIX if graph_edit.is_unsaved() else trim
+	tab_bar.set_tab_title(index, title)
+
 
 #################
 #  Header menu  #

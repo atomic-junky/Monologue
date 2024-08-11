@@ -22,11 +22,6 @@ var moving_mode = false
 var selection_mode = false
 
 
-func _ready():
-	#undo_redo.connect("version_changed")
-	pass
-
-
 func _input(event):
 	if event is InputEventMouseButton:
 		mouse_pressed = event.is_pressed()
