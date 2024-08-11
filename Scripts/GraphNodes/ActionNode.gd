@@ -29,11 +29,12 @@ var custom_type: String = ""
 var loop: bool = false
 var volume: float = 0.0
 var pitch: float = 1.0
-var value = false
+var value: Variant = false
 
 func _ready():
 	node_type = "NodeAction"
 	title = node_type
+
 
 func _to_dict() -> Dictionary:
 	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
@@ -74,7 +75,7 @@ func _from_dict(dict: Dictionary):
 	
 	var _pos = dict.get("EditorPosition")
 	position_offset.x = _pos.get("x")
-	position_offset.x = _pos.get("y")
+	position_offset.y = _pos.get("y")
 	
 
 func _action_to_dict() -> Dictionary:
@@ -128,7 +129,7 @@ func _update(panel: ActionNodePanel = null):
 				option_id = panel.option_id_edit.text
 				
 				if option_id != "":
-					var is_option_id_valid: bool = get_parent().is_option_node_exciste(option_id)
+					var is_option_id_valid: bool = get_parent().is_option_id_exists(option_id)
 					panel.option_not_find.visible = !is_option_id_valid
 				else:
 					panel.option_not_find.hide()

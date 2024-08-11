@@ -1,36 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://co06oddlr5k5"]
 
+[ext_resource type="Script" path="res://Scripts/SubComponents/Character.gd" id="1_1pu2x"]
 [ext_resource type="Texture2D" uid="uid://cupclxlgjwjmg" path="res://Assets/Icons/trash_icon.png" id="1_drvey"]
 
-[sub_resource type="GDScript" id="GDScript_laerw"]
-script/source = "extends PanelContainer
-
-
-@onready var ref_input = $MarginContainer/HBoxContainer2/LineEdit
-
-var root_node
-var id = -1
-
-
-func _to_dict():
-	return {
-		\"Reference\": ref_input.text,
-		\"ID\": id
-	}
-
-
-func _from_dict(dict):
-	ref_input.text = dict.get(\"Reference\")
-	id = dict.get(\"ID\")
-
-
-func _on_delete_pressed():
-	queue_free()
-	root_node.update_speakers()
-"
-
 [node name="Character" type="PanelContainer"]
-script = SubResource("GDScript_laerw")
+script = ExtResource("1_1pu2x")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -62,4 +36,6 @@ mouse_default_cursor_shape = 2
 texture_normal = ExtResource("1_drvey")
 stretch_mode = 3
 
+[connection signal="focus_exited" from="MarginContainer/HBoxContainer2/LineEdit" to="." method="_on_line_edit_focus_exited"]
+[connection signal="text_submitted" from="MarginContainer/HBoxContainer2/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/MarginContainer/Delete" to="." method="_on_delete_pressed"]

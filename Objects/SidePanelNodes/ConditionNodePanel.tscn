@@ -64,6 +64,7 @@ layout_mode = 2
 [node name="NumberEdit" type="SpinBox" parent="ValueContainer"]
 visible = false
 layout_mode = 2
+update_on_text_changed = true
 
 [node name="StringEdit" type="LineEdit" parent="ValueContainer"]
 visible = false
@@ -77,8 +78,8 @@ layout_mode = 2
 text = "Please select a variable first"
 label_settings = SubResource("LabelSettings_kddgl")
 
-[connection signal="item_selected" from="IfContainer/VariableDrop" to="." method="update"]
-[connection signal="item_selected" from="OperatorContainer/OperatorDrop" to="." method="update"]
-[connection signal="toggled" from="ValueContainer/BooleanEdit" to="." method="update"]
-[connection signal="value_changed" from="ValueContainer/NumberEdit" to="." method="update"]
-[connection signal="text_changed" from="ValueContainer/StringEdit" to="." method="update"]
+[connection signal="item_selected" from="IfContainer/VariableDrop" to="." method="_on_variable_selected"]
+[connection signal="item_selected" from="OperatorContainer/OperatorDrop" to="." method="_on_operator_selected"]
+[connection signal="toggled" from="ValueContainer/BooleanEdit" to="." method="_on_value_changed"]
+[connection signal="focus_exited" from="ValueContainer/StringEdit" to="." method="_on_value_changed"]
+[connection signal="text_submitted" from="ValueContainer/StringEdit" to="." method="_on_value_changed"]

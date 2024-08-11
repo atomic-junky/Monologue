@@ -1,6 +1,6 @@
 class_name OptionNode
-
 extends PanelContainer
+
 
 @onready var ribbon_instance = preload("res://Objects/SubComponents/Ribbon.tscn")
 @onready var sentence_node = $MarginContainer/MainContainer/SentenceContainer/TextEdit
@@ -8,8 +8,8 @@ extends PanelContainer
 @onready var one_shot_node: CheckBox = $MarginContainer/MainContainer/OneShotBtn
 @onready var id_line_edit: LineEdit = $MarginContainer/MainContainer/IDContainer/IDLineEdit
 
-var panel_node
-var graph_node
+var panel_node: ChoiceNodePanel
+var graph_node: ChoiceNode
 
 var id = UUID.v4()
 var next_id = -1
@@ -49,7 +49,7 @@ func _on_delete_pressed():
 	if panel_node.options_container.get_child_count() == 1:
 		panel_node.new_option()
 	queue_free()
-	update_ref()
+	panel_node.save_options()
 
 
 func _on_id_copy_pressed():
@@ -59,21 +59,38 @@ func _on_id_copy_pressed():
 	panel_node.side_panel.control_node.add_child(ribbon)
 
 
-func _on_id_text_changed(new_id):
-	# if the new_id exists in any node or option, revert to previous id
-	if panel_node.side_panel.control_node.is_option_id_exists(new_id) or \
-			panel_node.side_panel.control_node.get_node_by_id(new_id):
-		id_line_edit.text = id
-		return
-	
-	id = new_id
-	panel_node.change.emit(panel_node)
+func _on_id_focus_exited():
+	_on_id_text_submitted(id_line_edit.text)
 
 
-func update_ref():
-	id_line_edit.text = id
-	sentence = sentence_node.text
-	enable = enable_node.button_pressed
-	one_shot = one_shot_node.button_pressed
+func _on_id_text_submitted(new_id):
+	if new_id != id:
+		var graph: MonologueGraphEdit = graph_node.get_parent()
+		# if the new_id exists in any node or option, revert to previous id
+		if graph.is_option_id_exists(new_id) or graph.get_node_by_id(new_id):
+			id_line_edit.text = id
+			return
+		
+		id = new_id
+		panel_node.save_options()
 	
-	panel_node.change.emit(panel_node)
+	release_focus()
+
+
+## Tracks changes to option data to be added to undo/redo history.
+func _on_option_data_control_change():
+	# optimal to check value changes here before save_options()
+	if sentence != sentence_node.text or \
+			enable != enable_node.button_pressed or \
+			one_shot != one_shot_node.button_pressed:
+		
+		sentence = sentence_node.text
+		enable = enable_node.button_pressed
+		one_shot = one_shot_node.button_pressed
+		panel_node.save_options()
+
+
+func _on_sentence_text_changed():
+	var option_reference = graph_node.get_option_reference(id)
+	if option_reference:
+		option_reference.sentence_preview.text = sentence_node.text

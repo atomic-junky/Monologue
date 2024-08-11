@@ -90,9 +90,11 @@ mouse_default_cursor_shape = 2
 texture_normal = ExtResource("3_6pvm8")
 stretch_mode = 3
 
-[connection signal="text_changed" from="MarginContainer/MainContainer/SentenceContainer/TextEdit" to="." method="update_ref"]
+[connection signal="focus_exited" from="MarginContainer/MainContainer/SentenceContainer/TextEdit" to="." method="_on_option_data_control_change"]
+[connection signal="text_changed" from="MarginContainer/MainContainer/SentenceContainer/TextEdit" to="." method="_on_sentence_text_changed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/SentenceContainer/DeleteBtnContainer/Delete" to="." method="_on_delete_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/EnableBtn" to="." method="update_ref"]
-[connection signal="pressed" from="MarginContainer/MainContainer/OneShotBtn" to="." method="update_ref"]
-[connection signal="text_changed" from="MarginContainer/MainContainer/IDContainer/IDLineEdit" to="." method="_on_id_text_changed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/EnableBtn" to="." method="_on_option_data_control_change"]
+[connection signal="pressed" from="MarginContainer/MainContainer/OneShotBtn" to="." method="_on_option_data_control_change"]
+[connection signal="focus_exited" from="MarginContainer/MainContainer/IDContainer/IDLineEdit" to="." method="_on_id_focus_exited"]
+[connection signal="text_submitted" from="MarginContainer/MainContainer/IDContainer/IDLineEdit" to="." method="_on_id_text_submitted"]
 [connection signal="pressed" from="MarginContainer/MainContainer/IDContainer/CopyContainer/CopyBtn" to="." method="_on_id_copy_pressed"]

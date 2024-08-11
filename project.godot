@@ -51,6 +51,7 @@ folder_colors={
 "res://Scenes/": "yellow",
 "res://Scripts/": "yellow",
 "res://Scripts/GraphNodes/": "green",
+"res://Scripts/History/": "teal",
 "res://Scripts/SidePanelNodes/": "teal",
 "res://Scripts/SubComponents/": "blue",
 "res://Test/": "red"
@@ -71,6 +72,16 @@ theme/lcd_subpixel_layout=0
 Save={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":83,"key_label":83,"unicode":0,"echo":false,"script":null)
+]
+}
+Undo={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":90,"physical_keycode":90,"key_label":90,"unicode":0,"echo":false,"script":null)
+]
+}
+Redo={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":90,"physical_keycode":90,"key_label":90,"unicode":0,"echo":false,"script":null)
 ]
 }
 
