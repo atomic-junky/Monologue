@@ -269,10 +269,12 @@ func save(quick: bool = false):
 		save_button.show()
 		test_button.show()
 	
-	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
+	var graph_edit = get_current_graph_edit()
+	var file = FileAccess.open(graph_edit.file_path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
-	get_current_graph_edit().update_version()
+	graph_edit.update_version()
+	update_tab_savestate(graph_edit)
 	
 	saved_notification.show()
 	if !quick:
@@ -553,6 +555,7 @@ func _on_help_id_pressed(id):
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		get_viewport().gui_release_focus()
 		is_closing_all_tabs = true
 		tab_close_pressed(0)
 		# tab_close_pressed() will call _close_tab() which starts a recursion
