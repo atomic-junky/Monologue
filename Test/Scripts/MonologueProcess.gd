@@ -142,6 +142,7 @@ func _process_node(node: Dictionary):
 				options.append(option)
 			monologue_new_choice.emit(options)
 		"NodeDiceRoll":
+			rng.randomize()
 			var roll = rng.randi_range(0, 100)
 			if roll <= node.get("Target"):
 				next_id = node.get("PassID")
