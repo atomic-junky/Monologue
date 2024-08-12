@@ -16,6 +16,7 @@ var next_id
 var fallback_id
 
 var rng = RandomNumberGenerator.new()
+var timer = Timer.new()
 
 signal monologue_node_reached(raw_node: Dictionary)
 signal monologue_sentence(sentence: String, speaker: String, speaker_name: String)
@@ -26,12 +27,17 @@ signal monologue_end(raw_end)
 signal monologue_play_audio(path: String, stream)
 signal monologue_update_background(path: String, background)
 signal monologue_custom_action(raw_action: Dictionary)
+signal monologue_timer_started(wait_time: float)
 
 
 func _init():
 	print("[INFO] Monologue Process initiated")
 	monologue_node_reached.connect(_process_node)
 	monologue_end.connect(_default_end_process)
+	timer.one_shot = true
+	timer.connect("timeout", next)
+	connect("ready", add_child.bind(timer))
+
 
 func load_dialogue(dialogue_name, custom_start_point = -1):
 	var path = dialogue_name + ".json"
@@ -62,6 +68,8 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 
 
 func next():
+	timer.stop()  # prevent timer from counting down on skip
+	
 	# Check for an event
 	for event in events:
 		var condition = event.get("Condition")
@@ -142,6 +150,7 @@ func _process_node(node: Dictionary):
 				options.append(option)
 			monologue_new_choice.emit(options)
 		"NodeDiceRoll":
+			rng.randomize()
 			var roll = rng.randi_range(0, 100)
 			if roll <= node.get("Target"):
 				next_id = node.get("PassID")
@@ -216,7 +225,9 @@ func _process_node(node: Dictionary):
 					if not is_inside_tree():
 						print("[WARNING] MonologueProcess is not inside tree and can't create a timer...")
 					else:
-						await get_tree().create_timer(time_to_wait).timeout
+						timer.start(time_to_wait)
+						monologue_timer_started.emit(time_to_wait)
+						return
 					
 			next()
 			return
