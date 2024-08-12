@@ -1,25 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bqeslfyg77nj6"]
+[gd_scene load_steps=5 format=3 uid="uid://bqeslfyg77nj6"]
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SentenceNodePanel.gd" id="1_626xh"]
-[ext_resource type="Texture2D" uid="uid://t1i3wy037vsu" path="res://Assets/Icons/folder_icon.png" id="2_vudiy"]
-[ext_resource type="Script" path="res://Scripts/FilePickerButton.gd" id="3_43bqn"]
+[ext_resource type="PackedScene" uid="uid://o5dt5106rohh" path="res://Objects/SubComponents/FilePickerLineEdit.tscn" id="2_5dbww"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_c5sko"]
 font_color = Color(0.521569, 0.521569, 0.521569, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxvmx"]
-content_margin_left = 5.0
-content_margin_right = 31.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="LabelSettings" id="LabelSettings_h2s8p"]
 font_color = Color(0.768627, 0.180392, 0.25098, 1)
@@ -116,23 +101,10 @@ text = "Voiceline"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LineEdit" type="LineEdit" parent="SubContainer/VoicelineContainer"]
+[node name="FilePickerLineEdit" parent="SubContainer/VoicelineContainer" node_paths=PackedStringArray("warn_label") instance=ExtResource("2_5dbww")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_vxvmx")
-structured_text_bidi_override = 2
-
-[node name="FilePickerButton" type="Button" parent="SubContainer/VoicelineContainer/LineEdit" node_paths=PackedStringArray("linked_lined_edit")]
-layout_mode = 2
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -26.0
-mouse_default_cursor_shape = 2
-icon = ExtResource("2_vudiy")
-flat = true
-script = ExtResource("3_43bqn")
-linked_lined_edit = NodePath("..")
+filters = Array[String](["*.mp3"])
+warn_label = NodePath("../WarnLabel")
 
 [node name="WarnLabel" type="Label" parent="SubContainer/VoicelineContainer"]
 layout_mode = 2
@@ -143,4 +115,4 @@ label_settings = SubResource("LabelSettings_h2s8p")
 [connection signal="text_changed" from="SpeakerContainer/DisplayNameContainer/SubContainer/LineEdit" to="." method="_on_display_name_line_edit_text_changed"]
 [connection signal="text_changed" from="SpeakerContainer/DisplayVariantContainer/SubContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="text_changed" from="SentenceContainer/TextEdit" to="." method="_on_sentence_text_edit_changed"]
-[connection signal="pressed" from="SubContainer/VoicelineContainer/LineEdit/FilePickerButton" to="SubContainer/VoicelineContainer/LineEdit/FilePickerButton" method="_on_pressed"]
+[connection signal="new_file_path" from="SubContainer/VoicelineContainer/FilePickerLineEdit" to="." method="_on_file_picker_line_edit_new_file_path"]

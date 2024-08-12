@@ -9,11 +9,13 @@ extends MonologueNodePanel
 @onready var display_speaker_name_node: LineEdit = $SpeakerContainer/DisplayNameContainer/SubContainer/LineEdit
 @onready var display_variant_node: LineEdit = $SpeakerContainer/DisplayVariantContainer/SubContainer/LineEdit
 @onready var sentence_edit_node: TextEdit = $SentenceContainer/TextEdit
+@onready var voiceline_line_edit: FilePickerLineEdit = $SubContainer/VoicelineContainer/FilePickerLineEdit
 
 var sentence = ""
 var speaker_id = 0
 var display_speaker_name = ""
 var display_variant = ""
+var voiceline_path = ""
 
 
 func _ready():
@@ -27,6 +29,7 @@ func _from_dict(dict):
 	speaker_id = dict.get("SpeakerID")
 	display_speaker_name = dict.get("DisplaySpeakerName")
 	display_variant = dict.get("DisplayVariant")
+	voiceline_path = dict.get("VoicelinePath", "")
 	
 	if speaker_id:
 		character_drop_node.select(speaker_id)
@@ -35,6 +38,7 @@ func _from_dict(dict):
 	display_speaker_name_node.text = display_speaker_name
 	sentence_edit_node.text = sentence
 	display_variant_node.text = display_variant
+	voiceline_line_edit.text = voiceline_path
 
 
 func _on_sentence_text_edit_changed():
@@ -61,5 +65,12 @@ func _on_character_drop_item_selected(index):
 func _on_line_edit_text_changed(new_text):
 	display_variant = new_text
 	graph_node.display_variant = new_text
+	
+	change.emit(self)
+
+
+func _on_file_picker_line_edit_new_file_path(file_path: String, is_valid: bool) -> void:
+	voiceline_path = file_path
+	graph_node.voiceline_path = file_path
 	
 	change.emit(self)
