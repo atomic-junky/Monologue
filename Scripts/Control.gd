@@ -1,4 +1,4 @@
-extends Control
+class_name MonologueControl extends Control
 
 
 var dialog = {}
