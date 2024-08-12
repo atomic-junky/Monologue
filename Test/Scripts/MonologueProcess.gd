@@ -124,6 +124,10 @@ func _process_node(node: Dictionary):
 			var processed_sentence = process_conditional_text(node.get("Sentence"))
 			var speaker_name = node.get("DisplaySpeakerName") if node.get("DisplaySpeakerName") else get_speaker(node.get("SpeakerID"))
 			
+			var voiceline_path = node.get("VoicelinePath", "")
+			if voiceline_path != "":
+				SfxLoader.load_track(voiceline_path)
+			
 			monologue_sentence.emit(
 				processed_sentence,
 				get_speaker(node.get("SpeakerID")),
