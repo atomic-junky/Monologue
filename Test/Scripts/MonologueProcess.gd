@@ -27,6 +27,7 @@ signal monologue_end(raw_end)
 signal monologue_play_audio(path: String, stream)
 signal monologue_update_background(path: String, background)
 signal monologue_custom_action(raw_action: Dictionary)
+signal monologue_timer_started(wait_time: float)
 
 
 func _init():
@@ -225,6 +226,7 @@ func _process_node(node: Dictionary):
 						print("[WARNING] MonologueProcess is not inside tree and can't create a timer...")
 					else:
 						timer.start(time_to_wait)
+						monologue_timer_started.emit(time_to_wait)
 						return
 					
 			next()
