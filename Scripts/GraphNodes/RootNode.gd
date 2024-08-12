@@ -1,11 +1,11 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
 
 class_name RootNode
-
 extends MonologueGraphNode
 
 
-var characters = []
+var speakers: set = _set_speakers, get = _get_speakers
+var variables: set = _set_variables, get = _get_variables
 
 
 func _ready():
@@ -26,6 +26,7 @@ func _to_dict() -> Dictionary:
 		}
 	}
 
+
 func _from_dict(dict):
 	id = dict.get("ID")
 	
@@ -34,12 +35,27 @@ func _from_dict(dict):
 	position_offset.x = _pos.get("y")
 
 
-func get_characters():
-	var result = []
-	for child in characters:
-		if not child is PanelContainer:
-			continue
-		
-		result.append(child._to_dict())
-	
-	return result
+func _update(panel: RootNodePanel = null):
+	if panel != null:
+		if speakers.size() != panel.characters_container.get_child_count() or \
+				variables.size() != panel.variables_container.get_child_count():
+			panel.reload_characters()
+			panel.reload_variables()
+		else:
+			panel.update_controls()
+
+
+func _set_speakers(new_speakers):
+	get_parent().speakers = new_speakers
+
+
+func _set_variables(new_variables):
+	get_parent().variables = new_variables
+
+
+func _get_speakers():
+	return get_parent().speakers
+
+
+func _get_variables():
+	return get_parent().variables

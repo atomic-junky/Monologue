@@ -1,9 +1,11 @@
+## Continues the dialogue from BridgeIn node to its counterpart BridgeOut node.
 @icon("res://Assets/Icons/NodesIcons/Link.svg")
 
 class_name BridgeInNode
-
 extends MonologueGraphNode
 
+
+## Spinner control which selects what number to bridge to.
 @onready var number_selector: SpinBox = $MarginContainer/HBoxContainer/LinkNumber
 
 
@@ -32,6 +34,19 @@ func _from_dict(dict):
 	
 	position_offset.x = dict.EditorPosition.get("x")
 	position_offset.y = dict.EditorPosition.get("y")
+
+
+func add_to(graph):
+	var created = super.add_to(graph)
+	var number = graph.get_free_bridge_number()
+	number_selector.value = number
+	
+	var bridge_out = graph.control_node.scene_dictionary.get("BridgeOut").instantiate()
+	bridge_out.add_to(graph)
+	bridge_out.number_selector.value = number
+	created.append(bridge_out)
+	
+	return created
 
 
 func _on_close_request():

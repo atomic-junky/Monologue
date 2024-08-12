@@ -1,6 +1,6 @@
 [gd_scene load_steps=36 format=3 uid="uid://bqjfdabrxujp7"]
 
-[ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
+[ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
 [ext_resource type="Texture2D" uid="uid://3cbk6gtd8pis" path="res://Assets/Icons/NodesIcons/Sentence.svg" id="3_pk5un"]
 [ext_resource type="Texture2D" uid="uid://cpirwf2kaphk0" path="res://Assets/Icons/NodesIcons/Multiple Choice.svg" id="4_2u3tl"]
@@ -14,8 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://kqhi8rimv1go" path="res://Assets/Icons/NodesIcons/Exit.svg" id="8_hudw3"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
 [ext_resource type="Texture2D" uid="uid://dl3u1xdqd3d66" path="res://Assets/Icons/NodesIcons/Event.svg" id="10_2h2fa"]
-[ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/GraphEdit.tscn" id="10_qja7f"]
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
+[ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/MonologueGraphEdit.tscn" id="12_5uhsv"]
 [ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="14_8lefg"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 [ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://Objects/SubComponents/CloseButton.tscn" id="17_af4y3"]
@@ -182,7 +182,7 @@ font_color = Color(0.572549, 0.572549, 0.572549, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_7mcdy"]
 font_color = Color(0.423529, 0.423529, 0.423529, 1)
 
-[node name="Control" type="Control"]
+[node name="MonologueControl" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -191,7 +191,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("2_1tprk")
+script = ExtResource("1_r00lk")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -350,7 +350,7 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
+[node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("12_5uhsv")]
 layout_mode = 1
 scroll_offset = Vector2(0, -23)
 
@@ -551,6 +551,7 @@ text = "Open File..."
 icon = ExtResource("6_vjwwg")
 
 [node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
@@ -559,7 +560,8 @@ layout_mode = 2
 text = "Recent files"
 label_settings = SubResource("LabelSettings_1l82f")
 
-[node name="ButtonContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
+[node name="RecentFilesButtonContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 

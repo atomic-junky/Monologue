@@ -28,11 +28,15 @@ func _to_dict():
 func _from_dict(dict):
 	id = dict.get("ID")
 	next_story_name = dict.get("NextStoryName", "")
+	
+	position_offset.x = dict.EditorPosition.get("x")
+	position_offset.y = dict.EditorPosition.get("y")
 
 
 func _on_close_request():
 	queue_free()
 	get_parent().clear_all_empty_connections()
+
 
 func _update(panel: EndPathNodePanel = null):
 	if panel != null:

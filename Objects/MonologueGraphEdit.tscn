@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://qdgl8co6qy6"]
 
-[ext_resource type="Script" path="res://Scripts/GraphEdit.gd" id="1_r0ncd"]
+[ext_resource type="Script" path="res://Scripts/MonologueGraphEdit.gd" id="1_vyrsm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf5uf"]
 bg_color = Color(0.176471, 0.2, 0.258824, 1)
@@ -22,8 +22,13 @@ zoom_min = 0.035
 zoom_max = 1.0
 minimap_enabled = false
 show_menu = false
-script = ExtResource("1_r0ncd")
+script = ExtResource("1_vyrsm")
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
+[connection signal="connection_drag_ended" from="." to="." method="_on_connection_drag_ended"]
+[connection signal="connection_drag_started" from="." to="." method="_on_connection_drag_started"]
+[connection signal="connection_request" from="." to="." method="_on_connection_request"]
+[connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
+[connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
 [connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
 [connection signal="node_selected" from="." to="." method="_on_node_selected"]
