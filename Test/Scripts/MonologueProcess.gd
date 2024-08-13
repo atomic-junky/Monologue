@@ -28,6 +28,9 @@ signal monologue_update_background(path: String, background)
 signal monologue_custom_action(raw_action: Dictionary)
 
 
+enum NotificationLevel {INFO, DEBUG, WARN, ERROR, CRITICAL}
+
+
 func _init():
 	print("[INFO] Monologue Process initiated")
 	monologue_node_reached.connect(_process_node)
@@ -126,7 +129,9 @@ func _process_node(node: Dictionary):
 			
 			var voiceline_path = node.get("VoicelinePath", "")
 			if voiceline_path != "":
-				SfxLoader.load_track(voiceline_path)
+				var player = SfxLoader.load_track(voiceline_path)
+				if player is Error:
+					_notify(NotificationLevel.ERROR, "Voiceline not found!")
 			
 			monologue_sentence.emit(
 				processed_sentence,
@@ -196,8 +201,11 @@ func _process_node(node: Dictionary):
 							var full_path = dir_path + "\\assets\\audios\\" + raw_action.get("Value")
 							var sound = null
 							if FileAccess.file_exists(full_path):
-								var track = SfxLoader.load_track(full_path, raw_action.get("Pitch"), raw_action.get("Volume"))
-								track.loop = raw_action.get("Loop")
+								var player = SfxLoader.load_track(full_path, raw_action.get("Pitch"), raw_action.get("Volume"))
+								if player is Error:
+									_notify(NotificationLevel.ERROR, "[ERROR] Audio file not found!")
+								else:
+									player.loop = raw_action.get("Loop")
 							
 							monologue_play_audio.emit(raw_action.get("Value"), sound)
 						"UpdateBackground":
@@ -347,3 +355,8 @@ func option_selected(option):
 		option["Enable"] = false
 	
 	next()
+
+
+# Maybe call this function _log or smth
+func _notify(level: NotificationLevel, text: String):
+	pass
