@@ -5,6 +5,7 @@ signal new_file_path(file_path: String, is_valid: bool)
 
 @export var filters: Array[String]
 @export var warn_label: Label
+@export var base_file_path: String
 
 @onready var file_picker_btn: FilePickerButton = $FilePickerButton
 
@@ -17,11 +18,7 @@ func _ready() -> void:
 
 
 func _convert_to_relative() -> void:
-	# TODO: Make MonologueControl global to access it anywhere!
-	var control: MonologueControl = get_node("/root/App/PanelContainer/Control")
-	var root_file_path: String = control.get_current_graph_edit().file_path
-	
-	text = Path.absolute_to_relative(text, root_file_path)
+	text = Path.absolute_to_relative(text, base_file_path)
 
 
 func _on_text_changed(new_text: String) -> void:
@@ -29,7 +26,7 @@ func _on_text_changed(new_text: String) -> void:
 
 
 func _path_update() -> void:
-	var file_path: String = text
+	var file_path: String = Path.relative_to_absolute(text, base_file_path)
 	
 	warn_label.hide()
 	is_valid = true

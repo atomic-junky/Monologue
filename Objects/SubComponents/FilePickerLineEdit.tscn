@@ -23,7 +23,6 @@ size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_vxvmx")
 structured_text_bidi_override = 2
 script = ExtResource("1_siiu8")
-filters = null
 
 [node name="FilePickerButton" type="Button" parent="."]
 layout_mode = 2

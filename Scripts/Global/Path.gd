@@ -1,7 +1,7 @@
 extends Node
 
 
-func path_to_array(path: String) -> PackedStringArray:
+func split_path(path: String) -> PackedStringArray:
 	var splt_path: String = path.replace(path.get_file(), "")
 	splt_path = splt_path.replace("\\", "/")
 	splt_path = splt_path.replace("//", "/")
@@ -17,9 +17,8 @@ func absolute_to_relative(path: String, root_file_path: String) -> String:
 	if not path.is_absolute_path():
 		return path
 	
-	var root_array: PackedStringArray = path_to_array(root_file_path)
-
-	var path_array: PackedStringArray = path_to_array(path)
+	var root_array: PackedStringArray = split_path(root_file_path)
+	var path_array: PackedStringArray = split_path(path)
 	
 	var final_path = []
 	var back = []
@@ -51,3 +50,26 @@ func absolute_to_relative(path: String, root_file_path: String) -> String:
 		relative_path = relative_path.path_join(step)
 	
 	return relative_path
+
+
+func relative_to_absolute(path: String, root_file_path: String) -> String:
+	assert(FileAccess.file_exists(root_file_path))
+	assert(root_file_path.is_absolute_path())
+	
+	if path.is_absolute_path():
+		return path
+	
+	var root_array: PackedStringArray = split_path(root_file_path)
+	var path_array: PackedStringArray = split_path(path)
+	
+	var back_count = path.count("..")
+	var core_path = Array(root_array).slice(0, root_array.size()-back_count)
+	var to_file = Array(path_array).slice(back_count)
+	var final_path = Array(core_path) + to_file
+	
+	final_path.append(path.get_file())
+	var absolute_path = ""
+	for step in final_path:
+		absolute_path = absolute_path.path_join(step)
+		
+	return absolute_path

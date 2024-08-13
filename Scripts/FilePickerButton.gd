@@ -10,5 +10,5 @@ func _on_pressed():
 
 func _file_selected_callback(path: String):
 	linked_lined_edit.text = path
-	linked_lined_edit._path_update()
 	linked_lined_edit._convert_to_relative()
+	linked_lined_edit._path_update()

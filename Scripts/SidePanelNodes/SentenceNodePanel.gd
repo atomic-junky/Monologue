@@ -9,7 +9,7 @@ extends MonologueNodePanel
 @onready var display_speaker_name_node: LineEdit = $SpeakerContainer/DisplayNameContainer/SubContainer/LineEdit
 @onready var display_variant_node: LineEdit = $SpeakerContainer/DisplayVariantContainer/SubContainer/LineEdit
 @onready var sentence_edit_node: TextEdit = $SentenceContainer/TextEdit
-@onready var voiceline_line_edit: FilePickerLineEdit = $SubContainer/VoicelineContainer/FilePickerLineEdit
+@onready var voiceline_line_edit: FilePickerLineEdit = $SubContainer/VoicelineContainer/VoiclineLineEdit
 
 var sentence = ""
 var speaker_id = 0
@@ -21,6 +21,8 @@ var voiceline_path = ""
 func _ready():
 	for speaker in graph_node.get_parent().speakers:
 		character_drop_node.add_item(speaker.get("Reference"), speaker.get("ID"))
+	
+	voiceline_line_edit.base_file_path = graph_node.get_parent().file_path
 
 
 func _from_dict(dict):
