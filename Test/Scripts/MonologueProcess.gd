@@ -74,7 +74,7 @@ func next():
 		var c_val = condition.get("Value")
 		
 		if variable == null:
-			print("[WARNING] Can't find variable. Skipping")
+			_notify(NotificationLevel.WARN, "Can't find variable. Skipping.")
 			next()
 			return
 			
@@ -143,7 +143,7 @@ func _process_node(node: Dictionary):
 			for option_id in node.get("OptionsID"):
 				var option = find_node_from_id(option_id)
 				if not option:
-					print("[WARNING] Can't find option with id: " + option_id)
+					_notify(NotificationLevel.WARN, "Can't find option with id: " + option_id)
 					continue
 				if option.get("Enable") == false:
 					continue
@@ -168,7 +168,7 @@ func _process_node(node: Dictionary):
 					var option: Dictionary = find_node_from_id(raw_action.get("OptionID"))
 					
 					if option == null:
-						print("[WARNING] Can't find option. Skipping")
+						_notify(NotificationLevel.WARN, "Can't find option. Skipping.")
 						next()
 						return
 					
@@ -216,7 +216,7 @@ func _process_node(node: Dictionary):
 							if FileAccess.file_exists(full_path):
 								var err = bg.load(full_path)
 								if err != OK:
-									print("[WARNING] Failed to load background (" + raw_action.get("Value") + ")")
+									_notify(NotificationLevel.WARN, "Failed to load background (" + raw_action.get("Value") + ")")
 								else:
 									texture = ImageTexture.create_from_image(bg)
 							
@@ -226,7 +226,7 @@ func _process_node(node: Dictionary):
 				"ActionTimer":
 					var time_to_wait = raw_action.get("Value", 0.0)
 					if not is_inside_tree():
-						print("[WARNING] MonologueProcess is not inside tree and can't create a timer...")
+						_notify(NotificationLevel.WARN, "MonologueProcess is not inside tree and can't create a timer...")
 					else:
 						await get_tree().create_timer(time_to_wait).timeout
 					
@@ -243,7 +243,7 @@ func _process_node(node: Dictionary):
 			next_id = if_nid
 			
 			if variable == null:
-				print("[WARNING] Can't find variable. Skipping")
+				_notify(NotificationLevel.WARN, "Can't find variable. Skipping.")
 				next()
 				return
 			
@@ -307,10 +307,10 @@ func process_conditional_text(text: String) -> String:
 		var variable = get_variable(var_name)
 		
 		if not variable:
-			print("[ERROR] Can't find the variable " + var_name)
+			_notify(NotificationLevel.ERROR, "Can't find the variable " + var_name)
 		
 		if variable.get("Type") != "Boolean":
-			print("[ERROR] The variable can only be of type Boolean (not " + variable.get("Type")  + ")")
+			_notify(NotificationLevel.ERROR, "The variable can only be of type Boolean (not " + variable.get("Type")  + ")")
 			return text
 		
 		if variable.get("Value") == true:
@@ -345,7 +345,7 @@ func option_selected(option):
 	monologue_option_choosed.emit(option)
 	
 	if option == null:
-		print("[CRITICAL] Can't find option. Unexpected exit.")
+		_notify(NotificationLevel.CRITICAL, "Can't find option. Unexpected exit.")
 		monologue_end.emit(null)
 		return
 	

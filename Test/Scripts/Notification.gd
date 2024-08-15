@@ -19,19 +19,24 @@ func notify(text: String):
 
 func info(text: String):
 	notify("[color=579144][INFO][/color] " + text)
+	print("[INFO] " + text)
 
 
 func debug(text: String):
 	notify("[color=5e8de6][DEBUG][/color] " + text)
+	print("[DEBUG] " + text)
 
 
 func warn(text: String):
 	notify("[color=e5b65e][WARN][/color] " + text)
+	print("[WARN] " + text)
 
 
 func error(text: String):
 	notify("[color=d19c9d][ERROR][/color] " + text)
+	print("[ERROR] " + text)
 
 
 func critical(text: String):
 	notify("[color=d19c9d][CRITICAL][/color] " + text)
+	print("[CRITICAL] " + text)
