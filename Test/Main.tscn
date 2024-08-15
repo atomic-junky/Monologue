@@ -130,8 +130,8 @@ size_flags_horizontal = 3
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_5jgb4")
 theme_override_styles/focus = SubResource("StyleBoxFlat_5jgb4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5jgb4")
 text = "Quit"
 
 [node name="SPSwitchModeButton" type="TextureButton" parent="SidePanelContainer/MarginContainer/ScrollContainer/Container/MarginContainer/HBoxContainer"]
@@ -215,8 +215,8 @@ size_flags_horizontal = 3
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_5jgb4")
 theme_override_styles/focus = SubResource("StyleBoxFlat_5jgb4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5jgb4")
 text = "Quit"
 
 [node name="TBSwitchModeButton" type="TextureButton" parent="TextBoxContainer/Panel/MarginContainer/Container/HBoxContainer"]
