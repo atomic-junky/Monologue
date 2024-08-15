@@ -264,6 +264,8 @@ func _on_connection_to_empty(from_node, from_port, release_position):
 
 
 func _on_node_selected(node):
+	if node is not MonologueGraphNode:
+		return
 	active_graphnode = node
 	graphnode_selected = true
 
