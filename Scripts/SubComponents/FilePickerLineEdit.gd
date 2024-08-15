@@ -15,6 +15,7 @@ var is_valid: bool = true
 func _ready() -> void:
 	assert(warn_label != null)
 	warn_label.hide()
+	_path_update.call_deferred()
 
 
 func _convert_to_relative() -> void:
@@ -57,4 +58,3 @@ func _path_update() -> void:
 				is_valid = false
 	
 	new_file_path.emit(file_path, is_valid)
-
