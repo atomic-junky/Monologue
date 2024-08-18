@@ -253,8 +253,9 @@ func load_project(path):
 	var root_node = graph_edit.get_node_by_id(root_dict.get("ID"))
 	if not root_node:
 		var new_root_node = root_scene.instantiate()
-		get_current_graph_edit().add_child(new_root_node)
+		graph_edit.add_child(new_root_node)
 		save(true)
+	graph_edit.update_node_positions()
 
 
 func save(quick: bool = false):
