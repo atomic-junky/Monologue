@@ -472,7 +472,7 @@ func tab_changed(_idx):
 		for ge in graph_edits.get_children():
 			if graph_edits.get_child(tab_bar.current_tab) == ge:
 				ge.visible = true
-				if ge.graphnode_selected and ge.active_graphnode:
+				if ge.active_graphnode:
 					side_panel_node.on_graph_node_selected(ge.active_graphnode, true)
 					side_panel_node.show()
 				else:

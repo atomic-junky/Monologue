@@ -120,4 +120,3 @@ func _revert_picker(reconnect: bool = true):
 						picker_from_node, picker_from_port, to_name, 0)
 			else:
 				graph_edit.disconnect_node(picker_from_node, picker_from_port, to_name, 0)
-

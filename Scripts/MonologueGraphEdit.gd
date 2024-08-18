@@ -13,25 +13,20 @@ var version = undo_redo.get_version()
 var speakers = []
 var variables = []
 
-## The actively selected graphnode, for graph tab-switching updates.
+## The active last selected graphnode, for graph tab-switching updates.
 var active_graphnode: MonologueGraphNode
-var graphnode_selected = false
-var mouse_pressed = false
-var connecting_mode = false
-var moving_mode = false
-var selection_mode = false
+var connecting_mode: bool
+var moving_mode: bool
+## The list of all nodes currently selected in this graph.
+var selected_nodes: Array[MonologueGraphNode] = []
 
 
 func _input(event):
-	if event is InputEventMouseButton:
-		mouse_pressed = event.is_pressed()
-	moving_mode = false
-	selection_mode = false
+	var is_mouse_clicked = Input.is_action_pressed("Select")
+	var is_mouse_moving = event is InputEventMouseMotion
+	var is_node_selected = not selected_nodes.is_empty()
 	
-	# check if user is selecting and dragging a graphnode
-	if event is InputEventMouseMotion and mouse_pressed:
-		selection_mode = true
-		moving_mode = graphnode_selected
+	moving_mode = is_mouse_clicked and is_mouse_moving and is_node_selected
 
 
 ## Adds a node of the given type to this graph.
@@ -250,6 +245,15 @@ func _on_connection_request(from_node, from_port, to_node, to_port):
 		undo_redo.commit_action()
 
 
+func _on_delete_nodes_request(_nodes: Array[StringName]) -> void:
+	if not selected_nodes.is_empty():
+		var delete_history = DeleteNodeHistory.new(self, selected_nodes)
+		undo_redo.create_action("Delete %s" % str(selected_nodes))
+		undo_redo.add_prepared_history(delete_history)
+		undo_redo.commit_action()
+		selected_nodes.clear()
+
+
 func _on_disconnection_request(from_node, from_port, to_node, to_port):
 	var arguments = [from_node, from_port, to_node, to_port]
 	var message = "Disconnect %s from %s port %d"
@@ -266,13 +270,13 @@ func _on_connection_to_empty(from_node, from_port, release_position):
 func _on_node_selected(node):
 	if node is not MonologueGraphNode:
 		return
+	selected_nodes.append(node)
 	active_graphnode = node
-	graphnode_selected = true
 
 
-func _on_node_deselected(_node):
+func _on_node_deselected(node):
+	selected_nodes.erase(node)
 	active_graphnode = null
-	graphnode_selected = false
 
 
 func get_nodes() -> Array[MonologueGraphNode]:
