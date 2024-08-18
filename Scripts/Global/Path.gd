@@ -1,12 +1,15 @@
 extends Node
 
 
+func get_separator():
+	return "\\" if OS.has_feature("windows") else "/"
+
+
 func split_path(path: String) -> PackedStringArray:
 	var splt_path: String = path.replace(path.get_file(), "")
 	splt_path = splt_path.replace("\\", "/")
 	splt_path = splt_path.replace("//", "/")
 	return splt_path.split("/", false)
-
 
 
 func absolute_to_relative(path: String, root_file_path: String) -> String:
