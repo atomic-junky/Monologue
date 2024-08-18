@@ -474,7 +474,6 @@ func tab_changed(_idx):
 				ge.visible = true
 				if ge.active_graphnode:
 					side_panel_node.on_graph_node_selected(ge.active_graphnode, true)
-					side_panel_node.show()
 				else:
 					side_panel_node.hide()
 			else:

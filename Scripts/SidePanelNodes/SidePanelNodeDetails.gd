@@ -36,11 +36,13 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	if not bypass:
 		var graph_edit = control_node.get_current_graph_edit()
 		await get_tree().create_timer(0.1).timeout
-		if graph_edit.moving_mode:
+		if graph_edit.moving_mode or graph_edit.selected_nodes.size() > 1:
+			graph_edit.active_graphnode = null
 			return
+		else:
+			graph_edit.active_graphnode = node
 	
 	line_edit_id.text = node.id
-
 	var new_panel = null
 	var panel_scene = panel_dictionary.get(node.node_type)
 	

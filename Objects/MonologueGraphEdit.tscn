@@ -29,7 +29,6 @@ script = ExtResource("1_vyrsm")
 [connection signal="connection_drag_started" from="." to="." method="_on_connection_drag_started"]
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
-[connection signal="delete_nodes_request" from="." to="." method="_on_delete_nodes_request"]
 [connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
 [connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
 [connection signal="node_selected" from="." to="." method="_on_node_selected"]

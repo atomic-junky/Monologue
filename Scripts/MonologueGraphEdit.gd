@@ -13,15 +13,22 @@ var version = undo_redo.get_version()
 var speakers = []
 var variables = []
 
-## The active last selected graphnode, for graph tab-switching updates.
-var active_graphnode: MonologueGraphNode
+var active_graphnode: MonologueGraphNode  # for tab-switching purpose
 var connecting_mode: bool
 var moving_mode: bool
-## The list of all nodes currently selected in this graph.
 var selected_nodes: Array[MonologueGraphNode] = []
 
 
 func _input(event):
+	if event.is_action_pressed("ui_graph_delete"):
+		if control_node.get_current_graph_edit() == self and selected_nodes:
+			var selected_copy = selected_nodes.duplicate()
+			var delete_history = DeleteNodeHistory.new(self, selected_copy)
+			undo_redo.create_action("Delete %s" % str(selected_copy))
+			undo_redo.add_prepared_history(delete_history)
+			undo_redo.commit_action()
+			return
+	
 	var is_mouse_clicked = Input.is_action_pressed("Select")
 	var is_mouse_moving = event is InputEventMouseMotion
 	var is_node_selected = not selected_nodes.is_empty()
@@ -81,6 +88,10 @@ func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	if "options" in node:
 		# tag options into the node_data without NextIDs
 		node_data.merge({ "Options": node.options })
+	
+	if active_graphnode == node:
+		active_graphnode = null
+	selected_nodes.erase(node)
 	node.queue_free()
 	
 	# if side panel is showing this node, close it since it's gone
@@ -220,6 +231,7 @@ func _on_child_entered_tree(node: Node):
 				undo_redo.create_action(message % [node.node_type, node.id])
 				undo_redo.add_prepared_history(delete_history)
 				undo_redo.commit_action(false)
+				selected_nodes.erase(node)
 				free_graphnode(node)
 		
 		close_button.connect("pressed", close_callback)
@@ -245,15 +257,6 @@ func _on_connection_request(from_node, from_port, to_node, to_port):
 		undo_redo.commit_action()
 
 
-func _on_delete_nodes_request(_nodes: Array[StringName]) -> void:
-	if not selected_nodes.is_empty():
-		var delete_history = DeleteNodeHistory.new(self, selected_nodes)
-		undo_redo.create_action("Delete %s" % str(selected_nodes))
-		undo_redo.add_prepared_history(delete_history)
-		undo_redo.commit_action()
-		selected_nodes.clear()
-
-
 func _on_disconnection_request(from_node, from_port, to_node, to_port):
 	var arguments = [from_node, from_port, to_node, to_port]
 	var message = "Disconnect %s from %s port %d"
@@ -268,15 +271,13 @@ func _on_connection_to_empty(from_node, from_port, release_position):
 
 
 func _on_node_selected(node):
-	if node is not MonologueGraphNode:
-		return
-	selected_nodes.append(node)
-	active_graphnode = node
+	if node is MonologueGraphNode:
+		selected_nodes.append(node)
 
 
 func _on_node_deselected(node):
 	selected_nodes.erase(node)
-	active_graphnode = null
+	active_graphnode = null  # when a deselection happens, clear active node
 
 
 func get_nodes() -> Array[MonologueGraphNode]:
