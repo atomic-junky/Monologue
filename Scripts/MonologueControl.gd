@@ -253,8 +253,9 @@ func load_project(path):
 	var root_node = graph_edit.get_node_by_id(root_dict.get("ID"))
 	if not root_node:
 		var new_root_node = root_scene.instantiate()
-		get_current_graph_edit().add_child(new_root_node)
+		graph_edit.add_child(new_root_node)
 		save(true)
+	graph_edit.update_node_positions()
 
 
 func save(quick: bool = false):
@@ -472,9 +473,8 @@ func tab_changed(_idx):
 		for ge in graph_edits.get_children():
 			if graph_edits.get_child(tab_bar.current_tab) == ge:
 				ge.visible = true
-				if ge.graphnode_selected and ge.active_graphnode:
+				if ge.active_graphnode:
 					side_panel_node.on_graph_node_selected(ge.active_graphnode, true)
-					side_panel_node.show()
 				else:
 					side_panel_node.hide()
 			else:

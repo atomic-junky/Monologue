@@ -13,25 +13,33 @@ var version = undo_redo.get_version()
 var speakers = []
 var variables = []
 
-## The actively selected graphnode, for graph tab-switching updates.
-var active_graphnode: MonologueGraphNode
-var graphnode_selected = false
-var mouse_pressed = false
-var connecting_mode = false
-var moving_mode = false
-var selection_mode = false
+var active_graphnode: MonologueGraphNode  # for tab-switching purpose
+var connecting_mode: bool
+var moving_mode: bool
+var recorded_positions: Dictionary = {}  # for undo/redo positoning purpose
+var selected_nodes: Array[MonologueGraphNode] = []  # for group delete
+
+
+func _ready():
+	var auto_arrange_button = get_menu_hbox().get_children().back()
+	auto_arrange_button.connect("pressed", _on_auto_arrange_nodes)
 
 
 func _input(event):
-	if event is InputEventMouseButton:
-		mouse_pressed = event.is_pressed()
-	moving_mode = false
-	selection_mode = false
+	if event.is_action_pressed("ui_graph_delete"):
+		if control_node.get_current_graph_edit() == self and selected_nodes:
+			var selected_copy = selected_nodes.duplicate()
+			var delete_history = DeleteNodeHistory.new(self, selected_copy)
+			undo_redo.create_action("Delete %s" % str(selected_copy))
+			undo_redo.add_prepared_history(delete_history)
+			undo_redo.commit_action()
+			return
 	
-	# check if user is selecting and dragging a graphnode
-	if event is InputEventMouseMotion and mouse_pressed:
-		selection_mode = true
-		moving_mode = graphnode_selected
+	var is_mouse_clicked = Input.is_action_pressed("Select")
+	var is_mouse_moving = event is InputEventMouseMotion
+	var is_node_selected = not selected_nodes.is_empty()
+	
+	moving_mode = is_mouse_clicked and is_mouse_moving and is_node_selected
 
 
 ## Adds a node of the given type to this graph.
@@ -86,6 +94,11 @@ func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	if "options" in node:
 		# tag options into the node_data without NextIDs
 		node_data.merge({ "Options": node.options })
+	
+	if active_graphnode == node:
+		active_graphnode = null
+	selected_nodes.erase(node)
+	recorded_positions.erase(node)
 	node.queue_free()
 	
 	# if side panel is showing this node, close it since it's gone
@@ -210,8 +223,26 @@ func trigger_redo():
 		undo_redo.redo()
 
 
+func update_node_positions() -> void:
+	var affected_nodes = selected_nodes if selected_nodes else get_nodes()
+	for node in affected_nodes:
+		recorded_positions[node] = node.position_offset
+
+
 func update_version():
 	version = undo_redo.get_version()
+
+
+func _on_auto_arrange_nodes():
+	var affected = selected_nodes if selected_nodes else get_nodes()
+	var changed = affected.filter(func(n): return n.position_offset != recorded_positions[n])
+	if changed and affected.size() > 1:
+		undo_redo.create_action("Auto arrange nodes")
+		for node in changed:
+			undo_redo.add_do_property(node, "position_offset", node.position_offset)
+			undo_redo.add_undo_property(node, "position_offset", recorded_positions[node])
+		undo_redo.commit_action(false)
+		update_node_positions()
 
 
 func _on_child_entered_tree(node: Node):
@@ -225,6 +256,8 @@ func _on_child_entered_tree(node: Node):
 				undo_redo.create_action(message % [node.node_type, node.id])
 				undo_redo.add_prepared_history(delete_history)
 				undo_redo.commit_action(false)
+				selected_nodes.erase(node)
+				recorded_positions.erase(node)
 				free_graphnode(node)
 		
 		close_button.connect("pressed", close_callback)
@@ -264,15 +297,14 @@ func _on_connection_to_empty(from_node, from_port, release_position):
 
 
 func _on_node_selected(node):
-	if node is not MonologueGraphNode:
-		return
-	active_graphnode = node
-	graphnode_selected = true
+	if node is MonologueGraphNode:
+		selected_nodes.append(node)
 
 
-func _on_node_deselected(_node):
-	active_graphnode = null
-	graphnode_selected = false
+func _on_node_deselected(node):
+	recorded_positions[node] = node.position_offset
+	selected_nodes.erase(node)
+	active_graphnode = null  # when a deselection happens, clear active node
 
 
 func get_nodes() -> Array[MonologueGraphNode]:
