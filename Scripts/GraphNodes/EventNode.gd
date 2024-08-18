@@ -17,6 +17,7 @@ func _ready():
 	node_type = "NodeEvent"
 	title = node_type
 
+
 func _to_dict() -> Dictionary:
 	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
 	
@@ -46,7 +47,7 @@ func _from_dict(dict: Dictionary):
 	
 	var _pos = dict.get("EditorPosition")
 	position_offset.x = _pos.get("x")
-	position_offset.x = _pos.get("y")
+	position_offset.y = _pos.get("y")
 	
 	_update()
 

@@ -1,7 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Condition.svg")
 
 class_name ConditionNodePanel
-
 extends MonologueNodePanel
 
 
@@ -15,30 +14,42 @@ extends MonologueNodePanel
 
 var variables: Array
 
+
 func _ready():
+	variable_drop_node.clear()
 	variables = graph_node.get_parent().variables
 	
 	for variable in variables:
 		variable_drop_node.add_item(variable.get("Name"))
+	
+	var inner_edit: LineEdit = number_edit.get_line_edit()
+	inner_edit.connect("focus_exited", _on_value_changed)
+	inner_edit.connect("text_submitted", _on_value_changed)
+
 
 func _from_dict(dict: Dictionary):
 	id = dict.get("ID")
 	var condition = dict.get("Condition")
-	var variables_filter = variables.filter(func(v): return v.get("Name") == condition.get("Variable"))
+	var variable_name = condition.get("Variable")
+	var variables_filter = variables.filter(func(v): return v.get("Name") == variable_name)
 	
+	# select variable dropdown by its name
 	if variables_filter.size() > 0:
 		for i in variable_drop_node.item_count:
-			if variable_drop_node.get_item_text(i) == condition.get("Variable"):
+			if variable_drop_node.get_item_text(i) == variable_name:
 				variable_drop_node.select(i)
-			
+				break
 	
+	# select operator dropdown
 	for i in operator_drop_node.item_count:
 		if operator_drop_node.get_item_text(i) == condition.get("Operator"):
 			operator_drop_node.select(i)
+			break
 	
+	# load the variable's value
 	var value = condition.get("Value")
 	if value != null and variables_filter.size() > 0:
-		var variable = variables.filter(func(v): return v.get("Name") == condition.get("Variable"))[0]
+		var variable = variables.filter(func(v): return v.get("Name") == variable_name)[0]
 		match variable.get("Type"):
 			"Boolean":
 				boolean_edit.button_pressed = value
@@ -53,9 +64,11 @@ func _from_dict(dict: Dictionary):
 func update_all_condition():
 	if variable_drop_node.selected <= -1:
 		return
+	
 	var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 	if not variable_name:
 		return
+	
 	var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
 	
 	boolean_edit.hide()
@@ -67,19 +80,19 @@ func update_all_condition():
 	operator_drop_node.set_item_disabled(1, !is_integer)
 	operator_drop_node.set_item_disabled(2, !is_integer)
 	
+	# may need to reset operator selection due to variable type change
+	if !is_integer and (operator_drop_node.selected == 1 or operator_drop_node.selected == 2):
+		operator_drop_node.selected = 0
+	
 	match variable.get("Type"):
 		"Boolean":
 			boolean_edit.show()
-			boolean_edit.grab_focus()
 		"Integer":
 			number_edit.show()
-			number_edit.grab_focus()
 		"String":
 			string_edit.show()
-			string_edit.grab_focus()
 		_:
 			default_label.show()
-			default_label.grab_focus()
 
 
 func get_value():
@@ -89,6 +102,7 @@ func get_value():
 	var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 	if not variable_name:
 		return null
+	
 	var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
 	
 	match variable.get("Type"):
@@ -102,6 +116,26 @@ func get_value():
 			return null
 
 
-func update(_x = null):
+func _on_variable_selected(index):
 	update_all_condition()
-	change.emit(self)
+	
+	var variable_name = variable_drop_node.get_item_text(index)
+	var operator = operator_drop_node.get_item_text(operator_drop_node.selected)
+	var value = get_value()
+	
+	if value != null:
+		var properties = ["variable_name", "operator", "value"]
+		var values = [variable_name, operator, value]
+		_on_node_property_change(properties, values)
+
+
+func _on_operator_selected(index):
+	var operator = operator_drop_node.get_item_text(index)
+	_on_node_property_change(["operator"], [operator])
+
+
+func _on_value_changed(_new_value = null):
+	# important to do null checks here due to falsy values
+	var value = get_value()
+	if value != null:
+		_on_node_property_change(["value"], [value])

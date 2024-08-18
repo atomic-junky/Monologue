@@ -1,7 +1,7 @@
 extends MonologueProcess
 
 
-@onready var menu_scene = preload("res://Test/Menu.tscn").instantiate()
+@onready var menu_scene = load("res://Test/Menu.tscn").instantiate()
 @onready var text_box = preload("res://Test/Objects/text_box.tscn")
 @onready var option_button = preload("res://Test/Objects/option_button.tscn")
 
@@ -20,6 +20,8 @@ extends MonologueProcess
 var _from_node_id = null
 
 var is_completed: bool = true
+var is_notification_skippable: bool
+
 
 func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
@@ -32,10 +34,13 @@ func _ready():
 			_on_monologue_sentence("Skipped to the node " + _from_node_id + "!", "_DEBUG", "_DEBUG", true)
 		load_dialogue(path.get_basename(), _from_node_id)
 		next()
-		
+
 
 func _input(event):
 	if event.is_action_pressed("ui_accept") and is_completed and not sp_choice_container.visible:
+		if is_notification_skippable:
+			$Notification.hide()
+			is_notification_skippable = false
 		next()
 
 func _handle_scrollbar_changed():
@@ -68,14 +73,16 @@ func _on_monologue_end(raw_end):
 	if not raw_end or not raw_end.get("NextStoryName"):
 		_exit()
 
+
 func _exit():
-	var menu_instance = preload("res://Test/Menu.tscn")
+	var menu_instance = load("res://Test/Menu.tscn")
 	var menu_scene_instance = menu_instance.instantiate()
 	menu_scene_instance._from_node_id = _from_node_id
 	get_tree().root.add_child(menu_scene_instance)
 	
 	SfxLoader.clear()
 	queue_free()
+
 
 func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = false):
 	# Textbox
@@ -132,6 +139,7 @@ func _instantiate_option(option):
 	
 	return new_option
 
+
 func _on_monologue_new_choice(options):
 	for option in options:
 		tb_choice_container.add_child(_instantiate_option(option))
@@ -174,6 +182,11 @@ func _on_monologue_play_audio(path, _stream):
 
 func _on_monologue_custom_action(raw_action):
 	$Notification.debug("Custom action received [color=7f7f7f](" + raw_action.get("Value") + ")[/color]")
+
+
+func _on_monologue_timer_started(wait_time):
+	is_notification_skippable = true
+	$Notification.info("Timer started for %d seconds" % wait_time, wait_time)
 
 
 func _switch_mode_pressed(sp: bool = false):

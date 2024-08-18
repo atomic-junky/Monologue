@@ -1,6 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Comment.png")
 
-class_name CommentNpde
+class_name CommentNode
 
 extends MonologueGraphNode
 
@@ -22,8 +22,10 @@ func _to_dict() -> Dictionary:
 
 func _from_dict(dict: Dictionary) -> void:
 	id = dict.get("ID")
-	
 	comment_edit.text = dict.get("Comment")
+	
+	position_offset.x = dict.EditorPosition.get("x")
+	position_offset.y = dict.EditorPosition.get("y")
 
 
 func _on_close_request():

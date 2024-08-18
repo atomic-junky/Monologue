@@ -130,8 +130,8 @@ size_flags_horizontal = 3
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_5jgb4")
 theme_override_styles/focus = SubResource("StyleBoxFlat_5jgb4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5jgb4")
 text = "Quit"
 
 [node name="SPSwitchModeButton" type="TextureButton" parent="SidePanelContainer/MarginContainer/ScrollContainer/Container/MarginContainer/HBoxContainer"]
@@ -215,8 +215,8 @@ size_flags_horizontal = 3
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_5jgb4")
 theme_override_styles/focus = SubResource("StyleBoxFlat_5jgb4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5jgb4")
 text = "Quit"
 
 [node name="TBSwitchModeButton" type="TextureButton" parent="TextBoxContainer/Panel/MarginContainer/Container/HBoxContainer"]
@@ -278,6 +278,7 @@ fit_content = true
 [connection signal="monologue_option_choosed" from="." to="." method="_on_monologue_option_choosed"]
 [connection signal="monologue_play_audio" from="." to="." method="_on_monologue_play_audio"]
 [connection signal="monologue_sentence" from="." to="." method="_on_monologue_sentence"]
+[connection signal="monologue_timer_started" from="." to="." method="_on_monologue_timer_started"]
 [connection signal="monologue_update_background" from="." to="." method="_on_monologue_update_background"]
 [connection signal="pressed" from="SidePanelContainer/MarginContainer/ScrollContainer/Container/MarginContainer/HBoxContainer/HBoxContainer/QuitBtn" to="." method="_exit"]
 [connection signal="pressed" from="SidePanelContainer/MarginContainer/ScrollContainer/Container/MarginContainer/HBoxContainer/SPSwitchModeButton" to="." method="_switch_mode_pressed" binds= [true]]

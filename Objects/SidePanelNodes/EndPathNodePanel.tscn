@@ -33,4 +33,5 @@ text = "Note: Variables are kept with their values between stories when you use 
 label_settings = SubResource("LabelSettings_wvoxr")
 autowrap_mode = 3
 
-[connection signal="text_changed" from="SubContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="focus_exited" from="SubContainer/LineEdit" to="." method="_on_next_story_focus_exited"]
+[connection signal="text_submitted" from="SubContainer/LineEdit" to="." method="_on_next_story_text_submitted"]

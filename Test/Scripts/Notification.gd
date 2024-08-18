@@ -1,42 +1,46 @@
 extends PanelContainer
 
 
+const DEFAULT_TIME = 7.5
+
+var tween: Tween
+
 @onready var timeleft = $VBoxContainer/TimeLeft
+@onready var label = $VBoxContainer/MarginContainer/RichTextLabel
 
 
 func _ready():
 	hide()
 
 
-func notify(text: String):
-	show()
-	$VBoxContainer/MarginContainer/RichTextLabel.text = text
+func notify(text, tag, color, time):
+	print("[%s] %s" % [tag, text])
+	label.text = "[color=%s][%s][/color] %s" % [color.to_html(false), tag, text]
 	timeleft.custom_minimum_size.x = size.x
-	var tween = get_tree().create_tween()
-	tween.tween_property(timeleft, "custom_minimum_size:x", 0, 7.5)
+	timeleft.get_theme_stylebox("panel").bg_color = color
+	
+	if tween: tween.kill()
+	tween = get_tree().create_tween()
+	tween.tween_property(timeleft, "custom_minimum_size:x", 0, time)
 	tween.tween_callback(hide)
 
 
-func info(text: String):
-	notify("[color=579144][INFO][/color] " + text)
-	print("[INFO] " + text)
+
+func info(text: String, time = DEFAULT_TIME):
+	notify(text, "INFO", Color("579144"), time)
 
 
-func debug(text: String):
-	notify("[color=5e8de6][DEBUG][/color] " + text)
-	print("[DEBUG] " + text)
+func debug(text: String, time = DEFAULT_TIME):
+	notify(text, "DEBUG", Color("5e8de6"), time)
 
 
-func warn(text: String):
-	notify("[color=e5b65e][WARN][/color] " + text)
-	print("[WARN] " + text)
+func warn(text: String, time = DEFAULT_TIME):
+	notify(text, "WARN", Color("e5b65e"), time)
 
 
-func error(text: String):
-	notify("[color=d19c9d][ERROR][/color] " + text)
-	print("[ERROR] " + text)
+func error(text: String, time = DEFAULT_TIME):
+	notify(text, "ERROR", Color("d19c9d"), time)
 
 
-func critical(text: String):
-	notify("[color=d19c9d][CRITICAL][/color] " + text)
-	print("[CRITICAL] " + text)
+func critical(text: String, time = DEFAULT_TIME):
+	notify(text, "CRITICAL", Color("d19c9d"), time)

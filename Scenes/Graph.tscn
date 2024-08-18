@@ -1,6 +1,6 @@
 [gd_scene load_steps=37 format=3 uid="uid://bqjfdabrxujp7"]
 
-[ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
+[ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
 [ext_resource type="Texture2D" uid="uid://3cbk6gtd8pis" path="res://Assets/Icons/NodesIcons/Sentence.svg" id="3_pk5un"]
 [ext_resource type="Texture2D" uid="uid://cpirwf2kaphk0" path="res://Assets/Icons/NodesIcons/Multiple Choice.svg" id="4_2u3tl"]
@@ -14,27 +14,12 @@
 [ext_resource type="Texture2D" uid="uid://kqhi8rimv1go" path="res://Assets/Icons/NodesIcons/Exit.svg" id="8_hudw3"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
 [ext_resource type="Texture2D" uid="uid://dl3u1xdqd3d66" path="res://Assets/Icons/NodesIcons/Event.svg" id="10_2h2fa"]
-[ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/GraphEdit.tscn" id="10_qja7f"]
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
+[ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/MonologueGraphEdit.tscn" id="12_5uhsv"]
 [ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="14_8lefg"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 [ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://Objects/SubComponents/CloseButton.tscn" id="17_af4y3"]
 [ext_resource type="Script" path="res://Scripts/GlobalFileDialog.gd" id="20_2dvte"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
-content_margin_left = 5.0
-content_margin_top = 3.0
-content_margin_right = 5.0
-content_margin_bottom = 3.0
-bg_color = Color(0.0859375, 0.101563, 0.125, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-expand_margin_left = 5.0
-expand_margin_top = 2.0
-expand_margin_right = 5.0
-expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3npb4"]
 content_margin_left = 5.0
@@ -67,6 +52,21 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 2.0
+expand_margin_right = 5.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
+content_margin_left = 5.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 3.0
+bg_color = Color(0.0859375, 0.101563, 0.125, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -183,7 +183,7 @@ font_color = Color(0.572549, 0.572549, 0.572549, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_7mcdy"]
 font_color = Color(0.423529, 0.423529, 0.423529, 1)
 
-[node name="Control" type="Control"]
+[node name="MonologueControl" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -192,7 +192,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("2_1tprk")
+script = ExtResource("1_r00lk")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -219,19 +219,17 @@ theme_override_constants/v_separation = 10
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
-theme_override_styles/normal = SubResource("StyleBoxFlat_22xm7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_3npb4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ao7wf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_22xm7")
 
 [node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 transparent_bg = true
 size = Vector2i(119, 100)
 item_count = 5
 item_0/text = "Open"
-item_0/id = 0
 item_1/text = "New"
 item_1/id = 1
-item_2/text = ""
 item_2/id = 2
 item_2/separator = true
 item_3/text = "Edit Config"
@@ -244,7 +242,6 @@ size = Vector2i(119, 100)
 item_count = 9
 item_0/text = "Sentence"
 item_0/icon = ExtResource("3_pk5un")
-item_0/id = 0
 item_1/text = "Choice"
 item_1/icon = ExtResource("4_2u3tl")
 item_1/id = 1
@@ -274,7 +271,6 @@ item_8/id = 8
 size = Vector2i(126, 247)
 item_count = 1
 item_0/text = "Wiki"
-item_0/id = 0
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
@@ -317,8 +313,8 @@ alignment = 2
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_tyw4k")
 theme_override_styles/focus = SubResource("StyleBoxFlat_tyw4k")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tyw4k")
 text = "Test"
 
 [node name="GraphEditsArea" type="Control" parent="MarginContainer/MainContainer"]
@@ -341,9 +337,9 @@ layout_mode = 2
 size_flags_horizontal = 0
 mouse_default_cursor_shape = 2
 theme_override_icons/close = ExtResource("5_f42wd")
-tab_count = 1
 clip_tabs = false
 tab_close_display_policy = 1
+tab_count = 1
 tab_0/title = "+"
 
 [node name="GraphEdits" type="Control" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer"]
@@ -351,7 +347,7 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
+[node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("12_5uhsv")]
 layout_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
@@ -411,8 +407,8 @@ stretch_mode = 3
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_28b4a")
 theme_override_styles/focus = SubResource("StyleBoxFlat_28b4a")
+theme_override_styles/normal = SubResource("StyleBoxFlat_28b4a")
 text = "Test from here"
 
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
@@ -551,6 +547,7 @@ text = "Open File..."
 icon = ExtResource("6_vjwwg")
 
 [node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
@@ -559,7 +556,8 @@ layout_mode = 2
 text = "Recent files"
 label_settings = SubResource("LabelSettings_1l82f")
 
-[node name="ButtonContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
+[node name="RecentFilesButtonContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 

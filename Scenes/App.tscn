@@ -20,5 +20,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" parent="PanelContainer" instance=ExtResource("1_kiov6")]
+[node name="MonologueControl" parent="PanelContainer" instance=ExtResource("1_kiov6")]
 layout_mode = 2
