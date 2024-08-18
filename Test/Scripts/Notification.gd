@@ -23,7 +23,7 @@ func notify(text, tag, color, time):
 	tween = get_tree().create_tween()
 	tween.tween_property(timeleft, "custom_minimum_size:x", 0, time)
 	tween.tween_callback(hide)
-
+	show()
 
 
 func info(text: String, time = DEFAULT_TIME):
