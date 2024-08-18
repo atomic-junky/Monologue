@@ -27,6 +27,7 @@ Util="*res://Scripts/Global/Util.gd"
 GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
 SfxLoader="*res://Test/Scripts/SfxLoader.gd"
 GlobalSignal="*res://Scripts/Global/GlobalSignal.gd"
+Path="*res://Scripts/Global/Path.gd"
 
 [display]
 

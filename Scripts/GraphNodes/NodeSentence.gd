@@ -12,6 +12,7 @@ var sentence = ""
 var speaker_id = 0
 var display_speaker_name = ""
 var display_variant = ""
+var voiceline_path = ""
 
 
 func _ready():
@@ -30,6 +31,7 @@ func _to_dict() -> Dictionary:
 		"SpeakerID": speaker_id,
 		"DisplaySpeakerName": display_speaker_name,
 		"DisplayVariant": display_variant,
+		"VoicelinePath": voiceline_path,
 		"EditorPosition": {
 			"x": position_offset.x,
 			"y": position_offset.y
@@ -43,6 +45,7 @@ func _from_dict(dict: Dictionary):
 	speaker_id = dict.get("SpeakerID")
 	display_speaker_name = dict.get("DisplaySpeakerName")
 	display_variant = dict.get("DisplayVariant", "")
+	voiceline_path = dict.get("VoicelinePath", "")
 	
 	_update()
 	
@@ -56,5 +59,6 @@ func _update(panel: SentenceNodePanel = null):
 		speaker_id = panel.speaker_id
 		display_speaker_name = panel.display_speaker_name
 		display_variant = panel.display_variant
+		voiceline_path = panel.voiceline_path
 	
 	text_label.text = sentence

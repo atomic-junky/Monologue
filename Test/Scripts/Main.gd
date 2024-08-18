@@ -192,3 +192,17 @@ func _on_monologue_timer_started(wait_time):
 func _switch_mode_pressed(sp: bool = false):
 	$SidePanelContainer.visible = not sp
 	$TextBoxContainer.visible = sp
+
+
+func _notify(level: NotificationLevel, text: String):
+	match level:
+		NotificationLevel.INFO:
+			$Notification.info(text)
+		NotificationLevel.DEBUG:
+			$Notification.debug(text)
+		NotificationLevel.WARN:
+			$Notification.warn(text)
+		NotificationLevel.ERROR:
+			$Notification.error(text)
+		NotificationLevel.CRITICAL:
+			$Notification.critical(text)

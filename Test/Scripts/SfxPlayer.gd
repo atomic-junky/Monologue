@@ -1,9 +1,8 @@
-extends AudioStreamPlayer2D
-
-class_name SfxPlayer
+class_name SfxPlayer extends AudioStreamPlayer2D
 
 
 var loop: bool = false
+var id: int
 
 func _init():
 	connect("finished", _on_finished)
