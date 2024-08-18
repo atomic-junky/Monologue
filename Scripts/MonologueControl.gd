@@ -118,10 +118,10 @@ func _shortcut_input(event):
 func _to_dict() -> Dictionary:
 	var list_nodes: Array[Dictionary] = []
 	var graph_edit = get_current_graph_edit()
-	save_progress_bar.max_value = graph_edit.get_children().size() + 1
+	save_progress_bar.max_value = graph_edit.get_nodes().size() + 1
 	
 	# compile all node data of the current graph edit
-	for node in graph_edit.get_children():
+	for node in graph_edit.get_nodes():
 		if node.is_queued_for_deletion():
 			continue
 		
@@ -193,7 +193,7 @@ func load_project(path):
 	graph_edit.speakers = data.get("Characters")
 	graph_edit.variables = data.get("Variables")
 	
-	for node in graph_edit.get_children():
+	for node in graph_edit.get_nodes():
 		node.queue_free()
 	graph_edit.clear_connections()
 	graph_edit.data = data
@@ -369,7 +369,7 @@ func file_selected(path, open_mode):
 	
 	welcome_window.hide()
 	if open_mode == 0: #NEW
-		for node in graph_edit.get_children():
+		for node in graph_edit.get_nodes():
 			node.queue_free()
 		var new_root_node = root_scene.instantiate()
 		graph_edit.add_child(new_root_node)

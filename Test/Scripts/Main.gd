@@ -1,7 +1,7 @@
 extends MonologueProcess
 
 
-@onready var menu_scene = preload("res://Test/Menu.tscn").instantiate()
+@onready var menu_scene = load("res://Test/Menu.tscn").instantiate()
 @onready var text_box = preload("res://Test/Objects/text_box.tscn")
 @onready var option_button = preload("res://Test/Objects/option_button.tscn")
 
@@ -75,7 +75,7 @@ func _on_monologue_end(raw_end):
 
 
 func _exit():
-	var menu_instance = preload("res://Test/Menu.tscn")
+	var menu_instance = load("res://Test/Menu.tscn")
 	var menu_scene_instance = menu_instance.instantiate()
 	menu_scene_instance._from_node_id = _from_node_id
 	get_tree().root.add_child(menu_scene_instance)
