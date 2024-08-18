@@ -275,5 +275,9 @@ func _on_node_deselected(_node):
 	graphnode_selected = false
 
 
-func get_nodes() -> Array:
-	return get_children().filter(func(n) -> bool: return n is MonologueGraphNode)
+func get_nodes() -> Array[MonologueGraphNode]:
+	var list: Array[MonologueGraphNode] = []
+	for node in get_children():
+		if node is MonologueGraphNode:
+			list.append(node)
+	return list
