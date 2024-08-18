@@ -38,9 +38,9 @@ func _path_update() -> void:
 	if file_path == "":
 		pass
 	else:
-		file_path = Path.relative_to_absolute(file_path, base_file_path)
+		var abs_file_path = Path.relative_to_absolute(file_path, base_file_path)
 		
-		if not FileAccess.file_exists(file_path):
+		if not FileAccess.file_exists(abs_file_path):
 			warn_label.show()
 			warn_label.text = "File path not found!"
 			is_valid = false
@@ -48,7 +48,7 @@ func _path_update() -> void:
 			var correct_suffix: bool = false
 			for filter in filters:
 				var end_match: String = filter
-				var file_name: String = file_path.get_file()
+				var file_name: String = abs_file_path.get_file()
 				if file_name.match(end_match):
 					correct_suffix = true
 			
