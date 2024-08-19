@@ -77,15 +77,11 @@ func next():
 	for event in events:
 		var condition = event.get("Condition")
 		var variable = get_variable(condition.get("Variable"))
+		if variable == null:
+			continue
 		
 		var v_val = variable.get("Value")
 		var c_val = condition.get("Value")
-		
-		if variable == null:
-			_notify(NotificationLevel.WARN, "Can't find variable. Skipping.")
-			next()
-			return
-			
 		var condition_pass: bool = false
 		match condition.get("Operator"):
 			"==":
@@ -100,7 +96,6 @@ func next():
 			monologue_event_triggered.emit(event)
 			fallback_id = next_id
 			next_id = event.get("NextID")
-			
 			events.erase(event)
 	
 	if next_id is float and next_id == -1:
@@ -111,10 +106,10 @@ func next():
 			monologue_end.emit(null)
 	
 	var node = find_node_from_id(next_id)
-	
 	if node:
 		monologue_node_reached.emit(node)
-	
+
+
 func _process_node(node: Dictionary):
 	match node.get("$type"):
 		"NodeRoot":
