@@ -39,6 +39,25 @@ func is_equal(a: Variant, b: Variant) -> bool:
 	return false
 
 
+## Try to merge two list of dictionaries, new values overriding the old.
+func merge_dict(old_list: Array, new_list: Array, id_key: String) -> Array:
+	# first, map keys to existing list of old dictionaries
+	var merger: Dictionary = {}
+	for old_dict in old_list:
+		if old_dict is Dictionary:
+			merger[old_dict.get(id_key)] = old_dict
+	
+	# then, override/merge new dictionaries to the existing list
+	for new_dict in new_list:
+		if new_dict is Dictionary:
+			var new_key = new_dict.get(id_key)
+			var combine = merger.get(new_key, {})
+			combine.merge(new_dict, true)
+			merger[new_key] = combine
+	
+	return merger.values()  # only an array of dictionaries is returned
+
+
 ## Left-truncate a given filename string based on MAX_FILENAME_LENGTH.
 func truncate_filename(filename: String):
 	var truncated = filename

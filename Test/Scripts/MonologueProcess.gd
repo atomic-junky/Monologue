@@ -60,7 +60,7 @@ func load_dialogue(dialogue_name, custom_start_id = null):
 	root_node_id = data.get("RootNodeID")
 	node_list = data.get("ListNodes")
 	characters = data.get("Characters")
-	variables = data.get("Variables")
+	variables = Util.merge_dict(data.get("Variables"), variables, "Name")
 	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	
 	next_id = custom_start_id
