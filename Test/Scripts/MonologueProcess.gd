@@ -1,11 +1,10 @@
-extends Control
-
 class_name MonologueProcess
+extends Control
 
 
 var dir_path
 
-
+var active_voiceline: SfxPlayer
 var root_node_id: String
 var node_list: Array
 var characters: Array
@@ -72,6 +71,9 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 
 func next():
 	timer.stop()  # prevent timer from counting down on skip
+	if active_voiceline and is_instance_valid(active_voiceline):
+		active_voiceline.queue_free()  # stop voiceline if still playing
+	active_voiceline = null
 	
 	# Check for an event
 	for event in events:
@@ -114,7 +116,8 @@ func next():
 	
 	if node:
 		monologue_node_reached.emit(node)
-	
+
+
 func _process_node(node: Dictionary):
 	match node.get("$type"):
 		"NodeRoot":
@@ -140,8 +143,11 @@ func _process_node(node: Dictionary):
 				if voiceline_path.is_relative_path():
 					voiceline_path = dir_path + "/" + voiceline_path
 				var player = SfxLoader.load_track(voiceline_path)
+				
 				if player is Error:
 					_notify(NotificationLevel.ERROR, "Voiceline not found!")
+				else:
+					active_voiceline = player
 			
 			monologue_sentence.emit(
 				processed_sentence,
