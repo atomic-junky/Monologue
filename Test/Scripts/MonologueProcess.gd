@@ -137,8 +137,9 @@ func _process_node(node: Dictionary):
 			
 			var voiceline_path = node.get("VoicelinePath", "")
 			if voiceline_path != "":
-				var path = dir_path + Path.get_separator() + voiceline_path
-				var player = SfxLoader.load_track(path)
+				if voiceline_path.is_relative_path():
+					voiceline_path = dir_path + "/" + voiceline_path
+				var player = SfxLoader.load_track(voiceline_path)
 				if player is Error:
 					_notify(NotificationLevel.ERROR, "Voiceline not found!")
 			
