@@ -78,6 +78,7 @@ func next():
 		var condition = event.get("Condition")
 		var variable = get_variable(condition.get("Variable"))
 		if variable == null:
+			# used to call _notify() here but removed, gets called too often!
 			continue
 		
 		var v_val = variable.get("Value")
@@ -328,23 +329,16 @@ func process_conditional_text(text: String) -> String:
 
 
 func _default_end_process(raw_end):
-	if not raw_end:
-		return
-	var next_story = raw_end.get("NextStoryName").trim_suffix(".json")
-	
-	# Search in the same directory if the next story is in here.
-	var dir = DirAccess.open(dir_path)
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if not dir.current_is_dir() and file_name == next_story + ".json":
-				load_dialogue(dir_path + "/" + next_story)
-				next()
-				return true
-			file_name = dir.get_next()
-	
-	return dir != null
+	if raw_end:
+		var next_story = raw_end.get("NextStoryName").trim_suffix(".json")
+		if next_story.is_relative_path():
+			next_story = dir_path + "/" + next_story
+		
+		if FileAccess.file_exists(next_story + ".json"):
+			load_dialogue(next_story)
+			next()
+			return true
+	return false
 
 
 func option_selected(option):
