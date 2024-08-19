@@ -24,15 +24,15 @@ func absolute_to_relative(path: String, root_file_path: String) -> String:
 	var forward = []
 	var max_path_size = max(root_array.size(), path_array.size())
 	for i in max_path_size:
-		var root_index = root_array[i] if i < root_array.size() else null
-		var path_index = path_array[i] if i < path_array.size() else null
+		var root_index = root_array[i] if i < root_array.size() else ""
+		var path_index = path_array[i] if i < path_array.size() else ""
 		
 		if root_index == path_index:
 			continue
 		else:
-			if root_index != null:
+			if root_index:
 				back.append("..")
-			if path_index != null:
+			if path_index:
 				forward.append(path_index)
 	
 	for i in back.size():

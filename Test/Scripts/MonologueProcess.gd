@@ -371,5 +371,5 @@ func option_selected(option):
 
 
 # Maybe call this function _log or smth
-func _notify(level: NotificationLevel, text: String):
-	pass
+func _notify(_level: NotificationLevel, _text: String):
+	pass  # overridden by Main.gd

@@ -22,7 +22,7 @@ func _convert_to_relative() -> void:
 	text = Path.absolute_to_relative(text, base_file_path)
 
 
-func _on_text_changed(new_text: String) -> void:
+func _on_text_changed(_new_text: String) -> void:
 	_path_update()
 
 

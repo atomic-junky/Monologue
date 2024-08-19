@@ -53,8 +53,7 @@ func _on_line_edit_text_changed(new_text):
 	change.emit(self)
 
 
-func _on_file_picker_line_edit_new_file_path(file_path: String, is_valid: bool) -> void:
-	print(file_path)
+func _on_file_picker_line_edit_new_file_path(file_path: String, _is_valid: bool) -> void:
 	voiceline_path = file_path
 	graph_node.voiceline_path = file_path
 	
