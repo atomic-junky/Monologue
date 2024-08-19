@@ -42,7 +42,7 @@ func _init():
 	connect("ready", add_child.bind(timer))
 
 
-func load_dialogue(dialogue_name, custom_start_point = -1):
+func load_dialogue(dialogue_name, custom_start_id = null):
 	var path = dialogue_name + ".json"
 	dir_path = path.replace("/", "\\").split("\\")
 	dir_path.remove_at(len(dir_path)-1)
@@ -63,8 +63,8 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 	variables = data.get("Variables")
 	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	
-	next_id = custom_start_point
-	if !custom_start_point:
+	next_id = custom_start_id
+	if not custom_start_id or custom_start_id is not String:
 		next_id = root_node_id
 	
 	print("[INFO] Dialogue " + path + " loaded")
@@ -331,21 +331,21 @@ func process_conditional_text(text: String) -> String:
 		
 	return text
 
+
 func _default_end_process(raw_end):
 	if not raw_end:
 		return
-		
-	var next_story = raw_end.get("NextStoryName")
+	var next_story = raw_end.get("NextStoryName").trim_suffix(".json")
 	
 	# Search in the same directory if the next story is in here.
 	var dir = DirAccess.open(dir_path)
-	
 	if dir:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
 			if not dir.current_is_dir() and file_name == next_story + ".json":
 				load_dialogue(dir_path + "/" + next_story)
+				next()
 				return true
 			file_name = dir.get_next()
 	
