@@ -26,14 +26,15 @@ func _ready():
 
 
 func _input(event):
-	if event.is_action_pressed("ui_graph_delete"):
-		if control_node.get_current_graph_edit() == self and selected_nodes:
-			var selected_copy = selected_nodes.duplicate()
-			var delete_history = DeleteNodeHistory.new(self, selected_copy)
-			undo_redo.create_action("Delete %s" % str(selected_copy))
-			undo_redo.add_prepared_history(delete_history)
-			undo_redo.commit_action()
-			return
+	if event.is_action_pressed("ui_graph_delete") and \
+			!control_node.side_panel_node.visible and !active_graphnode and \
+			control_node.get_current_graph_edit() == self and selected_nodes:
+		var selected_copy = selected_nodes.duplicate()
+		var delete_history = DeleteNodeHistory.new(self, selected_copy)
+		undo_redo.create_action("Delete %s" % str(selected_copy))
+		undo_redo.add_prepared_history(delete_history)
+		undo_redo.commit_action()
+		return
 	
 	var is_mouse_clicked = Input.is_action_pressed("Select")
 	var is_mouse_moving = event is InputEventMouseMotion
