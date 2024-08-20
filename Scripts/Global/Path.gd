@@ -1,6 +1,10 @@
 extends Node
 
 
+func get_separator():
+	return "\\" if OS.has_feature("windows") else "/"
+
+
 func split_path(path: String) -> PackedStringArray:
 	var splt_path: String = path.replace(path.get_file(), "")
 	splt_path = splt_path.replace("\\", "/")
@@ -8,32 +12,27 @@ func split_path(path: String) -> PackedStringArray:
 	return splt_path.split("/", false)
 
 
-
 func absolute_to_relative(path: String, root_file_path: String) -> String:
-	assert(FileAccess.file_exists(path))
-	assert(FileAccess.file_exists(root_file_path))
-	assert(root_file_path.is_absolute_path())
-	
-	if not path.is_absolute_path():
-		return path
-	
 	var root_array: PackedStringArray = split_path(root_file_path)
 	var path_array: PackedStringArray = split_path(path)
+	
+	if not path.is_absolute_path() or root_array[0] != path_array[0]:
+		return path
 	
 	var final_path = []
 	var back = []
 	var forward = []
 	var max_path_size = max(root_array.size(), path_array.size())
 	for i in max_path_size:
-		var root_index = root_array[i] if i < root_array.size() else null
-		var path_index = path_array[i] if i < path_array.size() else null
+		var root_index = root_array[i] if i < root_array.size() else ""
+		var path_index = path_array[i] if i < path_array.size() else ""
 		
 		if root_index == path_index:
 			continue
 		else:
-			if root_index != null:
+			if root_index:
 				back.append("..")
-			if path_index != null:
+			if path_index:
 				forward.append(path_index)
 	
 	for i in back.size():
@@ -53,9 +52,6 @@ func absolute_to_relative(path: String, root_file_path: String) -> String:
 
 
 func relative_to_absolute(path: String, root_file_path: String) -> String:
-	assert(FileAccess.file_exists(root_file_path))
-	assert(root_file_path.is_absolute_path())
-	
 	if path.is_absolute_path():
 		return path
 	
@@ -71,5 +67,12 @@ func relative_to_absolute(path: String, root_file_path: String) -> String:
 	var absolute_path = ""
 	for step in final_path:
 		absolute_path = absolute_path.path_join(step)
-		
+	
+	# if root path is not a Windows drive letter, prepend "/" linux root
+	var drive_matcher = RegEx.new()
+	drive_matcher.compile("[a-zA-Z]:")
+	var drive_result = drive_matcher.search(root_array[0])
+	if not drive_result:
+		absolute_path = "/" + absolute_path
+	
 	return absolute_path
