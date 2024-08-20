@@ -41,7 +41,7 @@ func _init():
 	connect("ready", add_child.bind(timer))
 
 
-func load_dialogue(dialogue_name, custom_start_point = -1):
+func load_dialogue(dialogue_name, custom_start_id = null):
 	var path = dialogue_name + ".json"
 	dir_path = path.replace("/", "\\").split("\\")
 	dir_path.remove_at(len(dir_path)-1)
@@ -59,11 +59,11 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 	root_node_id = data.get("RootNodeID")
 	node_list = data.get("ListNodes")
 	characters = data.get("Characters")
-	variables = data.get("Variables")
+	variables = Util.merge_dict(data.get("Variables"), variables, "Name")
 	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	
-	next_id = custom_start_point
-	if !custom_start_point:
+	next_id = custom_start_id
+	if not custom_start_id or custom_start_id is not String:
 		next_id = root_node_id
 	
 	print("[INFO] Dialogue " + path + " loaded")
@@ -79,15 +79,12 @@ func next():
 	for event in events:
 		var condition = event.get("Condition")
 		var variable = get_variable(condition.get("Variable"))
+		if variable == null:
+			# used to call _notify() here but removed, gets called too often!
+			continue
 		
 		var v_val = variable.get("Value")
 		var c_val = condition.get("Value")
-		
-		if variable == null:
-			_notify(NotificationLevel.WARN, "Can't find variable. Skipping.")
-			next()
-			return
-			
 		var condition_pass: bool = false
 		match condition.get("Operator"):
 			"==":
@@ -102,7 +99,6 @@ func next():
 			monologue_event_triggered.emit(event)
 			fallback_id = next_id
 			next_id = event.get("NextID")
-			
 			events.erase(event)
 	
 	if next_id is float and next_id == -1:
@@ -113,7 +109,6 @@ func next():
 			monologue_end.emit(null)
 	
 	var node = find_node_from_id(next_id)
-	
 	if node:
 		monologue_node_reached.emit(node)
 
@@ -339,25 +334,18 @@ func process_conditional_text(text: String) -> String:
 		
 	return text
 
+
 func _default_end_process(raw_end):
-	if not raw_end:
-		return
+	if raw_end:
+		var next_story = raw_end.get("NextStoryName").trim_suffix(".json")
+		if next_story.is_relative_path():
+			next_story = dir_path + "/" + next_story
 		
-	var next_story = raw_end.get("NextStoryName")
-	
-	# Search in the same directory if the next story is in here.
-	var dir = DirAccess.open(dir_path)
-	
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if not dir.current_is_dir() and file_name == next_story + ".json":
-				load_dialogue(dir_path + "/" + next_story)
-				return true
-			file_name = dir.get_next()
-	
-	return dir != null
+		if FileAccess.file_exists(next_story + ".json"):
+			load_dialogue(next_story)
+			next()
+			return true
+	return false
 
 
 func option_selected(option):
