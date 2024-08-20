@@ -4,7 +4,7 @@ class_name EndPathNodePanel
 extends MonologueNodePanel
 
 
-@onready var next_story_label = $SubContainer/LineEdit
+@onready var next_story_label = $SubContainer/NextStoryContainer/NextStoryPicker
 
 var next_story_name = ""
 
@@ -14,12 +14,9 @@ func _from_dict(dict):
 	next_story_name = dict.get("NextStoryName")
 	
 	next_story_label.text = next_story_name
+	next_story_label.base_file_path = graph_node.get_parent().file_path
 
 
-func _on_next_story_focus_exited():
-	_on_next_story_text_submitted(next_story_label.text)
-
-
-func _on_next_story_text_submitted(new_text):
-	next_story_name = new_text
-	_on_node_property_change(["next_story_name"], [new_text])
+func _on_next_story_picker_new_file_path(file_path: String, is_valid: bool) -> void:
+	next_story_name = file_path
+	_on_node_property_change(["next_story_name"], [file_path])
