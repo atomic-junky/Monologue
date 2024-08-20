@@ -14,7 +14,7 @@ var panel_dictionary = {
 }
 
 @onready var control_node = $"../../../../.."
-@onready var line_edit_id = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID
+@onready var id_line_edit = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID
 @onready var panel_container = $MarginContainer/ScrollContainer/PanelContainer
 @onready var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
 
@@ -39,7 +39,7 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 		if graph_edit.selection_mode or graph_edit.moving_mode:
 			return
 	
-	line_edit_id.text = node.id
+	id_line_edit.text = node.id
 
 	var new_panel = null
 	var panel_scene = panel_dictionary.get(node.node_type)
@@ -51,12 +51,13 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	new_panel = panel_scene.instantiate()
 	new_panel.side_panel = self
 	new_panel.graph_node = node
+	new_panel.id_line_edit = id_line_edit
 	current_panel = new_panel
 	selected_node = node
 	panel_container.add_child(new_panel)
 	new_panel._from_dict(node._to_dict())
 	# this is for undo/redo to propagate gui updates back to its graph node
-	node._update(new_panel)
+	node._update()
 	
 	show()
 
@@ -77,16 +78,6 @@ func on_graph_node_deselected(_node):
 
 func _on_texture_button_pressed():
 	hide()
-
-
-func _on_line_edit_id_text_changed(new_id):
-	var graph = control_node.get_current_graph_edit()
-	if graph.get_node_by_id(new_id) or graph.is_option_id_exists(new_id):
-		line_edit_id.text = current_panel.id
-		return
-	
-	current_panel.id = new_id
-	current_panel.change.emit(current_panel)
 
 
 func _on_tfh_btn_pressed():

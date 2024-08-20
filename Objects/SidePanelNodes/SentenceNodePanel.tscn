@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bqeslfyg77nj6"]
+[gd_scene load_steps=4 format=3 uid="uid://bqeslfyg77nj6"]
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SentenceNodePanel.gd" id="1_626xh"]
+[ext_resource type="Script" path="res://Objects/SubComponents/MonologueOptionButton.gd" id="2_pjpsx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_c5sko"]
 font_color = Color(0.521569, 0.521569, 0.521569, 1)
@@ -24,9 +25,11 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Speaker"
 
-[node name="CharacterDrop" type="OptionButton" parent="SpeakerContainer/SubContainer"]
+[node name="Field_Speaker" type="OptionButton" parent="SpeakerContainer/SubContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+script = ExtResource("2_pjpsx")
 
 [node name="DisplayNameContainer" type="MarginContainer" parent="SpeakerContainer"]
 layout_mode = 2
@@ -42,7 +45,7 @@ layout_mode = 2
 text = "↳ Display Name"
 label_settings = SubResource("LabelSettings_c5sko")
 
-[node name="LineEdit" type="LineEdit" parent="SpeakerContainer/DisplayNameContainer/SubContainer"]
+[node name="Field_DisplaySpeakerName" type="LineEdit" parent="SpeakerContainer/DisplayNameContainer/SubContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -60,7 +63,7 @@ layout_mode = 2
 text = "↳ Display Variant"
 label_settings = SubResource("LabelSettings_c5sko")
 
-[node name="LineEdit" type="LineEdit" parent="SpeakerContainer/DisplayVariantContainer/SubContainer"]
+[node name="Field_DisplayVariant" type="LineEdit" parent="SpeakerContainer/DisplayVariantContainer/SubContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -74,15 +77,14 @@ layout_mode = 2
 size_flags_vertical = 0
 text = "Sentence"
 
-[node name="TextEdit" type="TextEdit" parent="SentenceContainer"]
+[node name="Field_Sentence" type="TextEdit" parent="SentenceContainer"]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 3
 wrap_mode = 1
 caret_blink = true
 
-[connection signal="item_selected" from="SpeakerContainer/SubContainer/CharacterDrop" to="." method="_on_character_drop_item_selected"]
-[connection signal="focus_exited" from="SpeakerContainer/DisplayNameContainer/SubContainer/LineEdit" to="." method="_on_display_name_focus_exited"]
-[connection signal="focus_exited" from="SpeakerContainer/DisplayVariantContainer/SubContainer/LineEdit" to="." method="_on_display_variant_focus_exited"]
-[connection signal="focus_exited" from="SentenceContainer/TextEdit" to="." method="_on_sentence_focus_exited"]
-[connection signal="text_changed" from="SentenceContainer/TextEdit" to="." method="_on_sentence_text_edit_changed"]
+[connection signal="focus_exited" from="SpeakerContainer/DisplayNameContainer/SubContainer/Field_DisplaySpeakerName" to="." method="_on_display_name_focus_exited"]
+[connection signal="focus_exited" from="SpeakerContainer/DisplayVariantContainer/SubContainer/Field_DisplayVariant" to="." method="_on_display_variant_focus_exited"]
+[connection signal="focus_exited" from="SentenceContainer/Field_Sentence" to="." method="_on_sentence_focus_exited"]
+[connection signal="text_changed" from="SentenceContainer/Field_Sentence" to="." method="_on_sentence_text_edit_changed"]

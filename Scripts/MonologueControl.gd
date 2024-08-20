@@ -211,7 +211,7 @@ func load_project(path):
 		var new_node = node_scene.instantiate()
 		new_node.id = node.get("ID")
 		graph_edit.add_child(new_node, true)
-		new_node._from_dict(node)
+		new_node._load(node)
 	
 	# load connections for the created nodes
 	for node in node_list:

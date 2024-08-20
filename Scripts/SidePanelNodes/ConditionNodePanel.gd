@@ -12,12 +12,9 @@ extends MonologueNodePanel
 @onready var string_edit: LineEdit = $ValueContainer/StringEdit
 @onready var default_label: Label = $ValueContainer/DefaultLabel
 
-var variables: Array
-
 
 func _ready():
 	variable_drop_node.clear()
-	variables = graph_node.get_parent().variables
 	
 	for variable in variables:
 		variable_drop_node.add_item(variable.get("Name"))

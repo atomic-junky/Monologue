@@ -1,7 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Sentence.svg")
 
 class_name SentenceNode
-
 extends MonologueGraphNode
 
 
@@ -19,24 +18,6 @@ func _ready():
 	title = node_type
 
 
-func _to_dict() -> Dictionary:
-	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
-	
-	return {
-		"$type": node_type,
-		"ID": id,
-		"NextID": next_id_node[0].id if next_id_node else -1,
-		"Sentence": sentence,
-		"SpeakerID": speaker_id,
-		"DisplaySpeakerName": display_speaker_name,
-		"DisplayVariant": display_variant,
-		"EditorPosition": {
-			"x": position_offset.x,
-			"y": position_offset.y
-		}
-	}
-
-
 func _from_dict(dict: Dictionary):
 	id = dict.get("ID")
 	sentence = dict.get("Sentence")
@@ -45,12 +26,9 @@ func _from_dict(dict: Dictionary):
 	display_variant = dict.get("DisplayVariant", "")
 	
 	_update()
-	
-	position_offset.x = dict.EditorPosition.get("x")
-	position_offset.y = dict.EditorPosition.get("y")
 
 
-func _update(panel: SentenceNodePanel = null):
+func _update(panel: SentenceNodePanel = null):	
 	if panel != null:
 		sentence = panel.sentence
 		speaker_id = panel.speaker_id
