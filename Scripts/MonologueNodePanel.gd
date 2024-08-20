@@ -33,7 +33,12 @@ func _load_fields(base: Node = self, dict: Dictionary = {}):
 		if child.name.begins_with("Field_"):
 			var field_name = child.name.trim_prefix("Field_")
 			
-			if child is LineEdit:
+			if child is FilePickerLineEdit:
+				child.base_file_path = graph_node.get_parent().file_path
+				child.connect("new_file_path", _on_file_picker_line_edit_update.bindv([field_name]))
+				fields[field_name] = dict.get(field_name, "")
+				child.text = fields[field_name]
+			elif child is LineEdit:
 				child.connect("text_changed", _on_field_update.bindv([field_name]))
 				fields[field_name] = dict.get(field_name, "")
 				child.text = fields[field_name]
@@ -74,6 +79,10 @@ func _set_graph_node(new_graph_node: MonologueGraphNode) -> void:
 	graph_node = new_graph_node
 	undo_redo = graph_node.get_parent().undo_redo
 
+
+func _on_file_picker_line_edit_update(file_path: String, _is_valid: bool, field: String) -> void:
+	_on_field_update(file_path, field)
+	
 
 func _on_te_field_update(node: TextEdit, field: String) -> void:
 	_on_field_update(node.text, field)
