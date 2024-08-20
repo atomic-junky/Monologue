@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.0.2",
+	"EditorVersion": "2.3.0",
 	"RootNodeID": "cbfb0a4b-7517-4411-a447-314d106fe280",
 	"ListNodes": [
 		{
@@ -20,6 +20,7 @@
 			"SpeakerID": 1,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 2080,
 				"y": 140
@@ -33,6 +34,7 @@
 			"SpeakerID": 1,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 2560,
 				"y": 140
@@ -61,6 +63,7 @@
 			"SpeakerID": 1,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 2080,
 				"y": 260
@@ -88,6 +91,7 @@
 			"SpeakerID": 1,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 2180,
 				"y": 0
@@ -114,6 +118,7 @@
 			"SpeakerID": 1,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 820,
 				"y": 0
@@ -127,6 +132,7 @@
 			"SpeakerID": 1,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 1700,
 				"y": 0
@@ -148,15 +154,6 @@
 			}
 		},
 		{
-			"$type": "NodeEndPath",
-			"ID": "aca21898-2092-44cc-845f-3a7d804d500b",
-			"NextStoryName": "",
-			"EditorPosition": {
-				"x": 3040,
-				"y": 140
-			}
-		},
-		{
 			"$type": "NodeSentence",
 			"ID": "3e47d27d-0bd4-40e6-bb9e-d0337e0f91fe",
 			"NextID": -1,
@@ -164,6 +161,7 @@
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 400,
 				"y": 400
@@ -177,6 +175,7 @@
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 380,
 				"y": 0
@@ -202,31 +201,10 @@
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
+			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 3360,
 				"y": 380
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "2078d00f-3af9-4d6e-88ac-fb0679ce625a",
-			"NextID": "73d66209-10f3-4e14-82c4-5a42e7de7049",
-			"Sentence": "When the police ordered Mr. Sharpener to give himself up, he did not hear them and continued to harm those around him. Unfortunately, the police had no choice but to end his life.",
-			"SpeakerID": 0,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"EditorPosition": {
-				"x": 3360,
-				"y": 180
-			}
-		},
-		{
-			"$type": "NodeEndPath",
-			"ID": "73d66209-10f3-4e14-82c4-5a42e7de7049",
-			"NextStoryName": "",
-			"EditorPosition": {
-				"x": 3900,
-				"y": 300
 			}
 		},
 		{
@@ -321,15 +299,6 @@
 			}
 		},
 		{
-			"$type": "NodeRoot",
-			"ID": "cbfb0a4b-7517-4411-a447-314d106fe280",
-			"NextID": "57c841c9-0ebf-464c-aa25-24c2f7dfb0a8",
-			"EditorPosition": {
-				"x": -420,
-				"y": 0
-			}
-		},
-		{
 			"$type": "NodeAction",
 			"ID": "57c841c9-0ebf-464c-aa25-24c2f7dfb0a8",
 			"NextID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
@@ -344,6 +313,62 @@
 			"EditorPosition": {
 				"x": -40,
 				"y": 0
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "2078d00f-3af9-4d6e-88ac-fb0679ce625a",
+			"NextID": "f6a10820-98e9-4f3e-b1fb-60392c14fe64",
+			"Sentence": "When the police ordered Mr. Sharpener to give himself up, he did not hear them and continued to harm those around him. Unfortunately, the police had no choice but to end his life.",
+			"SpeakerID": 0,
+			"DisplaySpeakerName": "",
+			"DisplayVariant": "",
+			"VoicelinePath": "",
+			"EditorPosition": {
+				"x": 3360,
+				"y": 180
+			}
+		},
+		{
+			"$type": "NodeEndPath",
+			"ID": "aca21898-2092-44cc-845f-3a7d804d500b",
+			"NextStoryName": "ending_01.json",
+			"EditorPosition": {
+				"x": 3040,
+				"y": 140
+			}
+		},
+		{
+			"$type": "NodeRoot",
+			"ID": "cbfb0a4b-7517-4411-a447-314d106fe280",
+			"NextID": "57c841c9-0ebf-464c-aa25-24c2f7dfb0a8",
+			"EditorPosition": {
+				"x": -420,
+				"y": 0
+			}
+		},
+		{
+			"$type": "NodeAction",
+			"ID": "f6a10820-98e9-4f3e-b1fb-60392c14fe64",
+			"NextID": "73d66209-10f3-4e14-82c4-5a42e7de7049",
+			"Action": {
+				"$type": "ActionVariable",
+				"Operator": "=",
+				"Variable": "isDead",
+				"Value": true
+			},
+			"EditorPosition": {
+				"x": 3800,
+				"y": 220
+			}
+		},
+		{
+			"$type": "NodeEndPath",
+			"ID": "73d66209-10f3-4e14-82c4-5a42e7de7049",
+			"NextStoryName": "ending_02.json",
+			"EditorPosition": {
+				"x": 4260,
+				"y": 400
 			}
 		}
 	],
@@ -360,6 +385,11 @@
 	"Variables": [
 		{
 			"Name": "TookHelp",
+			"Value": false,
+			"Type": "Boolean"
+		},
+		{
+			"Name": "isDead",
 			"Value": false,
 			"Type": "Boolean"
 		}

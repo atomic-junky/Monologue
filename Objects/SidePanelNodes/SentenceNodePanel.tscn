@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bqeslfyg77nj6"]
+[gd_scene load_steps=5 format=3 uid="uid://bqeslfyg77nj6"]
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SentenceNodePanel.gd" id="1_626xh"]
-[ext_resource type="Script" path="res://Objects/SubComponents/MonologueOptionButton.gd" id="2_pjpsx"]
+[ext_resource type="PackedScene" uid="uid://o5dt5106rohh" path="res://Objects/SubComponents/FilePickerLineEdit.tscn" id="2_5dbww"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_c5sko"]
 font_color = Color(0.521569, 0.521569, 0.521569, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_h2s8p"]
+font_color = Color(0.768627, 0.180392, 0.25098, 1)
 
 [node name="SentenceNodePanel" type="VBoxContainer"]
 offset_right = 500.0

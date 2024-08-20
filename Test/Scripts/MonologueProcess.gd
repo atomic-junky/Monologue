@@ -1,11 +1,10 @@
-extends Control
-
 class_name MonologueProcess
+extends Control
 
 
 var dir_path
 
-
+var active_voiceline: SfxPlayer
 var root_node_id: String
 var node_list: Array
 var characters: Array
@@ -30,6 +29,9 @@ signal monologue_custom_action(raw_action: Dictionary)
 signal monologue_timer_started(wait_time: float)
 
 
+enum NotificationLevel {INFO, DEBUG, WARN, ERROR, CRITICAL}
+
+
 func _init():
 	print("[INFO] Monologue Process initiated")
 	monologue_node_reached.connect(_process_node)
@@ -39,7 +41,7 @@ func _init():
 	connect("ready", add_child.bind(timer))
 
 
-func load_dialogue(dialogue_name, custom_start_point = -1):
+func load_dialogue(dialogue_name, custom_start_id = null):
 	var path = dialogue_name + ".json"
 	dir_path = path.replace("/", "\\").split("\\")
 	dir_path.remove_at(len(dir_path)-1)
@@ -57,11 +59,11 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 	root_node_id = data.get("RootNodeID")
 	node_list = data.get("ListNodes")
 	characters = data.get("Characters")
-	variables = data.get("Variables")
+	variables = Util.merge_dict(data.get("Variables"), variables, "Name")
 	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	
-	next_id = custom_start_point
-	if !custom_start_point:
+	next_id = custom_start_id
+	if not custom_start_id or custom_start_id is not String:
 		next_id = root_node_id
 	
 	print("[INFO] Dialogue " + path + " loaded")
@@ -69,20 +71,20 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 
 func next():
 	timer.stop()  # prevent timer from counting down on skip
+	if active_voiceline and is_instance_valid(active_voiceline):
+		active_voiceline.queue_free()  # stop voiceline if still playing
+	active_voiceline = null
 	
 	# Check for an event
 	for event in events:
 		var condition = event.get("Condition")
 		var variable = get_variable(condition.get("Variable"))
+		if variable == null:
+			# used to call _notify() here but removed, gets called too often!
+			continue
 		
 		var v_val = variable.get("Value")
 		var c_val = condition.get("Value")
-		
-		if variable == null:
-			print("[WARNING] Can't find variable. Skipping")
-			next()
-			return
-			
 		var condition_pass: bool = false
 		match condition.get("Operator"):
 			"==":
@@ -97,7 +99,6 @@ func next():
 			monologue_event_triggered.emit(event)
 			fallback_id = next_id
 			next_id = event.get("NextID")
-			
 			events.erase(event)
 	
 	if next_id is float and next_id == -1:
@@ -108,10 +109,10 @@ func next():
 			monologue_end.emit(null)
 	
 	var node = find_node_from_id(next_id)
-	
 	if node:
 		monologue_node_reached.emit(node)
-	
+
+
 func _process_node(node: Dictionary):
 	match node.get("$type"):
 		"NodeRoot":
@@ -132,6 +133,17 @@ func _process_node(node: Dictionary):
 			var processed_sentence = process_conditional_text(node.get("Sentence"))
 			var speaker_name = node.get("DisplaySpeakerName") if node.get("DisplaySpeakerName") else get_speaker(node.get("SpeakerID"))
 			
+			var voiceline_path = node.get("VoicelinePath", "")
+			if voiceline_path != "":
+				if voiceline_path.is_relative_path():
+					voiceline_path = dir_path + "/" + voiceline_path
+				var player = SfxLoader.load_track(voiceline_path)
+				
+				if player is Error:
+					_notify(NotificationLevel.ERROR, "Voiceline not found!")
+				else:
+					active_voiceline = player
+			
 			monologue_sentence.emit(
 				processed_sentence,
 				get_speaker(node.get("SpeakerID")),
@@ -142,7 +154,7 @@ func _process_node(node: Dictionary):
 			for option_id in node.get("OptionsID"):
 				var option = find_node_from_id(option_id)
 				if not option:
-					print("[WARNING] Can't find option with id: " + option_id)
+					_notify(NotificationLevel.WARN, "Can't find option with id: " + option_id)
 					continue
 				if option.get("Enable") == false:
 					continue
@@ -168,7 +180,7 @@ func _process_node(node: Dictionary):
 					var option: Dictionary = find_node_from_id(raw_action.get("OptionID"))
 					
 					if option == null:
-						print("[WARNING] Can't find option. Skipping")
+						_notify(NotificationLevel.WARN, "Can't find option. Skipping.")
 						next()
 						return
 					
@@ -201,8 +213,11 @@ func _process_node(node: Dictionary):
 							var full_path = dir_path + "\\assets\\audios\\" + raw_action.get("Value")
 							var sound = null
 							if FileAccess.file_exists(full_path):
-								var track = SfxLoader.load_track(full_path, raw_action.get("Pitch"), raw_action.get("Volume"))
-								track.loop = raw_action.get("Loop")
+								var player = SfxLoader.load_track(full_path, raw_action.get("Pitch"), raw_action.get("Volume"))
+								if player is Error:
+									_notify(NotificationLevel.ERROR, "[ERROR] Audio file not found!")
+								else:
+									player.loop = raw_action.get("Loop")
 							
 							monologue_play_audio.emit(raw_action.get("Value"), sound)
 						"UpdateBackground":
@@ -213,7 +228,7 @@ func _process_node(node: Dictionary):
 							if FileAccess.file_exists(full_path):
 								var err = bg.load(full_path)
 								if err != OK:
-									print("[WARNING] Failed to load background (" + raw_action.get("Value") + ")")
+									_notify(NotificationLevel.WARN, "Failed to load background (" + raw_action.get("Value") + ")")
 								else:
 									texture = ImageTexture.create_from_image(bg)
 							
@@ -223,7 +238,7 @@ func _process_node(node: Dictionary):
 				"ActionTimer":
 					var time_to_wait = raw_action.get("Value", 0.0)
 					if not is_inside_tree():
-						print("[WARNING] MonologueProcess is not inside tree and can't create a timer...")
+						_notify(NotificationLevel.WARN, "MonologueProcess is not inside tree and can't create a timer...")
 					else:
 						timer.start(time_to_wait)
 						monologue_timer_started.emit(time_to_wait)
@@ -242,7 +257,7 @@ func _process_node(node: Dictionary):
 			next_id = if_nid
 			
 			if variable == null:
-				print("[WARNING] Can't find variable. Skipping")
+				_notify(NotificationLevel.WARN, "Can't find variable. Skipping.")
 				next()
 				return
 			
@@ -306,10 +321,10 @@ func process_conditional_text(text: String) -> String:
 		var variable = get_variable(var_name)
 		
 		if not variable:
-			print("[ERROR] Can't find the variable " + var_name)
+			_notify(NotificationLevel.ERROR, "Can't find the variable " + var_name)
 		
 		if variable.get("Type") != "Boolean":
-			print("[ERROR] The variable can only be of type Boolean (not " + variable.get("Type")  + ")")
+			_notify(NotificationLevel.ERROR, "The variable can only be of type Boolean (not " + variable.get("Type")  + ")")
 			return text
 		
 		if variable.get("Value") == true:
@@ -319,32 +334,25 @@ func process_conditional_text(text: String) -> String:
 		
 	return text
 
+
 func _default_end_process(raw_end):
-	if not raw_end:
-		return
+	if raw_end:
+		var next_story = raw_end.get("NextStoryName").trim_suffix(".json")
+		if next_story.is_relative_path():
+			next_story = dir_path + "/" + next_story
 		
-	var next_story = raw_end.get("NextStoryName")
-	
-	# Search in the same directory if the next story is in here.
-	var dir = DirAccess.open(dir_path)
-	
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if not dir.current_is_dir() and file_name == next_story + ".json":
-				load_dialogue(dir_path + "/" + next_story)
-				return true
-			file_name = dir.get_next()
-	
-	return dir != null
+		if FileAccess.file_exists(next_story + ".json"):
+			load_dialogue(next_story)
+			next()
+			return true
+	return false
 
 
 func option_selected(option):
 	monologue_option_choosed.emit(option)
 	
 	if option == null:
-		print("[CRITICAL] Can't find option. Unexpected exit.")
+		_notify(NotificationLevel.CRITICAL, "Can't find option. Unexpected exit.")
 		monologue_end.emit(null)
 		return
 	
@@ -354,3 +362,8 @@ func option_selected(option):
 		option["Enable"] = false
 	
 	next()
+
+
+# Maybe call this function _log or smth
+func _notify(_level: NotificationLevel, _text: String):
+	pass  # overridden by Main.gd

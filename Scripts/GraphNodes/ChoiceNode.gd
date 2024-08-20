@@ -72,6 +72,12 @@ func get_all_options_id() -> Array:
 		ids.append(dict.get("ID"))
 	return ids
 
+func get_graph_node(node_id):
+	var graph_node = null
+	for node in get_parent().get_children().filter(func(n): return n is GraphNode):
+		if node_id is String and node.id == node_id:
+			graph_node = node
+	return graph_node
 
 func get_option_reference(option_id: String):
 	for child in get_children():

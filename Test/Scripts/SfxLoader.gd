@@ -1,27 +1,28 @@
-extends Node
-
-class_name SfxLoaderInstance
+class_name SfxLoaderInstance extends Node
 
 
-func load_track(path: String, pitch: float = 1.0, volume: float = 0.0) -> SfxPlayer:
-	var Player = SfxPlayer.new()
+func load_track(path: String, pitch: float = 1.0, volume: float = 0.0, id: String = "") -> Variant:
+	var player = SfxPlayer.new()
 	
 	if path != "":
-		Player.pitch_scale = pitch
-		Player.volume_db = volume
-		var Stream: AudioStreamMP3 = AudioStreamMP3.new()
-		var File: FileAccess = FileAccess.open(path, FileAccess.READ)
-		if File != null:
-			Stream.data = File.get_buffer(File.get_length())
-			File.close()
+		player.pitch_scale = pitch
+		player.volume_db = volume
+		player.id = id
+		var stream: AudioStreamMP3 = AudioStreamMP3.new()
+		var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+		if file != null:
+			stream.data = file.get_buffer(file.get_length())
+			file.close()
+		else:
+			return ERR_FILE_NOT_FOUND
 		
-		Player.stream = Stream
+		player.stream = stream
 	else:
-		print("SfxLoader: File not provided")
+		return ERR_INVALID_PARAMETER
 	
-	add_child(Player)
-	Player.play()
-	return Player
+	add_child(player)
+	player.play()
+	return player
 
 
 func clear():

@@ -13,15 +13,8 @@ func _ready():
 	hide()
 
 
-func debug(text: String, time = DEFAULT_TIME):
-	notify(text, "DEBUG", Color("e5b65e"), time)
-
-
-func info(text: String, time = DEFAULT_TIME):
-	notify(text, "INFO", Color.DODGER_BLUE, time)
-
-
 func notify(text, tag, color, time):
+	print("[%s] %s" % [tag, text])
 	label.text = "[color=%s][%s][/color] %s" % [color.to_html(false), tag, text]
 	timeleft.custom_minimum_size.x = size.x
 	timeleft.get_theme_stylebox("panel").bg_color = color
@@ -31,3 +24,23 @@ func notify(text, tag, color, time):
 	tween.tween_property(timeleft, "custom_minimum_size:x", 0, time)
 	tween.tween_callback(hide)
 	show()
+
+
+func info(text: String, time = DEFAULT_TIME):
+	notify(text, "INFO", Color("579144"), time)
+
+
+func debug(text: String, time = DEFAULT_TIME):
+	notify(text, "DEBUG", Color("5e8de6"), time)
+
+
+func warn(text: String, time = DEFAULT_TIME):
+	notify(text, "WARN", Color("e5b65e"), time)
+
+
+func error(text: String, time = DEFAULT_TIME):
+	notify(text, "ERROR", Color("d19c9d"), time)
+
+
+func critical(text: String, time = DEFAULT_TIME):
+	notify(text, "CRITICAL", Color("d19c9d"), time)
