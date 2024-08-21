@@ -349,6 +349,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("12_5uhsv")]
 layout_mode = 1
+scroll_offset = Vector2(0, -23)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -587,7 +588,6 @@ access = 2
 use_native_dialog = true
 script = ExtResource("20_2dvte")
 
-[connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]

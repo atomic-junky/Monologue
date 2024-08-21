@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+App="*res://Scripts/Global/App.gd"
 uuid="*res://Scripts/Global/UUID.gd"
 Util="*res://Scripts/Global/Util.gd"
 GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
@@ -31,8 +32,7 @@ Path="*res://Scripts/Global/Path.gd"
 
 [display]
 
-window/size/viewport_width=1450
-window/size/viewport_height=750
+window/stretch/scale=2.09173
 window/per_pixel_transparency/allowed=true
 window/size/fullscreen=true
 
