@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=35 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -23,70 +23,21 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3npb4"]
 content_margin_left = 5.0
-content_margin_top = 3.0
+content_margin_top = 0.0
 content_margin_right = 5.0
-content_margin_bottom = 3.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-expand_margin_left = 5.0
-expand_margin_top = 2.0
-expand_margin_right = 5.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ao7wf"]
-content_margin_left = 5.0
-content_margin_top = 3.0
-content_margin_right = 5.0
-content_margin_bottom = 3.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-expand_margin_left = 5.0
-expand_margin_top = 2.0
-expand_margin_right = 5.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
-content_margin_left = 5.0
-content_margin_top = 3.0
-content_margin_right = 5.0
-content_margin_bottom = 3.0
-bg_color = Color(0.0859375, 0.101563, 0.125, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-expand_margin_left = 5.0
-expand_margin_top = 2.0
-expand_margin_right = 5.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ux1f6"]
-content_margin_left = 0.0
-bg_color = Color(1, 1, 1, 1)
+content_margin_bottom = 0.0
+bg_color = Color(0.243137, 0.278431, 0.419608, 1)
 corner_radius_top_left = 1
 corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
-expand_margin_left = 1.0
-expand_margin_top = 2.0
-expand_margin_right = 1.0
-expand_margin_bottom = 2.0
+corner_detail = 12
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dg27m"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knd4m"]
 content_margin_left = 0.0
@@ -116,13 +67,9 @@ font_size = 12
 font_color = Color(0.647059, 0.858824, 0.505882, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tyw4k"]
-content_margin_left = 7.0
-content_margin_right = 7.0
+content_margin_left = 10.0
+content_margin_right = 10.0
 bg_color = Color(0.768627, 0.180392, 0.25098, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ehqk"]
 bg_color = Color(0.129412, 0.14902, 0.180392, 1)
@@ -201,10 +148,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
 [node name="MainContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -217,11 +164,10 @@ theme_override_constants/v_separation = 10
 
 [node name="MenuBar" type="MenuBar" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
-mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 theme_override_styles/hover = SubResource("StyleBoxFlat_3npb4")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ao7wf")
-theme_override_styles/normal = SubResource("StyleBoxFlat_22xm7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3npb4")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dg27m")
 
 [node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 transparent_bg = true
@@ -237,7 +183,7 @@ item_3/id = 3
 item_4/text = "Test File"
 item_4/id = 4
 
-[node name="Add" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
+[node name="Edit" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 size = Vector2i(119, 100)
 item_count = 9
 item_0/text = "Sentence"
@@ -272,23 +218,14 @@ size = Vector2i(126, 247)
 item_count = 1
 item_0/text = "Wiki"
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-theme_override_constants/separation = 0
-theme_override_styles/separator = SubResource("StyleBoxFlat_ux1f6")
-
-[node name="Save" type="Button" parent="MarginContainer/MainContainer/Header"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "Save"
-
 [node name="SaveProgressBarContainer" type="MarginContainer" parent="MarginContainer/MainContainer/Header"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="SaveProgressBar" type="ProgressBar" parent="MarginContainer/MainContainer/Header/SaveProgressBarContainer"]
+visible = false
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -299,6 +236,7 @@ rounded = true
 show_percentage = false
 
 [node name="SavedNotification" type="Label" parent="MarginContainer/MainContainer/Header"]
+visible = false
 layout_mode = 2
 text = "✅ SAVED"
 label_settings = SubResource("LabelSettings_gptd3")
@@ -312,7 +250,7 @@ alignment = 2
 [node name="Test" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 theme_override_styles/focus = SubResource("StyleBoxFlat_tyw4k")
 theme_override_styles/normal = SubResource("StyleBoxFlat_tyw4k")
 text = "Test"
@@ -330,14 +268,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/separation = 0
 
 [node name="TabBar" type="TabBar" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-size_flags_horizontal = 0
 mouse_default_cursor_shape = 2
 theme_override_icons/close = ExtResource("5_f42wd")
-clip_tabs = false
 tab_close_display_policy = 1
 tab_count = 1
 tab_0/title = "+"
@@ -349,7 +286,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("12_5uhsv")]
 layout_mode = 1
-scroll_offset = Vector2(0, -23)
+scroll_offset = Vector2(0, -17)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -589,9 +526,8 @@ use_native_dialog = true
 script = ExtResource("20_2dvte")
 
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
-[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
+[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Edit" to="." method="_on_add_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
 [connection signal="tab_close_pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_close_pressed"]

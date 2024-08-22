@@ -30,12 +30,9 @@ var scene_dictionary = {
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
 @onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
-@onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
 @onready var graph_node_selecter = $GraphNodeSelecter
-@onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
-@onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
-@onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Add
+@onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Edit
 @onready var file_dialog = $FileDialog
 @onready var no_interactions_dimmer = $NoInteractions
 @onready var welcome_window = $WelcomeWindow
@@ -63,9 +60,6 @@ func _ready():
 	var new_root_node = root_scene.instantiate()
 	get_current_graph_edit().add_child(new_root_node)
 	connect_side_panel(get_current_graph_edit())
-	
-	saved_notification.hide()
-	save_progress_bar.hide()
 	
 	# Load recent files
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
@@ -118,7 +112,6 @@ func _shortcut_input(event):
 func _to_dict() -> Dictionary:
 	var list_nodes: Array[Dictionary] = []
 	var graph_edit = get_current_graph_edit()
-	save_progress_bar.max_value = graph_edit.get_nodes().size() + 1
 	
 	# compile all node data of the current graph edit
 	for node in graph_edit.get_nodes():
@@ -137,8 +130,6 @@ func _to_dict() -> Dictionary:
 		if node.node_type == "NodeChoice":
 			for child in node.get_children():
 				list_nodes.append(child._to_dict())
-		
-		save_progress_bar.value = list_nodes.size()
 	
 	# build data for dialogue speakers
 	var characters = graph_edit.speakers
@@ -147,7 +138,6 @@ func _to_dict() -> Dictionary:
 			"Reference": "_NARRATOR",
 			"ID": 0
 		})
-	save_progress_bar.value += 1
 	
 	return {
 		"EditorVersion": ProjectSettings.get_setting("application/config/version", "unknown"),
@@ -259,15 +249,10 @@ func load_project(path):
 
 
 func save(quick: bool = false):
-	save_progress_bar.value = 0
-	save_progress_bar.show()
-	save_button.hide()
 	test_button.hide()
 	
 	var data = JSON.stringify(_to_dict(), "\t", false, true)
-	if not data: # Fail to load 
-		save_progress_bar.hide()
-		save_button.show()
+	if not data: # Fail to load
 		test_button.show()
 	
 	var graph_edit = get_current_graph_edit()
@@ -277,12 +262,8 @@ func save(quick: bool = false):
 	graph_edit.update_version()
 	update_tab_savestate(graph_edit)
 	
-	saved_notification.show()
 	if !quick:
 		await get_tree().create_timer(1.5).timeout
-	saved_notification.hide()
-	save_progress_bar.hide()
-	save_button.show()
 	test_button.show()
 
 ###############################
