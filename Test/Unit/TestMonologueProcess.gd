@@ -153,7 +153,28 @@ func test_process_action_variable_divide():
 
 func test_process_conditional_text_base():
 	var text = "{{       big        }}"
-	assert_str(runner.process_conditional_text(text)).is_equal(text)
+	assert_str(runner.process_conditional_text(text)).is_equal("true")
+
+
+func test_process_conditional_text_calculation_nested():
+	var text = "{{ if age == 2+3 then if big then 9 * 4.2 - 1 else a else b }}"
+	assert_str(runner.process_conditional_text(text)).is_equal("36.8")
+
+
+func test_process_conditional_text_calculation_numbers():
+	var text = "{{ 4 * 1.5 + 20 / 5 }}"
+	assert_str(runner.process_conditional_text(text)).is_equal("10")
+
+
+func test_process_conditional_text_calculation_variable():
+	var text = "{{ 10 + years }}"
+	assert_str(runner.process_conditional_text(text)).is_equal("52")
+
+
+func test_process_conditional_text_calculation_wrong_type():
+	var text = "{{10 - 1 +  x}}"
+	# even if substitution happened, spacing is preserved if no evaluation
+	assert_str(runner.process_conditional_text(text)).is_equal("10 - 1 +  true")
 
 
 func test_process_conditional_text_missing_variable():
@@ -176,18 +197,28 @@ func test_process_conditional_text_comparison():
 	assert_str(runner.process_conditional_text(calc_text)).is_equal("He's 1")
 
 
-func test_process_conditional_text_string():
+func test_process_conditional_text_string_as_is():
+	var text = "{{ \"big\" }}"
+	assert_str(runner.process_conditional_text(text)).is_equal("big")
+
+
+func test_process_conditional_text_string_evaluation():
 	var str_text = "{{if word.contains(\"red\") then SPECIAL else BORING}}"
 	assert_str(runner.process_conditional_text(str_text)).is_equal("SPECIAL")
 
 
+func test_process_conditional_text_string_quoted():
+	var text = "{{ '\"big\"' }}"
+	assert_str(runner.process_conditional_text(text)).is_equal("\"big\"")
+
+
 func test_process_conditional_text_if_only():
-	var text = "What is {{ if big}}"
-	assert_str(runner.process_conditional_text(text)).is_equal(text)
+	var text = "X {{ if big}}"
+	assert_str(runner.process_conditional_text(text)).is_equal("X  if true")
 
 
 func test_process_conditional_text_if_then_true():
-	var text = "Hey {{ if big then big guy}}"
+	var text = "Hey {{ if big then \"big guy\"}}"
 	assert_str(runner.process_conditional_text(text)).is_equal("Hey big guy")
 
 

@@ -245,7 +245,7 @@ func process_conditional_text(text: String) -> String:
 	var results = regex.search_all(text)
 	for result in results:
 		var target = result.get_string()
-		var replacement = str(evaluate_expression(target))
+		var replacement = str(evaluate_expression(substitute_variables(target)))
 		if target != replacement:
 			text = text.replace("{{" + target + "}}", replacement)
 	return text
@@ -258,7 +258,6 @@ func evaluate_expression(expression: String) -> Variant:
 		if t_split.size() > 1:
 			# the first element is the "if <<variable>>" clause
 			var check = t_split[0].strip_edges().trim_prefix("if").lstrip(" ")
-			check = substitute_variables(check)
 			
 			# evaluate condition check to has_passed
 			var has_passed = false
