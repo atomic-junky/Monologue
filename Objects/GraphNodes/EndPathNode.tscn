@@ -43,6 +43,7 @@ slot/0/draw_stylebox = false
 script = ExtResource("1_vdup8")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(87, 87)
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("2_nabb1")
