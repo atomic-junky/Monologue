@@ -288,7 +288,9 @@ func substitute_variables(expression: String) -> String:
 	var subber = RegEx.new()
 	subber.compile("['\"]?[a-zA-Z][\\w]*['\"]?")
 	var results = subber.search_all(expression)
-	var difference = 0
+	var start = 0
+	var builder = ""
+	
 	for result in results:
 		var text = result.get_string()
 		if text.contains("\"") or text.contains("'"):
@@ -299,12 +301,13 @@ func substitute_variables(expression: String) -> String:
 			var value = str(variable.get("Value"))
 			# encase value in quotes if type is String
 			if variable.get("Type") == "String":
-				value = "\"" + value + "\"" 
-			var start = result.get_start() + difference
-			expression = expression.erase(start, text.length())
-			expression = expression.insert(start, value)
-			difference += value.length() - text.length()
-	return expression
+				value = "\"" + value + "\""
+			builder += expression.substr(start, result.get_start() - start)
+			builder += value
+			start = result.get_end()
+	
+	builder += expression.substr(start, expression.length() - start)
+	return builder
 
 
 func get_speaker_name(speaker_id) -> String:

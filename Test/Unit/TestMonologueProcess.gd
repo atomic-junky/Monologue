@@ -327,3 +327,13 @@ func test_skip_voiceline():
 	assert_object(runner.active_voiceline).is_not_null()
 	runner.skip_voiceline()
 	assert_object(runner.active_voiceline).is_null()
+
+
+func test_substitute_variables():
+	var subbed = runner.substitute_variables("age == years * hah - red + y")
+	assert_str(subbed).is_equal("5 == 42 * hah - \"APPLE\" + true")
+
+
+func test_substitute_variables_conditional():
+	var subbed = runner.substitute_variables("if age > 20 then word else b")
+	assert_str(subbed).is_equal("if 5 > 20 then \"kindred\" else b")
