@@ -1,4 +1,4 @@
-# Monologue is a powerful non-linear dialogue editor made for any game engine. 🦖
+# Monologue is a powerful non-linear dialogue editor. 🦖
 
 *You can find the wiki [here](https://github.com/atomic-junky/Monologue/wiki).*
 
@@ -11,9 +11,6 @@ The principle of Monologue is to assign a unique ID to each node, so that any no
 
 ## Super Simple export
 Monologue is working with just a simple JSON file and nothing else. You just need to save your chnages and it will update your JSON file.
-
-The advantage of working with a JSON file is that it's easy to use with any other game engine or programming language.
-
 
 ## Features
 - Easy to use: A simple and intuitive user interface.
