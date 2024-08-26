@@ -64,7 +64,7 @@ import/blender/enabled=false
 
 [gdunit4]
 
-settings/test/test_lookup_folder="unit_tests"
+settings/test/test_lookup_folder="Unit"
 ui/toolbar/run_overall=true
 
 [gui]
