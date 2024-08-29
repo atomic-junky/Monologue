@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="14_8lefg"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 [ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://Objects/SubComponents/CloseButton.tscn" id="17_af4y3"]
+[ext_resource type="PackedScene" uid="uid://dbq34pvukxcce" path="res://Objects/SubComponents/RecentFilesContainer.tscn" id="18_u72t5"]
 [ext_resource type="Script" path="res://Scripts/GlobalFileDialog.gd" id="20_2dvte"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3npb4"]
@@ -176,9 +177,6 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 anti_aliasing = false
-
-[sub_resource type="LabelSettings" id="LabelSettings_1l82f"]
-font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7mcdy"]
 font_color = Color(0.423529, 0.423529, 0.423529, 1)
@@ -349,6 +347,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("12_5uhsv")]
 layout_mode = 1
+scroll_offset = Vector2(0, -23)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -546,20 +545,9 @@ mouse_default_cursor_shape = 2
 text = "Open File..."
 icon = ExtResource("6_vjwwg")
 
-[node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="RecentFilesLabel" type="Label" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
-layout_mode = 2
-text = "Recent files"
-label_settings = SubResource("LabelSettings_1l82f")
-
-[node name="RecentFilesButtonContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
+[node name="RecentFilesContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2" instance=ExtResource("18_u72t5")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
 
 [node name="VersionLabel" type="Label" parent="WelcomeWindow/PanelContainer"]
 layout_mode = 2

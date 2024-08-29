@@ -4,7 +4,6 @@ extends Control
 var dialog = {}
 var dialog_for_localisation = []
 
-const HISTORY_FILE_PATH: String = "user://history.save"
 const UNSAVED_FILE_SUFFIX: String = "*"
 
 ## Dictionary of Monologue node types and their corresponding scenes.
@@ -25,7 +24,6 @@ var scene_dictionary = {
 
 @onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
-@onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
@@ -66,37 +64,6 @@ func _ready():
 	
 	saved_notification.hide()
 	save_progress_bar.hide()
-	
-	# Load recent files
-	if not FileAccess.file_exists(HISTORY_FILE_PATH):
-		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
-		%RecentFilesContainer.hide()
-	else:
-		var file = FileAccess.open(HISTORY_FILE_PATH, FileAccess.READ)
-		var raw_data = file.get_as_text()
-		if raw_data:
-			var data: Array = JSON.parse_string(raw_data)
-			for path in data:
-				if FileAccess.file_exists(path):
-					continue
-				data.erase(path)
-			for path in data.slice(0, 3):
-				var btn: Button = recent_file_button.instantiate()
-				var btn_text = path.replace("\\", "/")
-				btn_text = btn_text.replace("//", "/")
-				btn_text = btn_text.split("/")
-				if btn_text.size() >= 2:
-					btn_text = btn_text.slice(-2, btn_text.size())
-					btn_text = btn_text[0].path_join(btn_text[1])
-				else:
-					btn_text = btn_text.back()
-				
-				btn.text = Util.truncate_filename(btn_text)
-				btn.pressed.connect(file_selected.bind(path, 1))
-				%RecentFilesButtonContainer.add_child(btn)
-			%RecentFilesContainer.show()
-		else:
-			%RecentFilesContainer.hide()
 	
 	welcome_window.show()
 	no_interactions_dimmer.show()
@@ -376,24 +343,7 @@ func file_selected(path, open_mode):
 		graph_edit.add_child(new_root_node)
 		await save(true)
 
-	if not FileAccess.file_exists(HISTORY_FILE_PATH):
-		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
-	else:
-		var file: FileAccess = FileAccess.open(HISTORY_FILE_PATH, FileAccess.READ_WRITE)
-		var raw_data = file.get_as_text()
-		var data: Array
-		if raw_data:
-			data = JSON.parse_string(raw_data)
-			data.erase(path)
-			data.insert(0, path)
-		else:
-			data = [path]
-		for p in data:
-			if FileAccess.file_exists(p):
-				continue
-			data.erase(p)
-		file = FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
-		file.store_string(JSON.stringify(data.slice(0, 10)))
+	%RecentFilesContainer.save_history(path)
 	
 	load_project(path)
 
