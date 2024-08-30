@@ -323,7 +323,6 @@ mouse_filter = 2
 [node name="GraphEditSwitcher" parent="MarginContainer/MainContainer/GraphEditsArea" node_paths=PackedStringArray("side_panel", "no_interactions_dimmer", "welcome_window") instance=ExtResource("11_ktgpb")]
 unique_name_in_owner = true
 layout_mode = 1
-scroll_offset = Vector2(0, -23)
 side_panel = NodePath("../MarginContainer/SidePanelNodeDetails")
 no_interactions_dimmer = NodePath("../../../../NoInteractions")
 welcome_window = NodePath("../../../../WelcomeWindow")

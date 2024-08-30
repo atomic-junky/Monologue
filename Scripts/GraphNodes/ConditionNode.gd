@@ -62,6 +62,14 @@ func _condtion_to_dict() -> Dictionary:
 	}
 
 
+func _load_connections(data: Dictionary, key: String = "IfNextID") -> void:
+	super._load_connections(data, key)
+	var else_next_id = data.get("ElseNextID")
+	if else_next_id is String:
+		var else_next_node = get_parent().get_node_by_id(else_next_id)
+		get_parent().connect_node(name, 1, else_next_node.name, 0)
+
+
 func _update(panel: ConditionNodePanel = null):
 	if panel != null:
 		if panel.variable_drop_node.selected >= 0:

@@ -165,9 +165,10 @@ func get_root_node() -> RootNode:
 
 
 func get_node_by_id(id: String) -> MonologueGraphNode:
-	for node in get_nodes():
-		if node.id == id:
-			return node
+	if not id.is_empty():
+		for node in get_nodes():
+			if node.id == id:
+				return node
 	return null
 
 

@@ -121,20 +121,18 @@ func get_root_dict(nodes):
 func load_project(path):
 	if not FileAccess.file_exists(path):
 		return
-	
 	no_interactions_dimmer.hide()
-	var graph_edit = graph_switcher.current
 	
-	var file := FileAccess.get_file_as_string(path)
-	graph_edit.name = path.get_file().trim_suffix(".json")
-	var data := {}
-	data = JSON.parse_string(file)
-
+	var file = FileAccess.get_file_as_string(path)
+	var data = JSON.parse_string(file)
+	file.close()
 	if not data:
 		data = _to_dict()
 		save(true)
 	
 	live_dict = data
+	var graph_edit = graph_switcher.current
+	graph_edit.name = path.get_file().trim_suffix(".json")
 	graph_edit.speakers = data.get("Characters")
 	graph_edit.variables = data.get("Variables")
 	
@@ -160,37 +158,9 @@ func load_project(path):
 	
 	# load connections for the created nodes
 	for node in node_list:
-		if not node.has("ID"):
-			continue
-		
-		var current_node = graph_edit.get_node_by_id(node.get("ID"))
-		match node.get("$type"):
-			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent":
-				if node.get("NextID") is String:
-					var next_node = graph_edit.get_node_by_id(node.get("NextID"))
-					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
-			"NodeChoice":
-				current_node._update()
-			"NodeDiceRoll":
-				if node.get("PassID") is String:
-					var pass_node = graph_edit.get_node_by_id(node.get("PassID"))
-					graph_edit.connect_node(current_node.name, 0, pass_node.name, 0)
-				
-				if node.get("FailID") is String:
-					var fail_node = graph_edit.get_node_by_id(node.get("FailID"))
-					graph_edit.connect_node(current_node.name, 1, fail_node.name, 0)
-			"NodeCondition":
-				if node.get("IfNextID") is String:
-					var if_node = graph_edit.get_node_by_id(node.get("IfNextID"))
-					graph_edit.connect_node(current_node.name, 0, if_node.name, 0)
-				
-				if node.get("ElseNextID") is String:
-					var else_node = graph_edit.get_node_by_id(node.get("ElseNextID"))
-					graph_edit.connect_node(current_node.name, 1, else_node.name, 0)
-		
-		if not current_node: # OptionNode
-			continue
-		
+		var current_node = graph_edit.get_node_by_id(node.get("ID", ""))
+		if current_node:
+			current_node._load_connections(node)
 		if node.has("EditorPosition"):
 			current_node.position_offset.x = node.EditorPosition.get("x")
 			current_node.position_offset.y = node.EditorPosition.get("y")
@@ -386,7 +356,7 @@ func _on_help_id_pressed(id):
 			OS.shell_open("https://github.com/atomic-junky/Monologue/wiki")
 
 
-func _notification(what):
+func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		get_viewport().gui_release_focus()
 		graph_switcher.is_closing_all_tabs = true

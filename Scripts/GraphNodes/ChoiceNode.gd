@@ -113,6 +113,10 @@ func update_next_id(from_port: int, next_node: MonologueGraphNode):
 		option_node.next_id = options[from_port].get("NextID")
 
 
+func _load_connections(_data: Dictionary, _key: String = "") -> void:
+	_update()
+
+
 func _update(panel: ChoiceNodePanel = null):
 	if panel != null:
 		if options.size() != panel.options_container.get_child_count():
