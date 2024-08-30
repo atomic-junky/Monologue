@@ -61,9 +61,10 @@ func new_graph_edit() -> void:
 	var root_node = root_node_scene.instantiate()
 	
 	graph_edit.name = "new"
+	graph_edit.undo_redo.connect("version_changed", update_save_state)
+	graph_edit.add_child(root_node)
 	connect_side_panel(graph_edit)
 	graph_edits.add_child(graph_edit)
-	graph_edit.add_child(root_node)
 	
 	for ge in graph_edits.get_children():
 		ge.visible = ge == graph_edit

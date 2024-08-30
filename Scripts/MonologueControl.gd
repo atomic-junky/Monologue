@@ -22,7 +22,6 @@ var scene_dictionary = {
 
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 
-@onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
 @onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
 @onready var graph_switcher = %GraphEditSwitcher
 @onready var graph_node_selecter = $GraphNodeSelecter
@@ -53,10 +52,8 @@ var picker_position
 
 func _ready():
 	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
-	
 	saved_notification.hide()
 	save_progress_bar.hide()
-	
 	welcome_window.show()
 	no_interactions_dimmer.show()
 	
@@ -118,21 +115,20 @@ func get_root_dict(nodes):
 			return node
 
 
-func file_selected(path, open_mode):
+func open_project(path, is_new_project: bool = true):
 	var openable = FileAccess.open(path, FileAccess.READ)
 	if not openable or graph_switcher.is_file_opened(path):
 		return
 	openable.close()
 	
-	no_interactions_dimmer.hide()
 	graph_switcher.add_tab(path.get_file())
 	var graph_edit = graph_switcher.current
 	graph_edit.control_node = self
 	graph_edit.file_path = path
-	graph_edit.undo_redo.connect("version_changed", graph_switcher.update_save_state)
 	
+	no_interactions_dimmer.hide()
 	welcome_window.hide()
-	if open_mode == 0: #NEW
+	if is_new_project:
 		for node in graph_edit.get_nodes():
 			node.queue_free()
 		var new_root_node = root_scene.instantiate()
@@ -145,10 +141,6 @@ func file_selected(path, open_mode):
 
 
 func load_project(path):
-	if not FileAccess.file_exists(path):
-		return
-	no_interactions_dimmer.hide()
-	
 	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
 	if not data:
 		data = _to_dict()
@@ -279,9 +271,9 @@ func _on_file_dialog_selected(path: String):
 	match file_dialog.file_mode:
 		FileDialog.FILE_MODE_SAVE_FILE:
 			FileAccess.open(path, FileAccess.WRITE)
-			file_selected(path, 0)
+			open_project(path)
 		FileDialog.FILE_MODE_OPEN_FILE:
-			file_selected(path, 1)
+			open_project(path, false)
 
 ##################################
 #  Graph node selecter (picker)  #
