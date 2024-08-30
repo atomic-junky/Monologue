@@ -14,8 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://kqhi8rimv1go" path="res://Assets/Icons/NodesIcons/Exit.svg" id="8_hudw3"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
 [ext_resource type="Texture2D" uid="uid://dl3u1xdqd3d66" path="res://Assets/Icons/NodesIcons/Event.svg" id="10_2h2fa"]
+[ext_resource type="PackedScene" uid="uid://cvjfcgqktlyc2" path="res://Objects/SubComponents/GraphEditSwitcher.tscn" id="11_ktgpb"]
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
-[ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/MonologueGraphEdit.tscn" id="12_5uhsv"]
 [ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="14_8lefg"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 [ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://Objects/SubComponents/CloseButton.tscn" id="17_af4y3"]
@@ -322,33 +322,12 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
+[node name="GraphEditSwitcher" parent="MarginContainer/MainContainer/GraphEditsArea" node_paths=PackedStringArray("side_panel", "no_interactions_dimmer", "welcome_window") instance=ExtResource("11_ktgpb")]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="TabBar" type="TabBar" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-size_flags_horizontal = 0
-mouse_default_cursor_shape = 2
-theme_override_icons/close = ExtResource("5_f42wd")
-clip_tabs = false
-tab_close_display_policy = 1
-tab_count = 1
-tab_0/title = "+"
-
-[node name="GraphEdits" type="Control" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("12_5uhsv")]
-layout_mode = 1
+side_panel = NodePath("../MarginContainer/SidePanelNodeDetails")
+no_interactions_dimmer = NodePath("../../../../NoInteractions")
+welcome_window = NodePath("../../../../WelcomeWindow")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -592,8 +571,6 @@ script = ExtResource("20_2dvte")
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
-[connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
-[connection signal="tab_close_pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_close_pressed"]
 [connection signal="text_changed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_line_edit_id_text_changed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/CopyIDBtn" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_id_copy_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TFHBtn" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_tfh_btn_pressed"]
@@ -610,6 +587,6 @@ script = ExtResource("20_2dvte")
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="GraphNodeSelecter" method="_on_selector_btn_pressed" binds= ["EndPath"]]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/CloseButton" to="." method="close_welcome_tab"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CloseButton" to="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher" method="_on_welcome_close"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_selected"]
 [connection signal="file_selected" from="FileDialogv2" to="FileDialogv2" method="_on_file_selected"]
