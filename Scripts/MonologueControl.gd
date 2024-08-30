@@ -118,14 +118,38 @@ func get_root_dict(nodes):
 			return node
 
 
+func file_selected(path, open_mode):
+	var openable = FileAccess.open(path, FileAccess.READ)
+	if not openable or graph_switcher.is_file_opened(path):
+		return
+	openable.close()
+	
+	no_interactions_dimmer.hide()
+	graph_switcher.add_tab(path.get_file())
+	var graph_edit = graph_switcher.current
+	graph_edit.control_node = self
+	graph_edit.file_path = path
+	graph_edit.undo_redo.connect("version_changed", graph_switcher.update_save_state)
+	
+	welcome_window.hide()
+	if open_mode == 0: #NEW
+		for node in graph_edit.get_nodes():
+			node.queue_free()
+		var new_root_node = root_scene.instantiate()
+		graph_edit.add_child(new_root_node)
+		await save(true)
+
+	%RecentFilesContainer.add(path)
+	
+	load_project(path)
+
+
 func load_project(path):
 	if not FileAccess.file_exists(path):
 		return
 	no_interactions_dimmer.hide()
 	
-	var file = FileAccess.get_file_as_string(path)
-	var data = JSON.parse_string(file)
-	file.close()
+	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
 	if not data:
 		data = _to_dict()
 		save(true)
@@ -258,33 +282,6 @@ func _on_file_dialog_selected(path: String):
 			file_selected(path, 0)
 		FileDialog.FILE_MODE_OPEN_FILE:
 			file_selected(path, 1)
-
-
-func file_selected(path, open_mode):
-	var openable = FileAccess.open(path, FileAccess.READ)
-	if not openable or graph_switcher.is_file_opened(path):
-		return
-	
-	openable.close()
-	no_interactions_dimmer.hide()
-	graph_switcher.add_tab(path.get_file())
-	
-	var graph_edit = graph_switcher.current
-	graph_edit.control_node = self
-	graph_edit.file_path = path
-	graph_edit.undo_redo.connect("version_changed", graph_switcher.update_save_state)
-	
-	welcome_window.hide()
-	if open_mode == 0: #NEW
-		for node in graph_edit.get_nodes():
-			node.queue_free()
-		var new_root_node = root_scene.instantiate()
-		graph_edit.add_child(new_root_node)
-		await save(true)
-
-	%RecentFilesContainer.save_history(path)
-	
-	load_project(path)
 
 ##################################
 #  Graph node selecter (picker)  #
