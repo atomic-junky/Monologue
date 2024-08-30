@@ -49,6 +49,10 @@ func add_to(graph):
 	return created
 
 
+func _load_connections(data: Dictionary, key: String = "") -> void:
+	return  # BridgeIn uses NextID covertly, not as a graph connection
+
+
 func _on_close_request():
 	queue_free()
 	get_parent().clear_all_empty_connections()
