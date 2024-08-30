@@ -1,3 +1,4 @@
+class_name PromptWindow
 extends Window
 
 
@@ -14,7 +15,8 @@ const SAVE_PROMPT = "%s has been modified, save changes?"
 
 
 func prompt_save(filename: String):
-	prompt_label.text = SAVE_PROMPT % Util.truncate_filename(filename)
+	if prompt_label:
+		prompt_label.text = SAVE_PROMPT % Util.truncate_filename(filename)
 	show()
 
 

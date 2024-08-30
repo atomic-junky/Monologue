@@ -4,8 +4,6 @@ extends Control
 var dialog = {}
 var dialog_for_localisation = []
 
-const UNSAVED_FILE_SUFFIX: String = "*"
-
 ## Dictionary of Monologue node types and their corresponding scenes.
 var scene_dictionary = {
 	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),
@@ -22,13 +20,11 @@ var scene_dictionary = {
 	"Sentence": preload("res://Objects/GraphNodes/SentenceNode.tscn"),
 }
 
-@onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 
-@onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
-@onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
 @onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
 @onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
+@onready var graph_switcher = %GraphEditSwitcher
 @onready var graph_node_selecter = $GraphNodeSelecter
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
 @onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
@@ -43,7 +39,6 @@ var live_dict: Dictionary
 
 ## Set to true if a file operation is triggered from Header instead of WelcomeWindow.
 var is_header_file_operation: bool = false
-var is_closing_all_tabs: bool = false
 
 var initial_pos = Vector2(40,40)
 var option_index = 0
@@ -58,9 +53,6 @@ var picker_position
 
 func _ready():
 	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
-	var new_root_node = root_scene.instantiate()
-	get_current_graph_edit().add_child(new_root_node)
-	connect_side_panel(get_current_graph_edit())
 	
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -69,7 +61,9 @@ func _ready():
 	no_interactions_dimmer.show()
 	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
+	GlobalSignal.add_listener("disable_picker_mode", disable_picker_mode)
 	GlobalSignal.add_listener("test_trigger", test_project)
+	GlobalSignal.add_listener("save", save)
 
 
 func _shortcut_input(event):
@@ -77,14 +71,14 @@ func _shortcut_input(event):
 		save(false)
 	# IMPORTANT: order matters, redo must come first, undo second
 	elif event.is_action_pressed("Redo"):
-		get_current_graph_edit().trigger_redo()
+		graph_switcher.current.trigger_redo()
 	elif event.is_action_pressed("Undo"):
-		get_current_graph_edit().trigger_undo()
+		graph_switcher.current.trigger_undo()
 
 
 func _to_dict() -> Dictionary:
 	var list_nodes: Array[Dictionary] = []
-	var graph_edit = get_current_graph_edit()
+	var graph_edit = graph_switcher.current
 	save_progress_bar.max_value = graph_edit.get_nodes().size() + 1
 	
 	# compile all node data of the current graph edit
@@ -92,14 +86,7 @@ func _to_dict() -> Dictionary:
 		if node.is_queued_for_deletion():
 			continue
 		
-		# if side panel is still open, release the focus so that some
-		# text controls trigger the focus_exited() signal to update
-		if side_panel_node.visible and side_panel_node.selected_node == node:
-			var refocus = get_viewport().gui_get_focus_owner()
-			if refocus:
-				refocus.release_focus()
-				refocus.grab_focus()
-		
+		graph_switcher.commit_side_panel(node)
 		list_nodes.append(node._to_dict())
 		if node.node_type == "NodeChoice":
 			for child in node.get_children():
@@ -125,15 +112,6 @@ func _to_dict() -> Dictionary:
 	}
 
 
-func connect_side_panel(graph_edit: MonologueGraphEdit) -> void:
-	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
-	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
-
-
-func get_current_graph_edit() -> MonologueGraphEdit:
-	return graph_edits.get_child(tab_bar.current_tab)
-
-
 func get_root_dict(nodes):
 	for node in nodes:
 		if node.get("$type") == "NodeRoot":
@@ -145,7 +123,7 @@ func load_project(path):
 		return
 	
 	no_interactions_dimmer.hide()
-	var graph_edit = get_current_graph_edit()
+	var graph_edit = graph_switcher.current
 	
 	var file := FileAccess.get_file_as_string(path)
 	graph_edit.name = path.get_file().trim_suffix(".json")
@@ -237,12 +215,11 @@ func save(quick: bool = false):
 		save_button.show()
 		test_button.show()
 	
-	var graph_edit = get_current_graph_edit()
-	var file = FileAccess.open(graph_edit.file_path, FileAccess.WRITE)
+	var path = graph_switcher.current.file_path
+	var file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
-	graph_edit.update_version()
-	update_tab_savestate(graph_edit)
+	graph_switcher.update_save_state()
 	
 	saved_notification.show()
 	if !quick:
@@ -264,19 +241,19 @@ func _on_add_id_pressed(id):
 ## Function callback for when the user wants to add a node from global context.
 ## Used by header menu and graph node selector (picker).
 func add_node_from_global(node_type):
-	get_current_graph_edit().add_node(node_type)
+	graph_switcher.current.add_node(node_type)
 
 
 func test_project(from_node: String = "-1"):
 	await save(true)
 	
 	var global_vars = get_node("/root/GlobalVariables")
-	global_vars.test_path = get_current_graph_edit().file_path
+	global_vars.test_path = graph_switcher.current.file_path
 	
 	var test_instance = preload("res://Test/Menu.tscn")
 	var test_scene = test_instance.instantiate()
 	
-	if get_current_graph_edit().get_node_by_id(from_node) != null:
+	if graph_switcher.current.get_node_by_id(from_node) != null:
 		test_scene._from_node_id = from_node
 	
 	get_tree().root.add_child(test_scene)
@@ -303,7 +280,7 @@ func _on_file_dialog_selected(path: String):
 	if is_header_file_operation:
 		welcome_window.hide()
 		file_dialog.hide()
-		new_graph_edit()
+		graph_switcher.new_graph_edit()
 	
 	match file_dialog.file_mode:
 		FileDialog.FILE_MODE_SAVE_FILE:
@@ -314,26 +291,18 @@ func _on_file_dialog_selected(path: String):
 
 
 func file_selected(path, open_mode):
-	if not FileAccess.open(path, FileAccess.READ):
+	var openable = FileAccess.open(path, FileAccess.READ)
+	if not openable or graph_switcher.is_file_opened(path):
 		return
 	
-	for ge in graph_edits.get_children():
-		if not ge is MonologueGraphEdit:
-			continue
-		
-		if ge.file_path == path:
-			return
-	
+	openable.close()
 	no_interactions_dimmer.hide()
+	graph_switcher.add_tab(path.get_file())
 	
-	tab_bar.add_tab(Util.truncate_filename(path.get_file()))
-	tab_bar.move_tab(tab_bar.tab_count - 2, tab_bar.tab_count - 1)
-	tab_bar.current_tab = tab_bar.tab_count - 2
-	
-	var graph_edit = get_current_graph_edit()
+	var graph_edit = graph_switcher.current
 	graph_edit.control_node = self
 	graph_edit.file_path = path
-	graph_edit.undo_redo.connect("version_changed", update_tab_savestate.bind(graph_edit))
+	graph_edit.undo_redo.connect("version_changed", graph_switcher.update_save_state)
 	
 	welcome_window.hide()
 	if open_mode == 0: #NEW
@@ -359,7 +328,7 @@ func enable_picker_mode(from_node, from_port, _release_position):
 	picker_from_node = from_node
 	picker_from_port = from_port
 	
-	var graph = get_current_graph_edit()
+	var graph = graph_switcher.current
 	picker_position = (graph.get_local_mouse_position() + graph.scroll_offset) / graph.zoom
 	picker_mode = true
 	no_interactions_dimmer.show()
@@ -380,92 +349,6 @@ func _on_graph_node_selecter_focus_exited():
 func _on_graph_node_selecter_close_requested():
 	disable_picker_mode()
 
-###############################
-#  Tab-switching and closing  #
-###############################
-
-func _close_tab(graph_edit, tab_index, save_first = false):
-	if save_first:
-		save(true)
-	graph_edit.queue_free()
-	await graph_edit.tree_exited  # buggy if we switch tabs without waiting
-	tab_bar.remove_tab(tab_index)
-	
-	if tab_bar.tab_count == 0:
-		get_tree().quit()
-	elif is_closing_all_tabs:
-		tab_close_pressed(0)
-
-
-func close_welcome_tab():
-	if tab_bar.tab_count > 1:
-		tab_bar.select_previous_available()
-		welcome_window.hide()
-		no_interactions_dimmer.hide()
-
-
-func new_graph_edit():
-	var new_graph: MonologueGraphEdit = graph_edit_inst.instantiate()
-	var new_root_node = root_scene.instantiate()
-	
-	new_graph.name = "new"
-	connect_side_panel(new_graph)
-	
-	graph_edits.add_child(new_graph)
-	new_graph.add_child(new_root_node)
-	
-	for ge in graph_edits.get_children():
-		ge.visible = ge == new_graph
-
-
-func tab_changed(_idx):
-	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
-		for ge in graph_edits.get_children():
-			if graph_edits.get_child(tab_bar.current_tab) == ge:
-				ge.visible = true
-				if ge.active_graphnode:
-					side_panel_node.on_graph_node_selected(ge.active_graphnode, true)
-				else:
-					side_panel_node.hide()
-			else:
-				ge.visible = false
-		return
-	
-	new_graph_edit()
-	var welcome_close_button = $WelcomeWindow/PanelContainer/CloseButton
-	if tab_bar.tab_count > 1:
-		welcome_close_button.show()
-	else:
-		welcome_close_button.hide()
-	welcome_window.show()
-	no_interactions_dimmer.show()
-	side_panel_node.hide()
-
-
-func tab_close_pressed(tab):
-	var ge = graph_edits.get_child(tab)
-	if ge.is_unsaved():  # prompt user if there are unsaved changes
-		disable_picker_mode()
-		tab_bar.current_tab = tab
-		var save_prompt = prompt_scene.instantiate()
-		save_prompt.connect("ready", no_interactions_dimmer.show)
-		save_prompt.connect("tree_exited", no_interactions_dimmer.hide)
-		save_prompt.connect("confirmed", _close_tab.bind(ge, tab, true))
-		save_prompt.connect("cancelled", set.bind("is_closing_all_tabs", false))
-		save_prompt.connect("denied", _close_tab.bind(ge, tab))
-		add_child(save_prompt)
-		save_prompt.prompt_save(ge.file_path)
-	else:
-		_close_tab(ge, tab)
-
-
-func update_tab_savestate(graph_edit):
-	var index = graph_edit.get_index()
-	var trim = tab_bar.get_tab_title(index).trim_suffix(UNSAVED_FILE_SUFFIX)
-	var title = trim + UNSAVED_FILE_SUFFIX if graph_edit.is_unsaved() else trim
-	tab_bar.set_tab_title(index, title)
-
-
 #################
 #  Header menu  #
 #################
@@ -481,7 +364,7 @@ func _on_file_id_pressed(id):
 			new_file_select()
 
 		3: # Config
-			side_panel_node.show_config()
+			graph_switcher.show_current_config()
 
 		4: # Test
 			GlobalSignal.emit("test_trigger")
@@ -506,7 +389,5 @@ func _on_help_id_pressed(id):
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		get_viewport().gui_release_focus()
-		is_closing_all_tabs = true
-		tab_close_pressed(0)
-		# tab_close_pressed() will call _close_tab() which starts a recursion
-		# if is_closing_all_tabs is true; final quit is handled by _close_tab()
+		graph_switcher.is_closing_all_tabs = true
+		graph_switcher.on_tab_close_pressed(0)
