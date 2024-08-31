@@ -1,8 +1,6 @@
 class_name WelcomeWindow extends Window
 
 
-@export var tab_bar: TabBar
-
 ## Callback for loading projects after file selection.
 var file_callback = func(path): GlobalSignal.emit("load_project", [path])
 

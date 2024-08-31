@@ -1,5 +1,4 @@
-class_name RecentFilesContainer
-extends VBoxContainer
+class_name RecentFilesContainer extends VBoxContainer
 
 
 @export var button_container: Control

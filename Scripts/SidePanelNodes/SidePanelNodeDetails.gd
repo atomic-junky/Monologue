@@ -127,4 +127,4 @@ func _on_id_copy_pressed():
 	DisplayServer.clipboard_set(current_panel.id)
 	var ribbon = ribbon_scene.instantiate()
 	ribbon.position = get_viewport().get_mouse_position()
-	add_child(ribbon)
+	get_window().add_child(ribbon)
