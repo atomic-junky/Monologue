@@ -3,25 +3,25 @@
 class_name GraphEditSwitcher extends VBoxContainer
 
 
+signal welcome(closable: bool)
+
 const UNSAVED_FILE_SUFFIX: String = "*"
 
 ## Reference to the side panel control to connect graph edits to.
 @export var side_panel: SidePanelNodeDetails
-## Reference to the welcome window, used in newly created graph edits.
-@export var welcome_window: WelcomeWindow
 
-var current: MonologueGraphEdit: get = get_current_graph_edit
 var graph_edit_scene = preload("res://Objects/MonologueGraphEdit.tscn")
 var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
-var root_node_scene = GlobalVariables.node_dictionary.get("Root")
+var root_scene = GlobalVariables.node_dictionary.get("Root")
+var current: MonologueGraphEdit: get = get_current_graph_edit
 var is_closing_all_tabs: bool
 
-@onready var graph_edits = $GraphEdits
-@onready var tab_bar = $TabBar
+@onready var graph_edits: Control = $GraphEdits
+@onready var tab_bar: TabBar = $TabBar
 
 
 func _ready() -> void:
-	current.add_child(root_node_scene.instantiate())
+	current.add_child(root_scene.instantiate())
 	connect_side_panel(current)
 	GlobalSignal.add_listener("show_current_config", show_current_config)
 
@@ -39,8 +39,8 @@ func _input(event: InputEvent) -> void:
 ## Adds a root node to the current graph edit if given root ID doesn't exist.
 func add_root(save: bool = true) -> void:
 	if not current.get_root_node():
-		var new_root_node = root_node_scene.instantiate()
-		current.add_child(new_root_node)
+		var root_node = root_scene.instantiate()
+		current.add_child(root_node)
 		if save: GlobalSignal.emit("save", [true])
 
 
@@ -75,7 +75,7 @@ func is_file_opened(filepath: String) -> bool:
 
 func new_graph_edit() -> void:
 	var graph_edit = graph_edit_scene.instantiate()
-	var root_node = root_node_scene.instantiate()
+	var root_node = root_scene.instantiate()
 	
 	graph_edit.name = "new"
 	graph_edit.add_child(root_node)
@@ -99,6 +99,11 @@ func on_tab_close_pressed(tab: int) -> void:
 		save_prompt.prompt_save(ge.file_path)
 	else:
 		_close_tab(ge, tab)
+
+
+func previous_tab():
+	if tab_bar.tab_count > 1:
+		tab_bar.select_previous_available()
 
 
 ## Select the RootNode of the current graph edit, which opens the side panel.
@@ -142,14 +147,5 @@ func _on_tab_changed(tab: int) -> void:
 		return
 	
 	new_graph_edit()
-	welcome_window.show_with_close(tab_bar.tab_count)
-	GlobalSignal.emit("show_dimmer")
+	welcome.emit(tab_bar.tab_count > 1)
 	side_panel.hide()
-
-
-## Callback for closing the welcome window.
-func _on_welcome_close() -> void:
-	if tab_bar.tab_count > 1:
-		tab_bar.select_previous_available()
-		welcome_window.hide()
-		GlobalSignal.emit("hide_dimmer")

@@ -7,8 +7,7 @@ var dialog_for_localisation = []
 @onready var dimmer: ColorRect = $NoInteractions
 @onready var graph: GraphEditSwitcher = %GraphEditSwitcher
 @onready var header: Header = %Header
-@onready var recent_files: RecentFilesContainer = %RecentFilesContainer
-@onready var welcome_window: WelcomeWindow = $WelcomeWindow
+@onready var welcome: WelcomeWindow = $WelcomeWindow
 
 var initial_pos = Vector2(40,40)
 var option_index = 0
@@ -18,8 +17,7 @@ var all_nodes_index = 0
 
 func _ready():
 	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
-	welcome_window.show()
-	dimmer.show()
+	welcome.open()
 	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
 	GlobalSignal.add_listener("show_dimmer", dimmer.show)
@@ -85,9 +83,8 @@ func load_project(path: String, new_graph: bool = false) -> void:
 		if new_graph: graph.new_graph_edit()
 		graph.add_tab(path.get_file())
 		graph.current.file_path = path
-		recent_files.add(path)
-		welcome_window.hide()
-		dimmer.hide()
+		welcome.add_recent_file(path)
+		welcome.close()
 		
 		var data = {}
 		var text = file.get_as_text()
@@ -155,14 +152,6 @@ func _load_nodes(node_list: Array) -> void:
 		new_node.id = node.get("ID")
 		graph.current.add_child(new_node, true)
 		new_node._from_dict(node)
-
-
-func _on_new_file_btn_pressed():
-	GlobalSignal.emit("save_file_request", [load_project, ["*.json"]])
-
-
-func _on_open_file_btn_pressed():
-	GlobalSignal.emit("open_file_request", [load_project, ["*.json"]])
 
 
 func _notification(what: int) -> void:

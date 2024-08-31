@@ -1,11 +1,33 @@
 class_name WelcomeWindow extends Window
 
 
+@export var tab_bar: TabBar
+
+## Callback for loading projects after file selection.
+var file_callback = func(path): GlobalSignal.emit("load_project", [path])
+
+@onready var close_button: BaseButton = $PanelContainer/CloseButton
+@onready var version_label: Label = $PanelContainer/VersionLabel
+@onready var recent_files: RecentFilesContainer = %RecentFilesContainer
+
+
 func _ready() -> void:
 	var version = ProjectSettings.get("application/config/version")
-	$PanelContainer/VersionLabel.text = "v" + version
+	version_label.text = "v" + version
 	get_parent().connect("resized", _on_resized)
 	move_to_center()
+
+
+## Add a file path to the recent files contianer.
+func add_recent_file(path: String):
+	recent_files.add(path)
+
+
+## Callback for closing the welcome window.
+func close() -> void:
+	GlobalSignal.emit("hide_dimmer")
+	close_requested.emit()
+	hide()
 
 
 ## This is to fix a minor bug where if the user clicks on NoInteractions, the
@@ -17,14 +39,22 @@ func refocus_welcome(event: InputEvent):
 	move_to_center()
 
 
-## Allow the user to close the welcome window by showing the window with
-## its close button if the given tab_count is greater than 1.
-func show_with_close(tab_count: int = 2) -> void:
-	if tab_count > 1:
-		$PanelContainer/CloseButton.show()
+## Show the window with close button if the given tab_count is greater than 1.
+func open(show_close_button: bool = false) -> void:
+	if show_close_button:
+		close_button.show()
 	else:
-		$PanelContainer/CloseButton.hide()
-	show() 
+		close_button.hide()
+	GlobalSignal.emit("show_dimmer")
+	show()
+
+
+func _on_new_file_btn_pressed():
+	GlobalSignal.emit("save_file_request", [file_callback, ["*.json"]])
+
+
+func _on_open_file_btn_pressed():
+	GlobalSignal.emit("open_file_request", [file_callback, ["*.json"]])
 
 
 func _on_resized():
