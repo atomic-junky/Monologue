@@ -33,12 +33,14 @@ func test_add_tab():
 
 
 func test_connect_side_panel():
-	var graph_edit = mock(MonologueGraphEdit, CALL_REAL_FUNC)
-	switcher.connect_side_panel(graph_edit)
+	var ge = mock(MonologueGraphEdit, CALL_REAL_FUNC)
+	switcher.connect_side_panel(ge)
 	var select = switcher.side_panel.on_graph_node_selected
-	assert_bool(graph_edit.is_connected("node_selected", select)).is_true()
+	assert_bool(ge.is_connected("node_selected", select)).is_true()
 	var deselect = switcher.side_panel.on_graph_node_deselected
-	assert_bool(graph_edit.is_connected("node_deselected", deselect)).is_true()
+	assert_bool(ge.is_connected("node_deselected", deselect)).is_true()
+	var save = switcher.update_save_state
+	assert_bool(ge.undo_redo.is_connected("version_changed", save)).is_true()
 
 
 func test_commit_side_panel():

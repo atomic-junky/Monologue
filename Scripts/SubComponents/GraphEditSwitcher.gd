@@ -23,6 +23,7 @@ var is_closing_all_tabs: bool
 func _ready() -> void:
 	current.add_child(root_node_scene.instantiate())
 	connect_side_panel(current)
+	GlobalSignal.add_listener("show_current_config", show_current_config)
 
 
 func _input(event: InputEvent) -> void:
@@ -53,6 +54,7 @@ func add_tab(filename: String) -> void:
 func connect_side_panel(graph_edit: MonologueGraphEdit) -> void:
 	graph_edit.connect("node_selected", side_panel.on_graph_node_selected)
 	graph_edit.connect("node_deselected", side_panel.on_graph_node_deselected)
+	graph_edit.undo_redo.connect("version_changed", update_save_state)
 
 
 func commit_side_panel(node: MonologueGraphNode) -> void:
@@ -76,7 +78,6 @@ func new_graph_edit() -> void:
 	var root_node = root_node_scene.instantiate()
 	
 	graph_edit.name = "new"
-	graph_edit.undo_redo.connect("version_changed", update_save_state)
 	graph_edit.add_child(root_node)
 	connect_side_panel(graph_edit)
 	graph_edits.add_child(graph_edit)
