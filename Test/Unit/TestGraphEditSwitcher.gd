@@ -27,9 +27,20 @@ func test_add_root():
 	assert_int(ge.get_child_count()).is_equal(child_count)
 
 
-func test_add_tab():
+func test_add_tab_first():
 	switcher.add_tab("kitty.json")
+	assert_int(switcher.tab_bar.current_tab).is_equal(0)
 	assert_str(switcher.tab_bar.get_tab_title(0)).is_equal("kitty.json")
+
+
+func test_add_tab_with_previous():
+	switcher.tab_bar.remove_tab(0)
+	switcher.tab_bar.add_tab("zero")
+	switcher.tab_bar.add_tab("one")
+	switcher.tab_bar.add_tab("+")
+	switcher.add_tab("two")
+	assert_int(switcher.tab_bar.current_tab).is_equal(2)
+	assert_str(switcher.tab_bar.get_tab_title(2)).is_equal("two")
 
 
 func test_connect_side_panel():

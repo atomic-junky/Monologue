@@ -23,6 +23,7 @@ var is_closing_all_tabs: bool
 func _ready() -> void:
 	current.add_child(root_scene.instantiate())
 	connect_side_panel(current)
+	GlobalSignal.add_listener("previous_tab", previous_tab)
 	GlobalSignal.add_listener("show_current_config", show_current_config)
 
 

@@ -26,7 +26,6 @@ func add_recent_file(path: String):
 ## Callback for closing the welcome window.
 func close() -> void:
 	GlobalSignal.emit("hide_dimmer")
-	close_requested.emit()
 	hide()
 
 
@@ -47,6 +46,10 @@ func open(show_close_button: bool = false) -> void:
 		close_button.hide()
 	GlobalSignal.emit("show_dimmer")
 	show()
+
+
+func _on_close_btn_pressed():
+	GlobalSignal.emit("previous_tab")
 
 
 func _on_new_file_btn_pressed():
