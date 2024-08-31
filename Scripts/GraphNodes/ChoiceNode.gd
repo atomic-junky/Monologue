@@ -101,7 +101,10 @@ func link_option(option_dict: Dictionary, link: bool = true):
 
 ## Update the NextID of this choice node on the given port.
 func update_next_id(from_port: int, next_node: MonologueGraphNode):
-	options[from_port]["NextID"] = next_node.id if next_node else -1
+	if next_node:
+		options[from_port]["NextID"] = next_node.id
+	else:
+		options[from_port]["NextID"] = -1
 	GlobalSignal.emit("update_option_next_id", [self, from_port])
 
 

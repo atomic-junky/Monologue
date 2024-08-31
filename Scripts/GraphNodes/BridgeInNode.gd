@@ -49,7 +49,7 @@ func add_to(graph):
 	return created
 
 
-func _load_connections(data: Dictionary, key: String = "") -> void:
+func _load_connections(_data: Dictionary, _key: String = "") -> void:
 	return  # BridgeIn uses NextID covertly, not as a graph connection
 
 
