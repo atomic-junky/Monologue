@@ -149,7 +149,6 @@ access = 2
 use_native_dialog = true
 script = ExtResource("20_2dvte")
 
-[connection signal="welcome" from="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher" to="WelcomeWindow" method="open"]
 [connection signal="text_changed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_line_edit_id_text_changed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/CopyIDBtn" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_id_copy_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TFHBtn" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_tfh_btn_pressed"]

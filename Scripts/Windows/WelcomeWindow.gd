@@ -15,6 +15,7 @@ func _ready() -> void:
 	var version = ProjectSettings.get("application/config/version")
 	version_label.text = "v" + version
 	get_parent().connect("resized", _on_resized)
+	GlobalSignal.add_listener("show_welcome", open)
 	move_to_center()
 
 
@@ -24,7 +25,8 @@ func add_recent_file(path: String):
 
 
 ## Callback for closing the welcome window.
-func close() -> void:
+func close(is_tab: bool = false) -> void:
+	if is_tab: GlobalSignal.emit("previous_tab")
 	GlobalSignal.emit("hide_dimmer")
 	hide()
 
@@ -46,10 +48,6 @@ func open(show_close_button: bool = false) -> void:
 		close_button.hide()
 	GlobalSignal.emit("show_dimmer")
 	show()
-
-
-func _on_close_btn_pressed():
-	GlobalSignal.emit("previous_tab")
 
 
 func _on_new_file_btn_pressed():

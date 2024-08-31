@@ -3,8 +3,6 @@
 class_name GraphEditSwitcher extends VBoxContainer
 
 
-signal welcome(closable: bool)
-
 const UNSAVED_FILE_SUFFIX: String = "*"
 
 ## Reference to the side panel control to connect graph edits to.
@@ -148,5 +146,5 @@ func _on_tab_changed(tab: int) -> void:
 		return
 	
 	new_graph_edit()
-	welcome.emit(tab_bar.tab_count > 1)
+	GlobalSignal.emit("show_welcome", [tab_bar.tab_count > 1])
 	side_panel.hide()
