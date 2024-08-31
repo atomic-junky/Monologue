@@ -1,7 +1,8 @@
 class_name Header extends HFlowContainer
 
 
-var file_callback: Callable = GlobalVariables.empty_callback
+## Callback after file is selected on global file dialog request.
+var file_callback = func(path): GlobalSignal.emit("load_project", [path, true])
 
 @onready var add_menu: PopupMenu = $MenuBar/Add
 @onready var save_button: Button = $Save

@@ -50,7 +50,7 @@ func load_file() -> void:
 				btn_text = btn_text.back()
 			
 			btn.text = Util.truncate_filename(btn_text)
-			#TODO: btn.pressed.connect(file_selected.bind(path, 1))
+			btn.pressed.connect(GlobalSignal.emit.bind("load_project", [path]))
 			button_container.add_child(btn)
 
 

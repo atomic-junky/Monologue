@@ -4,10 +4,11 @@ extends Control
 var dialog = {}
 var dialog_for_localisation = []
 
-@onready var header: Header = %Header
+@onready var dimmer: ColorRect = $NoInteractions
 @onready var graph: GraphEditSwitcher = %GraphEditSwitcher
-@onready var no_interactions_dimmer = $NoInteractions
-@onready var welcome_window = $WelcomeWindow
+@onready var header: Header = %Header
+@onready var recent_files: RecentFilesContainer = %RecentFilesContainer
+@onready var welcome_window: WelcomeWindow = $WelcomeWindow
 
 var initial_pos = Vector2(40,40)
 var option_index = 0
@@ -18,12 +19,12 @@ var all_nodes_index = 0
 func _ready():
 	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
 	welcome_window.show()
-	no_interactions_dimmer.show()
+	dimmer.show()
 	
-	header.file_callback = func(path): load_project.call(path, true)
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
-	GlobalSignal.add_listener("show_dimmer", no_interactions_dimmer.show)
-	GlobalSignal.add_listener("hide_dimmer", no_interactions_dimmer.hide)
+	GlobalSignal.add_listener("show_dimmer", dimmer.show)
+	GlobalSignal.add_listener("hide_dimmer", dimmer.hide)
+	GlobalSignal.add_listener("load_project", load_project)
 	GlobalSignal.add_listener("test_trigger", test_project)
 	GlobalSignal.add_listener("save", save)
 
@@ -84,9 +85,9 @@ func load_project(path: String, new_graph: bool = false) -> void:
 		if new_graph: graph.new_graph_edit()
 		graph.add_tab(path.get_file())
 		graph.current.file_path = path
-		no_interactions_dimmer.hide()
+		recent_files.add(path)
 		welcome_window.hide()
-		%RecentFilesContainer.add(path)
+		dimmer.hide()
 		
 		var data = {}
 		var text = file.get_as_text()
@@ -117,7 +118,7 @@ func save(quick: bool = false):
 		file.close()
 		graph.current.update_version()
 		graph.update_save_state()
-		header.show_save_notification(0 if quick else 1.5)
+		header.show_save_notification(0.0 if quick else 1.5)
 	else:
 		header.hide_save_notification()  # fail to load
 
