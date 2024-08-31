@@ -4,7 +4,6 @@ extends GraphEdit
 
 
 var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
-var control_node
 var data: Dictionary
 var file_path: String
 var undo_redo := HistoryHandler.new()
@@ -26,27 +25,14 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_graph_delete") and \
-			!control_node.side_panel_node.visible and !active_graphnode and \
-			control_node.get_current_graph_edit() == self and selected_nodes:
-		var selected_copy = selected_nodes.duplicate()
-		var delete_history = DeleteNodeHistory.new(self, selected_copy)
-		undo_redo.create_action("Delete %s" % str(selected_copy))
-		undo_redo.add_prepared_history(delete_history)
-		undo_redo.commit_action()
-		return
-	
-	var is_mouse_clicked = Input.is_action_pressed("Select")
-	var is_mouse_moving = event is InputEventMouseMotion
-	var is_node_selected = not selected_nodes.is_empty()
-	
-	moving_mode = is_mouse_clicked and is_mouse_moving and is_node_selected
+	moving_mode = Input.is_action_pressed("Select") and \
+			event is InputEventMouseMotion and not selected_nodes.is_empty()
 
 
 ## Adds a node of the given type to this graph.
 func add_node(node_type: String, record_history: bool = true,
 			picker: GraphNodeSelector = null) -> Array[MonologueGraphNode]:
-	var node_scene = control_node.scene_dictionary.get(node_type)
+	var node_scene = GlobalVariables.node_dictionary.get(node_type)
 	var new_node = node_scene.instantiate()
 	
 	# created_nodes include auxilliary nodes from new_node, such as BridgeOut
@@ -88,21 +74,15 @@ func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	var node_data = node._to_dict()
 	if "options" in node:
 		# tag options into the node_data without NextIDs
-		node_data.merge({ "Options": node.options })
-	
+		node_data.merge({"Options": node.options})
 	if active_graphnode == node:
 		active_graphnode = null
+	
 	selected_nodes.erase(node)
 	recorded_positions.erase(node)
 	node.queue_free()
-	
 	# if side panel is showing this node, close it since it's gone
-	var side_panel = control_node.side_panel_node
-	var current_panel = side_panel.current_panel
-	if current_panel and current_panel.graph_node == node:
-		side_panel.clear_current_panel()
-		side_panel.hide()
-	
+	GlobalSignal.emit("clear_current_panel", [node])
 	return node_data
 
 
@@ -216,6 +196,16 @@ func propagate_connection(from_node, from_port, to_node, to_port, next = true) -
 			graph_node.update_next_id(from_port, next_node)
 		else:
 			graph_node.update_next_id(from_port, null)
+
+
+func trigger_delete():
+	if not active_graphnode and selected_nodes:
+		var root_filter = func(n): return n is not RootNode
+		var selected_copy = selected_nodes.duplicate().filter(root_filter)
+		var delete_history = DeleteNodeHistory.new(self, selected_copy)
+		undo_redo.create_action("Delete %s" % str(selected_copy))
+		undo_redo.add_prepared_history(delete_history)
+		undo_redo.commit_action()
 
 
 ## Checks and ensure graph is ready before triggering undo.

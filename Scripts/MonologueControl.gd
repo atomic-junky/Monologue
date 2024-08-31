@@ -4,21 +4,7 @@ extends Control
 var dialog = {}
 var dialog_for_localisation = []
 
-## Dictionary of Monologue node types and their corresponding scenes.
-var scene_dictionary = {
-	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),
-	"Action": preload("res://Objects/GraphNodes/ActionNode.tscn"),
-	"Bridge": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
-	"BridgeIn": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
-	"BridgeOut": preload("res://Objects/GraphNodes/BridgeOutNode.tscn"),
-	"Choice": preload("res://Objects/GraphNodes/ChoiceNode.tscn"),
-	"Comment": preload("res://Objects/GraphNodes/CommentNode.tscn"),
-	"Condition": preload("res://Objects/GraphNodes/ConditionNode.tscn"),
-	"DiceRoll": preload("res://Objects/GraphNodes/DiceRollNode.tscn"),
-	"EndPath": preload("res://Objects/GraphNodes/EndPathNode.tscn"),
-	"Event": preload("res://Objects/GraphNodes/EventNode.tscn"),
-	"Sentence": preload("res://Objects/GraphNodes/SentenceNode.tscn"),
-}
+
 
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 
@@ -34,7 +20,7 @@ var scene_dictionary = {
 @onready var no_interactions_dimmer = $NoInteractions
 @onready var welcome_window = $WelcomeWindow
 
-var root_scene = scene_dictionary.get("Root")
+var root_scene = GlobalVariables.node_dictionary.get("Root")
 var live_dict: Dictionary
 
 ## Set to true if a file operation is triggered from Header instead of WelcomeWindow.
@@ -65,11 +51,6 @@ func _ready():
 func _shortcut_input(event):
 	if event.is_action_pressed("Save"):
 		save(false)
-	# IMPORTANT: order matters, redo must come first, undo second
-	elif event.is_action_pressed("Redo"):
-		graph_switcher.current.trigger_redo()
-	elif event.is_action_pressed("Undo"):
-		graph_switcher.current.trigger_undo()
 
 
 func _to_dict() -> Dictionary:
@@ -122,7 +103,6 @@ func open_project(path, is_new_project: bool = true):
 	
 	graph_switcher.add_tab(path.get_file())
 	var graph_edit = graph_switcher.current
-	graph_edit.control_node = self
 	graph_edit.file_path = path
 	
 	no_interactions_dimmer.hide()
@@ -161,8 +141,8 @@ func load_project(path):
 	
 	# create nodes from JSON data
 	for node in node_list:
-		var node_type: String = node.get("$type")
-		var node_scene = scene_dictionary.get(node_type.trim_prefix("Node"))
+		var node_type = node.get("$type").trim_prefix("Node")
+		var node_scene = GlobalVariables.node_dictionary.get(node_type)
 		if not node_scene:
 			continue
 		

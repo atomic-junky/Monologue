@@ -28,6 +28,16 @@ func _ready() -> void:
 	connect_side_panel(current)
 
 
+func _input(event: InputEvent) -> void:
+	# IMPORTANT: order matters, redo must come first, undo second
+	if event.is_action_pressed("Redo"):
+		current.trigger_redo()
+	elif event.is_action_pressed("Undo"):
+		current.trigger_undo()
+	elif event.is_action_pressed("Delete") and not side_panel.visible:
+		current.trigger_delete()
+
+
 ## Adds a new tab with the given JSON filename as the tab title.
 func add_tab(filename: String) -> void:
 	tab_bar.add_tab(Util.truncate_filename(filename))

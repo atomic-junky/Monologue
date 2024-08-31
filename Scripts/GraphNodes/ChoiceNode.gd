@@ -99,18 +99,10 @@ func link_option(option_dict: Dictionary, link: bool = true):
 				get_parent().disconnect_node(name, index, next_node.name, 0)
 
 
+## Update the NextID of this choice node on the given port.
 func update_next_id(from_port: int, next_node: MonologueGraphNode):
-	if next_node:
-		options[from_port]["NextID"] = next_node.id
-	else:
-		options[from_port]["NextID"] = -1
-	
-	# if side panel is up, the NextID change needs to propagate to the panel
-	var panel = get_parent().control_node.side_panel_node.current_panel
-	if panel and panel.graph_node == self:
-		var option_id = options[from_port].get("ID")
-		var option_node: OptionNode = panel.get_option_node(option_id)
-		option_node.next_id = options[from_port].get("NextID")
+	options[from_port]["NextID"] = next_node.id if next_node else -1
+	GlobalSignal.emit("update_option_next_id", [self, from_port])
 
 
 func _load_connections(_data: Dictionary, _key: String = "") -> void:

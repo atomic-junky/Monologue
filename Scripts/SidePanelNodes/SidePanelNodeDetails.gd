@@ -23,13 +23,17 @@ var selected_node: MonologueGraphNode
 
 
 func _ready():
+	GlobalSignal.add_listener("clear_current_panel", clear_current_panel)
+	GlobalSignal.add_listener("refresh_panel", refresh_panel)
+	GlobalSignal.add_listener("update_option_next_id", update_option_next_id)
 	hide()
 
 
-func clear_current_panel():
-	if current_panel:
+func clear_current_panel(node: MonologueGraphNode = null) -> void:
+	if current_panel and (not node or current_panel.graph_node == node):
 		current_panel.queue_free()
 		current_panel = null
+		if node: hide()
 
 
 func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
@@ -72,6 +76,24 @@ func refocus(node: MonologueGraphNode) -> void:
 		if focus_owner:
 			focus_owner.release_focus()
 			focus_owner.grab_focus()
+
+
+## Refresh the current panel for the given node, or select it if not visible.
+func refresh_panel(node: MonologueGraphNode):
+	if visible and selected_node == node:
+		# update existing controls using panel's _from_dict()
+		current_panel._from_dict(node._to_dict())
+		current_panel.change.emit(current_panel)
+	else:
+		node.get_parent().set_selected(node)
+
+
+func update_option_next_id(choice_node: ChoiceNode, port: int) -> void:
+	if current_panel and current_panel.graph_node == choice_node:
+		var option_id = choice_node.options[port].get("ID")
+		var option_node = current_panel.get_option_node(option_id)
+		if option_node:
+			option_node.next_id = choice_node.options[port].get("NextID")
 
 
 func _on_graph_edit_child_exiting_tree(_node):
