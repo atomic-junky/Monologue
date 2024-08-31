@@ -7,8 +7,8 @@ class_name WelcomeWindow extends Window
 var file_callback = func(path): GlobalSignal.emit("load_project", [path])
 
 @onready var close_button: BaseButton = $PanelContainer/CloseButton
-@onready var version_label: Label = $PanelContainer/VersionLabel
 @onready var recent_files: RecentFilesContainer = %RecentFilesContainer
+@onready var version_label: Label = $PanelContainer/VersionLabel
 
 
 func _ready() -> void:
@@ -29,15 +29,6 @@ func close(is_tab: bool = false) -> void:
 	if is_tab: GlobalSignal.emit("previous_tab")
 	GlobalSignal.emit("hide_dimmer")
 	hide()
-
-
-## This is to fix a minor bug where if the user clicks on NoInteractions, the
-## WelcomeWindow loses focus, so the cursor will not change to pointing hand
-## when hovering over buttons.
-func refocus_welcome(event: InputEvent):
-	if event is InputEventMouseButton and visible:
-		grab_focus()
-	move_to_center()
 
 
 ## Show the window with close button if the given tab_count is greater than 1.

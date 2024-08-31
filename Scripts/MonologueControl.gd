@@ -1,4 +1,4 @@
-extends Control
+class_name MonologueControl extends Control
 
 
 var dialog = {}
@@ -8,11 +8,6 @@ var dialog_for_localisation = []
 @onready var graph: GraphEditSwitcher = %GraphEditSwitcher
 @onready var header: Header = %Header
 @onready var welcome: WelcomeWindow = $WelcomeWindow
-
-var initial_pos = Vector2(40,40)
-var option_index = 0
-var node_index = 0
-var all_nodes_index = 0
 
 
 func _ready():

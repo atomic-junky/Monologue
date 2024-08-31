@@ -1,5 +1,4 @@
-class_name PromptWindow
-extends Window
+class_name PromptWindow extends Window
 
 
 signal confirmed
