@@ -22,9 +22,10 @@ var scene_dictionary = {
 
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 
+@onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
 @onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
 @onready var graph_switcher = %GraphEditSwitcher
-@onready var graph_node_selecter = $GraphNodeSelecter
+@onready var graph_node_selector = $GraphNodeSelector
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
 @onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
@@ -44,10 +45,7 @@ var option_index = 0
 var node_index = 0
 var all_nodes_index = 0
 
-var picker_mode: bool = false
-var picker_from_node
-var picker_from_port
-var picker_position
+
 
 
 func _ready():
@@ -58,7 +56,8 @@ func _ready():
 	no_interactions_dimmer.show()
 	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
-	GlobalSignal.add_listener("disable_picker_mode", disable_picker_mode)
+	GlobalSignal.add_listener("show_dimmer", no_interactions_dimmer.show)
+	GlobalSignal.add_listener("hide_dimmer", no_interactions_dimmer.hide)
 	GlobalSignal.add_listener("test_trigger", test_project)
 	GlobalSignal.add_listener("save", save)
 
@@ -226,8 +225,8 @@ func _on_add_id_pressed(id):
 
 ## Function callback for when the user wants to add a node from global context.
 ## Used by header menu and graph node selector (picker).
-func add_node_from_global(node_type):
-	graph_switcher.current.add_node(node_type)
+func add_node_from_global(node_type: String, picker: GraphNodeSelector = null):
+	graph_switcher.current.add_node(node_type, true, picker)
 
 
 func test_project(from_node: String = "-1"):
@@ -274,39 +273,6 @@ func _on_file_dialog_selected(path: String):
 			open_project(path)
 		FileDialog.FILE_MODE_OPEN_FILE:
 			open_project(path, false)
-
-##################################
-#  Graph node selecter (picker)  #
-##################################
-
-## Start the picker mode from a given node and port. Picker mode is where
-## a new node is created from another node through a connection to empty.
-func enable_picker_mode(from_node, from_port, _release_position):
-	graph_node_selecter.position = get_viewport().get_mouse_position()
-	graph_node_selecter.show()
-	picker_from_node = from_node
-	picker_from_port = from_port
-	
-	var graph = graph_switcher.current
-	picker_position = (graph.get_local_mouse_position() + graph.scroll_offset) / graph.zoom
-	picker_mode = true
-	no_interactions_dimmer.show()
-
-
-## Exit picker mode. Picker mode is where a new node is created from another
-## node through a connection to empty.
-func disable_picker_mode():
-	graph_node_selecter.hide()
-	picker_mode = false
-	no_interactions_dimmer.hide()
-
-
-func _on_graph_node_selecter_focus_exited():
-	disable_picker_mode()
-
-
-func _on_graph_node_selecter_close_requested():
-	disable_picker_mode()
 
 #################
 #  Header menu  #

@@ -44,27 +44,21 @@ func _input(event: InputEvent) -> void:
 
 
 ## Adds a node of the given type to this graph.
-func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
-	# if adding from picker, track existing to_nodes of the picker_from_node
-	var picker_to_names = []
-	if control_node.picker_mode:
-		for picker_to_node in get_all_connections_from_slot(
-				control_node.picker_from_node, control_node.picker_from_port):
-			picker_to_names.append(picker_to_node.name)
-	
+func add_node(node_type: String, record_history: bool = true,
+			picker: GraphNodeSelector = null) -> Array[MonologueGraphNode]:
 	var node_scene = control_node.scene_dictionary.get(node_type)
 	var new_node = node_scene.instantiate()
 	
 	# created_nodes include auxilliary nodes from new_node, such as BridgeOut
 	var created_nodes = new_node.add_to(self)
-	pick_and_center(created_nodes)
+	var picker_to_names = pick_and_center(created_nodes, picker)
 	
 	# if enabled, track the addition of created_nodes into the graph history
-	if record:
+	if record_history:
 		var addition = AddNodeHistory.new(self, created_nodes)
 		if not picker_to_names.is_empty():
-			addition.picker_from_node = control_node.picker_from_node
-			addition.picker_from_port = control_node.picker_from_port
+			addition.picker_from_node = picker.node
+			addition.picker_from_port = picker.port
 			addition.picker_to_names = picker_to_names
 		
 		undo_redo.create_action("Add new %s" % [new_node.node_type])
@@ -188,19 +182,22 @@ func is_unsaved() -> bool:
 
 
 ## Connect picker_from_node to [param node] if needed, reposition nodes.
-func pick_and_center(nodes: Array[MonologueGraphNode]) -> void:
+func pick_and_center(nodes: Array[MonologueGraphNode], 
+			picker: GraphNodeSelector) -> PackedStringArray:
+	var to_names = []
 	var offset = ((size / 2) + scroll_offset) / zoom  # center of graph
-	if control_node.picker_mode:
-		var from_node = control_node.picker_from_node
-		var from_port = control_node.picker_from_port
-		disconnect_outbound_from_node(from_node, from_port)
-		propagate_connection(from_node, from_port, nodes[0].name, 0)
-		control_node.disable_picker_mode()
-		offset = control_node.picker_position
+	if picker:  # if adding from picker, track existing to_nodes from picker
+		for to_node in get_all_connections_from_slot(picker.node, picker.port):
+			to_names.append(to_node.name)
+		disconnect_outbound_from_node(picker.node, picker.port)
+		propagate_connection(picker.node, picker.port, nodes[0].name, 0)
+		GlobalSignal.emit("disable_picker_mode")
+		offset = picker.location
 	
 	for node in nodes:
 		node.position_offset = offset - node.size / 2
 		offset += Vector2(node.size.x + 10, 0)
+	return to_names
 
 
 ## Connects/disconnects and updates a given connection's NextID if possible.
@@ -302,8 +299,9 @@ func _on_disconnection_request(from_node, from_port, to_node, to_port) -> void:
 	undo_redo.commit_action()
 
 
-func _on_connection_to_empty(from_node, from_port, release_position) -> void:
-	control_node.enable_picker_mode(from_node, from_port, release_position)
+func _on_connection_to_empty(node: String, port: int, release: Vector2) -> void:
+	var center = (get_local_mouse_position() + scroll_offset) / zoom
+	GlobalSignal.emit("enable_picker_mode", [node, port, release, center])
 
 
 func _on_node_selected(node) -> void:
