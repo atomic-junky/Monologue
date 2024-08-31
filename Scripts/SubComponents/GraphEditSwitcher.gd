@@ -15,7 +15,7 @@ const UNSAVED_FILE_SUFFIX: String = "*"
 
 var graph_edit_scene = preload("res://Objects/MonologueGraphEdit.tscn")
 var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
-var root_node_scene = preload("res://Objects/GraphNodes/RootNode.tscn")
+var root_node_scene = GlobalVariables.node_dictionary.get("Root")
 var current: MonologueGraphEdit: get = get_current_graph_edit
 var is_closing_all_tabs: bool
 
@@ -36,6 +36,14 @@ func _input(event: InputEvent) -> void:
 		current.trigger_undo()
 	elif event.is_action_pressed("Delete") and not side_panel.visible:
 		current.trigger_delete()
+
+
+## Adds a root node to the current graph edit if given root ID doesn't exist.
+func add_root(save: bool = true) -> void:
+	if not current.get_root_node():
+		var new_root_node = root_node_scene.instantiate()
+		current.add_child(new_root_node)
+		if save: GlobalSignal.emit("save", [true])
 
 
 ## Adds a new tab with the given JSON filename as the tab title.

@@ -54,6 +54,12 @@ func add_node(node_type: String, record_history: bool = true,
 	return created_nodes
 
 
+func clear():
+	for node in get_nodes():
+		node.queue_free()
+	clear_connections()
+
+
 ## Disconnect all outbound connections of the given graphnode and port.
 func disconnect_outbound_from_node(from_node: StringName, from_port: int) -> void:
 	for connection in get_connection_list():

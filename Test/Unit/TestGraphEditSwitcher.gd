@@ -14,6 +14,20 @@ func before_test():
 	switcher.no_interactions_dimmer = auto_free(ColorRect.new())
 
 
+func test_add_root():
+	var ge = mock(MonologueGraphEdit, CALL_REAL_FUNC)
+	switcher.graph_edits.add_child(ge)
+	switcher.tab_bar.add_tab("new")
+	switcher.tab_bar.current_tab = 1
+	assert_object(ge.get_root_node()).is_null()
+	switcher.add_root()
+	assert_object(ge.get_root_node()).is_instanceof(RootNode)
+	# calling add_root() again should not increase child count
+	var child_count = ge.get_child_count()
+	switcher.add_root()
+	assert_int(ge.get_child_count()).is_equal(child_count)
+
+
 func test_add_tab():
 	switcher.add_tab("kitty.json")
 	assert_str(switcher.tab_bar.get_tab_title(0)).is_equal("kitty.json")

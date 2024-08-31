@@ -4,14 +4,10 @@ extends Control
 var dialog = {}
 var dialog_for_localisation = []
 
-
-
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 
-@onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
 @onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
-@onready var graph_switcher = %GraphEditSwitcher
-@onready var graph_node_selector = $GraphNodeSelector
+@onready var graph = %GraphEditSwitcher
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
 @onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
@@ -20,9 +16,6 @@ var dialog_for_localisation = []
 @onready var no_interactions_dimmer = $NoInteractions
 @onready var welcome_window = $WelcomeWindow
 
-var root_scene = GlobalVariables.node_dictionary.get("Root")
-var live_dict: Dictionary
-
 ## Set to true if a file operation is triggered from Header instead of WelcomeWindow.
 var is_header_file_operation: bool = false
 
@@ -30,8 +23,6 @@ var initial_pos = Vector2(40,40)
 var option_index = 0
 var node_index = 0
 var all_nodes_index = 0
-
-
 
 
 func _ready():
@@ -55,7 +46,7 @@ func _shortcut_input(event):
 
 func _to_dict() -> Dictionary:
 	var list_nodes: Array[Dictionary] = []
-	var graph_edit = graph_switcher.current
+	var graph_edit = graph.current
 	save_progress_bar.max_value = graph_edit.get_nodes().size() + 1
 	
 	# compile all node data of the current graph edit
@@ -63,7 +54,7 @@ func _to_dict() -> Dictionary:
 		if node.is_queued_for_deletion():
 			continue
 		
-		graph_switcher.commit_side_panel(node)
+		graph.commit_side_panel(node)
 		list_nodes.append(node._to_dict())
 		if node.node_type == "NodeChoice":
 			for child in node.get_children():
@@ -89,83 +80,42 @@ func _to_dict() -> Dictionary:
 	}
 
 
-func get_root_dict(nodes):
-	for node in nodes:
+func get_root_dict(node_list: Array) -> Dictionary:
+	for node in node_list:
 		if node.get("$type") == "NodeRoot":
 			return node
+	return {}
 
 
-func open_project(path, is_new_project: bool = true):
-	var openable = FileAccess.open(path, FileAccess.READ)
-	if not openable or graph_switcher.is_file_opened(path):
-		return
-	openable.close()
-	
-	graph_switcher.add_tab(path.get_file())
-	var graph_edit = graph_switcher.current
-	graph_edit.file_path = path
-	
-	no_interactions_dimmer.hide()
-	welcome_window.hide()
-	if is_new_project:
-		for node in graph_edit.get_nodes():
-			node.queue_free()
-		var new_root_node = root_scene.instantiate()
-		graph_edit.add_child(new_root_node)
-		await save(true)
-
-	%RecentFilesContainer.add(path)
-	
-	load_project(path)
-
-
-func load_project(path):
-	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
-	if not data:
-		data = _to_dict()
-		save(true)
-	
-	live_dict = data
-	var graph_edit = graph_switcher.current
-	graph_edit.name = path.get_file().trim_suffix(".json")
-	graph_edit.speakers = data.get("Characters")
-	graph_edit.variables = data.get("Variables")
-	
-	for node in graph_edit.get_nodes():
-		node.queue_free()
-	graph_edit.clear_connections()
-	graph_edit.data = data
-	
-	var node_list = data.get("ListNodes")
-	var root_dict = get_root_dict(node_list)
-	
-	# create nodes from JSON data
-	for node in node_list:
-		var node_type = node.get("$type").trim_prefix("Node")
-		var node_scene = GlobalVariables.node_dictionary.get(node_type)
-		if not node_scene:
-			continue
+func load_project(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file and not graph.is_file_opened(path):
+		graph.add_tab(path.get_file())
+		graph.current.file_path = path
+		no_interactions_dimmer.hide()
+		welcome_window.hide()
+		%RecentFilesContainer.add(path)
 		
-		var new_node = node_scene.instantiate()
-		new_node.id = node.get("ID")
-		graph_edit.add_child(new_node, true)
-		new_node._from_dict(node)
-	
-	# load connections for the created nodes
-	for node in node_list:
-		var current_node = graph_edit.get_node_by_id(node.get("ID", ""))
-		if current_node:
-			current_node._load_connections(node)
-		if node.has("EditorPosition"):
-			current_node.position_offset.x = node.EditorPosition.get("x")
-			current_node.position_offset.y = node.EditorPosition.get("y")
-	
-	var root_node = graph_edit.get_node_by_id(root_dict.get("ID"))
-	if not root_node:
-		var new_root_node = root_scene.instantiate()
-		graph_edit.add_child(new_root_node)
-		save(true)
-	graph_edit.update_node_positions()
+		var data = {}
+		var text = file.get_as_text()
+		if text: data = JSON.parse_string(text)
+		if not data:
+			data = _to_dict()
+			save(true)
+		
+		graph.current.clear()
+		graph.current.name = path.get_file().trim_suffix(".json")
+		graph.current.speakers = data.get("Characters")
+		graph.current.variables = data.get("Variables")
+		graph.current.data = data
+		
+		var node_list = data.get("ListNodes")
+		_load_nodes(node_list)
+		_connect_nodes(node_list)
+		
+		var root_dict = get_root_dict(node_list)
+		graph.add_root(root_dict.get("ID", ""))
+		graph.current.update_node_positions()
 
 
 func save(quick: bool = false):
@@ -180,11 +130,11 @@ func save(quick: bool = false):
 		save_button.show()
 		test_button.show()
 	
-	var path = graph_switcher.current.file_path
+	var path = graph.current.file_path
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
-	graph_switcher.update_save_state()
+	graph.update_save_state()
 	
 	saved_notification.show()
 	if !quick:
@@ -193,6 +143,28 @@ func save(quick: bool = false):
 	save_progress_bar.hide()
 	save_button.show()
 	test_button.show()
+
+
+func _connect_nodes(node_list: Array) -> void:
+	for node in node_list:
+		var current_node = graph.current.get_node_by_id(node.get("ID", ""))
+		if current_node:
+			current_node._load_connections(node)
+			if node.has("EditorPosition"):
+				current_node.position_offset.x = node.EditorPosition.get("x")
+				current_node.position_offset.y = node.EditorPosition.get("y")
+
+
+func _load_nodes(node_list: Array) -> void:
+	for node in node_list:
+		var node_type = node.get("$type").trim_prefix("Node")
+		var node_scene = GlobalVariables.node_dictionary.get(node_type)
+		if not node_scene:
+			continue
+		var new_node = node_scene.instantiate()
+		new_node.id = node.get("ID")
+		graph.current.add_child(new_node, true)
+		new_node._from_dict(node)
 
 ###############################
 #  New node buttons callback  #
@@ -206,19 +178,19 @@ func _on_add_id_pressed(id):
 ## Function callback for when the user wants to add a node from global context.
 ## Used by header menu and graph node selector (picker).
 func add_node_from_global(node_type: String, picker: GraphNodeSelector = null):
-	graph_switcher.current.add_node(node_type, true, picker)
+	graph.current.add_node(node_type, true, picker)
 
 
 func test_project(from_node: String = "-1"):
 	await save(true)
 	
 	var global_vars = get_node("/root/GlobalVariables")
-	global_vars.test_path = graph_switcher.current.file_path
+	global_vars.test_path = graph.current.file_path
 	
 	var test_instance = preload("res://Test/Menu.tscn")
 	var test_scene = test_instance.instantiate()
 	
-	if graph_switcher.current.get_node_by_id(from_node) != null:
+	if graph.current.get_node_by_id(from_node) != null:
 		test_scene._from_node_id = from_node
 	
 	get_tree().root.add_child(test_scene)
@@ -245,14 +217,14 @@ func _on_file_dialog_selected(path: String):
 	if is_header_file_operation:
 		welcome_window.hide()
 		file_dialog.hide()
-		graph_switcher.new_graph_edit()
+		graph.new_graph_edit()
 	
 	match file_dialog.file_mode:
 		FileDialog.FILE_MODE_SAVE_FILE:
 			FileAccess.open(path, FileAccess.WRITE)
-			open_project(path)
+			load_project(path)
 		FileDialog.FILE_MODE_OPEN_FILE:
-			open_project(path, false)
+			load_project(path)
 
 #################
 #  Header menu  #
@@ -269,7 +241,7 @@ func _on_file_id_pressed(id):
 			new_file_select()
 
 		3: # Config
-			graph_switcher.show_current_config()
+			graph.show_current_config()
 
 		4: # Test
 			GlobalSignal.emit("test_trigger")
@@ -294,5 +266,5 @@ func _on_help_id_pressed(id):
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		get_viewport().gui_release_focus()
-		graph_switcher.is_closing_all_tabs = true
-		graph_switcher.on_tab_close_pressed(0)
+		graph.is_closing_all_tabs = true
+		graph.on_tab_close_pressed(0)
