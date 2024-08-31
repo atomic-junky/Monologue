@@ -51,6 +51,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Cancel"
 
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="pressed" from="PanelContainer/VBox/HBox/ConfirmButton" to="." method="_on_confirm_button_pressed"]
 [connection signal="pressed" from="PanelContainer/VBox/HBox/DenyButton" to="." method="_on_deny_button_pressed"]
 [connection signal="pressed" from="PanelContainer/VBox/HBox/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -112,9 +112,7 @@ func load_project(path: String) -> void:
 		var node_list = data.get("ListNodes")
 		_load_nodes(node_list)
 		_connect_nodes(node_list)
-		
-		var root_dict = get_root_dict(node_list)
-		graph.add_root(root_dict.get("ID", ""))
+		graph.add_root()
 		graph.current.update_node_positions()
 
 

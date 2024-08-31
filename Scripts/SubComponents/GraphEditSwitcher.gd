@@ -1,22 +1,19 @@
 ## Consists of a TabBar which allows the user to switch between GraphEdits.
 ## Saving and loading of GraphEdit data is handled by MonologueControl.
-class_name GraphEditSwitcher
-extends VBoxContainer
+class_name GraphEditSwitcher extends VBoxContainer
 
 
 const UNSAVED_FILE_SUFFIX: String = "*"
 
 ## Reference to the side panel control to connect graph edits to.
 @export var side_panel: SidePanelNodeDetails
-## Reference to the no interactions dimmer, used in save prompts.
-@export var no_interactions_dimmer: ColorRect
 ## Reference to the welcome window, used in newly created graph edits.
 @export var welcome_window: WelcomeWindow
 
+var current: MonologueGraphEdit: get = get_current_graph_edit
 var graph_edit_scene = preload("res://Objects/MonologueGraphEdit.tscn")
 var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 var root_node_scene = GlobalVariables.node_dictionary.get("Root")
-var current: MonologueGraphEdit: get = get_current_graph_edit
 var is_closing_all_tabs: bool
 
 @onready var graph_edits = $GraphEdits
@@ -94,8 +91,6 @@ func on_tab_close_pressed(tab: int) -> void:
 		GlobalSignal.emit("disable_picker_mode")
 		tab_bar.current_tab = tab
 		var save_prompt = prompt_scene.instantiate()
-		save_prompt.connect("ready", no_interactions_dimmer.show)
-		save_prompt.connect("tree_exited", no_interactions_dimmer.hide)
 		save_prompt.connect("confirmed", _close_tab.bind(ge, tab, true))
 		save_prompt.connect("cancelled", set.bind("is_closing_all_tabs", false))
 		save_prompt.connect("denied", _close_tab.bind(ge, tab))
@@ -147,7 +142,7 @@ func _on_tab_changed(tab: int) -> void:
 	
 	new_graph_edit()
 	welcome_window.show_with_close(tab_bar.tab_count)
-	no_interactions_dimmer.show()
+	GlobalSignal.emit("show_dimmer")
 	side_panel.hide()
 
 
@@ -156,4 +151,4 @@ func _on_welcome_close() -> void:
 	if tab_bar.tab_count > 1:
 		tab_bar.select_previous_available()
 		welcome_window.hide()
-		no_interactions_dimmer.hide()
+		GlobalSignal.emit("hide_dimmer")

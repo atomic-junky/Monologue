@@ -11,7 +11,6 @@ func before_test():
 	switcher.tab_bar = auto_free(TabBar.new())
 	switcher.tab_bar.add_tab("+")
 	switcher.side_panel = mock(SidePanelNodeDetails)
-	switcher.no_interactions_dimmer = auto_free(ColorRect.new())
 
 
 func test_add_root():
