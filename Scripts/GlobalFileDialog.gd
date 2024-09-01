@@ -37,4 +37,6 @@ func _core_request(callable: Callable, filter_list: PackedStringArray = [],
 
 
 func _on_file_selected(path: String) -> void:
+	if file_mode == FILE_MODE_SAVE_FILE:
+		FileAccess.open(path, FileAccess.WRITE)
 	_callback.call(path as String)

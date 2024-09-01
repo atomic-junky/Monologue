@@ -1,5 +1,6 @@
-class_name SidePanelNodeDetails
-extends PanelContainer
+## Side panel which displays graph node details. This panel should not contain
+## references to MonologueControl or GraphEditSwitcher.
+class_name SidePanelNodeDetails extends PanelContainer
 
 
 var panel_dictionary = {
@@ -13,28 +14,31 @@ var panel_dictionary = {
 	"NodeEvent": preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
 }
 
-@onready var control_node = $"../../../../.."
 @onready var line_edit_id = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID
 @onready var panel_container = $MarginContainer/ScrollContainer/PanelContainer
 @onready var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
 
-var current_panel: MonologueNodePanel = null
-var selected_node: MonologueGraphNode = null
+var current_panel: MonologueNodePanel
+var selected_node: MonologueGraphNode
 
 
 func _ready():
+	GlobalSignal.add_listener("clear_current_panel", clear_current_panel)
+	GlobalSignal.add_listener("refresh_panel", refresh_panel)
+	GlobalSignal.add_listener("update_option_next_id", update_option_next_id)
 	hide()
 
 
-func clear_current_panel():
-	if current_panel:
+func clear_current_panel(node: MonologueGraphNode = null) -> void:
+	if current_panel and (not node or current_panel.graph_node == node):
 		current_panel.queue_free()
 		current_panel = null
+		if node: hide()
 
 
 func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	if not bypass:
-		var graph_edit = control_node.get_current_graph_edit()
+		var graph_edit = node.get_parent()
 		await get_tree().create_timer(0.1).timeout
 		if is_instance_valid(node) and not graph_edit.moving_mode and \
 				graph_edit.selected_nodes.size() == 1:
@@ -64,10 +68,32 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	show()
 
 
-func show_config():
-	var graph_edit = control_node.get_current_graph_edit()
-	var root_node = graph_edit.get_root_node()
-	graph_edit.set_selected(root_node)
+## If the side panel for the node is visible, release the focus so that
+## text controls trigger the focus_exited() signal to update.
+func refocus(node: MonologueGraphNode) -> void:
+	if visible and selected_node == node:
+		var focus_owner = get_viewport().gui_get_focus_owner()
+		if focus_owner:
+			focus_owner.release_focus()
+			focus_owner.grab_focus()
+
+
+## Refresh the current panel for the given node, or select it if not visible.
+func refresh_panel(node: MonologueGraphNode):
+	if visible and selected_node == node:
+		# update existing controls using panel's _from_dict()
+		current_panel._from_dict(node._to_dict())
+		current_panel.change.emit(current_panel)
+	else:
+		node.get_parent().set_selected(node)
+
+
+func update_option_next_id(choice_node: ChoiceNode, port: int) -> void:
+	if current_panel and current_panel.graph_node == choice_node:
+		var option_id = choice_node.options[port].get("ID")
+		var option_node = current_panel.get_option_node(option_id)
+		if option_node:
+			option_node.next_id = choice_node.options[port].get("NextID")
 
 
 func _on_graph_edit_child_exiting_tree(_node):
@@ -83,13 +109,14 @@ func _on_texture_button_pressed():
 
 
 func _on_line_edit_id_text_changed(new_id):
-	var graph = control_node.get_current_graph_edit()
-	if graph.get_node_by_id(new_id) or graph.is_option_id_exists(new_id):
-		line_edit_id.text = current_panel.id
-		return
-	
-	current_panel.id = new_id
-	current_panel.change.emit(current_panel)
+	if selected_node:
+		var graph = selected_node.get_parent()
+		if graph.get_node_by_id(new_id) or graph.is_option_id_exists(new_id):
+			line_edit_id.text = current_panel.id
+			return
+		
+		current_panel.id = new_id
+		current_panel.change.emit(current_panel)
 
 
 func _on_tfh_btn_pressed():
@@ -100,4 +127,4 @@ func _on_id_copy_pressed():
 	DisplayServer.clipboard_set(current_panel.id)
 	var ribbon = ribbon_scene.instantiate()
 	ribbon.position = get_viewport().get_mouse_position()
-	control_node.add_child(ribbon)
+	get_window().add_child(ribbon)
