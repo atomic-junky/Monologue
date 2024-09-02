@@ -2,21 +2,11 @@ class_name SidePanelNodeDetails
 extends PanelContainer
 
 
-var panel_dictionary = {
-	"NodeRoot": preload("res://Objects/SidePanelNodes/RootNodePanel.tscn"),
-	"NodeSentence": preload("res://Objects/SidePanelNodes/SentenceNodePanel.tscn"),
-	"NodeChoice": preload("res://Objects/SidePanelNodes/ChoiceNodePanel.tscn"),
-	"NodeDiceRoll": preload("res://Objects/SidePanelNodes/DiceRollNodePanel.tscn"),
-	"NodeEndPath": preload("res://Objects/SidePanelNodes/EndPathNodePanel.tscn"),
-	"NodeCondition": preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn"),
-	"NodeAction": preload("res://Objects/SidePanelNodes/ActionNodePanel.tscn"),
-	"NodeEvent": preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
-}
-
 @onready var control_node = $"../../../../.."
 @onready var id_line_edit = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID
 @onready var panel_container = $MarginContainer/ScrollContainer/PanelContainer
 @onready var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
+@onready var node_panel = preload("res://Scripts/MonologueNodePanel.gd")
 
 var current_panel: MonologueNodePanel = null
 var selected_node: MonologueGraphNode = null
@@ -33,6 +23,8 @@ func clear_current_panel():
 
 
 func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
+	var new_panel: MonologueNodePanel = node_panel.new()
+	
 	if not bypass:
 		var graph_edit = control_node.get_current_graph_edit()
 		await get_tree().create_timer(0.1).timeout
@@ -44,15 +36,8 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 			return
 	
 	id_line_edit.text = node.id
-
-	var new_panel = null
-	var panel_scene = panel_dictionary.get(node.node_type)
-	
-	if not panel_scene:
-		return
 	
 	clear_current_panel()
-	new_panel = panel_scene.instantiate()
 	new_panel.side_panel = self
 	new_panel.graph_node = node
 	new_panel.id_line_edit = id_line_edit

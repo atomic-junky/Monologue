@@ -4,6 +4,17 @@ class_name MonologueGraphNode
 extends GraphNode
 
 
+var MonologueLineEdit: MonologueField :
+	get(): return preload("res://Objects/SubComponents/Fields/MonologueLineEdit.tscn").instantiate()
+var MonologueTextEdit: MonologueField :
+	get(): return preload("res://Objects/SubComponents/Fields/MonologueTextEdit.tscn").instantiate()
+var MonologueOptionButton: MonologueField :
+	get(): return preload("res://Objects/SubComponents/Fields/MonologueOptionButton.tscn").instantiate()
+var MonologueFilePicker: MonologueField :
+	get(): return preload("res://Objects/SubComponents/Fields/MonologueLineEdit.tscn").instantiate()
+var MonologueSeparator: HSeparator :
+	get(): return HSeparator.new()
+
 var id: String = UUID.v4()
 var node_type: String = "NodeUnknown"
 

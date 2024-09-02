@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SentenceNodePanel.gd" id="1_626xh"]
 [ext_resource type="PackedScene" uid="uid://o5dt5106rohh" path="res://Objects/SubComponents/FilePickerLineEdit.tscn" id="2_5dbww"]
-[ext_resource type="Script" path="res://Objects/SubComponents/MonologueOptionButton.gd" id="2_pjpsx"]
+[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueOptionButton.gd" id="2_pjpsx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_c5sko"]
 font_color = Color(0.521569, 0.521569, 0.521569, 1)
@@ -92,12 +92,10 @@ caret_blink = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SubContainer"]
-layout_mode = 2
-
-[node name="TextLabel" type="Label" parent="SubContainer/VBoxContainer"]
+[node name="TextLabel" type="Label" parent="SubContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+size_flags_vertical = 0
 text = "Voiceline"
 
 [node name="VoicelineContainer" type="VBoxContainer" parent="SubContainer"]

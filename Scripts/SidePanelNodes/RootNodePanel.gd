@@ -1,7 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
 
-class_name RootNodePanel
-extends MonologueNodePanel
+class_name RootNodePanel extends MonologueNodePanel
 
 
 var character_count: int

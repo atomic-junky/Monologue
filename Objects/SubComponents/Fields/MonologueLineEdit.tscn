@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://btn4lenmi2q7u"]
+
+[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueField.gd" id="1_mxfkv"]
+[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueLineEdit.gd" id="2_aq7yq"]
+
+[node name="MonologueField" type="HBoxContainer" node_paths=PackedStringArray("field")]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_mxfkv")
+field = NodePath("LineEdit")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_aq7yq")

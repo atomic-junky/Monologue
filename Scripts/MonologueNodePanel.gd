@@ -22,42 +22,30 @@ var fields: Dictionary = {}
 
 func _ready():
 	_load()
+	add_theme_constant_override("separation", 10)
 
 
 func get_graph_edit_property(property: StringName) -> Variant:
 	return graph_node.get_parent().get(property)
 
 
-func _load_fields(base: Node = self, dict: Dictionary = {}):
-	for child: Node in base.get_children():
-		if child.name.begins_with("Field_"):
-			var field_name = child.name.trim_prefix("Field_")
-			
-			if child is FilePickerLineEdit:
-				child.base_file_path = graph_node.get_parent().file_path
-				child.connect("new_file_path", _on_file_picker_line_edit_update.bindv([field_name]))
-				fields[field_name] = dict.get(field_name, "")
-				child.text = fields[field_name]
-			elif child is LineEdit:
-				child.connect("text_changed", _on_field_update.bindv([field_name]))
-				fields[field_name] = dict.get(field_name, "")
-				child.text = fields[field_name]
-			elif child is TextEdit:
-				child.connect("text_changed", _on_te_field_update.bindv([child, field_name]))
-				fields[field_name] = dict.get(field_name, "")
-				child.text = fields[field_name]
-			elif child is MonologueOptionButton:
-				child.connect("item_selected", _on_option_button_field_update.bindv([child, field_name]))
-				fields[field_name] = dict.get(field_name, "_NARRATOR")
-				child.select(child.get_item_idx_from_text(fields[field_name]))
-			elif child is CheckBox:
-				pass
-			elif child is CheckButton:
-				pass
-			elif child is SpinBox:
-				pass
-		else:
-			_load_fields(child, dict)
+func _load_fields(dict: Dictionary = {}) -> void:
+	var groups: Array = graph_node.get_fields()
+	
+	for group in groups:
+		_load_field_group(group, dict)
+
+
+func _load_field_group(group: Dictionary, dict: Dictionary) -> void:
+	var vbox := VBoxContainer.new()
+	
+	for field in group.keys():
+		var node: MonologueField = group[field]
+		vbox.add_child(node)
+		node.field_update.connect(_on_field_update.bindv([field]))
+		node.set_value(dict.get(field))
+	
+	add_child(vbox)
 
 
 func _load():
@@ -72,25 +60,12 @@ func _from_dict(dict: Dictionary):
 	fields["ID"] = dict.get("ID", "")
 	id_line_edit.text = fields["ID"]
 	
-	_load_fields(self, dict)
+	_load_fields(dict)
 
 
 func _set_graph_node(new_graph_node: MonologueGraphNode) -> void:
 	graph_node = new_graph_node
 	undo_redo = graph_node.get_parent().undo_redo
-
-
-func _on_file_picker_line_edit_update(file_path: String, _is_valid: bool, field: String) -> void:
-	_on_field_update(file_path, field)
-	
-
-func _on_te_field_update(node: TextEdit, field: String) -> void:
-	_on_field_update(node.text, field)
-
-
-func _on_option_button_field_update(index: int, node: OptionButton, field: String) -> void:
-	var value: String = node.get_item_text(index)
-	_on_field_update(value, field)
 
 
 func _on_field_update(value: Variant, field: String) -> void:

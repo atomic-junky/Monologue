@@ -1,7 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Sentence.svg")
 
-class_name SentenceNode
-extends MonologueGraphNode
+class_name SentenceNode extends MonologueGraphNode
 
 
 @onready var text_label = $MainContainer/TextLabelPreview
@@ -17,6 +16,18 @@ var voiceline_path = ""
 func _ready():
 	node_type = "NodeSentence"
 	title = node_type
+
+
+func get_fields():
+	return [
+		{
+			"SpeakerID": MonologueOptionButton.load_field("Speaker"),
+			"DisplaySpeakerName": MonologueLineEdit.load_field("Display Name"),
+			"DisplayVariant": MonologueLineEdit.load_field("Display Variant")
+		},
+		{"Sentence": MonologueTextEdit.load_field("Sentence")},
+		{"VoicelinePath": MonologueFilePicker.load_field("Voiceline")},
+	]
 
 
 func _from_dict(dict: Dictionary):
