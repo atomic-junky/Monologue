@@ -24,7 +24,6 @@ extends MonologueNodePanel
 @onready var string_edit: LineEdit = $ValueContainer/StringEdit
 @onready var default_label: Label = $ValueContainer/DefaultLabel
 
-var variables: Array
 var action_type
 
 var volume_value: float = 0.0
@@ -32,8 +31,6 @@ var pitch_value: float = 1.0
 
 
 func _ready():
-	variables = graph_node.get_parent().variables
-	
 	for variable in variables:
 		variable_drop_node.add_item(variable.get("Name"))
 	

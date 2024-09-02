@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddg4xdwc1nfts"]
+
+[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueField.gd" id="1_t3h6c"]
+[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueOptionButton.gd" id="2_xagss"]
+
+[node name="MonologueField" type="HBoxContainer" node_paths=PackedStringArray("field")]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_t3h6c")
+field = NodePath("OptionButton")
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_xagss")

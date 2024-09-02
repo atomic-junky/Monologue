@@ -37,10 +37,9 @@ text = "Operator"
 [node name="OperatorDrop" type="OptionButton" parent="OperatorContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-item_count = 4
 selected = 0
+item_count = 4
 popup/item_0/text = "=="
-popup/item_0/id = 0
 popup/item_1/text = ">="
 popup/item_1/id = 1
 popup/item_2/text = "<="
