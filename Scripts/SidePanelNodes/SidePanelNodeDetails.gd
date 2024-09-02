@@ -111,7 +111,7 @@ func _on_line_edit_id_text_changed(new_id):
 	if selected_node:
 		var graph = selected_node.get_parent()
 		if graph.get_node_by_id(new_id) or graph.is_option_id_exists(new_id):
-			line_edit_id.text = current_panel.id
+			id_line_edit.text = current_panel.id
 			return
 		
 		current_panel.id = new_id
