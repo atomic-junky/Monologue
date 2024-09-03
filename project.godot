@@ -32,6 +32,10 @@ Path="*res://Scripts/Global/Path.gd"
 
 [display]
 
+window/size/viewport_width=1500
+window/size/viewport_height=800
+window/size/borderless=true
+window/size/transparent=true
 window/stretch/scale=2.09173
 window/per_pixel_transparency/allowed=true
 window/size/fullscreen=true

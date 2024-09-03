@@ -13,7 +13,7 @@ var panel_dictionary = {
 	"NodeEvent": preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
 }
 
-@onready var control_node = $"../../../../.."
+@onready var control_node = $"../../../../../../.."
 @onready var line_edit_id = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID
 @onready var panel_container = $MarginContainer/ScrollContainer/PanelContainer
 @onready var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")

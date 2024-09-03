@@ -28,8 +28,8 @@ var scene_dictionary = {
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
-@onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
-@onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
+@onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/GraphEdits
+@onready var side_panel_node = %SidePanelNodeDetails
 @onready var graph_node_selecter = $GraphNodeSelecter
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
 @onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Edit

@@ -1,6 +1,34 @@
-[gd_scene load_steps=2 format=3 uid="uid://bim51g1aibuw0"]
+[gd_scene load_steps=12 format=3 uid="uid://bim51g1aibuw0"]
 
 [ext_resource type="PackedScene" uid="uid://bqjfdabrxujp7" path="res://Scenes/Graph.tscn" id="1_kiov6"]
+[ext_resource type="Texture2D" uid="uid://demly0attsa53" path="res://icon.svg" id="1_q8i2t"]
+[ext_resource type="Script" path="res://Scripts/Ui/custom_title_bar.gd" id="1_sdg01"]
+[ext_resource type="PackedScene" uid="uid://c2k0l1j45eshc" path="res://Objects/UI/TitleBarButton.tscn" id="3_0m70l"]
+[ext_resource type="Script" path="res://Scripts/UI/CustomTabBar.gd" id="3_ryx6w"]
+[ext_resource type="Texture2D" uid="uid://cxek38x4sufp5" path="res://Assets/Icons/UI/ui_reduce.svg" id="4_b7q52"]
+[ext_resource type="Texture2D" uid="uid://c4ib88gq1pbjr" path="res://Assets/Icons/UI/ui_maximize.svg" id="5_fxbua"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_087ei"]
+bg_color = Color(0.20449, 0.2002, 0.22, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.273, 0.273, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3hbdb"]
+bg_color = Color(1, 1, 1, 0.12549)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8n7f"]
+bg_color = Color(1, 1, 1, 0.12549)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alwrn"]
+bg_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="App" type="Control"]
 layout_mode = 3
@@ -12,13 +40,87 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="Frame" type="PanelContainer" parent="."]
+clip_children = 2
+z_index = 1
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_087ei")
 
-[node name="MonologueControl" parent="PanelContainer" instance=ExtResource("1_kiov6")]
+[node name="VBoxContainer" type="VBoxContainer" parent="Frame"]
 layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CustomTitleBar" type="HBoxContainer" parent="Frame/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("1_sdg01")
+
+[node name="MarginContainer" type="MarginContainer" parent="Frame/VBoxContainer/CustomTitleBar"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TextureRect" type="TextureRect" parent="Frame/VBoxContainer/CustomTitleBar/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_q8i2t")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="VSeparator" type="VSeparator" parent="Frame/VBoxContainer/CustomTitleBar"]
+layout_mode = 2
+
+[node name="TabBar" type="TabBar" parent="Frame/VBoxContainer/CustomTitleBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+current_tab = 0
+tab_close_display_policy = 2
+tab_count = 2
+tab_0/title = "Test.gd"
+tab_1/title = "Test2.gd"
+script = ExtResource("3_ryx6w")
+
+[node name="VSeparator2" type="VSeparator" parent="Frame/VBoxContainer/CustomTitleBar"]
+layout_mode = 2
+
+[node name="tbButtonContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="tbReduceButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
+layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_3hbdb")
+texture = ExtResource("4_b7q52")
+
+[node name="tbSizeButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
+layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_j8n7f")
+texture = ExtResource("5_fxbua")
+
+[node name="tbCloseButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
+layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_alwrn")
+hover_color = Color(0.784314, 0.188235, 0.184314, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Frame/VBoxContainer"]
+layout_mode = 2
+
+[node name="MonologueControl" parent="Frame/VBoxContainer" instance=ExtResource("1_kiov6")]
+layout_mode = 2
+
+[connection signal="gui_input" from="Frame/VBoxContainer/CustomTitleBar" to="Frame/VBoxContainer/CustomTitleBar" method="_on_gui_input"]
+[connection signal="pressed" from="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer/tbReduceButton" to="Frame/VBoxContainer/CustomTitleBar" method="_on_tb_reduce_button_pressed"]
+[connection signal="pressed" from="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer/tbSizeButton" to="Frame/VBoxContainer/CustomTitleBar" method="_on_tb_size_button_pressed"]
+[connection signal="pressed" from="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer/tbCloseButton" to="Frame/VBoxContainer/CustomTitleBar" method="_on_tb_close_button_pressed"]

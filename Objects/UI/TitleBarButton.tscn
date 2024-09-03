@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2k0l1j45eshc"]
+
+[ext_resource type="Script" path="res://Scripts/UI/title_bar_button.gd" id="1_egvia"]
+[ext_resource type="Texture2D" uid="uid://kk5em170gn2b" path="res://Assets/Icons/UI/ui_close.svg" id="1_itj8o"]
+
+[node name="TitleBarButton" type="Button"]
+custom_minimum_size = Vector2(50, 30)
+script = ExtResource("1_egvia")
+texture = ExtResource("1_itj8o")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 7
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_itj8o")
+expand_mode = 1
+stretch_mode = 5
