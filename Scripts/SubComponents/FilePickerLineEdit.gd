@@ -1,36 +1,33 @@
-class_name FilePickerLineEdit extends LineEdit
+class_name FilePickerLineEdit extends VBoxContainer
 
 
-signal new_file_path(file_path: String, is_valid: bool)
+signal new_file_path(file_path: String)
 
-@export var filters: Array[String]
-@export var warn_label: Label
 @export var base_file_path: String
+@export var filters: PackedStringArray
 
-@onready var file_picker_btn: FilePickerButton = $FilePickerButton
+@onready var line_edit: LineEdit = $LineEdit
+@onready var picker_button: Button = $LineEdit/FilePickerButton
+@onready var warn_label: Label = $WarnLabel
 
-var is_valid: bool = true
+
+func _on_file_selected(path: String):
+	line_edit.text = Path.absolute_to_relative(path, base_file_path)
+	_on_focus_exited()
 
 
-func _ready() -> void:
-	assert(warn_label != null)
+func _on_focus_exited() -> void:
+	_on_text_submitted(line_edit.text)
+
+
+func _on_picker_button_pressed():
+	GlobalSignal.emit("open_file_request",
+			[_on_file_selected, filters, base_file_path.get_base_dir()])
+
+
+func _on_text_submitted(file_path: String) -> bool:
 	warn_label.hide()
-	_path_update.call_deferred()
-
-
-func _convert_to_relative() -> void:
-	text = Path.absolute_to_relative(text, base_file_path)
-
-
-func _on_text_changed(_new_text: String) -> void:
-	_path_update()
-
-
-func _path_update() -> void:
-	var file_path: String = text
-	
-	warn_label.hide()
-	is_valid = true
+	var is_valid = true
 	
 	file_path = file_path.lstrip(" ")
 	file_path = file_path.rstrip(" ")
@@ -57,4 +54,6 @@ func _path_update() -> void:
 				warn_label.text = "You must select a file that match %s!" % ", ".join(filters)
 				is_valid = false
 	
-	new_file_path.emit(file_path, is_valid)
+	new_file_path.emit(file_path)
+	line_edit.text = file_path
+	return is_valid

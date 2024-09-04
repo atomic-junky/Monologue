@@ -4,7 +4,7 @@ class_name SentenceNodePanel extends MonologueNodePanel
 
 
 @onready var speaker_field: OptionButton = %Field_Speaker
-
+var speakers = []
 
 func _load():
 	for speaker in speakers:

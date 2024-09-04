@@ -1,9 +1,28 @@
 @icon("res://Assets/Icons/NodesIcons/Cog.svg")
+class_name ActionNode extends MonologueGraphNode
 
-class_name ActionNode
 
-extends MonologueGraphNode
+const ACTIONS = [
+	{ "id": 0, "text": "ActionOption", "metadata": MonologueValue.BOOLEAN },
+	{ "id": 1, "text": "ActionVariable" },
+	{ "id": 2, "text": "ActionCustom", "metadata": MonologueValue.STRING },
+	{ "id": 3, "text": "ActionTimer", "metadata": MonologueValue.INTEGER },
+]
+const CUSTOMS = [
+	{ "id": 0, "text": "PlayAudio", "metadata": MonologueValue.FILE },
+	{ "id": 1, "text": "UpdateBackground", "metadata": MonologueValue.FILE },
+	{ "id": 2, "text": "Other", "metadata": MonologueValue.STRING },
+]
 
+var action_type: String = "ActionOption"
+var option_id: String = ""
+var variable: String = ""
+var operator: String = ""
+var custom_type: String = ""
+var loop: bool = false
+var volume: float = 0.0
+var pitch: float = 1.0
+var value: Variant = false
 
 @onready var option_container = $OptionMarginContainer
 @onready var variable_container = $VariableMarginContainer
@@ -21,134 +40,58 @@ extends MonologueGraphNode
 @onready var custom_value_label = $CustomMarginContainer/CustomContainer/CustomValueContainer/CustomValueLabel
 @onready var wait_value_label = $TimerMarginContainer/CustomContainer/TimerValueContainer/TimerValueLabel
 
-var action_type: String = "ActionOption"
-var option_id: String = ""
-var variable_name: String = ""
-var operator: String = ""
-var custom_type: String = ""
-var loop: bool = false
-var volume: float = 0.0
-var pitch: float = 1.0
-var value: Variant = false
 
 func _ready():
 	node_type = "NodeAction"
 	title = node_type
 
 
-func _to_dict() -> Dictionary:
-	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
+func get_fields() -> Array[MonologueField]:
+	# Group 0: ActionOption
+	var option_id_field = MonologueLineEdit.new("option_id",
+			"Option", option_id).label("Option ID").build()
 	
-	return {
-		"$type": node_type,
-		"ID": id,
-		"NextID": next_id_node[0].id if next_id_node else -1,
-		"Action": _action_to_dict(),
-		"EditorPosition": {
-			"x": position_offset.x,
-			"y": position_offset.y
-		}
-	}
+	# Group 1: ActionVariable
+	var variable_field = MonologueOptionButton.new("variable",
+			"Variable", variable).label("Variable").build() \
+			.set_items(get_parent().variables, "Name", "ID", "Type")
+	var operator_field = MonologueOperator.new("operator",
+			"Operator", MonologueOperator.MATHS).build()
+	
+	# Group 2: ActionCustom
+	var custom_field = MonologueAccordion.new("custom_type",
+			"CustomType", custom_type).label("Type").build() \
+			.group(0, _get_audio_fields()) \
+			.group(1, []) \
+			.group(2, []) \
+			.set_items(CUSTOMS)
+	
+	# Always-Displayed Fields
+	var action_field = MonologueAccordion.new("action_type",
+			"Action", action_type).label("Action Type").build() \
+			.group(0, [option_id_field]) \
+			.group(1, [variable_field, operator_field]) \
+			.group(2, [custom_field]) \
+			.group(3, []) \
+			.set_items(ACTIONS)
+	var value_field = MonologueValue.new(value).vary(variable_field) \
+			.vary(custom_field).vary(action_field).build()
+	
+	return [action_field, value_field]
 
 
-func _from_dict(dict: Dictionary):
-	id = dict.get("ID")
-	
-	var action: Dictionary = dict.get("Action")
-	
-	action_type = action.get("$type")
-	match action_type:
-		"ActionOption":
-			option_id = action.get("OptionID")
-		"ActionVariable":
-			operator = action.get("Operator")
-			variable_name = action.get("Variable")
-		"ActionCustom":
-			custom_type = action.get("CustomType", "")
-			if custom_type == "PlayAudio":
-				loop = action.get("Loop")
-				volume = action.get("Volume", 0.0)
-				pitch = action.get("Pitch", 1.0)
-	value = action.get("Value")
-	
-	_update()
-	
-	var _pos = dict.get("EditorPosition")
-	position_offset.x = _pos.get("x")
-	position_offset.y = _pos.get("y")
-	
-
-func _action_to_dict() -> Dictionary:
-	if action_type == "ActionOption":
-		return {
-			"$type": action_type,
-			"OptionID": option_id,
-			"Value": value
-		}
-	elif action_type == "ActionCustom":
-		if custom_type == "PlayAudio":
-			return {
-				"$type": action_type,
-				"CustomType": custom_type,
-				"Value": value,
-				"Volume": volume,
-				"Pitch": pitch,
-				"Loop": loop
-			}
-		return {
-			"$type": action_type,
-			"CustomType": custom_type,
-			"Value": value
-		}
-	elif action_type == "ActionTimer":
-		return {
-			"$type": action_type,
-			"Value": value
-		}
-		
-	# ActionVariable
-	return {
-		"$type": action_type,
-		"Operator": operator,
-		"Variable": variable_name,
-		"Value": value
-	}
-
-func _on_close_request():
-	queue_free()
-	get_parent().clear_all_empty_connections()
+func _get_audio_fields():
+	return [
+		MonologueCheckButton.new("loop", "Loop", loop).label("Loop?").build(),
+		MonologueSlider.new("volume", "Volume", volume).label("Volume")
+				.suffix("db").build().limit(-80, 24, 0.25),
+		MonologueSlider.new("pitch", "Pitch", pitch).label("Pitch")
+				.build().limit(0, 4, 0.1).default(1),
+	]
 
 
-func _update(panel: ActionNodePanel = null):
-	if panel != null:
-		action_type = panel.action_type
-		value = panel.get_value()
-		
-		match action_type:
-			"ActionOption":
-				option_id = panel.option_id_edit.text
-				
-				if option_id != "":
-					var is_option_id_valid: bool = get_parent().is_option_id_exists(option_id)
-					panel.option_not_find.visible = !is_option_id_valid
-				else:
-					panel.option_not_find.hide()
-			"ActionVariable":
-				if panel.variable_drop_node.selected >= 0:
-					variable_name = panel.variable_drop_node.get_item_text(panel.variable_drop_node.selected)
-				operator = panel.operator_drop_node.get_item_text(panel.operator_drop_node.selected)
-			"ActionCustom":
-				custom_type = panel.custom_drop_node.get_item_text(panel.custom_drop_node.selected)
-				custom_value_label.text = value
-				loop = panel.loop_edit.button_pressed
-				volume = panel.volume_value
-				pitch = panel.pitch_value
-			"ActionTimer":
-				pass
-	
-	
+func _update(_panel: ActionNodePanel = null):
 	action_type_label.text = action_type
-	
 	option_container.hide()
 	variable_container.hide()
 	custom_container.hide()
@@ -160,7 +103,7 @@ func _update(panel: ActionNodePanel = null):
 			option_value_label.text = str(value) if value != null else "value"
 			option_container.show()
 		"ActionVariable":
-			variable_name_label.text = variable_name if variable_name else "variable"
+			variable_name_label.text = variable if variable else "variable"
 			variable_operator_label.text = operator if operator else "operator"
 			variable_value_label.text = str(value) if value != null else "value"
 			variable_container.show()

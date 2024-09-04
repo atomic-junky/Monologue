@@ -17,7 +17,7 @@ func _ready():
 
 
 func _from_dict(dict):
-	id = dict.get("ID")
+	#id = dict.get("ID")
 	target_number = dict.get("Target")
 	
 	target_number_node.value = target_number

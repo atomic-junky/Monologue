@@ -1,16 +1,14 @@
 @icon("res://Assets/Icons/NodesIcons/Sentence.svg")
-
 class_name SentenceNode extends MonologueGraphNode
 
 
-@onready var text_label = $MainContainer/TextLabelPreview
-
-var loaded_text = ""
-var sentence = ""
 var speaker_id = 0
 var display_speaker_name = ""
 var display_variant = ""
+var sentence = ""
 var voiceline_path = ""
+
+@onready var sentence_preview = $MainContainer/TextLabelPreview
 
 
 func _ready():
@@ -18,35 +16,32 @@ func _ready():
 	title = node_type
 
 
-func get_fields():
+func get_fields() -> Array[MonologueField]:
+	var filters = ["*.mp3", "*.ogg", "*.wav"]
 	return [
-		{
-			"SpeakerID": MonologueOptionButton.load_field("Speaker"),
-			"DisplaySpeakerName": MonologueLineEdit.load_field("Display Name"),
-			"DisplayVariant": MonologueLineEdit.load_field("Display Variant")
-		},
-		{"Sentence": MonologueTextEdit.load_field("Sentence")},
-		{"VoicelinePath": MonologueFilePicker.load_field("Voiceline")},
+		MonologueOptionButton.new("speaker_id",
+				"SpeakerID", speaker_id).label("Speaker").build()
+				.set_items(get_parent().speakers, "Reference", "ID"),
+		
+		MonologueLineEdit.new("display_speaker_name",
+				"DisplaySpeakerName", display_speaker_name)
+				.sublabel("Display Name").build(),
+		
+		MonologueLineEdit.new("display_variant",
+				"DisplayVariant", display_variant)
+				.sublabel("Display Variant").build(),
+		
+		MonologueTextEdit.new("sentence",
+				"Sentence", sentence).label("Sentence").build()
+				.preview(sentence_preview),
+		
+		MonologueField.new("voiceline_path",
+				"VoicelinePath", voiceline_path).label("Voiceline")
+				.scene(GlobalVariables.FILE_EDIT, "new_file_path",
+					"_on_text_submitted", ["base_file_path", "filters"],
+					[get_parent().file_path, filters]),
 	]
 
 
-func _from_dict(dict: Dictionary):
-	id = dict.get("ID")
-	sentence = dict.get("Sentence")
-	speaker_id = dict.get("SpeakerID")
-	display_speaker_name = dict.get("DisplaySpeakerName")
-	display_variant = dict.get("DisplayVariant", "")
-	voiceline_path = dict.get("VoicelinePath", "")
-	
-	_update()
-
-
-func _update(panel: SentenceNodePanel = null):	
-	if panel != null:
-		sentence = panel.sentence
-		speaker_id = panel.speaker_id
-		display_speaker_name = panel.display_speaker_name
-		display_variant = panel.display_variant
-		voiceline_path = panel.voiceline_path
-	
-	text_label.text = sentence
+func _update(_panel = null):
+	sentence_preview.text = sentence

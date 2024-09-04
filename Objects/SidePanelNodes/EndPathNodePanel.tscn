@@ -34,10 +34,8 @@ text = "Next story"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="NextStoryPicker" parent="SubContainer/NextStoryContainer" node_paths=PackedStringArray("warn_label") instance=ExtResource("2_ipaf1")]
+[node name="NextStoryPicker" parent="SubContainer/NextStoryContainer" instance=ExtResource("2_ipaf1")]
 layout_mode = 2
-filters = Array[String](["*.json"])
-warn_label = NodePath("../WarnLabel")
 
 [node name="WarnLabel" type="Label" parent="SubContainer/NextStoryContainer"]
 layout_mode = 2
@@ -50,5 +48,3 @@ layout_mode = 2
 text = "Note: Variables are kept with their values between stories when you use this node."
 label_settings = SubResource("LabelSettings_wvoxr")
 autowrap_mode = 3
-
-[connection signal="new_file_path" from="SubContainer/NextStoryContainer/NextStoryPicker" to="." method="_on_next_story_picker_new_file_path"]

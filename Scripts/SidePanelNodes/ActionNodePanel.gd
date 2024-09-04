@@ -26,6 +26,7 @@ extends MonologueNodePanel
 
 var action_type
 
+var variables = []
 var volume_value: float = 0.0
 var pitch_value: float = 1.0
 
@@ -40,8 +41,6 @@ func _ready():
 
 
 func _from_dict(dict: Dictionary):
-	id = dict.get("ID")
-	
 	var action = dict.get("Action")
 	action_type =  action.get("$type")
 	

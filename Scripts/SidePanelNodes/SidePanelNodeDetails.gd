@@ -14,7 +14,6 @@ var panel_dictionary = {
 	"NodeEvent": preload("res://Objects/SidePanelNodes/ConditionNodePanel.tscn")
 }
 
-@onready var control_node = $"../../../../.."
 @onready var id_line_edit = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID
 @onready var panel_container = $MarginContainer/ScrollContainer/PanelContainer
 @onready var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
@@ -54,13 +53,10 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	id_line_edit.text = node.id
 	
 	clear_current_panel()
-	new_panel.side_panel = self
-	new_panel.graph_node = node
-	new_panel.id_line_edit = id_line_edit
 	current_panel = new_panel
 	selected_node = node
+	new_panel.graph_node = node
 	panel_container.add_child(new_panel)
-	new_panel._from_dict(node._to_dict())
 	# this is for undo/redo to propagate gui updates back to its graph node
 	node._update()
 	
@@ -78,11 +74,11 @@ func refocus(node: MonologueGraphNode) -> void:
 
 
 ## Refresh the current panel for the given node, or select it if not visible.
-func refresh_panel(node: MonologueGraphNode):
+func refresh_panel(node: MonologueGraphNode, changes: Array[PropertyChange],
+			is_after: bool) -> void:
 	if visible and selected_node == node:
-		# update existing controls using panel's _from_dict()
-		current_panel._from_dict(node._to_dict())
-		current_panel.change.emit(current_panel)
+		# update existing field values
+		current_panel.set_field_values(changes, is_after)
 	else:
 		node.get_parent().set_selected(node)
 
@@ -123,7 +119,7 @@ func _on_tfh_btn_pressed():
 
 
 func _on_id_copy_pressed():
-	DisplayServer.clipboard_set(current_panel.id)
+	DisplayServer.clipboard_set(id_line_edit.text)
 	var ribbon = ribbon_scene.instantiate()
 	ribbon.position = get_viewport().get_mouse_position()
 	get_window().add_child(ribbon)

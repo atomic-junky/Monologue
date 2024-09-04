@@ -17,8 +17,8 @@ func _ready():
 	reload_variables()
 
 
-func _from_dict(dict):
-	id = dict.get("ID")
+#func _from_dict(dict):
+	#id = dict.get("ID")
 
 
 func add_character(reference: String = "", update: bool = true):

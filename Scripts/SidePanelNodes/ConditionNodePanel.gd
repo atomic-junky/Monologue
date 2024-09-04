@@ -12,6 +12,7 @@ extends MonologueNodePanel
 @onready var string_edit: LineEdit = $ValueContainer/StringEdit
 @onready var default_label: Label = $ValueContainer/DefaultLabel
 
+var variables = []
 
 func _ready():
 	variable_drop_node.clear()
@@ -25,7 +26,7 @@ func _ready():
 
 
 func _from_dict(dict: Dictionary):
-	id = dict.get("ID")
+	#id = dict.get("ID")
 	var condition = dict.get("Condition")
 	var variable_name = condition.get("Variable")
 	var variables_filter = variables.filter(func(v): return v.get("Name") == variable_name)

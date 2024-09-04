@@ -2,78 +2,32 @@
 class_name MonologueNodePanel extends VBoxContainer
 
 
-signal change(panel)
-
-var id
-var id_line_edit: LineEdit
-var graph_node: MonologueGraphNode = null : set = _set_graph_node
-var side_panel
-var undo_redo: HistoryHandler
-
-var speakers: Array :
-	get():
-		return get_graph_edit_property("speakers")
-var variables: Array :
-	get():
-		return get_graph_edit_property("variables")
-
 var fields: Dictionary = {}
+var graph_node: MonologueGraphNode : set = _set_graph_node
+var undo_redo: HistoryHandler
 
 
 func _ready():
-	_load()
 	add_theme_constant_override("separation", 10)
 
 
-func get_graph_edit_property(property: StringName) -> Variant:
-	return graph_node.get_parent().get(property)
-
-
-func _load_fields(dict: Dictionary = {}) -> void:
-	var groups: Array = graph_node.get_fields()
-	
-	for group in groups:
-		_load_field_group(group, dict)
-
-
-func _load_field_group(group: Dictionary, dict: Dictionary) -> void:
-	var vbox := VBoxContainer.new()
-	
-	for field in group.keys():
-		var node: MonologueField = group[field]
-		vbox.add_child(node)
-		node.field_update.connect(_on_field_update.bindv([field]))
-		node.set_value(dict.get(field))
-	
-	add_child(vbox)
-
-
-func _load():
-	pass
-
-
-## Load the given graph node data and update this panel's controls to reflect
-## that data. Ergo, this method must be called only after this panel is ready.
-func _from_dict(dict: Dictionary):
-	# Load and bind ID
-	id_line_edit.connect("text_changed", _on_field_update.bindv(["ID"]))
-	fields["ID"] = dict.get("ID", "")
-	id_line_edit.text = fields["ID"]
-	
-	_load_fields(dict)
+## Refresh the field UI for the given field key and value.
+func set_field_values(change_list: Array[PropertyChange], is_after: bool):
+	for change in change_list:
+		var field = fields.get(change.property)
+		if field:
+			field.value = change.after if is_after else change.before
 
 
 func _set_graph_node(new_graph_node: MonologueGraphNode) -> void:
 	graph_node = new_graph_node
 	undo_redo = graph_node.get_parent().undo_redo
+	
+	for field in graph_node.get_fields():
+		fields[field.property] = field
+		add_child(field)
 
 
-func _on_field_update(value: Variant, field: String) -> void:
-	fields[field] = value
-	graph_node._update_fields(fields)
-
-
-## @deprecated
 func _on_node_property_change(properties: Array, values: Array) -> bool:
 	if undo_redo and values.size() == properties.size():
 		var has_changes = false

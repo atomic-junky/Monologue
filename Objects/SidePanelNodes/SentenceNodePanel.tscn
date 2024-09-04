@@ -102,10 +102,8 @@ text = "Voiceline"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Field_Voiceline" parent="SubContainer/VoicelineContainer" node_paths=PackedStringArray("warn_label") instance=ExtResource("2_5dbww")]
+[node name="Field_Voiceline" parent="SubContainer/VoicelineContainer" instance=ExtResource("2_5dbww")]
 layout_mode = 2
-filters = Array[String](["*.mp3"])
-warn_label = NodePath("../WarnLabel")
 
 [node name="WarnLabel" type="Label" parent="SubContainer/VoicelineContainer"]
 layout_mode = 2

@@ -12,9 +12,9 @@ func _ready():
 	reload_options()
 
 
-func _from_dict(dict):
-	id = dict.get("ID")
-	change.emit(self)
+#func _from_dict(dict):
+	#id = dict.get("ID")
+	#change.emit(self)
 
 
 func add_option():
@@ -58,7 +58,7 @@ func reload_options():
 ## Adds latest option data changes into graph history, if any.
 func save_options():
 	_on_node_property_change(["options"], [get_options_data()])
-	change.emit(self)
+	#change.emit(self)
 
 
 ## Update GUI for options list.
