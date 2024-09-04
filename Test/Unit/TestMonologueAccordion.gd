@@ -15,7 +15,7 @@ func test_add_to_dict():
 	var f1 = mock(MonologueField, CALL_REAL_FUNC)
 	var f2 = mock(MonologueField, CALL_REAL_FUNC)
 	var f3 = mock(MonologueField, CALL_REAL_FUNC)
-	f3.key = "field_3"
+	f3.json_key = "field_3"
 	f3.value = 999
 	var f4 = auto_free(Control.new())
 	accordion.control_groups[0] = [f1, f2]

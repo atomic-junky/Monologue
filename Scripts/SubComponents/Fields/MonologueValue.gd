@@ -21,9 +21,9 @@ func _init(dict_value: Variant):
 
 func add_to_dict(dict: Dictionary) -> void:
 	if value_field is MonologueField:
-		dict[value_field.key] = value_field.value
+		dict[value_field.json_key] = value_field.value
 	else:
-		dict[key] = null
+		dict[json_key] = null
 
 
 func build() -> MonologueField:
@@ -33,16 +33,16 @@ func build() -> MonologueField:
 	var type = variable.option_button.get_item_metadata(index)
 	
 	match type:
-		BOOLEAN:
-			value_field = MonologueCheckButton.new(property, key, value).build()
-		INTEGER:
-			value_field = MonologueSpinBox.new(property, key, value).build()
-		STRING:
-			value_field = MonologueLineEdit.new(property, key, value).build()
+		BOOLEAN: value_field = MonologueCheckButton \
+				.new(property, json_key, value).build()
+		INTEGER: value_field = MonologueSpinBox \
+				.new(property, json_key, value).build()
+		STRING: value_field = MonologueLineEdit \
+				.new(property, json_key, value).build()
 		FILE:
 			var filter_dict = filter_definitions.get(variable, {})
 			var filter_list = filter_dict.get(index, [])
-			value_field = MonologueField.new(property, key, value)\
+			value_field = MonologueField.new(property, json_key, value) \
 				.scene(GlobalVariables.FILE_EDIT, "new_file_path",
 					"set_variant", ["base_file_path", "filters"],
 					[base_path, filter_list])

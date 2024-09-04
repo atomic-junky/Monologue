@@ -11,8 +11,8 @@ func add_to_dict(dict: Dictionary) -> void:
 	var group_dict = {}
 	for control in control_list:
 		if control is MonologueField:
-			group_dict[control.key] = control.value
-	dict[key] = group_dict
+			group_dict[control.json_key] = control.value
+	dict[json_key] = group_dict
 
 
 func group(index: int, list: Array) -> MonologueField:

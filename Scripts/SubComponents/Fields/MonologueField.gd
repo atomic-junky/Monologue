@@ -10,13 +10,13 @@ const SUBLABEL_COlOR = Color("858585")
 var hbox: HBoxContainer
 var panel: MonologueNodePanel : set = set_panel
 var property: String
-var key: String
+var json_key: String
 var value: Variant : set = set_value
 
 
 func _init(property_name: String, dict_key: String, dict_value: Variant):
 	property = property_name
-	key = dict_key
+	json_key = dict_key
 	value = dict_value
 	size_flags_horizontal = SIZE_EXPAND_FILL
 	hbox = HBoxContainer.new()
@@ -24,7 +24,7 @@ func _init(property_name: String, dict_key: String, dict_value: Variant):
 
 
 func add_to_dict(dict: Dictionary) -> void:
-	dict[key] = value
+	dict[json_key] = value
 
 
 func build() -> MonologueField:
