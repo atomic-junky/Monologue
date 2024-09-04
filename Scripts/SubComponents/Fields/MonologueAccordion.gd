@@ -10,14 +10,15 @@ func add_to_dict(dict: Dictionary) -> void:
 	var control_list = control_groups.get(option_button.selected)
 	var group_dict = {}
 	for control in control_list:
-		group_dict[control.key] = control.value
+		if control is MonologueField:
+			group_dict[control.key] = control.value
 	dict[key] = group_dict
 
 
 func group(index: int, list: Array) -> MonologueField:
 	control_groups[index] = list
 	for control in list:
-		hbox.get_parent().add_child(control)
+		panel.add_child(control)
 		control.hide()
 	return self
 
