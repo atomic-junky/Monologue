@@ -11,7 +11,7 @@ func build() -> MonologueField:
 	text_edit.custom_minimum_size.y = 200
 	text_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	text_edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
-	text_edit.text = value
+	text_edit.text = value if value is String else ""
 	text_edit.connect("focus_exited", _on_focus_exited)
 	hbox.add_child(text_edit, true)
 	return self

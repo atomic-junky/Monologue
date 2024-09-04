@@ -46,7 +46,7 @@ func test_group():
 	assert_array(accordion.control_groups.get(1)).is_equal([c3])
 
 
-func test_show_selected():
+func test_show_controls():
 	var c1 = auto_free(Control.new())
 	var c2 = auto_free(Control.new())
 	var c3 = auto_free(Control.new())
@@ -56,16 +56,8 @@ func test_show_selected():
 	accordion.control_groups[1] = [c2]
 	accordion.control_groups[2] = [c3, c4]
 	accordion.control_groups[3] = [c5]
-	
-	var option_button = auto_free(OptionButton.new())
-	option_button.add_item("s1")
-	option_button.add_item("s2")
-	option_button.add_item("s3")
-	option_button.add_item("s4")
-	option_button.select(2)
-	accordion.option_button = option_button
 
-	accordion.show_selected()
+	accordion.show_controls(2)
 	assert_bool(c1.visible).is_false()
 	assert_bool(c2.visible).is_false()
 	assert_bool(c3.visible).is_true()

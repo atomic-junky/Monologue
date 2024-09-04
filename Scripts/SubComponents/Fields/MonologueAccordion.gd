@@ -2,7 +2,7 @@
 class_name MonologueAccordion extends MonologueOptionButton
 
 
-## Dictionary of group name as key and list of MonologueFields as values.
+## Dictionary of group index as key and list of MonologueFields as values.
 var control_groups: Dictionary = {}
 
 
@@ -25,13 +25,14 @@ func group(index: int, list: Array) -> MonologueField:
 
 func set_value(new_value: Variant) -> void:
 	super.set_value(new_value)
-	show_selected()
+	if option_button:
+		show_controls(option_button.selected)
 
 
-func show_selected():
+func show_controls(group_index: int):
 	for i in control_groups.keys():
 		for control in control_groups.values()[i]:
-			if i == option_button.selected:
+			if i == group_index:
 				control.show()
 			else:
 				control.hide()

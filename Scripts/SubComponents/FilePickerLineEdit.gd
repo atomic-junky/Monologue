@@ -11,6 +11,11 @@ signal new_file_path(file_path: String)
 @onready var warn_label: Label = $WarnLabel
 
 
+## Used by MonologueValue to accept any value as filepath.
+func set_variant(value: Variant):
+	_on_text_submitted(value if value is String else "")
+
+
 func _on_file_selected(path: String):
 	line_edit.text = Path.absolute_to_relative(path, base_file_path)
 	_on_focus_exited()
@@ -43,17 +48,25 @@ func _on_text_submitted(file_path: String) -> bool:
 			is_valid = false
 		else:
 			var correct_suffix: bool = false
+			var file_name: String = abs_file_path.get_file()
 			for filter in filters:
-				var end_match: String = filter
-				var file_name: String = abs_file_path.get_file()
-				if file_name.match(end_match):
-					correct_suffix = true
+				var targets = _split_match(filter)
+				for target in targets:
+					if file_name.match(target):
+						correct_suffix = true
+						break
 			
 			if not correct_suffix:
 				warn_label.show()
-				warn_label.text = "You must select a file that match %s!" % ", ".join(filters)
+				var formats = Array(filters).map(_split_match)
+				var text = ", ".join(formats.map(func(f): return ", ".join(f)))
+				warn_label.text = "File must match: %s" % text
 				is_valid = false
 	
 	new_file_path.emit(file_path)
 	line_edit.text = file_path
 	return is_valid
+
+
+func _split_match(filter: String) -> Array:
+	return filter.split(";")[0].split(",")

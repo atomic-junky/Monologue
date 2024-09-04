@@ -1,6 +1,8 @@
 class_name MonologueOptionButton extends MonologueField
 
 
+## Set this to true if value is stored as index instead of text.
+var is_store_index: bool
 var option_button: OptionButton
 
 
@@ -15,11 +17,11 @@ func build() -> MonologueField:
 ## Checks if value is within the option button range. Resets to 0 if invalid.
 ## Returns true if value is valid, false otherwise.
 func check_value() -> bool:
-	var is_string = value is String
-	var index = get_item_idx_from_text(value) if is_string else value
+	var is_str = value is String
+	var index = get_item_idx_from_text(value) if is_str else value
 	
 	if index >= option_button.item_count:  # avoid falsy check
-		if is_string:
+		if is_str:
 			value = option_button.get_item_text(0)
 		else:
 			value = 0
@@ -66,3 +68,13 @@ func set_value(new_value: Variant) -> void:
 		var is_str = new_value is String
 		var index = get_item_idx_from_text(new_value) if is_str else new_value
 		option_button.selected = index
+
+
+func update_value(new_value: Variant) -> bool:
+	if is_store_index and new_value is String:
+		new_value = get_item_idx_from_text(new_value)
+	
+	elif not is_store_index and new_value is int:
+		new_value = option_button.get_item_text(new_value)
+	
+	return super.update_value(new_value)

@@ -8,6 +8,8 @@ const INTEGER: String = "Integer"
 const STRING: String = "String"
 const FILE: String = "File"
 
+var base_path: String : set = set_path
+var filter_definitions: Dictionary
 var variable: MonologueOptionButton
 var value_field: Control
 
@@ -37,14 +39,33 @@ func build() -> MonologueField:
 			value_field = MonologueSpinBox.new(property, key, value).build()
 		STRING:
 			value_field = MonologueLineEdit.new(property, key, value).build()
+		FILE:
+			var filter_dict = filter_definitions.get(variable, {})
+			var filter_list = filter_dict.get(index, [])
+			value_field = MonologueField.new(property, key, value)\
+				.scene(GlobalVariables.FILE_EDIT, "new_file_path",
+					"set_variant", ["base_file_path", "filters"],
+					[base_path, filter_list])
 		_:
 			value_field = Label.new()
 			value_field.text = "Please select a variable first"
 			value_field.add_theme_color_override("font_color", DEFAULT_COLOR)
 	
-	if value_field is MonologueField:
-		connect("ready", _set_panel_deferred.bind(value_field))
+	if panel and value_field is MonologueField:
+		value_field.set_panel(panel)
 	hbox.add_child(value_field)
+	return self
+
+
+func set_panel(new_panel: MonologueNodePanel) -> MonologueField:
+	super.set_panel(new_panel)
+	if value_field is MonologueField:
+		value_field.set_panel(new_panel)
+	return self
+
+
+func set_path(path: String) -> MonologueField:
+	base_path = path
 	return self
 
 
@@ -57,15 +78,14 @@ func set_value(new_value: Variant) -> void:
 
 
 ## Intended to be called once per given [param option_button], establishes
-## the "item_selected" signal to rebuild the value field.
-func vary(dropdown: MonologueOptionButton) -> MonologueField:
-	var callback = func():
+## the "item_selected" signal to rebuild the value field. [param filter_dict]
+## should be in this format: { <<selected index>>: <<filter array>> }
+func vary(dropdown: MonologueOptionButton,
+			filter_dict: Dictionary = {}) -> MonologueField:
+	var callback = func(_idx):
 		variable = dropdown
 		build()
 	variable = dropdown
+	filter_definitions[variable] = filter_dict
 	variable.option_button.connect("item_selected", callback)
 	return self
-
-
-func _set_panel_deferred(field: MonologueField):
-	field.set_panel.call_deferred(panel)

@@ -18,6 +18,7 @@ func _init(property_name: String, dict_key: String, dict_value: Variant):
 	property = property_name
 	key = dict_key
 	value = dict_value
+	size_flags_horizontal = SIZE_EXPAND_FILL
 	hbox = HBoxContainer.new()
 	add_child(hbox)
 

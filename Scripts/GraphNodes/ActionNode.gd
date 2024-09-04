@@ -74,8 +74,14 @@ func get_fields() -> Array[MonologueField]:
 			.group(2, [custom_field]) \
 			.group(3, []) \
 			.set_items(ACTIONS)
-	var value_field = MonologueValue.new(value).vary(variable_field) \
-			.vary(custom_field).vary(action_field).build()
+	
+	var base_path = get_parent().file_path
+	var audio_filters = ["*.mp3,*.ogg,*.wav;Sound Files"]
+	var image_filters = ["*.bmp,*.jpg,*.jpeg,*.png,*.svg,*.webp;Image Files"]
+	var filter_definition = { 0: audio_filters, 1: image_filters }
+	var value_field = MonologueValue.new(value).set_path(base_path) \
+			.vary(variable_field).vary(custom_field, filter_definition) \
+			.vary(action_field).build()
 	
 	return [action_field, value_field]
 
