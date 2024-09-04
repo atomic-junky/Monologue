@@ -18,7 +18,7 @@ func add_to_dict(dict: Dictionary) -> void:
 func group(index: int, list: Array) -> MonologueField:
 	control_groups[index] = list
 	for control in list:
-		connect("ready", func(): _panel_add_child_deferred.bind(control))
+		connect("ready", func(): _add_to_panel_deferred(control))
 		control.hide()
 	return self
 
@@ -38,5 +38,7 @@ func show_selected():
 
 
 ## Callback to allow node_panel to be set by others before _ready().
-func _panel_add_child_deferred(control: Node):
+func _add_to_panel_deferred(control: Node):
+	if control is MonologueField:
+		control.set_panel(panel)
 	panel.add_child.call_deferred(control)

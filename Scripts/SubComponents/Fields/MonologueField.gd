@@ -64,8 +64,9 @@ func sublabel(text: String, prefix: String = "↳ ") -> MonologueField:
 
 ## Sets a reference to the node panel for panel functionality.
 ## Useful for nested fields where immediate parent is not a node panel.
-func set_panel(new_panel: MonologueNodePanel) -> void:
+func set_panel(new_panel: MonologueNodePanel) -> MonologueField:
 	panel = new_panel
+	return self
 
 
 ## Not to be confused with update_value(). This method is to set the UI

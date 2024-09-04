@@ -31,13 +31,19 @@ func build() -> MonologueField:
 	var type = variable.option_button.get_item_metadata(index)
 	
 	match type:
-		BOOLEAN: value_field = MonologueCheckButton.new(property, key, value)
-		INTEGER: value_field = MonologueSpinBox.new(property, key, value)
-		STRING:  value_field = MonologueLineEdit.new(property, key, value)
+		BOOLEAN:
+			value_field = MonologueCheckButton.new(property, key, value).build()
+		INTEGER:
+			value_field = MonologueSpinBox.new(property, key, value).build()
+		STRING:
+			value_field = MonologueLineEdit.new(property, key, value).build()
 		_:
 			value_field = Label.new()
 			value_field.text = "Please select a variable first"
 			value_field.add_theme_color_override("font_color", DEFAULT_COLOR)
+	
+	if value_field is MonologueField:
+		connect("ready", _set_panel_deferred.bind(value_field))
 	hbox.add_child(value_field)
 	return self
 
@@ -59,3 +65,7 @@ func vary(dropdown: MonologueOptionButton) -> MonologueField:
 	variable = dropdown
 	variable.option_button.connect("item_selected", callback)
 	return self
+
+
+func _set_panel_deferred(field: MonologueField):
+	field.set_panel.call_deferred(panel)
