@@ -25,6 +25,7 @@ func _set_graph_node(new_graph_node: MonologueGraphNode) -> void:
 	
 	for field in graph_node.get_fields():
 		fields[field.property] = field
+		field.node_panel = self
 		add_child(field)
 
 

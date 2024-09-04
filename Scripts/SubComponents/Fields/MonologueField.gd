@@ -8,11 +8,10 @@ const INDENT_AMOUNT = 25
 const SUBLABEL_COlOR = Color("858585")
 
 var hbox: HBoxContainer
+var panel: MonologueNodePanel : set = set_panel
 var property: String
 var key: String
 var value: Variant : set = set_value
-
-@onready var panel: MonologueNodePanel = get_parent()
 
 
 func _init(property_name: String, dict_key: String, dict_value: Variant):
@@ -61,6 +60,12 @@ func sublabel(text: String, prefix: String = "↳ ") -> MonologueField:
 	new_label.add_theme_color_override("font_color", SUBLABEL_COlOR)
 	new_label.text = prefix + new_label.text
 	return self
+
+
+## Sets a reference to the node panel for panel functionality.
+## Useful for nested fields where immediate parent is not a node panel.
+func set_panel(new_panel: MonologueNodePanel) -> void:
+	panel = new_panel
 
 
 ## Not to be confused with update_value(). This method is to set the UI
