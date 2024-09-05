@@ -20,10 +20,7 @@ func get_fields() -> Array[MonologueField]:
 
 func _from_dict(dict: Dictionary):
 	for key in dict.keys():
-		if key == "$type":
-			set("custom_type", dict.get(key))
-		else:
-			set(key.to_snake_case(), dict.get(key))
+		set(key.to_snake_case(), dict.get(key))
 	position_offset.x = dict.EditorPosition.get("x")
 	position_offset.y = dict.EditorPosition.get("y")
 	_update()  # refresh node UI after loading properties

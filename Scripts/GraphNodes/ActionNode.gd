@@ -2,18 +2,6 @@
 class_name ActionNode extends MonologueGraphNode
 
 
-const ACTIONS = [
-	{ "id": 0, "text": "ActionOption", "metadata": MonologueValue.BOOLEAN },
-	{ "id": 1, "text": "ActionVariable" },
-	{ "id": 2, "text": "ActionCustom", "metadata": MonologueValue.STRING },
-	{ "id": 3, "text": "ActionTimer", "metadata": MonologueValue.INTEGER },
-]
-const CUSTOMS = [
-	{ "id": 0, "text": "PlayAudio", "metadata": MonologueValue.FILE },
-	{ "id": 1, "text": "UpdateBackground", "metadata": MonologueValue.FILE },
-	{ "id": 2, "text": "Other", "metadata": MonologueValue.STRING },
-]
-
 var action_type: String = "ActionOption"
 var option_id: String = ""
 var variable: String = ""
@@ -49,50 +37,91 @@ func _ready():
 func get_fields() -> Array[MonologueField]:
 	# Group 0: ActionOption
 	var option_id_field = MonologueLineEdit.new("option_id",
-			"Option", option_id).label("Option ID").build()
+			"Option", option_id) \
+			.label("Option ID") \
+			.build()
 	
 	# Group 1: ActionVariable
 	var variable_field = MonologueOptionButton.new("variable",
-			"Variable", variable).label("Variable").build() \
+			"Variable", variable) \
+			.label("Variable") \
+			.build() \
 			.set_items(get_parent().variables, "Name", "ID", "Type")
 	var operator_field = MonologueOperator.new("operator",
-			"Operator", MonologueOperator.MATHS).build()
+			"Operator", MonologueOperator.MATHS) \
+			.build()
 	
 	# Group 2: ActionCustom
 	var custom_field = MonologueAccordion.new("custom_type",
-			"CustomType", custom_type).label("Type").build() \
+			"CustomType", custom_type) \
+			.label("Type") \
+			.build() \
 			.group(0, _get_audio_fields()) \
 			.group(1, []) \
 			.group(2, []) \
-			.set_items(CUSTOMS)
+			.set_items([
+				{ "id": 0, "text": "PlayAudio", "metadata": MonologueValue.FILE },
+				{ "id": 1, "text": "UpdateBackground", "metadata": MonologueValue.FILE },
+				{ "id": 2, "text": "Other", "metadata": MonologueValue.STRING },
+			])
 	
 	# Always-Displayed Fields
 	var action_field = MonologueAccordion.new("action_type",
-			"Action", action_type).label("Action Type").build() \
+			"Action", action_type) \
+			.label("Action Type") \
+			.build() \
 			.group(0, [option_id_field]) \
 			.group(1, [variable_field, operator_field]) \
 			.group(2, [custom_field]) \
 			.group(3, []) \
-			.set_items(ACTIONS)
+			.set_items([
+				{ "id": 0, "text": "ActionOption", "metadata": MonologueValue.BOOLEAN },
+				{ "id": 1, "text": "ActionVariable" },
+				{ "id": 2, "text": "ActionCustom", "metadata": MonologueValue.STRING },
+				{ "id": 3, "text": "ActionTimer", "metadata": MonologueValue.INTEGER },
+			])
 	
 	var base_path = get_parent().file_path
 	var audio_filters = ["*.mp3,*.ogg,*.wav;Sound Files"]
 	var image_filters = ["*.bmp,*.jpg,*.jpeg,*.png,*.svg,*.webp;Image Files"]
 	var filter_definition = { 0: audio_filters, 1: image_filters }
-	var value_field = MonologueValue.new(value).set_path(base_path) \
-			.vary(variable_field).vary(custom_field, filter_definition) \
-			.vary(action_field).build()
+	var value_field = MonologueValue.new(value) \
+			.set_path(base_path) \
+			.vary(variable_field) \
+			.vary(custom_field, filter_definition) \
+			.vary(action_field) \
+			.build()
 	
 	return [action_field, value_field]
 
 
+func _from_dict(dict: Dictionary):
+	var action_dict = dict.get("Action", {})
+	for key in action_dict.keys():
+		if key == "$type":
+			action_type = action_dict.get(key)
+		else:
+			set(key.to_snake_case(), action_dict.get(key))
+	super._from_dict(dict)
+
+
 func _get_audio_fields():
 	return [
-		MonologueCheckButton.new("loop", "Loop", loop).label("Loop?").build(),
-		MonologueSlider.new("volume", "Volume", volume).label("Volume")
-				.suffix("db").build().limit(-80, 24, 0.25),
-		MonologueSlider.new("pitch", "Pitch", pitch).label("Pitch")
-				.build().limit(0, 4, 0.1).default(1),
+		MonologueCheckButton.new("loop", "Loop", loop)
+				.label("Loop?")
+				.build(),
+		
+		MonologueSlider.new("volume", "Volume", volume)
+				.label("Volume")
+				.suffix("db")
+				.build()
+				.limit(-80, 24, 0.25),
+		
+		MonologueSlider.new("pitch", "Pitch", pitch)
+				.label("Pitch")
+				.build()
+				.limit(0, 4, 0.1)
+				.default(1),
 	]
 
 
