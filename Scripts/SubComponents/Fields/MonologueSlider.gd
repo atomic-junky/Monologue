@@ -57,7 +57,7 @@ func limit(minimum: float, maximum: float, step: float) -> MonologueSlider:
 
 
 func reset() -> void:
-	slider.value = reset_value
+	update_value(reset_value)
 
 
 func set_value(new_value: Variant) -> void:
