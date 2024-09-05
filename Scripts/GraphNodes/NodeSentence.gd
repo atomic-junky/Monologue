@@ -20,23 +20,30 @@ func get_fields() -> Array[MonologueField]:
 	var filters = ["*.mp3", "*.ogg", "*.wav"]
 	return [
 		MonologueOptionButton.new("speaker_id",
-				"SpeakerID", speaker_id).label("Speaker").build()
+				"SpeakerID", speaker_id)
+				.label("Speaker")
+				.build()
 				.set_items(get_parent().speakers, "Reference", "ID"),
 		
 		MonologueLineEdit.new("display_speaker_name",
 				"DisplaySpeakerName", display_speaker_name)
-				.sublabel("Display Name").build(),
+				.sublabel("Display Name")
+				.build(),
 		
 		MonologueLineEdit.new("display_variant",
 				"DisplayVariant", display_variant)
-				.sublabel("Display Variant").build(),
+				.sublabel("Display Variant")
+				.build(),
 		
 		MonologueTextEdit.new("sentence",
-				"Sentence", sentence).label("Sentence").build()
+				"Sentence", sentence)
+				.label("Sentence")
+				.build()
 				.preview(sentence_preview),
 		
 		MonologueField.new("voiceline_path",
-				"VoicelinePath", voiceline_path).label("Voiceline")
+				"VoicelinePath", voiceline_path)
+				.label("Voiceline")
 				.scene(GlobalVariables.FILE_EDIT, "new_file_path",
 					"_on_text_submitted", ["base_file_path", "filters"],
 					[get_parent().file_path, filters]),
