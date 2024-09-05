@@ -29,9 +29,8 @@ var value: Variant = false
 @onready var wait_value_label = $TimerMarginContainer/CustomContainer/TimerValueContainer/TimerValueLabel
 
 
-func _ready():
+func _init():
 	node_type = "NodeAction"
-	title = node_type
 
 
 func get_fields() -> Array[MonologueField]:

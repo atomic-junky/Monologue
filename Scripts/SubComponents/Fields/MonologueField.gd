@@ -23,8 +23,9 @@ func _init(property_name: String, dict_key: String, dict_value: Variant):
 	add_child(hbox)
 
 
-func add_to_dict(dict: Dictionary) -> void:
+func add_to_dict(dict: Dictionary, auto_free: bool = false) -> void:
 	dict[json_key] = value
+	if auto_free: queue_free()
 
 
 func build() -> MonologueField:

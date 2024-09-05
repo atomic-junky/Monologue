@@ -17,13 +17,16 @@ var value_field: Control
 func _init(dict_value: Variant):
 	super("value", "Value", dict_value)
 	label("Value")
+	connect("tree_exiting", func(): if value_field: value_field.queue_free())
 
 
-func add_to_dict(dict: Dictionary) -> void:
+func add_to_dict(dict: Dictionary, auto_free: bool = false) -> void:
 	if value_field is MonologueField:
 		dict[value_field.json_key] = value_field.value
 	else:
 		dict[json_key] = null
+	
+	if auto_free: queue_free()
 
 
 func build() -> MonologueField:

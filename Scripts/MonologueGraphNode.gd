@@ -7,6 +7,10 @@ var id: String = UUID.v4()
 var node_type: String = "NodeUnknown"
 
 
+func _ready():
+	title = node_type
+
+
 func add_to(graph) -> Array[MonologueGraphNode]:
 	graph.add_child(self, true)
 	return [self]
@@ -38,13 +42,13 @@ func _to_dict() -> Dictionary:
 		"$type": node_type,
 		"ID": id,
 		"EditorPosition": {
-			"x": position_offset.x,
-			"y": position_offset.y
+			"x": int(position_offset.x),
+			"y": int(position_offset.y)
 		}
 	}
 	
 	for field in get_fields():
-		field.add_to_dict(base_dict)
+		field.add_to_dict(base_dict, true)
 	_to_next(base_dict)
 	return base_dict
 

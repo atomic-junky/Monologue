@@ -6,13 +6,24 @@ class_name MonologueAccordion extends MonologueOptionButton
 var control_groups: Dictionary = {}
 
 
-func add_to_dict(dict: Dictionary) -> void:
+func add_to_dict(dict: Dictionary, auto_free: bool = false) -> void:
 	var control_list = control_groups.get(option_button.selected)
 	var group_dict = {}
 	for control in control_list:
 		if control is MonologueField:
 			group_dict[control.json_key] = control.value
 	dict[json_key] = group_dict
+	
+	if auto_free:
+		clear()
+		queue_free()
+
+
+func clear() -> void:
+	for list in control_groups.values():
+		for control in list:
+			queue_free()
+	control_groups = {}
 
 
 func group(index: int, list: Array) -> MonologueField:
