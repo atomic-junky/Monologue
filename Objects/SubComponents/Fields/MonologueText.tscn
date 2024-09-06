@@ -10,7 +10,7 @@ script = ExtResource("1_3q0il")
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 0
-text = "Label"
+text = "Value"
 
 [node name="TextEdit" type="TextEdit" parent="."]
 custom_minimum_size = Vector2(100, 200)

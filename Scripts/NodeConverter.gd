@@ -12,39 +12,40 @@ func convert_node(node_dict: Dictionary) -> Dictionary:
 
 func convert_action(dict: Dictionary) -> Dictionary:
 	var action_dict = dict.get("Action")
-	var value = action_dict.get("Value")
-	dict.erase("Action")
-	
-	var action_type = action_dict.get("$type")
-	match action_type:
-		"ActionOption":
-			dict["$type"] = "NodeSetter"
-			dict["SetType"] = "Option"
-			dict["OptionID"] = action_dict.get("OptionID")
-			dict["Enable"] = value
-		"ActionVariable":
-			dict["$type"] = "NodeSetter"
-			dict["SetType"] = "Variable"
-			dict["Variable"] = action_dict.get("Variable")
-			dict["Operator"] = action_dict.get("Operator")
-			dict["Value"] = value
-		"ActionCustom":
-			match action_dict.get("CustomType"):
-				"PlayAudio":
-					dict["$type"] = "NodeAudio"
-					dict["Loop"] = action_dict.get("Loop")
-					dict["Volume"] = action_dict.get("Volume")
-					dict["Pitch"] = action_dict.get("Pitch")
-					dict["Audio"] = value
-				"UpdateBackground":
-					dict["$type"] = "NodeSetter"
-					dict["SetType"] = "Background"
-					dict["Image"] = value
-				"Other":
-					dict["Action"] = value
-		"ActionTimer":
-			dict["$type"] = "NodeSetter"
-			dict["SetType"] = "Timer"
-			dict["Time"] = value
+	if action_dict:
+		var value = action_dict.get("Value")
+		dict.erase("Action")
+		
+		var action_type = action_dict.get("$type")
+		match action_type:
+			"ActionOption":
+				dict["$type"] = "NodeSetter"
+				dict["SetType"] = "Option"
+				dict["OptionID"] = action_dict.get("OptionID")
+				dict["Enable"] = value
+			"ActionVariable":
+				dict["$type"] = "NodeSetter"
+				dict["SetType"] = "Variable"
+				dict["Variable"] = action_dict.get("Variable")
+				dict["Operator"] = action_dict.get("Operator")
+				dict["Value"] = value
+			"ActionCustom":
+				match action_dict.get("CustomType"):
+					"PlayAudio":
+						dict["$type"] = "NodeAudio"
+						dict["Loop"] = action_dict.get("Loop")
+						dict["Volume"] = action_dict.get("Volume")
+						dict["Pitch"] = action_dict.get("Pitch")
+						dict["Audio"] = value
+					"UpdateBackground":
+						dict["$type"] = "NodeSetter"
+						dict["SetType"] = "Background"
+						dict["Image"] = value
+					"Other":
+						dict["Action"] = value
+			"ActionTimer":
+				dict["$type"] = "NodeSetter"
+				dict["SetType"] = "Timer"
+				dict["Time"] = value
 	
 	return dict

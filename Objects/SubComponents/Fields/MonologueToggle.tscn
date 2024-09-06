@@ -10,7 +10,7 @@ script = ExtResource("1_0u5l0")
 [node name="Label" type="Label" parent="."]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Label"
+text = "Value"
 
 [node name="CheckButton" type="CheckButton" parent="."]
 layout_mode = 2

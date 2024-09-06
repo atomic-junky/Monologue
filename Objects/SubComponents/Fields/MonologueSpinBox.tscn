@@ -9,11 +9,10 @@ script = ExtResource("1_wmtop")
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 0
-text = "Label"
+text = "Value"
 
 [node name="SpinBox" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
-min_value = -9.22337e+18
-max_value = 9.22337e+18
 
 [connection signal="value_changed" from="SpinBox" to="." method="_on_value_changed"]

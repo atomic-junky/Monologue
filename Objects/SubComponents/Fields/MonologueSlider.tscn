@@ -10,7 +10,7 @@ script = ExtResource("1_waj5i")
 [node name="ControlLabel" type="Label" parent="."]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Label"
+text = "Value"
 
 [node name="HSlider" type="HSlider" parent="."]
 custom_minimum_size = Vector2(100, 0)

@@ -15,7 +15,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 0
-text = "Label"
+text = "Value"
 
 [node name="VBox" type="VBoxContainer" parent="HBox"]
 layout_mode = 2

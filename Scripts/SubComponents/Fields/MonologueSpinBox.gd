@@ -1,8 +1,9 @@
 class_name MonologueSpinBox extends MonologueField
 
 
-@export var minimum: float = -9223370000000000000
-@export var maximum: float = 9223370000000000000
+@export var minimum: float = -9999999999
+@export var maximum: float = 9999999999
+
 @export var step: float = 1
 
 @onready var label = $Label
@@ -14,7 +15,7 @@ func _ready():
 	spin_box.max_value = maximum
 	spin_box.step = step
 	
-	var line_edit = spin_box.get_line_edit()
+	var line_edit: LineEdit = spin_box.get_line_edit()
 	line_edit.connect("focus_exited", _on_focus_exited)
 	line_edit.connect("text_submitted", _on_text_submitted)
 
@@ -32,8 +33,8 @@ func _on_focus_exited() -> void:
 
 
 func _on_text_submitted(new_value: Variant) -> void:
-	field_updated.emit(int(new_value))
+	field_updated.emit(new_value)
 
 
 func _on_value_changed(value: float) -> void:
-	field_changed.emit(int(value))
+	field_changed.emit(value)
