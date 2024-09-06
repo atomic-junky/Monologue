@@ -2,7 +2,7 @@
 class_name SentenceNode extends MonologueGraphNode
 
 
-var speaker         := Property.new(DROPDOWN)
+var speaker         := Property.new(DROPDOWN, { "store_index": true })
 var display_name    := Property.new(LINE, { "is_sublabel": true })
 var display_variant := Property.new(LINE, { "is_sublabel": true })
 var sentence        := Property.new(TEXT)
@@ -31,5 +31,6 @@ func _on_text_preview(text: Variant):
 	_preview.text = str(text)
 
 
-func _update(_panel = null):
+func _update():
 	_preview.text = sentence.value
+	super._update()

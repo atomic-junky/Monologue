@@ -132,21 +132,19 @@ func _connect_nodes(node_list: Array) -> void:
 		var current_node = graph.current.get_node_by_id(node.get("ID", ""))
 		if current_node:
 			current_node._load_connections(node)
-			if node.has("EditorPosition"):
-				current_node.position_offset.x = node.EditorPosition.get("x")
-				current_node.position_offset.y = node.EditorPosition.get("y")
 
 
 func _load_nodes(node_list: Array) -> void:
+	var converter = NodeConverter.new()
 	for node in node_list:
-		var node_type = node.get("$type").trim_prefix("Node")
+		var data = converter.convert_node(node)
+		var node_type = data.get("$type").trim_prefix("Node")
 		var node_scene = GlobalVariables.node_dictionary.get(node_type)
-		if not node_scene:
-			continue
-		var new_node = node_scene.instantiate()
-		new_node.id = node.get("ID")
-		graph.current.add_child(new_node, true)
-		new_node._from_dict(node)
+		if node_scene:
+			var node_instance = node_scene.instantiate()
+			node_instance.id = data.get("ID")
+			graph.current.add_child(node_instance, true)
+			node_instance._from_dict(data)
 
 
 func _notification(what: int) -> void:

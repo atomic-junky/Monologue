@@ -1,0 +1,17 @@
+class_name MonologueToggle extends MonologueField
+
+
+@onready var label = $Label
+@onready var check_button = $CheckButton
+
+
+func set_label_text(text: String) -> void:
+	label.text = text
+
+
+func propagate(value: Variant) -> void:
+	check_button.button_pressed = value if value is bool else false
+
+
+func _on_check_button_toggled(toggled_on: bool) -> void:
+	field_updated.emit(toggled_on)

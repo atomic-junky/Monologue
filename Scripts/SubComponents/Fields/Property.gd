@@ -18,18 +18,32 @@ var setters: Dictionary
 ## UndoRedo instance for tracking property change history.
 var undo_redo: HistoryHandler
 ## Actual value of the property.
-var value: Variant
+var value: Variant = ""
+## Toggles visibility of the field instance.
+var visible: bool : set = set_visible
 
 
 func _init(ui_scene: PackedScene, ui_setters: Dictionary = {}) -> void:
 	scene = ui_scene
 	setters = ui_setters
+	visible = true
 
 
-func hide() -> void:
-	if field:
+## Change the property's UI scene and replace the active field instance.
+func morph(new_scene: PackedScene) -> void:
+	scene = new_scene
+	if is_instance_valid(field):
+		var panel = field.get_parent()
 		field.queue_free()
-	field = null
+		show(panel)
+
+
+func propagate(new_value: Variant) -> void:
+	preview.emit(new_value)
+	if is_instance_valid(field):
+		field.propagate(new_value)
+	else:
+		display.emit()
 
 
 func save_value(new_value: Variant) -> void:
@@ -44,26 +58,27 @@ func save_value(new_value: Variant) -> void:
 		value = new_value
 
 
-func propagate(new_value: Variant) -> void:
-	preview.emit(new_value)
-	if field:
-		field.propagate(new_value)
-	else:
-		display.emit()
+func set_visible(can_see: bool) -> void:
+	visible = can_see
+	_check_visibility()
 
 
 func show(panel: Control) -> MonologueField:
 	field = scene.instantiate()
-	panel.add_child(field)
-	
 	for property in setters.keys():
 		field.set(property, setters.get(property))
 	
+	panel.add_child(field)
 	for method in callers.keys():
 		field.callv(method, callers.get(method, []))
 	
 	field.propagate(value)
 	field.connect("field_changed", preview.emit)
 	field.connect("field_updated", save_value)
-	field.connect("tree_exited", hide)
+	_check_visibility()
 	return field
+
+
+func _check_visibility():
+	if is_instance_valid(field):
+		field.visible = visible

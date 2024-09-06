@@ -15,3 +15,5 @@ text = "Label"
 [node name="OptionButton" type="OptionButton" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[connection signal="item_selected" from="OptionButton" to="." method="_on_item_selected"]

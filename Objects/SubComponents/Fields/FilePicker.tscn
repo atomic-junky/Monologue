@@ -59,5 +59,6 @@ label_settings = SubResource("LabelSettings_nr3ee")
 autowrap_mode = 2
 
 [connection signal="focus_exited" from="VBox/LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="VBox/LineEdit" to="." method="_on_text_changed"]
 [connection signal="text_submitted" from="VBox/LineEdit" to="." method="_on_text_submitted"]
 [connection signal="pressed" from="VBox/LineEdit/FilePickerButton" to="." method="_on_picker_button_pressed"]

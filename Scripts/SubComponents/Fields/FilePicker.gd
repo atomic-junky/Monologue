@@ -67,6 +67,11 @@ func _on_picker_button_pressed():
 			[_on_file_selected, filters, base_path.get_base_dir()])
 
 
+func _on_text_changed(new_text: String) -> void:
+	validate(new_text)
+	field_changed.emit(new_text)
+
+
 func _on_text_submitted(file_path: String) -> void:
 	validate(file_path)
 	field_updated.emit(file_path)

@@ -1,6 +1,8 @@
 class_name MonologueDropdown extends MonologueField
 
 
+@export var store_index: bool
+
 @onready var label = $Label
 @onready var option_button = $OptionButton
 
@@ -29,7 +31,7 @@ func propagate(value: Variant) -> void:
 	if index >= option_button.item_count:  # avoid falsy check
 		option_button.selected = 0
 	else:
-		option_button = index
+		option_button.selected = index
 
 
 func set_items(data: Array, key_text: String = "text", key_id: String = "id",
@@ -43,3 +45,8 @@ func set_items(data: Array, key_text: String = "text", key_id: String = "id",
 
 func set_label_text(text: String) -> void:
 	label.text = text
+
+
+func _on_item_selected(index: int) -> void:
+	var value = index if store_index else option_button.get_item_text(index)
+	field_updated.emit(value)

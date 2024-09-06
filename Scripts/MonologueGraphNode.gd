@@ -9,17 +9,17 @@ const FILE = preload("res://Objects/SubComponents/Fields/FilePicker.tscn")
 const LINE = preload("res://Objects/SubComponents/Fields/MonologueLine.tscn")
 const OPERATOR = null
 const OPTION = null
-const SPINNER = null
-const SLIDER = null
+const SPINBOX = preload("res://Objects/SubComponents/Fields/MonologueSpinBox.tscn")
+const SLIDER = preload("res://Objects/SubComponents/Fields/MonologueSlider.tscn")
+const TOGGLE = preload("res://Objects/SubComponents/Fields/MonologueToggle.tscn")
 const TEXT = preload("res://Objects/SubComponents/Fields/MonologueText.tscn")
-const VARIANT = null
 
 var id: String = UUID.v4()
 var node_type: String = "NodeUnknown"
 var undo_redo: HistoryHandler
 
 
-func _ready():
+func _ready() -> void:
 	title = node_type
 	for property_name in get_property_names():
 		get(property_name).undo_redo = get_parent().undo_redo
@@ -31,7 +31,7 @@ func add_to(graph) -> Array[MonologueGraphNode]:
 	return [self]
 
 
-func display():
+func display() -> void:
 	get_parent().set_selected(self)
 
 
@@ -43,7 +43,7 @@ func get_property_names() -> PackedStringArray:
 	return names
 
 
-func _from_dict(dict: Dictionary):
+func _from_dict(dict: Dictionary) -> void:
 	for key in dict.keys():
 		var property = get(key.to_snake_case())
 		if property is Property:
@@ -53,7 +53,7 @@ func _from_dict(dict: Dictionary):
 	_update()  # refresh node UI after loading properties
 
 
-func _load_connections(data: Dictionary, key: String = "NextID"):
+func _load_connections(data: Dictionary, key: String = "NextID") -> void:
 	var next_id = data.get(key)
 	if next_id is String:
 		var next_node = get_parent().get_node_by_id(next_id)
@@ -69,11 +69,14 @@ func _to_dict() -> Dictionary:
 			"y": int(position_offset.y)
 		}
 	}
-	
-	#for field in get_fields():
-		#field.add_to_dict(base_dict, true)
+	_to_fields(base_dict)
 	_to_next(base_dict)
 	return base_dict
+
+
+func _to_fields(dict: Dictionary) -> void:
+	for property_name in get_property_names():
+		dict[Util.to_key_name(property_name)] = get(property_name).value
 
 
 func _to_next(dict: Dictionary, key: String = "NextID") -> void:
@@ -81,16 +84,5 @@ func _to_next(dict: Dictionary, key: String = "NextID") -> void:
 	dict[key] = next_id_node[0].id if next_id_node else -1
 
 
-func _update(_panel = null):
-	pass
-
-
-func _common_update(_panel = null):
+func _update() -> void:
 	size.y = 0
-	
-	if _panel:
-		id = _panel.id
-
-
-func _connect_to_panel(sgnl):
-	sgnl.connect(_common_update)
