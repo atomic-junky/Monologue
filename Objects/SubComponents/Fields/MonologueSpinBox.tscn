@@ -15,5 +15,5 @@ text = "Label"
 layout_mode = 2
 min_value = -9.22337e+18
 max_value = 9.22337e+18
-rounded = true
-update_on_text_changed = true
+
+[connection signal="value_changed" from="SpinBox" to="." method="_on_value_changed"]

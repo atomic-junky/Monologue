@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://qd3nbp87ls3r"]
+[gd_scene load_steps=11 format=3 uid="uid://qd3nbp87ls3r"]
 
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_bsa4i"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_t53kr"]
@@ -19,7 +19,7 @@ content_margin_left = 10.0
 content_margin_top = 2.0
 content_margin_right = 10.0
 content_margin_bottom = 2.0
-bg_color = Color(0.337255, 0.631373, 0.788235, 1)
+bg_color = Color(0.4802, 0.507452, 0.554043, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
@@ -28,9 +28,15 @@ corner_radius_bottom_left = 2
 [sub_resource type="LabelSettings" id="LabelSettings_v4ya3"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_ae3bv"]
+font_color = Color(0.572549, 0.572549, 0.572549, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jcdax"]
+font_color = Color(0.572549, 0.572549, 0.572549, 1)
+
 [node name="SetterNode" type="GraphNode" groups=["graph_nodes"]]
-offset_right = 291.0
-offset_bottom = 116.0
+offset_right = 264.0
+offset_bottom = 184.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
@@ -56,6 +62,24 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = ExtResource("2_t53kr")
 slot/1/draw_stylebox = false
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
 script = ExtResource("3_3ny3s")
 
 [node name="OptionContainer" type="MarginContainer" parent="."]
@@ -66,9 +90,9 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="EnableLabel" type="Label" parent="OptionContainer/HBox"]
+[node name="DescriptorLabel" type="Label" parent="OptionContainer/HBox"]
 layout_mode = 2
-text = "Enable Option"
+text = "Enable option"
 
 [node name="OptionIdLabel" type="Label" parent="OptionContainer/HBox"]
 layout_mode = 2
@@ -76,7 +100,7 @@ theme_override_styles/normal = ExtResource("4_xcnds")
 text = "option id"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="QLabel" type="Label" parent="OptionContainer/HBox"]
+[node name="QuestionLabel" type="Label" parent="OptionContainer/HBox"]
 layout_mode = 2
 text = "?"
 
@@ -94,7 +118,7 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="SetLabel" type="Label" parent="VariableContainer/HBox"]
+[node name="DescriptorLabel" type="Label" parent="VariableContainer/HBox"]
 layout_mode = 2
 text = "Set"
 
@@ -116,3 +140,54 @@ theme_override_styles/normal = ExtResource("4_xcnds")
 text = "value
 "
 label_settings = SubResource("LabelSettings_v4ya3")
+
+[node name="BackgroundContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="BackgroundContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBox" type="HBoxContainer" parent="BackgroundContainer/VBox"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BgLabel" type="Label" parent="BackgroundContainer/VBox/HBox"]
+layout_mode = 2
+text = "Update background to"
+
+[node name="PathLabel" type="Label" parent="BackgroundContainer/VBox/HBox"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("4_xcnds")
+text = "nothing"
+label_settings = SubResource("LabelSettings_ae3bv")
+
+[node name="PreviewRect" type="TextureRect" parent="BackgroundContainer/VBox"]
+visible = false
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TimerContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBox" type="HBoxContainer" parent="TimerContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="WaitLabel" type="Label" parent="TimerContainer/HBox"]
+layout_mode = 2
+text = "Set timer for"
+
+[node name="TimerLabel" type="Label" parent="TimerContainer/HBox"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("4_xcnds")
+text = "0"
+label_settings = SubResource("LabelSettings_jcdax")
+
+[node name="SecondsLabel" type="Label" parent="TimerContainer/HBox"]
+layout_mode = 2
+text = "seconds"

@@ -31,4 +31,5 @@ theme_override_colors/font_color = Color(0.768627, 0.180392, 0.25098, 1)
 text = "Warning"
 
 [connection signal="focus_exited" from="HBox/VBox/LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="HBox/VBox/LineEdit" to="." method="_on_text_changed"]
 [connection signal="text_submitted" from="HBox/VBox/LineEdit" to="." method="_on_text_submitted"]

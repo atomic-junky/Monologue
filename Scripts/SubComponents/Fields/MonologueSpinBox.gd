@@ -1,9 +1,9 @@
 class_name MonologueSpinBox extends MonologueField
 
 
-@export var minimum: float
-@export var maximum: float
-@export var step: float
+@export var minimum: float = -9223370000000000000
+@export var maximum: float = 9223370000000000000
+@export var step: float = 1
 
 @onready var label = $Label
 @onready var spin_box = $SpinBox
@@ -31,5 +31,9 @@ func _on_focus_exited() -> void:
 	_on_text_submitted(spin_box.value)
 
 
-func _on_text_submitted(new_value: float) -> void:
+func _on_text_submitted(new_value: Variant) -> void:
 	field_updated.emit(int(new_value))
+
+
+func _on_value_changed(value: float) -> void:
+	field_changed.emit(int(value))

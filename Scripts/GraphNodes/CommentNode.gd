@@ -1,15 +1,16 @@
 @icon("res://Assets/Icons/NodesIcons/Comment.png")
-
-class_name CommentNode
-
-extends MonologueGraphNode
+class_name CommentNode extends MonologueGraphNode
 
 
 @onready var comment_edit = $MainContainer/CommentEdit
 
 
-func _to_dict() -> Dictionary:
+func _ready() -> void:
 	node_type = "NodeComment"
+	super._ready()
+
+
+func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,
 		"ID": id,

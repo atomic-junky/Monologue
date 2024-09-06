@@ -32,5 +32,9 @@ func _on_focus_exited() -> void:
 	_on_text_submitted(line_edit.text)
 
 
+func _on_text_changed(new_text: String) -> void:
+	field_changed.emit(new_text)
+
+
 func _on_text_submitted(new_text: String) -> void:
 	field_updated.emit(new_text)

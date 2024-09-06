@@ -16,12 +16,15 @@ func _ready():
 
 func _load_image():
 	var base = image.setters.get("base_path")
-	var img = Image.load_from_file(Path.relative_to_absolute(image.value, base))
-	if img:
-		_preview_rect.show()
-		_preview_rect.texture = ImageTexture.create_from_image(img)
-	else:
-		_preview_rect.hide()
+	var path = Path.relative_to_absolute(image.value, base)
+	
+	if FileAccess.file_exists(path):
+		var img = Image.load_from_file(path)
+		if img:
+			_preview_rect.show()
+			_preview_rect.texture = ImageTexture.create_from_image(img)
+		else:
+			_preview_rect.hide()
 
 
 func _on_path_preview(path: Variant):

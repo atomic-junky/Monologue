@@ -14,10 +14,16 @@ func _ready():
 	node_type = "NodeAudio"
 	super._ready()
 	audio.connect("preview", _on_audio_preview)
+	audio.setters["base_path"] = get_parent().file_path
+	loop.connect("preview", _on_loop_preview)
 
 
 func _on_audio_preview(audio_path: Variant):
 	_audio_label.text = str(audio_path).get_file()
+
+
+func _on_loop_preview(is_loop: Variant):
+	_loop_label.visible = bool(is_loop)
 
 
 func _update():

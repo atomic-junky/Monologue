@@ -5,11 +5,10 @@ extends Node
 var node_dictionary = {
 	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),
 	"Audio": preload("res://Objects/GraphNodes/AudioNode.tscn"),
-	"Background": preload("res://Objects/GraphNodes/BackgroundNode.tscn"),
+	"Action": preload("res://Objects/GraphNodes/ActionNode.tscn"),
 	"Bridge": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
 	"BridgeIn": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
 	"BridgeOut": preload("res://Objects/GraphNodes/BridgeOutNode.tscn"),
-	"Caller": preload("res://Objects/GraphNodes/CallerNode.tscn"),
 	"Choice": preload("res://Objects/GraphNodes/ChoiceNode.tscn"),
 	"Comment": preload("res://Objects/GraphNodes/CommentNode.tscn"),
 	"Condition": preload("res://Objects/GraphNodes/ConditionNode.tscn"),
@@ -18,7 +17,6 @@ var node_dictionary = {
 	"Event": preload("res://Objects/GraphNodes/EventNode.tscn"),
 	"Sentence": preload("res://Objects/GraphNodes/SentenceNode.tscn"),
 	"Setter": preload("res://Objects/GraphNodes/SetterNode.tscn"),
-	"Timer": preload("res://Objects/GraphNodes/TimerNode.tscn"),
 }
 
 var empty_callback: Callable = func(): return
