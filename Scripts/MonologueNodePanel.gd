@@ -23,10 +23,10 @@ func _set_graph_node(new_graph_node: MonologueGraphNode) -> void:
 	graph_node = new_graph_node
 	undo_redo = graph_node.get_parent().undo_redo
 	
-	for field in graph_node.get_fields():
-		fields[field.property] = field
-		field.panel = self
-		add_child(field)
+	#for field in graph_node.get_fields():
+		#fields[field.property] = field
+		#field.panel = self
+		#add_child(field)
 
 
 func _on_node_property_change(properties: Array, values: Array) -> bool:

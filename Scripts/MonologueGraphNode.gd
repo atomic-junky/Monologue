@@ -3,12 +3,26 @@
 class_name MonologueGraphNode extends GraphNode
 
 
+# field UI scene definitions that a graph node can have
+const DROPDOWN = preload("res://Objects/SubComponents/Fields/MonologueDropdown.tscn")
+const FILE = preload("res://Objects/SubComponents/Fields/FilePicker.tscn")
+const LINE = preload("res://Objects/SubComponents/Fields/MonologueLine.tscn")
+const OPERATOR = null
+const OPTION = null
+const SPINNER = null
+const SLIDER = null
+const TEXT = preload("res://Objects/SubComponents/Fields/MonologueText.tscn")
+const VARIANT = null
+
 var id: String = UUID.v4()
 var node_type: String = "NodeUnknown"
+var undo_redo: HistoryHandler
 
 
 func _ready():
 	title = node_type
+	for property_name in get_property_names():
+		get(property_name).undo_redo = get_parent().undo_redo
 
 
 func add_to(graph) -> Array[MonologueGraphNode]:
@@ -16,15 +30,19 @@ func add_to(graph) -> Array[MonologueGraphNode]:
 	return [self]
 
 
-## Override to return a list of instantiated field nodes, so remember to
-## add_child() or free() them to prevent orphaned nodes.
-func get_fields() -> Array[MonologueField]:
-	return []
+func get_property_names() -> PackedStringArray:
+	var names = PackedStringArray()
+	for property in get_property_list():
+		if property.class_name == "Property":
+			names.append(property.name)
+	return names
 
 
 func _from_dict(dict: Dictionary):
 	for key in dict.keys():
-		set(key.to_snake_case(), dict.get(key))
+		var property = get(key.to_snake_case())
+		if property is Property:
+			property.value = dict.get(key)
 	position_offset.x = dict.EditorPosition.get("x")
 	position_offset.y = dict.EditorPosition.get("y")
 	_update()  # refresh node UI after loading properties
@@ -47,8 +65,8 @@ func _to_dict() -> Dictionary:
 		}
 	}
 	
-	for field in get_fields():
-		field.add_to_dict(base_dict, true)
+	#for field in get_fields():
+		#field.add_to_dict(base_dict, true)
 	_to_next(base_dict)
 	return base_dict
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://o5dt5106rohh"]
 
-[ext_resource type="Script" path="res://Scripts/SubComponents/FilePickerLineEdit.gd" id="1_siiu8"]
+[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/FilePicker.gd" id="1_siiu8"]
 [ext_resource type="Texture2D" uid="uid://t1i3wy037vsu" path="res://Assets/Icons/folder_icon.png" id="2_plad0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxvmx"]
@@ -20,19 +20,28 @@ corner_radius_bottom_left = 5
 [sub_resource type="LabelSettings" id="LabelSettings_nr3ee"]
 font_color = Color(0.768627, 0.180392, 0.25098, 1)
 
-[node name="FilePickerLineEdit" type="VBoxContainer"]
-offset_right = 40.0
-offset_bottom = 40.0
-size_flags_horizontal = 3
+[node name="FilePickerLineEdit" type="HBoxContainer"]
+offset_right = 204.0
+offset_bottom = 86.0
 script = ExtResource("1_siiu8")
 
-[node name="LineEdit" type="LineEdit" parent="."]
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 0
+text = "Label"
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_vxvmx")
 structured_text_bidi_override = 2
 
-[node name="FilePickerButton" type="Button" parent="LineEdit"]
+[node name="FilePickerButton" type="Button" parent="VBox/LineEdit"]
 layout_mode = 2
 anchor_left = 1.0
 anchor_right = 1.0
@@ -42,13 +51,13 @@ mouse_default_cursor_shape = 2
 icon = ExtResource("2_plad0")
 flat = true
 
-[node name="WarnLabel" type="Label" parent="."]
+[node name="WarnLabel" type="Label" parent="VBox"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "File path not found!"
 label_settings = SubResource("LabelSettings_nr3ee")
 autowrap_mode = 2
 
-[connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
-[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
-[connection signal="pressed" from="LineEdit/FilePickerButton" to="." method="_on_picker_button_pressed"]
+[connection signal="focus_exited" from="VBox/LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="VBox/LineEdit" to="." method="_on_text_submitted"]
+[connection signal="pressed" from="VBox/LineEdit/FilePickerButton" to="." method="_on_picker_button_pressed"]

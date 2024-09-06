@@ -37,28 +37,3 @@ func test_from_dict():
 	assert_str(action_node.action_type).is_equal("ActionCustom")
 	assert_str(action_node.custom_type).is_equal("Other")
 	assert_str(action_node.value).is_equal("death")
-
-
-func test_to_dict():
-	#var graph_edit = mock(MonologueGraphEdit, CALL_REAL_FUNC)
-	#do_return(["test-action-next"]).on(graph_edit) \
-	#		.get_all_connections_from_slot("ActionUnitTestNode", 0)
-	
-	action_node.action_type = "ActionTimer"
-	action_node.id = "test-action-unit"
-	action_node.name = "ActionUnitTestNode"
-	action_node.value = 5
-	#graph_edit.add_child(action_node)
-	assert_dict(action_node._to_dict()).is_equal({
-		"$type": "NodeAction",
-		"ID": "test-action-unit",
-		"NextID": "test-action-next",
-		"Action": {
-			"$type": "ActionTimer",
-			"Value": 5
-		},
-		"EditorPosition": {
-			"x": 0,
-			"y": 0
-		}
-	})

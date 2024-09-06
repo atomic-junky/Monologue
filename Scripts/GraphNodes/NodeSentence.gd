@@ -2,53 +2,34 @@
 class_name SentenceNode extends MonologueGraphNode
 
 
-var speaker_id = 0
-var display_speaker_name = ""
-var display_variant = ""
-var sentence = ""
-var voiceline_path = ""
+var speaker         := Property.new(DROPDOWN)
+var display_name    := Property.new(LINE, { "is_sublabel": true })
+var display_variant := Property.new(LINE, { "is_sublabel": true })
+var sentence        := Property.new(TEXT)
+var voiceline       := Property.new(FILE, { "filters": FilePicker.AUDIO })
 
-@onready var sentence_preview = $MainContainer/TextLabelPreview
+@onready var _preview = $MainContainer/TextLabelPreview
 
 
 func _ready():
 	node_type = "NodeSentence"
-	title = node_type
+	super._ready()
+	sentence.connect("preview", _on_text_preview)
+	speaker.callers["set_items"] = [get_parent().speakers, "Reference", "ID"]
+	voiceline.setters["base_path"] = get_parent().file_path
 
 
-func get_fields() -> Array[MonologueField]:
-	var filters = ["*.mp3", "*.ogg", "*.wav"]
-	return [
-		MonologueOptionButton.new("speaker_id",
-				"SpeakerID", speaker_id)
-				.label("Speaker")
-				.build()
-				.set_items(get_parent().speakers, "Reference", "ID"),
-		
-		MonologueLineEdit.new("display_speaker_name",
-				"DisplaySpeakerName", display_speaker_name)
-				.sublabel("Display Name")
-				.build(),
-		
-		MonologueLineEdit.new("display_variant",
-				"DisplayVariant", display_variant)
-				.sublabel("Display Variant")
-				.build(),
-		
-		MonologueTextEdit.new("sentence",
-				"Sentence", sentence)
-				.label("Sentence")
-				.build()
-				.preview(sentence_preview),
-		
-		MonologueField.new("voiceline_path",
-				"VoicelinePath", voiceline_path)
-				.label("Voiceline")
-				.scene(GlobalVariables.FILE_EDIT, "new_file_path",
-					"_on_text_submitted", ["base_file_path", "filters"],
-					[get_parent().file_path, filters]),
-	]
+func _from_dict(dict: Dictionary):
+	# special handling for backwards compatibility v2.x
+	speaker.value = dict.get("SpeakerID", 0)
+	display_name.value = dict.get("DisplaySpeakerName", "")
+	voiceline.value = dict.get("VoicelinePath", "")
+	super._from_dict(dict)
+
+
+func _on_text_preview(text: Variant):
+	_preview.text = str(text)
 
 
 func _update(_panel = null):
-	sentence_preview.text = sentence
+	_preview.text = sentence.value

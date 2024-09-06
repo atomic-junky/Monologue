@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/EndPathNodePanel.gd" id="1_tde0e"]
 [ext_resource type="FontFile" uid="uid://2eq6t1lcw61" path="res://Assets/Fonts/NotoSans-Italic.ttf" id="2_8pysj"]
-[ext_resource type="PackedScene" uid="uid://o5dt5106rohh" path="res://Objects/SubComponents/FilePickerLineEdit.tscn" id="2_ipaf1"]
+[ext_resource type="PackedScene" uid="uid://o5dt5106rohh" path="res://Objects/SubComponents/Fields/FilePicker.tscn" id="2_ipaf1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qgp7i"]
 font_color = Color(0.768627, 0.180392, 0.25098, 1)

@@ -1,9 +1,6 @@
 extends Node
 
 
-const FILE_EDIT = preload("res://Objects/SubComponents/FilePickerLineEdit.tscn")
-const OPTION_PANEL = preload("res://Objects/SubComponents/OptionNode.tscn")
-
 ## Dictionary of Monologue node types and their corresponding scenes.
 var node_dictionary = {
 	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),

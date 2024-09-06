@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgvhvxdrd58qp"]
+
+[ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="1_fqp67"]
+[ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="2_ijahc"]
+[ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://Objects/SubComponents/CloseButton.tscn" id="3_qa6fl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ehqk"]
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28b4a"]
+content_margin_left = 7.0
+content_margin_right = 7.0
+bg_color = Color(0.768627, 0.180392, 0.25098, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="SidePanelNodeDetails" type="PanelContainer"]
+offset_right = 400.0
+offset_bottom = 400.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ehqk")
+script = ExtResource("1_fqp67")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Scroller" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/Scroller"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/Scroller/VBox"]
+layout_mode = 2
+
+[node name="LineEditID" type="LineEdit" parent="MarginContainer/Scroller/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+placeholder_text = "id"
+
+[node name="CopyIDButton" type="TextureButton" parent="MarginContainer/Scroller/VBox/HBox"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("2_ijahc")
+stretch_mode = 3
+
+[node name="TFHButton" type="Button" parent="MarginContainer/Scroller/VBox/HBox"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/focus = SubResource("StyleBoxFlat_28b4a")
+theme_override_styles/normal = SubResource("StyleBoxFlat_28b4a")
+text = "Test from here"
+
+[node name="CloseButton" parent="MarginContainer/Scroller/VBox/HBox" instance=ExtResource("3_qa6fl")]
+layout_mode = 2
+
+[node name="FieldsContainer" type="VBoxContainer" parent="MarginContainer/Scroller/VBox"]
+layout_mode = 2
+
+[connection signal="text_changed" from="MarginContainer/Scroller/VBox/HBox/LineEditID" to="." method="_on_line_edit_id_text_changed"]
+[connection signal="pressed" from="MarginContainer/Scroller/VBox/HBox/CopyIDButton" to="." method="_on_id_copy_pressed"]
+[connection signal="pressed" from="MarginContainer/Scroller/VBox/HBox/TFHButton" to="." method="_on_tfh_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Scroller/VBox/HBox/CloseButton" to="." method="_on_close_button_pressed"]
