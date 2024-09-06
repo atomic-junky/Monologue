@@ -23,11 +23,16 @@ func _ready():
 	title = node_type
 	for property_name in get_property_names():
 		get(property_name).undo_redo = get_parent().undo_redo
+		get(property_name).connect("display", display)
 
 
 func add_to(graph) -> Array[MonologueGraphNode]:
 	graph.add_child(self, true)
 	return [self]
+
+
+func display():
+	get_parent().set_selected(self)
 
 
 func get_property_names() -> PackedStringArray:

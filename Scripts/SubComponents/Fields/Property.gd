@@ -45,6 +45,7 @@ func save_value(new_value: Variant) -> void:
 
 
 func propagate(new_value: Variant) -> void:
+	preview.emit(new_value)
 	if field:
 		field.propagate(new_value)
 	else:
