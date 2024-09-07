@@ -1,4 +1,4 @@
-extends Control
+class_name MonologueControl extends Control
 
 
 var dialog = {}
@@ -187,6 +187,7 @@ func load_project(path):
 		node.queue_free()
 	graph_edit.clear_connections()
 	graph_edit.data = data
+	graph_edit.center_offset(true)
 	
 	var node_list = data.get("ListNodes")
 	var root_dict = get_root_dict(node_list)
@@ -538,6 +539,11 @@ func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		get_viewport().gui_release_focus()
 		is_closing_all_tabs = true
+		
+		printerr("FIXME: finish the rework of the tabbar")
+		get_tree().quit()
+		return
+		
 		tab_close_pressed(0)
 		# tab_close_pressed() will call _close_tab() which starts a recursion
 		# if is_closing_all_tabs is true; final quit is handled by _close_tab()

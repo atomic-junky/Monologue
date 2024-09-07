@@ -4,7 +4,7 @@ extends GraphEdit
 
 
 var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
-var control_node
+var control_node: MonologueControl
 var data: Dictionary
 var file_path: String
 var undo_redo := HistoryHandler.new()
@@ -23,6 +23,26 @@ var selected_nodes: Array[MonologueGraphNode] = []  # for group delete
 func _ready():
 	var auto_arrange_button = get_menu_hbox().get_children().back()
 	auto_arrange_button.connect("pressed", _on_auto_arrange_nodes)
+	
+	center_offset.bindv([true]).call_deferred()
+
+
+func center_offset(to_root: bool = false):
+	var base_offset = Vector2.ZERO
+	if to_root:
+		var root_node: RootNode = get_root_node()
+		base_offset = root_node.position_offset + (root_node.size/2)*zoom
+	
+	scroll_offset = -size/2 + base_offset
+
+
+func get_root_node() -> RootNode:
+	var root_node: RootNode
+	for node in get_nodes():
+		if node is RootNode:
+			root_node = node
+	
+	return root_node
 
 
 func _input(event):

@@ -328,7 +328,7 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
 theme_override_styles/focus = SubResource("StyleBoxFlat_28b4a")
 theme_override_styles/normal = SubResource("StyleBoxFlat_28b4a")
-text = "Test from here"
+text = "Run from here"
 
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
@@ -425,7 +425,7 @@ icon = ExtResource("8_hudw3")
 [node name="WelcomeWindow" type="Window" parent="."]
 transparent_bg = true
 initial_position = 2
-size = Vector2i(400, 318)
+size = Vector2i(400, 320)
 wrap_controls = true
 unresizable = true
 borderless = true

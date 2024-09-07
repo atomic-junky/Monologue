@@ -18,8 +18,7 @@ zoom = 0.6
 zoom_min = 0.2
 zoom_max = 1.0
 minimap_enabled = false
-show_menu = false
-show_zoom_buttons = false
+show_zoom_label = true
 script = ExtResource("1_vyrsm")
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
