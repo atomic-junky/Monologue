@@ -5,31 +5,32 @@ class_name ChoiceNode extends MonologueGraphNode
 const left_arrow_icon = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
 const right_arrow_icon = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
 
-@onready var option_reference = preload("res://Objects/SubComponents/OptionReference.tscn")
+var option_scene = preload("res://Objects/GraphNodes/OptionNode.tscn")
+var option_nodes = {}
 
-var options_data = []
-var options_id = []
+
+# var options_id := Property.new(LIST, { "type": MonologueList.NODE })
 
 
 func _ready():
 	node_type = "NodeChoice"
-	title = node_type
+	super._ready()
 	
-	if len(options_data) <= 0:
-		for _i in range(2):
-			add_option_reference()
+	if get_child_count() <= 0:
+		add_option()
+		add_option()
 
 
-func add_option_reference(reference: Dictionary = {}):
-	var new_option = option_reference.instantiate()
+func add_option(reference: Dictionary = {}):
+	var new_option = option_scene.instantiate()
 	add_child(new_option)
+	new_option.set_count(new_option.get_index() + 1)
 	
 	if reference:
 		new_option._from_dict(reference)
-		new_option.sentence_preview.text = reference.get("Sentence")
-		link_option(reference)
-	else:
-		options_data.append(new_option._to_dict())  # new option from nothing
+		new_option.preview_label.text = reference.get("Sentence")
+		link_option(new_option)
+	option_nodes[new_option.id] = new_option
 	
 	var is_first = get_child_count() <= 1
 	set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true,
@@ -37,25 +38,13 @@ func add_option_reference(reference: Dictionary = {}):
 
 
 func get_all_options_id() -> Array:
-	var ids = []
-	for dict in options_data:
-		ids.append(dict.get("ID"))
-	return ids
+	return option_nodes.keys()
 
 
-func get_option_reference(option_id: String):
-	for child in get_children():
-		if child is OptionReference and child.id == option_id:
-			return child
-	return null
-
-
-func link_option(option_dict: Dictionary, link: bool = true):
-	var index = options_data.find(option_dict)
-	var next_id = option_dict.get("NextID")
-	
-	if next_id is String:  # Monologue records non-connections as -1 (int)
-		var next_node = get_parent().get_node_by_id(next_id)
+func link_option(option: OptionNode, link: bool = true):
+	var index = option.get_index()
+	if option.next_id.value is String:  # non-connections are -1 (int)
+		var next_node = get_parent().get_node_by_id(option.next_id.value)
 		if next_node:
 			if link:
 				get_parent().connect_node(name, index, next_node.name, 0)
@@ -66,34 +55,29 @@ func link_option(option_dict: Dictionary, link: bool = true):
 ## Update the NextID of this choice node on the given port.
 func update_next_id(from_port: int, next_node: MonologueGraphNode):
 	if next_node:
-		options_data[from_port]["NextID"] = next_node.id
+		get_child(from_port).next_id.value = next_node.id
 	else:
-		options_data[from_port]["NextID"] = -1
-	GlobalSignal.emit("update_option_next_id", [self, from_port])
+		get_child(from_port).next_id.value = -1
 
 
 func _load_connections(_data: Dictionary, _key: String = "") -> void:
 	_update()
 
 
-func _update(pnel: ChoiceNodePanel = null):
-	#if panel != null:
-		#if options_data.size() != panel.options_container.get_child_count():
-			#panel.reload_options()
-		#else:
-			#panel.update_options()
-	
+func _update():
 	# disconnect all outbound connections
 	for connection in get_parent().get_all_outbound_connections(name):
 		var from_port = connection.get("from_port")
 		var to_node = connection.get("to_node")
 		get_parent().disconnect_node(name, from_port, to_node, 0)
 	
-	# remove all OptionReferences from ChoiceNode
+	# remove all OptionNodes from ChoiceNode
+	var references = option_nodes.values().map(func(o): return o._to_dict())
 	for child in get_children():
 		remove_child(child)
 		child.queue_free()
 	
 	# regenerate options, which also reconnects any next IDs
-	for option in options_data:
-		add_option_reference(option)
+	option_nodes.clear()
+	for reference in references:
+		add_option(reference)

@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://71sq1ohwv8cn"]
+
+[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueCheckBox.gd" id="1_awprp"]
+
+[node name="MonologueCheckBox" type="HBoxContainer"]
+offset_right = 81.0
+offset_bottom = 40.0
+script = ExtResource("1_awprp")
+
+[node name="CheckBox" type="CheckBox" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Enable"

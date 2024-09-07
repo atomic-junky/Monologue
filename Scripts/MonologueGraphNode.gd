@@ -4,15 +4,15 @@ class_name MonologueGraphNode extends GraphNode
 
 
 # field UI scene definitions that a graph node can have
+const CHECKBOX = preload("res://Objects/SubComponents/Fields/MonologueCheckBox.tscn")
 const DROPDOWN = preload("res://Objects/SubComponents/Fields/MonologueDropdown.tscn")
 const FILE = preload("res://Objects/SubComponents/Fields/FilePicker.tscn")
 const LINE = preload("res://Objects/SubComponents/Fields/MonologueLine.tscn")
-const OPERATOR = null
 const OPTION = null
-const SPINBOX = preload("res://Objects/SubComponents/Fields/MonologueSpinBox.tscn")
 const SLIDER = preload("res://Objects/SubComponents/Fields/MonologueSlider.tscn")
-const TOGGLE = preload("res://Objects/SubComponents/Fields/MonologueToggle.tscn")
+const SPINBOX = preload("res://Objects/SubComponents/Fields/MonologueSpinBox.tscn")
 const TEXT = preload("res://Objects/SubComponents/Fields/MonologueText.tscn")
+const TOGGLE = preload("res://Objects/SubComponents/Fields/MonologueToggle.tscn")
 
 var id: String = UUID.v4()
 var node_type: String = "NodeUnknown"

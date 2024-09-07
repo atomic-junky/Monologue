@@ -34,12 +34,12 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	
 	line_edit_id.text = node.id
 	selected_node = node
+	node._update()
 	
 	for property_name in node.get_property_names():
 		var field = node.get(property_name).show(fields_container)
 		field.set_label_text(property_name.capitalize())
 	
-	node._update()
 	show()
 
 
@@ -53,18 +53,10 @@ func refocus(node: MonologueGraphNode) -> void:
 			focus_owner.grab_focus()
 
 
-#func update_option_next_id(choice_node: ChoiceNode, port: int) -> void:
-	#if current_panel and current_panel.graph_node == choice_node:
-		#var option_id = choice_node.options[port].get("ID")
-		#var option_node = current_panel.get_option_node(option_id)
-		#if option_node:
-			#option_node.next_id = choice_node.options[port].get("NextID")
-
-
 func _on_line_edit_id_text_changed(new_id):
 	if selected_node:
 		var graph = selected_node.get_parent()
-		if graph.get_node_by_id(new_id) or graph.is_option_id_exists(new_id):
+		if graph.get_node_by_id(new_id):
 			line_edit_id.text = selected_node.id
 		else:
 			selected_node.id = new_id

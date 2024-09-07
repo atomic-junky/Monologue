@@ -144,23 +144,15 @@ func get_root_node() -> RootNode:
 	return null
 
 
+## Find a graph node by ID. Includes NodeOption embedded in NodeChoice.
 func get_node_by_id(id: String) -> MonologueGraphNode:
 	if not id.is_empty():
 		for node in get_nodes():
 			if node.id == id:
 				return node
+			elif node.node_type == "NodeChoice" and node.option_nodes.get(id):
+				return node.option_nodes.get(id)
 	return null
-
-
-## Check if an option ID exists in the entirety of the graph.
-func is_option_id_exists(option_id: String) -> bool:
-	for node in get_nodes():
-		if node.node_type != "NodeChoice":
-			continue
-		var node_options_id: Array = node.get_all_options_id()
-		if node_options_id.has(option_id):
-			return true
-	return false
 
 
 func is_unsaved() -> bool:

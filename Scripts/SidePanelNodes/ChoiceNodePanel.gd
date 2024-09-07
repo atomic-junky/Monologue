@@ -4,7 +4,7 @@ class_name ChoiceNodePanel
 extends MonologueNodePanel
 
 
-@onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
+@onready var option_panel = preload("res://Objects/SubComponents/OptionField.tscn")
 @onready var options_container = $OptionsContainer
 
 
