@@ -2,7 +2,7 @@ extends Window
 
 
 func _ready():
-	$PanelContainer/VersionLabel.text = "v" + ProjectSettings.get("application/config/version")
+	$PanelContainer/VBoxContainer/VersionLabel.text = "v" + ProjectSettings.get("application/config/version")
 	get_parent().connect("resized", _on_resized)
 	move_to_center()
 

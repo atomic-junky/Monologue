@@ -13,12 +13,14 @@ config_version=5
 config/name="Monologue"
 config/version="2.3.0"
 run/main_scene="res://Scenes/App.tscn"
+run/print_header=false
+run/enable_alt_space_menu=true
 config/features=PackedStringArray("4.3")
-run/low_processor_mode=true
 boot_splash/bg_color=Color(0.117647, 0.133333, 0.164706, 1)
 boot_splash/image="res://icon.png"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
+boot_splash/size/resizable=false
 
 [autoload]
 
@@ -36,7 +38,8 @@ window/size/viewport_width=1500
 window/size/viewport_height=800
 window/size/borderless=true
 window/size/transparent=true
-window/stretch/scale=2.09173
+window/size/extend_to_title=true
+window/energy_saving/keep_screen_on=false
 window/per_pixel_transparency/allowed=true
 window/size/fullscreen=true
 
