@@ -88,7 +88,7 @@ func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	recorded_positions.erase(node)
 	node.queue_free()
 	# if side panel is showing this node, close it since it's gone
-	GlobalSignal.emit("clear_current_panel", [node])
+	GlobalSignal.emit("close_panel", [node])
 	return node_data
 
 

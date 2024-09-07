@@ -22,12 +22,12 @@ func _init(node: MonologueGraphNode, change_list: Array[PropertyChange]):
 func change_properties():
 	var node: MonologueGraphNode = graph_edit.get_node(node_name)
 	for change in changes:
-		node[change.property] = change.after
-	GlobalSignal.emit("refresh_panel", [node, changes, true])
+		node[change.property].value = change.after
+		node[change.property].propagate(change.after)
 
 
 func revert_properties():
 	var node: MonologueGraphNode = graph_edit.get_node(node_name)
 	for change in changes:
-		node[change.property] = change.before
-	GlobalSignal.emit("refresh_panel", [node, changes, false])
+		node[change.property].value = change.before
+		node[change.property].propagate(change.before)

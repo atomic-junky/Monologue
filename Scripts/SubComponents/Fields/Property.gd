@@ -2,6 +2,8 @@
 class_name Property extends RefCounted
 
 
+## Emitted when property change is to be commited to undo/redo history.
+signal change(old_value: Variant, new_value: Variant)
 ## Emitted if the graph node of this property should be displayed in panel.
 signal display
 ## Emitted when the field's value is being changed and is requesting a preview.
@@ -17,8 +19,6 @@ var field: MonologueField
 var scene: PackedScene
 ## Dictionary of field property names to set values.
 var setters: Dictionary
-## UndoRedo instance for tracking property change history.
-var undo_redo: HistoryHandler
 ## Actual value of the property.
 var value: Variant
 ## Toggles visibility of the field instance.
@@ -59,15 +59,9 @@ func propagate(new_value: Variant) -> void:
 
 
 func save_value(new_value: Variant) -> void:
-	if undo_redo and not Util.is_equal(value, new_value):
-		undo_redo.create_action("%s => %s" % [value, new_value])
-		undo_redo.add_do_property(self, "value", new_value)
-		undo_redo.add_do_method(propagate.bind(new_value))
-		undo_redo.add_undo_property(self, "value", value)
-		undo_redo.add_undo_method(propagate.bind(value))
-		undo_redo.commit_action()
-	else:
-		value = new_value
+	if not Util.is_equal(value, new_value):
+		change.emit(value, new_value)
+		#value = new_value
 
 
 func set_visible(can_see: bool) -> void:

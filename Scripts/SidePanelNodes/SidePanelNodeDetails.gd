@@ -12,6 +12,7 @@ var selected_node: MonologueGraphNode
 
 
 func _ready():
+	GlobalSignal.add_listener("close_panel", _on_close_button_pressed)
 	hide()
 
 
@@ -73,5 +74,6 @@ func _on_id_copy_pressed() -> void:
 	get_window().add_child(ribbon)
 
 
-func _on_close_button_pressed() -> void:
-	selected_node.get_parent().set_selected(null)
+func _on_close_button_pressed(node: MonologueGraphNode = null) -> void:
+	if not node or selected_node == node:
+		selected_node.get_parent().set_selected(null)
