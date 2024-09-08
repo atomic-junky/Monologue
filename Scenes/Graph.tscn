@@ -376,7 +376,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="CursorButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(44, 44)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 flat = true
 
@@ -389,14 +389,17 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer/CursorButton/CenterContainer"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = ExtResource("15_dc63e")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
 [node name="HandButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(44, 44)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 flat = true
 
@@ -410,8 +413,11 @@ grow_vertical = 2
 rotation = -0.00318988
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer/HandButton/CenterContainer"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = ExtResource("16_yc7gx")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
 layout_mode = 2
@@ -441,6 +447,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/MarginContainer2"]
 layout_mode = 2
+size_flags_horizontal = 4
 texture_normal = ExtResource("15_hn16p")
 
 [node name="NoInteractions" type="ColorRect" parent="."]
