@@ -25,6 +25,18 @@ func _ready():
 	auto_arrange_button.connect("pressed", _on_auto_arrange_nodes)
 	
 	center_offset.bindv([true]).call_deferred()
+	
+	# Hide scroll bar
+	for child in get_children(true):
+		if child is GraphNode:
+			continue
+		
+		for subchild in child.get_children(true):
+			if subchild is not ScrollBar:
+				continue
+				
+			for sb_name in ["grabber", "scroll"]:
+				subchild.add_theme_stylebox_override(sb_name, StyleBoxEmpty.new())
 
 
 func center_offset(to_root: bool = false):
