@@ -1,11 +1,25 @@
 ## Abstract graph node class for Monologue dialogue nodes. This should not
 ## be used on its own, it should be overridden to replace [member node_type].
-class_name MonologueGraphNode
-extends GraphNode
+class_name MonologueGraphNode extends GraphNode
+
+
+@export var titlebar_color: Color = Color(0.1294, 0.149, 0.1804, 1) : set = _set_titlebar_color
 
 
 var id: String = UUID.v4()
 var node_type: String = "NodeUnknown"
+
+
+func _ready() -> void:
+	_set_titlebar_color(titlebar_color)
+
+
+func _set_titlebar_color(val: Color):
+	var stylebox: StyleBoxFlat = get_theme_stylebox("titlebar", "GraphNode").duplicate()
+	stylebox.bg_color = val
+	
+	remove_theme_stylebox_override("titlebar")
+	add_theme_stylebox_override("titlebar", stylebox)
 
 
 func add_to(graph) -> Array[MonologueGraphNode]:

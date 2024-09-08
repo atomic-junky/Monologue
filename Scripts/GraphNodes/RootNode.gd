@@ -1,7 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
 
-class_name RootNode
-extends MonologueGraphNode
+class_name RootNode extends MonologueGraphNode
 
 
 var speakers: set = _set_speakers, get = _get_speakers
@@ -9,6 +8,8 @@ var variables: set = _set_variables, get = _get_variables
 
 
 func _ready():
+	super()
+	
 	node_type = "NodeRoot"
 	title = node_type
 

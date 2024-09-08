@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c02gpa5cixyfm"]
+[gd_scene load_steps=14 format=3 uid="uid://c02gpa5cixyfm"]
 
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_i5rqj"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_25hre"]
@@ -6,19 +6,11 @@
 
 [sub_resource type="Theme" id="Theme_llmqa"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bcq14"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f44r"]
 content_margin_left = 10.0
 content_margin_top = 2.0
 content_margin_right = 10.0
 content_margin_bottom = 2.0
-bg_color = Color(0.337255, 0.631373, 0.788235, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
@@ -132,7 +124,6 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_llmqa")
-theme_override_styles/panel = SubResource("StyleBoxFlat_bcq14")
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_2f44r")
 title = "ActionNode"
 slot/0/left_enabled = true
@@ -181,6 +172,7 @@ slot/4/right_color = Color(1, 1, 1, 1)
 slot/4/right_icon = null
 slot/4/draw_stylebox = true
 script = ExtResource("3_fftd2")
+titlebar_color = Color(0.337255, 0.631373, 0.788235, 1)
 
 [node name="ActionTypeMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
