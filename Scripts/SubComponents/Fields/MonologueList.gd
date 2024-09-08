@@ -18,11 +18,13 @@ var type = OPTION
 ## Add a new option node into the list and show its fields in the vbox.
 func append_node_item(id: String) -> void:
 	var node = list.get(id)
-	var panel = create_item_container(id)
+	var panel = create_item_container()
+	var fieldbox = create_item_vbox(panel)
 	vbox.add_child(panel)
 	for property_name in node.get_property_names():
-		var field = node.get(property_name).show(panel)
+		var field = node.get(property_name).show(fieldbox)
 		field.set_label_text(property_name.capitalize())
+	create_delete_button(fieldbox, id)
 
 
 func clear():
@@ -30,20 +32,30 @@ func clear():
 		child.queue_free()
 
 
-func create_item_container(id: Variant) -> PanelContainer:
+func create_item_container() -> PanelContainer:
 	var item_container = PanelContainer.new()
 	item_container.add_theme_stylebox_override("panel", stylebox)
-	
+	return item_container
+
+
+func create_item_vbox(panel: PanelContainer) -> VBoxContainer:
+	var item_vbox = VBoxContainer.new()
+	panel.add_child(item_vbox)
+	return item_vbox
+
+
+func create_delete_button(fieldbox: VBoxContainer, id: Variant) -> void:
 	var delete_container = MarginContainer.new()
 	delete_container.add_theme_constant_override("margin_left", 10)
 	var delete_button = delete_scene.instantiate()
 	delete_button.connect("pressed", _on_delete_button_pressed.bind(id))
 	delete_container.add_child(delete_button)
 	
-	var first_hbox = item_container.find_child("HBox*")
+	var first_hbox = _find_first_hbox(fieldbox)
 	if first_hbox:
 		first_hbox.add_child(delete_container)
-	return item_container
+	else:
+		delete_container.queue_free()
 
 
 func set_label_text(text: String) -> void:
@@ -59,6 +71,13 @@ func propagate(id_list: Variant) -> void:
 				pass
 			VARIABLE:  # list of variable names
 				pass
+
+
+func _find_first_hbox(control: Control) -> HBoxContainer:
+	for child in control.get_children():
+		if child is HBoxContainer:
+			return child
+	return null
 
 
 func _on_add_button_pressed() -> void:
