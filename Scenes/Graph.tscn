@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=36 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -15,8 +15,11 @@
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
 [ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/MonologueGraphEdit.tscn" id="12_5uhsv"]
 [ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="14_8lefg"]
+[ext_resource type="Texture2D" uid="uid://dhlu3mvdkvea6" path="res://Assets/Icons/cursor.svg" id="15_dc63e"]
+[ext_resource type="Texture2D" uid="uid://b272tbdmvxj20" path="res://Assets/Icons/play.svg" id="15_hn16p"]
 [ext_resource type="Texture2D" uid="uid://bwswk0bxo8n0a" path="res://Assets/Cover/kurzgesagt.jpg" id="16_ox8sj"]
 [ext_resource type="Texture2D" uid="uid://faci8gjgsxub" path="res://Assets/Icons/file_plus.svg" id="16_x1vtb"]
+[ext_resource type="Texture2D" uid="uid://cu75pg7vsf7qi" path="res://Assets/Icons/hand.svg" id="16_yc7gx"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 [ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://Objects/SubComponents/CloseButton.tscn" id="17_af4y3"]
 [ext_resource type="Texture2D" uid="uid://bbw07aw88fo0p" path="res://Assets/Icons/folder_search.svg" id="17_g5nwh"]
@@ -278,8 +281,8 @@ anchors_preset = -1
 anchor_left = 0.751
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -0.500122
-grow_horizontal = 0
+offset_left = -1.5
+grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/margin_top = 20
@@ -335,6 +338,94 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_f42wd")
 stretch_mode = 3
+
+[node name="ToolBarContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ToolBar" type="PanelContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CursorButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+flat = true
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer/CursorButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer/CursorButton/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("15_dc63e")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HandButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+flat = true
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer/HandButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.00318988
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/VBoxContainer/HandButton/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("16_yc7gx")
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+texture_normal = ExtResource("15_hn16p")
 
 [node name="NoInteractions" type="ColorRect" parent="."]
 visible = false
