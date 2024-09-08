@@ -8,7 +8,7 @@ const CHECKBOX = preload("res://Objects/SubComponents/Fields/MonologueCheckBox.t
 const DROPDOWN = preload("res://Objects/SubComponents/Fields/MonologueDropdown.tscn")
 const FILE = preload("res://Objects/SubComponents/Fields/FilePicker.tscn")
 const LINE = preload("res://Objects/SubComponents/Fields/MonologueLine.tscn")
-const OPTION = null
+const LIST = preload("res://Objects/SubComponents/Fields/MonologueList.tscn")
 const SLIDER = preload("res://Objects/SubComponents/Fields/MonologueSlider.tscn")
 const SPINBOX = preload("res://Objects/SubComponents/Fields/MonologueSpinBox.tscn")
 const TEXT = preload("res://Objects/SubComponents/Fields/MonologueText.tscn")
@@ -56,12 +56,13 @@ func get_property_names() -> PackedStringArray:
 
 
 func _from_dict(dict: Dictionary) -> void:
+	id = dict.get("ID")
 	for key in dict.keys():
 		var property = get(key.to_snake_case())
 		if property is Property:
 			property.value = dict.get(key)
-	position_offset.x = dict.EditorPosition.get("x")
-	position_offset.y = dict.EditorPosition.get("y")
+	
+	_load_position(dict)
 	_update()  # refresh node UI after loading properties
 
 
@@ -70,6 +71,13 @@ func _load_connections(data: Dictionary, key: String = "NextID") -> void:
 	if next_id is String:
 		var next_node = get_parent().get_node_by_id(next_id)
 		get_parent().connect_node(name, 0, next_node.name, 0)
+
+
+func _load_position(data: Dictionary):
+	var editor_position = data.get("EditorPosition")
+	if editor_position:
+		position_offset.x = editor_position.get("x", randi_range(-400, 400))
+		position_offset.y = editor_position.get("y", randi_range(-200, 200))
 
 
 func _to_dict() -> Dictionary:

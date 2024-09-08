@@ -2,64 +2,71 @@
 class_name MonologueList extends MonologueField
 
 
-enum { CHARACTER, VARIABLE, OPTION }
+enum { SPEAKER, VARIABLE, OPTION }
 
-## Secretly a dictionary for optimized performance.
-var list: Dictionary = {}  # key = item id, value = [array]
+var add_callback: Callable = GlobalVariables.empty_callback
+var delete_scene = preload("res://Objects/SubComponents/DeleteButton.tscn")
+var list: Dictionary = {}
 var stylebox = preload("res://Assets/ListItem.stylebox")
-var scene: PackedScene
 var type = OPTION
 
-var graph: MonologueGraphEdit
-
-@onready var vbox = $VBox
 @onready var add_button = $AddButton
 @onready var list_label = $ListLabel
+@onready var vbox = $VBox
 
 
-## Add an option node into the list and show its fields in the vbox.
-func append_option(node_id: String) -> bool:
-	var is_successful = false
-	var node = graph.get_node_by_id(node_id)
-	if node:
-		var panel = create_container()
-		for property_name in node.get_property_names():
-			# OptionNode contains hidden NextID, do not show it
-			if property_name != "next_id":
-				var field = node.get(property_name).show(panel)
-				field.set_label_text(property_name.capitalize())
-		vbox.add_child(panel)
-		list[node.id] = node
-		is_successful = true
-	return is_successful
+## Add a new option node into the list and show its fields in the vbox.
+func append_node_item(id: String) -> void:
+	var node = list.get(id)
+	var panel = create_item_container(id)
+	vbox.add_child(panel)
+	for property_name in node.get_property_names():
+		var field = node.get(property_name).show(panel)
+		field.set_label_text(property_name.capitalize())
 
 
 func clear():
 	for child in vbox.get_children():
 		child.queue_free()
-	list = {}
 
 
-func create_container():
-	var container = PanelContainer.new()
-	container.add_theme_stylebox_override("panel", stylebox)
-	return container
+func create_item_container(id: Variant) -> PanelContainer:
+	var item_container = PanelContainer.new()
+	item_container.add_theme_stylebox_override("panel", stylebox)
+	
+	var delete_container = MarginContainer.new()
+	delete_container.add_theme_constant_override("margin_left", 10)
+	var delete_button = delete_scene.instantiate()
+	delete_button.connect("pressed", _on_delete_button_pressed.bind(id))
+	delete_container.add_child(delete_button)
+	
+	var first_hbox = item_container.find_child("HBox*")
+	if first_hbox:
+		first_hbox.add_child(delete_container)
+	return item_container
 
 
 func set_label_text(text: String) -> void:
 	list_label.text = text
 
 
-func propagate(iterable: Variant) -> void:
+func propagate(id_list: Variant) -> void:
 	clear()
-	for element in iterable:
+	for id in id_list:
 		match type:
-			OPTION:
-				append_option(element)
-			CHARACTER:  # list of character IDs
+			OPTION: append_node_item(id)
+			SPEAKER:  # list of character IDs
 				pass
 			VARIABLE:  # list of variable names
 				pass
 
+
 func _on_add_button_pressed() -> void:
-	field_updated.emit()
+	# the add_callback creates the actual instance in its source node, which
+	# should call this property's propagate() method to update the list
+	add_callback.call()
+
+
+func _on_delete_button_pressed(id: Variant) -> void:
+	list.erase(id)
+	field_updated.emit(list.keys())

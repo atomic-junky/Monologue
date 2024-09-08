@@ -139,12 +139,16 @@ func _load_nodes(node_list: Array) -> void:
 	for node in node_list:
 		var data = converter.convert_node(node)
 		var node_type = data.get("$type").trim_prefix("Node")
-		var node_scene = GlobalVariables.node_dictionary.get(node_type)
-		if node_scene:
-			var node_instance = node_scene.instantiate()
-			node_instance.id = data.get("ID")
-			graph.current.add_child(node_instance, true)
-			node_instance._from_dict(data)
+		if node_type == "Option":
+			# option data gets sent to the base_options dictionary
+			graph.current.base_options[data.get("ID")] = data
+		else:
+			var node_scene = GlobalVariables.node_dictionary.get(node_type)
+			if node_scene:
+				var node_instance = node_scene.instantiate()
+				node_instance.id = data.get("ID")
+				graph.current.add_child(node_instance, true)
+				node_instance._from_dict(data)
 
 
 func _notification(what: int) -> void:

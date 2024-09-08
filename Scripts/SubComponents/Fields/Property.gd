@@ -61,7 +61,6 @@ func propagate(new_value: Variant) -> void:
 func save_value(new_value: Variant) -> void:
 	if not Util.is_equal(value, new_value):
 		change.emit(value, new_value)
-		#value = new_value
 
 
 func set_visible(can_see: bool) -> void:

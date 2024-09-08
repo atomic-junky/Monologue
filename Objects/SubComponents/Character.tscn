@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://co06oddlr5k5"]
 
 [ext_resource type="Script" path="res://Scripts/SubComponents/Character.gd" id="1_1pu2x"]
-[ext_resource type="Texture2D" uid="uid://cupclxlgjwjmg" path="res://Assets/Icons/trash_icon.png" id="1_drvey"]
+[ext_resource type="PackedScene" uid="uid://dfwf55ovgwir3" path="res://Objects/SubComponents/DeleteButton.tscn" id="2_iu286"]
 
 [node name="Character" type="PanelContainer"]
 script = ExtResource("1_1pu2x")
@@ -26,16 +26,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "NAME_NUMBER"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer2"]
+[node name="MarginContainer" parent="MarginContainer/HBoxContainer2" instance=ExtResource("2_iu286")]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-
-[node name="Delete" type="TextureButton" parent="MarginContainer/HBoxContainer2/MarginContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("1_drvey")
-stretch_mode = 3
 
 [connection signal="focus_exited" from="MarginContainer/HBoxContainer2/LineEdit" to="." method="_on_line_edit_focus_exited"]
 [connection signal="text_submitted" from="MarginContainer/HBoxContainer2/LineEdit" to="." method="_on_line_edit_text_submitted"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer2/MarginContainer/Delete" to="." method="_on_delete_pressed"]

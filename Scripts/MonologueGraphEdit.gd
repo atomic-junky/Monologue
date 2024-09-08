@@ -4,6 +4,7 @@ extends GraphEdit
 
 
 var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
+var base_options = {}
 var data: Dictionary
 var file_path: String
 var undo_redo := HistoryHandler.new()
@@ -144,14 +145,16 @@ func get_root_node() -> RootNode:
 	return null
 
 
-## Find a graph node by ID. Includes NodeOption embedded in NodeChoice.
+## Find a graph node by ID. Includes OptionNodes.
 func get_node_by_id(id: String) -> MonologueGraphNode:
 	if not id.is_empty():
 		for node in get_nodes():
 			if node.id == id:
 				return node
-			elif node.node_type == "NodeChoice" and node.option_nodes.get(id):
-				return node.option_nodes.get(id)
+			elif node is ChoiceNode:
+				var option = node.get_option_by_id(id)
+				if option:
+					return option
 	return null
 
 
