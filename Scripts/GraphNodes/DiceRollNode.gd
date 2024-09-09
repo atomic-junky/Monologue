@@ -25,8 +25,8 @@ func _to_dict() -> Dictionary:
 		"ID": id,
 		"Skill": "",
 		"Target": target_number,
-		"PassID": pass_id_node[0].id if pass_id_node else -1,
-		"FailID": fail_id_node[0].id if fail_id_node else -1,
+		"PassID": pass_id_node[0].id.value if pass_id_node else -1,
+		"FailID": fail_id_node[0].id.value if fail_id_node else -1,
 		"EditorPosition": {
 			"x": position_offset.x,
 			"y": position_offset.y

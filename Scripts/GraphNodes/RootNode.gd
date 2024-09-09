@@ -19,20 +19,12 @@ func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,
 		"ID": id,
-		"NextID": next_id_node[0].id if next_id_node and next_id_node[0] else -1,
+		"NextID": next_id_node[0].id.value if next_id_node and next_id_node[0] else -1,
 		"EditorPosition": {
 			"x": position_offset.x,
 			"y": position_offset.y
 		}
 	}
-
-
-func _from_dict(dict):
-	id = dict.get("ID")
-	
-	var _pos = dict.get("EditorPosition")
-	position_offset.x = _pos.get("x")
-	position_offset.x = _pos.get("y")
 
 
 func _update(panel: RootNodePanel = null):

@@ -1,13 +1,14 @@
 ## Side panel which displays graph node details. This panel should not contain
 ## references to MonologueControl or GraphEditSwitcher.
-class_name SidePanelNodeDetails extends PanelContainer
+class_name SidePanel extends PanelContainer
 
 
-@onready var fields_container = $MarginContainer/Scroller/VBox/FieldsContainer
-@onready var line_edit_id = $MarginContainer/Scroller/VBox/HBox/LineEditID
+@onready var fields_container = $OuterMargin/Scroller/InnerMargin/VBox/Fields
+@onready var topbox = $OuterMargin/Scroller/InnerMargin/VBox/HBox
 @onready var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
 @onready var node_panel = preload("res://Scripts/MonologueNodePanel.gd")
 
+var id_field: MonologueField
 var selected_node: MonologueGraphNode
 
 
@@ -19,6 +20,8 @@ func _ready():
 func on_graph_node_deselected(_node):
 	for field in fields_container.get_children():
 		field.queue_free()
+	if is_instance_valid(id_field):
+		id_field.queue_free()
 	hide()
 
 
@@ -33,14 +36,15 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 			graph_edit.active_graphnode = null
 			return
 	
-	line_edit_id.text = node.id
 	selected_node = node
 	node._update()
 	
 	for property_name in node.get_property_names():
-		var field = node.get(property_name).show(fields_container)
-		field.set_label_text(property_name.capitalize())
-	
+		if property_name == "id":
+			id_field = node.get(property_name).show(topbox, 0)
+		else:
+			var field = node.get(property_name).show(fields_container)
+			field.set_label_text(property_name.capitalize())
 	show()
 
 
@@ -54,24 +58,8 @@ func refocus(node: MonologueGraphNode) -> void:
 			focus_owner.grab_focus()
 
 
-func _on_line_edit_id_text_changed(new_id):
-	if selected_node:
-		var graph = selected_node.get_parent()
-		if graph.get_node_by_id(new_id):
-			line_edit_id.text = selected_node.id
-		else:
-			selected_node.id = new_id
-
-
 func _on_tfh_button_pressed() -> void:
-	GlobalSignal.emit("test_trigger", [selected_node.id])
-
-
-func _on_id_copy_pressed() -> void:
-	DisplayServer.clipboard_set(line_edit_id.text)
-	var ribbon = ribbon_scene.instantiate()
-	ribbon.position = get_viewport().get_mouse_position()
-	get_window().add_child(ribbon)
+	GlobalSignal.emit("test_trigger", [selected_node.id.value])
 
 
 func _on_close_button_pressed(node: MonologueGraphNode = null) -> void:

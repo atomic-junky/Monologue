@@ -1,10 +1,10 @@
 class_name OptionNode extends MonologueGraphNode
 
 
-var sentence  := Property.new(TEXT)
-var enable    := Property.new(CHECKBOX)
-var one_shot  := Property.new(CHECKBOX)
-var next_id    = -1
+var option := Property.new(TEXT, { "minimum_size": Vector2(200, 60) })
+var enable_by_default := Property.new(CHECKBOX)
+var one_shot := Property.new(CHECKBOX)
+var next_id = -1
 
 @onready var count_label = $MarginContainer/VBox/CountLabel
 @onready var preview_label = $MarginContainer/VBox/PreviewLabel
@@ -13,8 +13,13 @@ var next_id    = -1
 func _ready():
 	node_type = "NodeOption"
 	super._ready()
-	sentence.connect("preview", _on_text_preview)
+	option.connect("preview", _on_text_preview)
 	get_titlebar_hbox().get_child(0).hide()
+
+
+func get_graph_edit() -> MonologueGraphEdit:
+	# for OptionNode, get_parent() returns ChoiceNode
+	return get_parent().get_graph_edit()
 
 
 func set_count(number: int):
@@ -22,9 +27,10 @@ func set_count(number: int):
 
 
 func _from_dict(dict: Dictionary) -> void:
+	option.value = dict.get("Sentence", "")
+	enable_by_default.value = dict.get("Enable", false)
+	next_id = dict.get("NextID", -1)
 	super._from_dict(dict)
-	id = dict.get("ID")
-	next_id = dict.get("NextID")
 
 
 func _on_text_preview(text: Variant):

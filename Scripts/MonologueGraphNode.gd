@@ -14,12 +14,15 @@ const SPINBOX = preload("res://Objects/SubComponents/Fields/MonologueSpinBox.tsc
 const TEXT = preload("res://Objects/SubComponents/Fields/MonologueText.tscn")
 const TOGGLE = preload("res://Objects/SubComponents/Fields/MonologueToggle.tscn")
 
-var id: String = UUID.v4()
+var id := Property.new(LINE, {}, UUID.v4())
 var node_type: String = "NodeUnknown"
 
 
 func _ready() -> void:
 	title = node_type
+	id.setters["copyable"] = true
+	id.setters["font_size"] = 11
+	id.callers["set_label_visible"] = [false]
 	for property_name in get_property_names():
 		get(property_name).connect("change", change.bind(property_name))
 		get(property_name).connect("display", display)
@@ -36,15 +39,20 @@ func change(old_value: Variant, new_value: Variant, property: String) -> void:
 	var changes: Array[PropertyChange] = []
 	changes.append(PropertyChange.new(property, old_value, new_value))
 	
-	var undo_redo = get_parent().undo_redo
+	var graph = get_graph_edit()
+	var undo_redo = graph.undo_redo
 	undo_redo.create_action("%s: %s => %s" % [property, old_value, new_value])
-	var history = PropertyHistory.new(self, changes)
+	var history = PropertyHistory.new(graph, graph.get_path_to(self), changes)
 	undo_redo.add_prepared_history(history)
 	undo_redo.commit_action()
 
 
 func display() -> void:
-	get_parent().set_selected(self)
+	get_graph_edit().set_selected(self)
+
+
+func get_graph_edit() -> MonologueGraphEdit:
+	return get_parent()
 
 
 func get_property_names() -> PackedStringArray:
@@ -56,7 +64,6 @@ func get_property_names() -> PackedStringArray:
 
 
 func _from_dict(dict: Dictionary) -> void:
-	id = dict.get("ID")
 	for key in dict.keys():
 		var property = get(key.to_snake_case())
 		if property is Property:
@@ -69,8 +76,8 @@ func _from_dict(dict: Dictionary) -> void:
 func _load_connections(data: Dictionary, key: String = "NextID") -> void:
 	var next_id = data.get(key)
 	if next_id is String:
-		var next_node = get_parent().get_node_by_id(next_id)
-		get_parent().connect_node(name, 0, next_node.name, 0)
+		var next_node = get_graph_edit().get_node_by_id(next_id)
+		get_graph_edit().connect_node(name, 0, next_node.name, 0)
 
 
 func _load_position(data: Dictionary):
@@ -100,8 +107,8 @@ func _to_fields(dict: Dictionary) -> void:
 
 
 func _to_next(dict: Dictionary, key: String = "NextID") -> void:
-	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
-	dict[key] = next_id_node[0].id if next_id_node else -1
+	var next_id_node = get_graph_edit().get_all_connections_from_slot(name, 0)
+	dict[key] = next_id_node[0].id.value if next_id_node else -1
 
 
 func _update() -> void:

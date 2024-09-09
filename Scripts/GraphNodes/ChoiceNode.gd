@@ -14,6 +14,7 @@ func _ready():
 	super._ready()
 	options.setters["add_callback"] = add_option
 	options.setters["list"] = {}
+	options.callers["set_label_visible"] = [false]
 	
 	if get_child_count() <= 0:
 		add_option()
@@ -30,8 +31,8 @@ func add_option(reference: Dictionary = {}) -> OptionNode:
 		new_option.preview_label.text = reference.get("Sentence")
 		link_option(new_option)
 	else:
-		options.value.append(new_option.id)
-		options.setters["list"][new_option.id] = new_option
+		options.value.append(new_option.id.value)
+		options.setters["list"][new_option.id.value] = new_option
 	
 	var is_first = get_child_count() <= 1
 	set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true,
@@ -41,7 +42,7 @@ func add_option(reference: Dictionary = {}) -> OptionNode:
 
 func get_option_by_id(option_id: String) -> OptionNode:
 	for node in get_children():
-		if node.id == option_id:
+		if node.id.value == option_id:
 			return node
 	return null
 
@@ -60,7 +61,7 @@ func link_option(option: OptionNode, link: bool = true):
 ## Update the NextID of this choice node on the given port.
 func update_next_id(from_port: int, next_node: MonologueGraphNode):
 	if next_node:
-		get_child(from_port).next_id = next_node.id
+		get_child(from_port).next_id = next_node.id.value
 	else:
 		get_child(from_port).next_id = -1
 
@@ -85,7 +86,7 @@ func _load_connections(_data: Dictionary, _key: String = "") -> void:
 	for option_id in options.value:
 		var reference = get_parent().base_options[option_id]
 		var loaded_option = add_option(reference)
-		options.setters["list"][loaded_option.id] = loaded_option
+		options.setters["list"][loaded_option.id.value] = loaded_option
 
 
 func _update():

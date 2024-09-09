@@ -19,7 +19,7 @@ func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,
 		"ID": id,
-		"NextID": next_node.id if next_node else -1,
+		"NextID": next_node.id.value if next_node else -1,
 		"NumberSelector": number_selector.value,
 		"EditorPosition": {
 			"x": position_offset.x,

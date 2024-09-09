@@ -1,9 +1,14 @@
 class_name MonologueLine extends MonologueField
 
 
+@export var copyable: bool
+@export var font_size: int = 16
 @export var is_sublabel: bool
 @export var sublabel_prefix: String = "↳ "
 
+var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
+
+@onready var copy_button = $HBox/CopyButton
 @onready var label = $HBox/FieldLabel
 @onready var line_edit = $HBox/VBox/LineEdit
 @onready var warning = $HBox/VBox/WarnLabel
@@ -11,6 +16,10 @@ class_name MonologueLine extends MonologueField
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	copy_button.visible = copyable
+	label.add_theme_font_size_override("font_size", font_size)
+	line_edit.add_theme_font_size_override("font_size", font_size)
+	warning.add_theme_font_size_override("font_size", font_size)
 	warning.hide()
 
 
@@ -24,8 +33,19 @@ func set_label_text(text: String) -> void:
 		label.text = text
 
 
+func set_label_visible(can_see: bool) -> void:
+	label.visible = can_see
+
+
 func propagate(value: Variant) -> void:
 	line_edit.text = str(value)
+
+
+func _on_copy_button_pressed() -> void:
+	DisplayServer.clipboard_set(line_edit.text)
+	var ribbon = ribbon_scene.instantiate()
+	ribbon.position = get_viewport().get_mouse_position()
+	get_window().add_child(ribbon)
 
 
 func _on_focus_exited() -> void:

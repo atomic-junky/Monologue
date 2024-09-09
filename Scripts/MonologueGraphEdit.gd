@@ -149,7 +149,7 @@ func get_root_node() -> RootNode:
 func get_node_by_id(id: String) -> MonologueGraphNode:
 	if not id.is_empty():
 		for node in get_nodes():
-			if node.id == id:
+			if node.id.value == id:
 				return node
 			elif node is ChoiceNode:
 				var option = node.get_option_by_id(id)
@@ -251,7 +251,7 @@ func _on_child_entered_tree(node: Node) -> void:
 		var close_callback = func():
 				var delete_history = DeleteNodeHistory.new(self, [node])
 				var message = "Delete %s (id: %s)"
-				undo_redo.create_action(message % [node.node_type, node.id])
+				undo_redo.create_action(message % [node.node_type, node.id.value])
 				undo_redo.add_prepared_history(delete_history)
 				undo_redo.commit_action(false)
 				selected_nodes.erase(node)

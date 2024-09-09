@@ -13,7 +13,7 @@ size_flags_vertical = 0
 text = "Value"
 
 [node name="TextEdit" type="TextEdit" parent="."]
-custom_minimum_size = Vector2(100, 200)
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_horizontal = 3
 wrap_mode = 1

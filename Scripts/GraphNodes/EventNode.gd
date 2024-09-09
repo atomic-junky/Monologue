@@ -24,7 +24,7 @@ func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,
 		"ID": id,
-		"NextID": next_id_node[0].id if next_id_node else -1,
+		"NextID": next_id_node[0].id.value if next_id_node else -1,
 		"Condition": _condtion_to_dict(),
 		"EditorPosition": {
 			"x": position_offset.x,
@@ -34,8 +34,6 @@ func _to_dict() -> Dictionary:
 
 
 func _from_dict(dict: Dictionary):
-	id = dict.get("ID")
-	
 	var condition = dict.get("Condition")
 	var variables_filter = get_parent().variables.filter(func(v): return v.get("Name") == condition.get("Variable"))
 	if variables_filter.size() > 0:

@@ -10,23 +10,24 @@ var node_path: NodePath
 var changes: Array[PropertyChange]
 
 
-func _init(node: MonologueGraphNode, change_list: Array[PropertyChange]):
-	graph_edit = node.get_parent()
-	node_path = graph_edit.get_path_to(node)
+func _init(graph: MonologueGraphEdit, path: NodePath,
+			change_list: Array[PropertyChange]) -> void:
+	graph_edit = graph
+	node_path = path
 	changes = change_list
 	
 	_undo_callback = revert_properties
 	_redo_callback = change_properties
 
 
-func change_properties():
+func change_properties() -> void:
 	var node: MonologueGraphNode = graph_edit.get_node(node_path)
 	for change in changes:
 		node[change.property].value = change.after
 		node[change.property].propagate(change.after)
 
 
-func revert_properties():
+func revert_properties() -> void:
 	var node: MonologueGraphNode = graph_edit.get_node(node_path)
 	for change in changes:
 		node[change.property].value = change.before

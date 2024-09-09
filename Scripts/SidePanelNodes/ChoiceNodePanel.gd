@@ -38,7 +38,7 @@ func get_options_data():
 ## Retrives a given option node by ID from [member options_container].
 func get_option_node(option_id: String):
 	for node in options_container.get_children():
-		if node.id == option_id:
+		if node.id.value == option_id:
 			return node
 
 

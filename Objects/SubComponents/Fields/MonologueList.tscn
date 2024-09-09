@@ -5,6 +5,7 @@
 [node name="MonologueList" type="VBoxContainer"]
 offset_right = 200.0
 offset_bottom = 60.0
+theme_override_constants/separation = 10
 script = ExtResource("1_8kx3n")
 
 [node name="ListLabel" type="Label" parent="."]
@@ -19,6 +20,7 @@ theme_override_constants/separation = 10
 
 [node name="AddButton" type="Button" parent="."]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "+"
 
 [connection signal="pressed" from="AddButton" to="." method="_on_add_button_pressed"]

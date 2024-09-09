@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bw7thqdhujl41"]
+[gd_scene load_steps=3 format=3 uid="uid://bw7thqdhujl41"]
 
 [ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueLine.gd" id="1_toqtt"]
+[ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="2_lbcco"]
 
 [node name="MonologueLine" type="MarginContainer"]
 offset_right = 122.0
@@ -30,6 +31,14 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.768627, 0.180392, 0.25098, 1)
 text = "Warning"
 
+[node name="CopyButton" type="TextureButton" parent="HBox"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("2_lbcco")
+stretch_mode = 3
+
 [connection signal="focus_exited" from="HBox/VBox/LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_changed" from="HBox/VBox/LineEdit" to="." method="_on_text_changed"]
 [connection signal="text_submitted" from="HBox/VBox/LineEdit" to="." method="_on_text_submitted"]
+[connection signal="pressed" from="HBox/CopyButton" to="." method="_on_copy_button_pressed"]

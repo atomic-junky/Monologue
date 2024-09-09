@@ -25,8 +25,8 @@ func _to_dict() -> Dictionary:
 	return {
 		"$type": node_type,
 		"ID": id,
-		"IfNextID": if_next_id_node[0].id if if_next_id_node else -1,
-		"ElseNextID": else_next_id_node[0].id if else_next_id_node else -1,
+		"IfNextID": if_next_id_node[0].id.value if if_next_id_node else -1,
+		"ElseNextID": else_next_id_node[0].id.value if else_next_id_node else -1,
 		"Condition": _condtion_to_dict(),
 		"EditorPosition": {
 			"x": position_offset.x,

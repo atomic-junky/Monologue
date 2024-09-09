@@ -7,6 +7,7 @@
 [node name="OptionNode" type="GraphNode"]
 offset_right = 100.0
 offset_bottom = 91.0
+mouse_filter = 2
 theme_override_styles/slot = SubResource("StyleBoxEmpty_vd2tk")
 draggable = false
 selectable = false

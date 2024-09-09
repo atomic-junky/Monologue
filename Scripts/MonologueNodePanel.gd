@@ -49,7 +49,8 @@ func _on_node_property_change(properties: Array, values: Array) -> bool:
 				var modification = PropertyChange.new(property, graph_node[property], value)
 				change_list.append(modification)
 			
-			var history = PropertyHistory.new(graph_node, change_list)
+			var history = PropertyHistory.new(graph_node.get_parent(),
+				graph_node.get_parent().get_path_to(graph_node), change_list)
 			undo_redo.add_prepared_history(history)
 			undo_redo.commit_action()
 			

@@ -27,7 +27,7 @@ func add_character(reference: String = "", update: bool = true):
 	
 	var node_id = characters_container.get_children().find(new_node)
 	new_node.character_name = reference
-	new_node.id = node_id
+	new_node.id.value = node_id
 	new_node.update_callback = update_speakers
 	
 	if update:
@@ -61,7 +61,7 @@ func add_variable(dict: Dictionary = {}, update: bool = true):
 
 func get_character_node(character_id):
 	for node in characters_container.get_children():
-		if node.id == character_id:
+		if node.id.value == character_id:
 			return node
 	return null
 
@@ -101,7 +101,7 @@ func update_speakers():
 		if child.is_queued_for_deletion():
 			continue
 		
-		child.id = all_nodes.find(child)
+		child.id.value = all_nodes.find(child)
 		updated_speakers.append(child._to_dict())
 	
 	_on_node_property_change(["speakers"], [updated_speakers])

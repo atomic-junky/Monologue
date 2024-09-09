@@ -16,6 +16,11 @@ func set_label_text(_text: String) -> void:
 	pass
 
 
+## Set the field's label visibility.
+func set_label_visible(can_see: bool) -> void:
+	pass
+
+
 ## Meant to propagate the value set in [MonologueProperty] to this Field.
 ## This method does not emit [signal field_updated].
 func propagate(_value: Variant) -> void:

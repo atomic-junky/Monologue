@@ -5,6 +5,7 @@
 [node name="DeleteButton" type="TextureButton"]
 offset_right = 16.0
 offset_bottom = 16.0
+size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("1_1qc5m")
 stretch_mode = 3

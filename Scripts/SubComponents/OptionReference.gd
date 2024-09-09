@@ -27,7 +27,7 @@ func _to_dict():
 	return {
 		"$type": node_type,
 		"ID": id,
-		"NextID": next_id_node[0].id if next_id_node else -1,
+		"NextID": next_id_node[0].id.value if next_id_node else -1,
 		"Sentence": sentence,
 		"Enable": enable,
 		"OneShot": one_shot

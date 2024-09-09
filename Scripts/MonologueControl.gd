@@ -146,7 +146,7 @@ func _load_nodes(node_list: Array) -> void:
 			var node_scene = GlobalVariables.node_dictionary.get(node_type)
 			if node_scene:
 				var node_instance = node_scene.instantiate()
-				node_instance.id = data.get("ID")
+				node_instance.id.value = data.get("ID")
 				graph.current.add_child(node_instance, true)
 				node_instance._from_dict(data)
 
