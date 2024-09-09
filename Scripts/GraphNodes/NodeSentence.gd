@@ -1,8 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Sentence.svg")
 
-class_name SentenceNode
-
-extends MonologueGraphNode
+class_name SentenceNode extends MonologueGraphNode
 
 
 @onready var text_label = $MainContainer/TextLabelPreview

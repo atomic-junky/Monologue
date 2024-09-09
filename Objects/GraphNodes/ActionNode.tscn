@@ -172,7 +172,7 @@ slot/4/right_color = Color(1, 1, 1, 1)
 slot/4/right_icon = null
 slot/4/draw_stylebox = true
 script = ExtResource("3_fftd2")
-titlebar_color = Color(0.337255, 0.631373, 0.788235, 1)
+titlebar_color = Color(0.160784, 0.282353, 0.458824, 1)
 
 [node name="ActionTypeMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

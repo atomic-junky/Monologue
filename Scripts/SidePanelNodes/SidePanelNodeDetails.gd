@@ -1,5 +1,4 @@
-class_name SidePanelNodeDetails
-extends PanelContainer
+class_name SidePanelNodeDetails extends PanelContainer
 
 
 var panel_dictionary = {

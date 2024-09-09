@@ -8,8 +8,6 @@ var variables: set = _set_variables, get = _get_variables
 
 
 func _ready():
-	super()
-	
 	node_type = "NodeRoot"
 	title = node_type
 
