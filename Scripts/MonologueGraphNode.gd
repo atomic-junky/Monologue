@@ -12,7 +12,6 @@ var node_type: String = "NodeUnknown"
 
 func _ready() -> void:
 	_set_titlebar_color(titlebar_color)
-	
 
 
 func _set_titlebar_color(val: Color):

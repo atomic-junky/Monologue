@@ -21,13 +21,13 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 corner_detail = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2sy2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x8nuk"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynia8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kyk8b"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fq55h"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tyr2u"]
 bg_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="App" type="Control"]
@@ -57,7 +57,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="CustomTitleBar" type="HBoxContainer" parent="Frame/VBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_sdg01")
@@ -70,7 +70,10 @@ theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
 [node name="TextureRect" type="TextureRect" parent="Frame/VBoxContainer/CustomTitleBar/MarginContainer"]
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("2_gc2v2")
 expand_mode = 3
 stretch_mode = 5
@@ -94,21 +97,21 @@ layout_mode = 2
 
 [node name="tbButtonContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 10
 
 [node name="tbReduceButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_s2sy2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_x8nuk")
 texture = ExtResource("4_b7q52")
 
 [node name="tbSizeButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_ynia8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kyk8b")
 texture = ExtResource("5_fxbua")
 
 [node name="tbCloseButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_fq55h")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tyr2u")
 hover_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]

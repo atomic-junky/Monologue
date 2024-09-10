@@ -37,6 +37,31 @@ func _ready():
 				
 			for sb_name in ["grabber", "scroll"]:
 				subchild.add_theme_stylebox_override(sb_name, StyleBoxEmpty.new())
+	
+	var toolbar: HBoxContainer
+	for child in get_children(true):
+		if child is GraphNode:
+			continue
+		
+		var subchildren = child.get_children(true).filter(func(c) -> bool: return c is PanelContainer)
+		if subchildren.size() > 0:
+			toolbar = subchildren[0].get_children()[0]
+	toolbar.add_theme_constant_override("separation", 5)
+	
+	var add_btn: Button = Button.new()
+	add_btn.text = "Add a node..."
+	add_btn.connect("pressed", _on_add_btn)
+	
+	for sep_idx in [0, 2]:
+		var vsep := VSeparator.new()
+		toolbar.add_child(vsep)
+		toolbar.move_child(vsep, sep_idx)
+	toolbar.add_child(add_btn)
+	toolbar.move_child(add_btn, 0)
+
+
+func _on_add_btn() -> void:
+	GlobalSignal.emit("enable_build_mode")
 
 
 func center_offset(to_root: bool = false):

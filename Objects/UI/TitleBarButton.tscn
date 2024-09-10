@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://Scripts/UI/title_bar_button.gd" id="1_egvia"]
 [ext_resource type="Texture2D" uid="uid://kk5em170gn2b" path="res://Assets/Icons/UI/ui_close.svg" id="1_itj8o"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lgxcd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_206c8"]
 bg_color = Color(1, 1, 1, 0.12549)
 
 [node name="TitleBarButton" type="Button"]
 custom_minimum_size = Vector2(50, 30)
-theme_override_styles/hover = SubResource("StyleBoxFlat_lgxcd")
+theme_override_styles/hover = SubResource("StyleBoxFlat_206c8")
 script = ExtResource("1_egvia")
 texture = ExtResource("1_itj8o")
 
@@ -25,7 +25,9 @@ theme_override_constants/margin_right = 7
 theme_override_constants/margin_bottom = 7
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
+size_flags_vertical = 4
 texture = ExtResource("1_itj8o")
 expand_mode = 1
 stretch_mode = 5

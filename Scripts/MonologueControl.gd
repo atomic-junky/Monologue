@@ -30,7 +30,7 @@ var scene_dictionary = {
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/GraphEdits
 @onready var side_panel_node = %SidePanelNodeDetails
-@onready var graph_node_selecter = $GraphNodeSelecter
+@onready var graph_node_selecter = $GraphNodePicker
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
 @onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Edit
 @onready var file_dialog = $FileDialog
@@ -96,6 +96,7 @@ func _ready():
 	no_interactions_dimmer.show()
 	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
+	GlobalSignal.add_listener("enable_build_mode", graph_node_selecter.show)
 	GlobalSignal.add_listener("test_trigger", test_project)
 
 
@@ -394,7 +395,6 @@ func enable_picker_mode(from_node, from_port, _release_position):
 	var graph = get_current_graph_edit()
 	picker_position = (graph.get_local_mouse_position() + graph.scroll_offset) / graph.zoom
 	picker_mode = true
-	no_interactions_dimmer.show()
 
 
 ## Exit picker mode. Picker mode is where a new node is created from another

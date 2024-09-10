@@ -16,10 +16,11 @@ run/main_scene="res://Scenes/App.tscn"
 run/print_header=false
 run/enable_alt_space_menu=true
 config/features=PackedStringArray("4.3")
-boot_splash/bg_color=Color(0.117647, 0.133333, 0.164706, 1)
-boot_splash/image="res://icon.png"
+boot_splash/bg_color=Color(0.117647, 0.117647, 0.129412, 1)
+boot_splash/image="res://title_banner.png"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
+boot_splash/minimum_display_time=2500
 boot_splash/size/resizable=false
 
 [autoload]
@@ -45,7 +46,7 @@ window/size/fullscreen=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 
