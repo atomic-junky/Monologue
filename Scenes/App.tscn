@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://bim51g1aibuw0"]
+[gd_scene load_steps=12 format=3 uid="uid://bim51g1aibuw0"]
 
 [ext_resource type="PackedScene" uid="uid://bqjfdabrxujp7" path="res://Scenes/Graph.tscn" id="1_kiov6"]
 [ext_resource type="Script" path="res://Scripts/UI/custom_title_bar.gd" id="1_sdg01"]
 [ext_resource type="Texture2D" uid="uid://bari6usqcqje1" path="res://icon.png" id="2_gc2v2"]
 [ext_resource type="PackedScene" uid="uid://c2k0l1j45eshc" path="res://Objects/UI/TitleBarButton.tscn" id="3_0m70l"]
 [ext_resource type="Texture2D" uid="uid://hlck6y4i3l5q" path="res://Assets/Icons/plus.svg" id="3_gcdaj"]
-[ext_resource type="Script" path="res://Scripts/UI/CustomTabBar.gd" id="3_ryx6w"]
 [ext_resource type="Texture2D" uid="uid://cxek38x4sufp5" path="res://Assets/Icons/UI/ui_reduce.svg" id="4_b7q52"]
 [ext_resource type="Texture2D" uid="uid://c4ib88gq1pbjr" path="res://Assets/Icons/UI/ui_maximize.svg" id="5_fxbua"]
 
@@ -22,13 +21,13 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 corner_detail = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ke0g1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5cchd"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0a2yt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r0117"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e47at"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bbin2"]
 bg_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="App" type="Control"]
@@ -82,15 +81,18 @@ stretch_mode = 5
 [node name="VSeparator" type="VSeparator" parent="Frame/VBoxContainer/CustomTitleBar"]
 layout_mode = 2
 
-[node name="TabBar" type="TabBar" parent="Frame/VBoxContainer/CustomTitleBar"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]
 layout_mode = 2
 size_flags_horizontal = 3
-mouse_filter = 1
+theme_override_constants/separation = 0
+
+[node name="TabBar" type="TabBar" parent="Frame/VBoxContainer/CustomTitleBar/HBoxContainer2"]
+layout_mode = 2
+clip_tabs = false
 tab_close_display_policy = 1
 deselect_enabled = true
 tab_count = 1
 tab_0/icon = ExtResource("3_gcdaj")
-script = ExtResource("3_ryx6w")
 
 [node name="VSeparator2" type="VSeparator" parent="Frame/VBoxContainer/CustomTitleBar"]
 layout_mode = 2
@@ -101,17 +103,17 @@ theme_override_constants/separation = 10
 
 [node name="tbReduceButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_ke0g1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5cchd")
 texture = ExtResource("4_b7q52")
 
 [node name="tbSizeButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_0a2yt")
+theme_override_styles/hover = SubResource("StyleBoxFlat_r0117")
 texture = ExtResource("5_fxbua")
 
 [node name="tbCloseButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_e47at")
+theme_override_styles/hover = SubResource("StyleBoxFlat_bbin2")
 hover_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]
@@ -122,7 +124,7 @@ layout_mode = 2
 
 [node name="MonologueControl" parent="Frame/VBoxContainer" node_paths=PackedStringArray("tab_bar") instance=ExtResource("1_kiov6")]
 layout_mode = 2
-tab_bar = NodePath("../CustomTitleBar/TabBar")
+tab_bar = NodePath("../CustomTitleBar/HBoxContainer2/TabBar")
 
 [node name="TextureButton" type="TextureButton" parent="."]
 layout_mode = 0
