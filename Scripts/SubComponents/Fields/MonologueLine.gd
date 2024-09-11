@@ -7,6 +7,8 @@ class_name MonologueLine extends MonologueField
 @export var sublabel_prefix: String = "↳ "
 
 var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
+var revert_text: String
+var validator: Callable = func(_text): return true
 
 @onready var copy_button = $HBox/CopyButton
 @onready var label = $HBox/FieldLabel
@@ -39,6 +41,7 @@ func set_label_visible(can_see: bool) -> void:
 
 func propagate(value: Variant) -> void:
 	line_edit.text = str(value)
+	revert_text = line_edit.text
 
 
 func _on_copy_button_pressed() -> void:
@@ -57,4 +60,7 @@ func _on_text_changed(new_text: String) -> void:
 
 
 func _on_text_submitted(new_text: String) -> void:
-	field_updated.emit(new_text)
+	if validator.call(new_text):
+		field_updated.emit(new_text)
+	else:
+		line_edit.text = revert_text

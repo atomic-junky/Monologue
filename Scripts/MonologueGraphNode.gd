@@ -22,6 +22,7 @@ func _ready() -> void:
 	title = node_type
 	id.setters["copyable"] = true
 	id.setters["font_size"] = 11
+	id.setters["validator"] = _validate_id
 	id.callers["set_label_visible"] = [false]
 	for property_name in get_property_names():
 		get(property_name).connect("change", change.bind(property_name))
@@ -113,3 +114,7 @@ func _to_next(dict: Dictionary, key: String = "NextID") -> void:
 
 func _update() -> void:
 	size.y = 0
+
+
+func _validate_id(text: String) -> bool:
+	return get_graph_edit().get_node_by_id(text) == null
