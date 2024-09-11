@@ -18,7 +18,7 @@ var _data =  [
 		{"text": "Flow", "children": [
 			{"text": "Event", "icon": "Graph/calendar.svg"},
 			{"text": "Bridge", "icon": "Graph/link.svg"},
-			{"text": "EndPath", "icon": "Graph/choice.svg"},
+			{"text": "EndPath", "icon": "Graph/exit.svg"},
 		]},
 		{"text": "Helpers", "children": [
 			{"text": "Comment", "icon": "Graph/comment.svg"},
