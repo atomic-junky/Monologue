@@ -43,6 +43,5 @@ text_overrun_behavior = 3
 [node name="PreviewLabel" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.686275, 0.686275, 0.686275, 1)
-text = "..."
 clip_text = true
 text_overrun_behavior = 3

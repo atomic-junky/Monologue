@@ -11,3 +11,5 @@ script = ExtResource("1_awprp")
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Enable"
+
+[connection signal="toggled" from="CheckBox" to="." method="_on_check_box_toggled"]

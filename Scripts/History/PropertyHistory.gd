@@ -23,12 +23,12 @@ func _init(graph: MonologueGraphEdit, path: NodePath,
 func change_properties() -> void:
 	var node: MonologueGraphNode = graph_edit.get_node(node_path)
 	for change in changes:
-		node[change.property].value = change.after
 		node[change.property].propagate(change.after)
+		node[change.property].value = change.after
 
 
 func revert_properties() -> void:
 	var node: MonologueGraphNode = graph_edit.get_node(node_path)
 	for change in changes:
-		node[change.property].value = change.before
 		node[change.property].propagate(change.before)
+		node[change.property].value = change.before

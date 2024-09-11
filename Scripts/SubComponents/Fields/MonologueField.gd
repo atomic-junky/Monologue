@@ -17,7 +17,7 @@ func set_label_text(_text: String) -> void:
 
 
 ## Set the field's label visibility.
-func set_label_visible(can_see: bool) -> void:
+func set_label_visible(_can_see: bool) -> void:
 	pass
 
 

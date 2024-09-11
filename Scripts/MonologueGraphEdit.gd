@@ -80,8 +80,8 @@ func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	
 	var node_data = node._to_dict()
 	if "options" in node:
-		# tag options into the node_data without NextIDs
-		node_data.merge({"Options": node.options})
+		# tag options into the node_data
+		node_data.merge({ "Options": node.options.value })
 	if active_graphnode == node:
 		active_graphnode = null
 	

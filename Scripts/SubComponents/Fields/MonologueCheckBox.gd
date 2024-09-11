@@ -9,4 +9,8 @@ func set_label_text(text: String) -> void:
 
 
 func propagate(value: Variant) -> void:
-	check_box.button_pressed = value if (value is bool) else false
+	check_box.set_pressed_no_signal(value if (value is bool) else false)
+
+
+func _on_check_box_toggled(toggled_on: bool) -> void:
+	field_updated.emit(toggled_on)

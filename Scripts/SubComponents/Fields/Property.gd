@@ -50,11 +50,11 @@ func morph(new_scene: PackedScene) -> void:
 		show(panel, child_index)
 
 
-func propagate(new_value: Variant) -> void:
+func propagate(new_value: Variant, can_display: bool = true) -> void:
 	preview.emit(new_value)
 	if is_instance_valid(field):
 		field.propagate(new_value)
-	else:
+	elif can_display:
 		display.emit()
 
 
