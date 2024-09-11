@@ -1,4 +1,4 @@
-@icon("res://Assets/Icons/NodesIcons/Multiple Choice.svg")
+@icon("res://Assets/Icons/Graph/choice.svg")
 
 class_name ChoiceNode
 extends MonologueGraphNode

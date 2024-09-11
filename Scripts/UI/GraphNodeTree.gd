@@ -7,22 +7,25 @@ extends Tree
 ## An oject can contain keys with name "text", "value", icon" and "children".
 var _data =  [
 		{"text": "Main", "children": [
-			{"text": "Sentence", "icon": "Placeholder"},
-			{"text": "Choice"},
+			{"text": "Sentence", "icon": "Graph/text.svg"},
+			{"text": "Choice", "icon": "Graph/choice.svg"},
 		]},
 		{"text": "Logic", "children": [
-			{"text": "Action", "icon": "Placeholder"},
-			{"text": "Condition", "icon": "Placeholder"},
-			{"text": "Event", "icon": "Placeholder"},
-			{"text": "DiceRoll", "icon": "Placeholder"},
+			{"text": "Action", "icon": "Graph/action.svg"},
+			{"text": "Condition", "icon": "Graph/condition.svg"},
+			{"text": "DiceRoll", "icon": "Graph/dice.svg"},
 		]},
-		{"text": "Audio", "children": [
-			{"text": "Audio", "icon": "Placeholder"},
+		{"text": "Flow", "children": [
+			{"text": "Event", "icon": "Graph/calendar.svg"},
+			{"text": "Bridge", "icon": "Graph/link.svg"},
+			{"text": "EndPath", "icon": "Graph/choice.svg"},
 		]},
 		{"text": "Helpers", "children": [
-			{"text": "Comment", "icon": "Placeholder"},
+			{"text": "Comment", "icon": "Graph/comment.svg"},
 		]}
 	]
+
+var _first_item_found: bool = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -39,7 +42,8 @@ func _recusive_load_data(items: Array, tree_parent: TreeItem) -> void:
 		if obj.has("text"):
 			tree_item.set_text(0, obj.get("text"))
 		if obj.has("icon"):
-			pass
+			var icon_texture = load("res://Assets/Icons/" + obj.get("icon"))
+			tree_item.set_icon(0, icon_texture)
 		if obj.has("children"):
 			_recusive_load_data(obj.get("children"), tree_item)
 
@@ -52,5 +56,40 @@ func _create() -> void:
 func _on_item_selected() -> void:
 	var item: TreeItem = get_selected()
 	create_btn.disabled = item.get_child_count() > 0
+
+
+func _on_search_bar_text_changed(new_text: String) -> void:
+	if not new_text.lstrip(" "):
+		_recursive_show_item(get_root())
+		return
 	
+	_first_item_found = false
+	_recursive_item_match(new_text, get_root())
+
+
+func _recursive_item_match(text: String, item: TreeItem) -> bool:
+	var match_text: bool = false
 	
+	if item.get_child_count() > 0:
+		for child in item.get_children():
+			var child_match: bool = _recursive_item_match(text, child)
+			if child_match: match_text = true
+	elif item.get_text(0).containsn(text):
+		match_text = true
+		if not _first_item_found:
+			item.select(0)
+			_first_item_found = true
+	
+	item.visible = match_text
+	if match_text:
+		item.collapsed = false
+	
+	return match_text
+
+
+func _recursive_show_item(item: TreeItem) -> void:
+	item.visible = true
+	if not get_root() == item:
+		item.collapsed = true
+	for child in item.get_children():
+		_recursive_show_item(child)

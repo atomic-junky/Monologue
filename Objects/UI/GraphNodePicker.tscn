@@ -13,6 +13,10 @@ func _ready():
 
 func _on_close_requested() -> void:
 	hide()
+
+
+func _on_cancel_button_pressed() -> void:
+	hide()
 "
 
 [node name="GraphNodePicker" type="Window"]
@@ -75,5 +79,7 @@ layout_mode = 2
 text = "Cancel"
 
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="text_changed" from="PanelContainer/MarginContainer/VBoxContainer/SearchBar" to="PanelContainer/MarginContainer/VBoxContainer/Tree" method="_on_search_bar_text_changed"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/Tree" to="PanelContainer/MarginContainer/VBoxContainer/Tree" method="_on_item_selected"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CreateButton" to="PanelContainer/MarginContainer/VBoxContainer/Tree" method="_create"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

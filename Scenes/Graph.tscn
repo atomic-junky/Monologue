@@ -300,7 +300,6 @@ layout_mode = 2
 [node name="LineEditID" type="LineEdit" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 11
 placeholder_text = "id"
 
 [node name="CopyIDBtn" type="TextureButton" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
