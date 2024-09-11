@@ -1,6 +1,8 @@
 class_name MonologueControl extends Control
 
 
+@export var tab_bar: TabBar
+
 var dialog = {}
 var dialog_for_localisation = []
 
@@ -27,7 +29,6 @@ var scene_dictionary = {
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
-@onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/GraphEdits
 @onready var side_panel_node = %SidePanelNodeDetails
 @onready var graph_node_selecter = $GraphNodePicker
@@ -48,6 +49,7 @@ var initial_pos = Vector2(40,40)
 var option_index = 0
 var node_index = 0
 var all_nodes_index = 0
+var prev_tab: int = 0
 
 var picker_mode: bool = false
 var picker_from_node
@@ -94,6 +96,8 @@ func _ready():
 	
 	welcome_window.show()
 	no_interactions_dimmer.show()
+	
+	tab_bar.connect("tab_changed", tab_changed)
 	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
 	GlobalSignal.add_listener("enable_build_mode", graph_node_selecter.show)
@@ -450,8 +454,11 @@ func new_graph_edit():
 		ge.visible = ge == new_graph
 
 
-func tab_changed(_idx):
-	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
+func tab_changed(idx):
+	tab_bar.deselect_enabled = false
+	
+	if idx < tab_bar.tab_count-1:
+		prev_tab = tab_bar.current_tab
 		for ge in graph_edits.get_children():
 			if graph_edits.get_child(tab_bar.current_tab) == ge:
 				ge.visible = true
@@ -463,6 +470,7 @@ func tab_changed(_idx):
 				ge.visible = false
 		return
 	
+	tab_bar.current_tab = prev_tab
 	new_graph_edit()
 	var welcome_close_button = $WelcomeWindow/PanelContainer/CloseButton
 	if tab_bar.tab_count > 1:
