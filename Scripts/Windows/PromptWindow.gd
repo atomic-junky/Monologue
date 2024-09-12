@@ -14,6 +14,9 @@ const SAVE_PROMPT = "%s has been modified, save changes?"
 
 
 func prompt_save(filename: String):
+	if not is_node_ready():
+		await ready
+	
 	prompt_label.text = SAVE_PROMPT % Util.truncate_filename(filename)
 	show()
 

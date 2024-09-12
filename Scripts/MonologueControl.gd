@@ -493,7 +493,7 @@ func tab_close_pressed(tab):
 		save_prompt.connect("confirmed", _close_tab.bind(ge, tab, true))
 		save_prompt.connect("cancelled", set.bind("is_closing_all_tabs", false))
 		save_prompt.connect("denied", _close_tab.bind(ge, tab))
-		add_child(save_prompt)
+		add_child.call_deferred(save_prompt)
 		save_prompt.prompt_save(ge.file_path)
 	else:
 		_close_tab(ge, tab)
@@ -547,10 +547,6 @@ func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		get_viewport().gui_release_focus()
 		is_closing_all_tabs = true
-		
-		printerr("FIXME: finish the rework of the tabbar")
-		get_tree().quit()
-		return
 		
 		tab_close_pressed(0)
 		# tab_close_pressed() will call _close_tab() which starts a recursion

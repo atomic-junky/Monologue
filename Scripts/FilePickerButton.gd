@@ -1,7 +1,7 @@
 class_name FilePickerButton extends Button
 
 
-@onready var linked_lined_edit: FilePickerLineEdit = get_parent()
+@onready var linked_lined_edit: FilePickerLineEdit = $"../.."
 
 
 func _on_pressed():
