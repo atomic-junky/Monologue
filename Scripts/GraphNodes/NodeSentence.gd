@@ -1,6 +1,8 @@
 @icon("res://Assets/Icons/NodesIcons/Sentence.svg")
 
-class_name SentenceNode extends MonologueGraphNode
+class_name SentenceNode
+
+extends MonologueGraphNode
 
 
 @onready var text_label = $MainContainer/TextLabelPreview
@@ -18,16 +20,23 @@ func _ready():
 	title = node_type
 
 
-func get_fields():
-	return [
-		{
-			"SpeakerID": MonologueOptionButton.load_field("Speaker"),
-			"DisplaySpeakerName": MonologueLineEdit.load_field("Display Name"),
-			"DisplayVariant": MonologueLineEdit.load_field("Display Variant")
-		},
-		{"Sentence": MonologueTextEdit.load_field("Sentence")},
-		{"VoicelinePath": MonologueFilePicker.load_field("Voiceline")},
-	]
+func _to_dict() -> Dictionary:
+	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
+	
+	return {
+		"$type": node_type,
+		"ID": id,
+		"NextID": next_id_node[0].id if next_id_node else -1,
+		"Sentence": sentence,
+		"SpeakerID": speaker_id,
+		"DisplaySpeakerName": display_speaker_name,
+		"DisplayVariant": display_variant,
+		"VoicelinePath": voiceline_path,
+		"EditorPosition": {
+			"x": position_offset.x,
+			"y": position_offset.y
+		}
+	}
 
 
 func _from_dict(dict: Dictionary):
@@ -39,9 +48,12 @@ func _from_dict(dict: Dictionary):
 	voiceline_path = dict.get("VoicelinePath", "")
 	
 	_update()
+	
+	position_offset.x = dict.EditorPosition.get("x")
+	position_offset.y = dict.EditorPosition.get("y")
 
 
-func _update(panel: SentenceNodePanel = null):	
+func _update(panel: SentenceNodePanel = null):
 	if panel != null:
 		sentence = panel.sentence
 		speaker_id = panel.speaker_id
