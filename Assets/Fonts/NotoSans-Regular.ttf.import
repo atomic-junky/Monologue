@@ -15,6 +15,7 @@ dest_files=["res://.godot/imported/NotoSans-Regular.ttf-7ed6077ac9489a5d9a6d1869
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48
