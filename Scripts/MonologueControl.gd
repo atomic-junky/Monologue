@@ -290,16 +290,12 @@ func add_node_from_global(node_type):
 func test_project(from_node: String = "-1"):
 	await save(true)
 	
-	var global_vars = get_node("/root/GlobalVariables")
-	global_vars.test_path = get_current_graph_edit().file_path
+	if from_node == "-1":
+		from_node = get_current_graph_edit().get_root_node().id
 	
-	var test_instance = preload("res://Test/Menu.tscn")
-	var test_scene = test_instance.instantiate()
-	
-	if get_current_graph_edit().get_node_by_id(from_node) != null:
-		test_scene._from_node_id = from_node
-	
-	get_tree().root.add_child(test_scene)
+	var test_window: TestWindow = TestWindow.new(get_current_graph_edit().file_path, from_node)
+	get_tree().root.add_child(test_window)
+
 
 ####################
 #  File selection  #

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwswk0bxo8n0a"
-path="res://.godot/imported/kurzgesagt.jpg-59a91ddc4ca51ca1d72967c0cb2c8daf.ctex"
+uid="uid://bw473utd8l2a3"
+path="res://.godot/imported/Banner.png-e59773f1600db39c0ed3939d3cd98c90.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cover/kurzgesagt.jpg"
-dest_files=["res://.godot/imported/kurzgesagt.jpg-59a91ddc4ca51ca1d72967c0cb2c8daf.ctex"]
+source_file="res://Assets/Cover/Banner.png"
+dest_files=["res://.godot/imported/Banner.png-e59773f1600db39c0ed3939d3cd98c90.ctex"]
 
 [params]
 

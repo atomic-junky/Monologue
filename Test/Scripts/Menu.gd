@@ -1,26 +1,27 @@
 extends Control
 
 
-var _from_node_id = null
+var file_path: String
+var from_node: String
 
 
 func _ready():
 	%CustomIDLabel.hide()
-	if _from_node_id != null:
-		%CustomIDLabel.text = "(custom start node: " + _from_node_id + ")"
+	if from_node != null:
+		%CustomIDLabel.text = "(custom start node: " + from_node + ")"
 		%CustomIDLabel.show()
 
 func load_scene(scene):
 	var main_scene = scene.instantiate()
-	main_scene._from_node_id = _from_node_id
-	
-	get_tree().root.add_child(main_scene)
+	main_scene.from_node = from_node
+	main_scene.file_path = file_path
+	get_window().add_child(main_scene)
 	
 	queue_free()
 
 
 func _on_return_to_editor_button_pressed():
-	queue_free()
+	get_window().queue_free()
 
 func _on_test_button_modern_pressed():
 	var scene = preload("res://Test/Main.tscn")

@@ -17,22 +17,20 @@ extends MonologueProcess
 @onready var background_node = $Background
 @onready var character_container = $CharacterAssetContainer/Asset
 
-var _from_node_id = null
+var from_node: String
+var file_path: String
 
 var is_completed: bool = true
 var is_notification_skippable: bool
 
 
 func _ready():
-	var global_vars = get_node("/root/GlobalVariables")
-	var path = global_vars.test_path
-	
 	sp_scrollbar.connect("changed", _handle_scrollbar_changed)
 	
-	if path:
-		if _from_node_id:
-			_on_monologue_sentence("Skipped to the node " + _from_node_id + "!", "_DEBUG", "_DEBUG", true)
-		load_dialogue(path.get_basename(), _from_node_id)
+	if file_path:
+		if from_node:
+			_on_monologue_sentence("Skipped to the node " + from_node + "!", "_DEBUG", "_DEBUG", true)
+		load_dialogue(file_path.get_basename(), from_node)
 		next()
 
 
@@ -77,8 +75,9 @@ func _on_monologue_end(raw_end):
 func _exit():
 	var menu_instance = load("res://Test/Menu.tscn")
 	var menu_scene_instance = menu_instance.instantiate()
-	menu_scene_instance._from_node_id = _from_node_id
-	get_tree().root.add_child(menu_scene_instance)
+	menu_scene_instance.from_node = from_node
+	menu_scene_instance.file_path = file_path
+	get_window().add_child(menu_scene_instance)
 	
 	SfxLoader.clear()
 	queue_free()

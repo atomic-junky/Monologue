@@ -18,7 +18,6 @@
 [ext_resource type="Texture2D" uid="uid://dhlu3mvdkvea6" path="res://Assets/Icons/cursor.svg" id="15_dc63e"]
 [ext_resource type="Texture2D" uid="uid://kk5em170gn2b" path="res://Assets/Icons/UI/ui_close.svg" id="15_dv5d5"]
 [ext_resource type="Texture2D" uid="uid://b272tbdmvxj20" path="res://Assets/Icons/play.svg" id="15_hn16p"]
-[ext_resource type="Texture2D" uid="uid://bwswk0bxo8n0a" path="res://Assets/Cover/kurzgesagt.jpg" id="16_ox8sj"]
 [ext_resource type="Texture2D" uid="uid://faci8gjgsxub" path="res://Assets/Icons/file_plus.svg" id="16_x1vtb"]
 [ext_resource type="Texture2D" uid="uid://cu75pg7vsf7qi" path="res://Assets/Icons/hand.svg" id="16_yc7gx"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
@@ -26,6 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://bbw07aw88fo0p" path="res://Assets/Icons/folder_search.svg" id="17_g5nwh"]
 [ext_resource type="PackedScene" uid="uid://cmpsaafag7cwl" path="res://Objects/UI/GraphNodePicker.tscn" id="19_myvjg"]
 [ext_resource type="Script" path="res://Scripts/GlobalFileDialog.gd" id="20_2dvte"]
+[ext_resource type="Texture2D" uid="uid://bw473utd8l2a3" path="res://Assets/Cover/Banner.png" id="21_xtx4h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3npb4"]
 content_margin_left = 5.0
@@ -464,7 +464,7 @@ theme_override_constants/separation = 20
 [node name="TextureRect" type="TextureRect" parent="WelcomeWindow/PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-texture = ExtResource("16_ox8sj")
+texture = ExtResource("21_xtx4h")
 expand_mode = 5
 stretch_mode = 5
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dnxbsvukyu6a2"]
+[gd_scene load_steps=13 format=3 uid="uid://dnxbsvukyu6a2"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_8rud0"]
 [ext_resource type="Texture2D" uid="uid://371ns5r4jx2n" path="res://Test/Assets/background.png" id="2_0y34q"]
@@ -11,9 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://bn7uq5c73oqcw" path="res://Assets/Icons/TextboxMode.png" id="7_2ymld"]
 [ext_resource type="FontFile" uid="uid://sx7iusrmfmsg" path="res://Test/Font/VCREAS 3.0.ttf" id="7_if5ck"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8kgr"]
-bg_color = Color(0.141176, 0.14902, 0.192157, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jgb4"]
 content_margin_left = 7.0
 content_margin_right = 7.0
@@ -22,12 +19,6 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x2i5c"]
-bg_color = Color(0.141176, 0.14902, 0.192157, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xalfy"]
-bg_color = Color(0.141176, 0.14902, 0.192157, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41p1n"]
 bg_color = Color(0.898039, 0.713726, 0.368627, 1)
@@ -80,10 +71,10 @@ script = ExtResource("3_xil5b")
 [node name="SidePanelContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.83
+anchor_left = 0.666
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -245.5
+offset_left = 0.5
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_constants/margin_left = 25
@@ -91,7 +82,6 @@ theme_override_constants/margin_right = 25
 
 [node name="PanelContainer" type="PanelContainer" parent="SidePanelContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_j8kgr")
 
 [node name="MarginContainer" type="MarginContainer" parent="SidePanelContainer"]
 layout_mode = 2
@@ -166,13 +156,12 @@ script = ExtResource("5_gll0q")
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchor_top = 0.692
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -725.0
-offset_top = -246.0
-offset_right = 725.0
+offset_left = 25.0
+offset_top = 0.399963
+offset_right = -25.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/margin_left = 150
@@ -182,7 +171,6 @@ theme_override_constants/margin_bottom = 25
 
 [node name="Panel" type="Panel" parent="TextBoxContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_x2i5c")
 
 [node name="MarginContainer" type="MarginContainer" parent="TextBoxContainer/Panel"]
 layout_mode = 1
@@ -237,15 +225,14 @@ script = ExtResource("5_gll0q")
 
 [node name="Notification" type="PanelContainer" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -150.0
+anchors_preset = -1
+anchor_left = 0.4
+anchor_right = 0.6
+anchor_bottom = 0.087
 offset_top = 10.0
-offset_right = 150.0
-offset_bottom = 70.0
+offset_right = -6.10352e-05
+offset_bottom = 0.399994
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xalfy")
 script = ExtResource("6_kev1j")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Notification"]
