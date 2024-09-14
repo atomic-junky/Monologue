@@ -35,7 +35,8 @@ func _to_dict() -> Dictionary:
 
 func _from_dict(dict: Dictionary):
 	var condition = dict.get("Condition")
-	var variables_filter = get_parent().variables.filter(func(v): return v.get("Name") == condition.get("Variable"))
+	var variables_filter = get_parent().variables.filter(
+			func(v): return v.get("Name") == condition.get("Variable"))
 	if variables_filter.size() > 0:
 		variable_name = condition.get("Variable")
 	else:

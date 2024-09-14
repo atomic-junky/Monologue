@@ -1,53 +1,78 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
-
-class_name RootNode
-extends MonologueGraphNode
+class_name RootNode extends MonologueGraphNode
 
 
-var speakers: set = _set_speakers, get = _get_speakers
-var variables: set = _set_variables, get = _get_variables
+var speakers  := Property.new(LIST, {}, [])
+var variables := Property.new(LIST, {}, [])
+
+var _speaker_references = []
+var _variable_references = []
 
 
 func _ready():
 	node_type = "NodeRoot"
-	title = node_type
-
-
-func _to_dict() -> Dictionary:
-	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
+	super._ready()
 	
-	return {
-		"$type": node_type,
-		"ID": id,
-		"NextID": next_id_node[0].id.value if next_id_node and next_id_node[0] else -1,
-		"EditorPosition": {
-			"x": position_offset.x,
-			"y": position_offset.y
-		}
-	}
+	load_speakers(get_parent().speakers)
+	speakers.setters["add_callback"] = add_speaker
+	speakers.setters["get_callback"] = get_speakers
+	speakers.connect("preview", load_speakers)
+	
+	load_variables(get_parent().variables)
+	variables.setters["add_callback"] = add_variable
+	variables.setters["get_callback"] = get_variables
+	variables.connect("preview", load_variables)
 
 
-func _update(panel: RootNodePanel = null):
-	if panel != null:
-		if speakers.size() != panel.characters_container.get_child_count() or \
-				variables.size() != panel.variables_container.get_child_count():
-			panel.reload_characters()
-			panel.reload_variables()
-		else:
-			panel.update_controls()
+func add_speaker(data: Dictionary = {}) -> Character:
+	var speaker = Character.new(self)
+	if data:
+		speaker._from_dict(data)
+	speaker.id.value = _speaker_references.size()
+	_speaker_references.append(speaker)
+	return speaker
 
 
-func _set_speakers(new_speakers):
-	get_parent().speakers = new_speakers
+func add_variable(data: Dictionary = {}) -> Variable:
+	var variable = Variable.new(self)
+	if data:
+		variable._from_dict(data)
+	variable.index = _variable_references.size()
+	_variable_references.append(variable)
+	return variable
 
 
-func _set_variables(new_variables):
-	get_parent().variables = new_variables
+func get_speakers():
+	return _speaker_references
 
 
-func _get_speakers():
-	return get_parent().speakers
+func get_variables():
+	return _variable_references
 
 
-func _get_variables():
-	return get_parent().variables
+## Perform initial loading of speakers and set indexes correctly.
+func load_speakers(new_speaker_list: Array):
+	_speaker_references.clear()
+	var ascending = func(a, b): return a.get("ID") < b.get("ID")
+	new_speaker_list.sort_custom(ascending)
+	for speaker_data in new_speaker_list:
+		add_speaker(speaker_data)
+	
+	if _speaker_references.is_empty():
+		var narrator = add_speaker()
+		narrator.name.value = "_NARRATOR"
+		new_speaker_list.append(narrator._to_dict())
+	speakers.value = new_speaker_list
+	get_parent().speakers = new_speaker_list
+
+
+func load_variables(new_variable_list: Array):
+	_variable_references.clear()
+	for variable in new_variable_list:
+		add_variable(variable)
+	variables.value = new_variable_list
+	get_parent().variables = new_variable_list
+
+
+func _to_fields(_dict: Dictionary) -> void:
+	pass  # speakers and variables are stored outside of root node

@@ -40,12 +40,12 @@ func is_equal(a: Variant, b: Variant) -> bool:
 
 
 ## Converts a snake case name to JSON key format with capitalized "ID".
-func to_key_name(snake_case_name: String):
+func to_key_name(snake_case_name: String, delimiter: String = ""):
 	var words = snake_case_name.capitalize().split(" ")
 	var capitalized_list = PackedStringArray()
 	for word in words:
 		capitalized_list.append("ID" if word.to_lower() == "id" else word)
-	return "".join(capitalized_list)
+	return delimiter.join(capitalized_list)
 
 
 ## Left-truncate a given filename string based on MAX_FILENAME_LENGTH.

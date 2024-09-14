@@ -41,6 +41,11 @@ func propagate(value: Variant) -> void:
 		option_button.selected = index
 
 
+func set_icons(index_to_texture: Dictionary):
+	for index in index_to_texture.keys():
+		option_button.set_item_icon(index, index_to_texture.get(index))
+
+
 func set_items(data: Array, key_text: String = "text", key_id: String = "id",
 			key_meta: String = "metadata") -> void:
 	option_button.clear()

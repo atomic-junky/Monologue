@@ -6,7 +6,7 @@ const left_arrow_icon = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
 const right_arrow_icon = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
 
 var option_scene = preload("res://Objects/GraphNodes/OptionNode.tscn")
-var options := Property.new(LIST, { "type": MonologueList.OPTION }, [])
+var options := Property.new(LIST, {}, [])
 
 ## Temporary ID storage for first-time loading of base options in project load.
 var _base_id_list: Array = []

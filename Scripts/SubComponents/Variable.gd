@@ -1,131 +1,70 @@
-extends PanelContainer
+class_name Variable extends RefCounted
 
 
-@onready var type_selection = $MarginContainer/VBoxContainer/HBoxContainer/OptionButton
-@onready var name_input = $MarginContainer/VBoxContainer/HBoxContainer2/LineEdit
+var name  := Property.new(MonologueGraphNode.LINE)
+var type  := Property.new(MonologueGraphNode.DROPDOWN)
+var value := Property.new(MonologueGraphNode.LINE)
 
-@onready var boolean_edit = $MarginContainer/VBoxContainer/HBoxContainer3/BooleanEdit
-@onready var number_edit = $MarginContainer/VBoxContainer/HBoxContainer3/NumberEdit
-@onready var string_edit = $MarginContainer/VBoxContainer/HBoxContainer3/StringEdit
-
-var update_callback: Callable = GlobalVariables.empty_callback
-var current_name: String:
-	get:
-		return current_name
-	set(value):
-		current_name = value
-		name_input.text = value
-
-var current_text: String:
-	get:
-		return current_text
-	set(value):
-		current_text = value
-		string_edit.text = value
-
-var current_type_index: int:
-	get:
-		return current_type_index
-	set(index):
-		current_type_index = index
-		type_selection.selected = index
-		update_value_edit()
+var index: int = -1
+var graph: MonologueGraphEdit
+var root: RootNode
 
 
-func _ready():
-	update_value_edit()
+func _init(node: RootNode):
+	root = node
+	graph = node.get_parent()
+	type.callers["set_items"] = [[
+		{ "id": 0, "text": "Boolean" },
+		{ "id": 1, "text": "Integer" },
+		{ "id": 2, "text": "String"  },
+	]]
+	type.callers["set_icons"] = [{
+		0: load("res://Assets/Icons/bool_icon.png"),
+		1: load("res://Assets/Icons/int_icon.png"),
+		2: load("res://Assets/Icons/str_icon.png"),
+	}]
+	type.connect("change", change.bind("type"))
+	type.connect("display", graph.set_selected.bind(root))
+	name.connect("change", change.bind("name"))
+	name.connect("display", graph.set_selected.bind(root))
+	value.connect("change", change.bind("value"))
+	value.connect("display", graph.set_selected.bind(root))
+
+
+func change(_old_value: Variant, new_value: Variant, property: String) -> void:
+	var old_list = root.variables.value.duplicate(true)
+	var new_list = root.variables.value.duplicate(true)
+	new_list[index][property.capitalize()] = new_value
+	
+	graph.undo_redo.create_action("Variables => %s" % new_value)
+	graph.undo_redo.add_do_property(root.variables, "value", new_list)
+	graph.undo_redo.add_do_method(root.variables.propagate.bind(new_list))
+	graph.undo_redo.add_undo_property(root.variables, "value", old_list)
+	graph.undo_redo.add_undo_method(root.variables.propagate.bind(old_list))
+	graph.undo_redo.commit_action()
+
+
+func get_property_names() -> PackedStringArray:
+	return ["name", "type", "value"]
+
+
+func _from_dict(dict: Dictionary) -> void:
+	name.value = dict.get("Name")
+	type.value = dict.get("Type")
+	value.value = dict.get("Value")
+	_type_morph(type.value)
 
 
 func _to_dict():
 	return {
-		"Name": name_input.text,
-		"Value": get_input_value(),
-		"Type": type_selection.get_item_text(type_selection.selected),
+		"Name": name.value,
+		"Type": type.value,
+		"Value": value.value
 	}
 
 
-func _from_dict(dict):
-	current_name = dict.get("Name")
-	
-	var value = dict.get("Value")
-	var type_name = dict.get("Type")
-	match type_name:
-		"Boolean":
-			current_type_index = 0
-			boolean_edit.button_pressed = value
-		"Integer":
-			current_type_index = 1
-			number_edit.value = value
-		"String":
-			current_type_index = 2
-			current_text = value
-
-
-func update_value_edit():
-	boolean_edit.hide()
-	number_edit.hide()
-	string_edit.hide()
-	
-	match type_selection.selected:
-		0: # Boolean
-			boolean_edit.show()
-		1: # Integer
-			number_edit.show()
-		2: # String
-			string_edit.show()
-
-
-func get_input_value():
-	match current_type_index:
-		0: # Boolean
-			return boolean_edit.button_pressed
-		1: # Integer
-			return number_edit.value
-		2: # String
-			return string_edit.text
-
-
-func set_input_value(new_value):
-	match current_type_index:
-		0: # Boolean
-			boolean_edit.button_pressed = new_value
-		1: # Integer
-			number_edit.value = new_value
-		2: # String
-			current_text = new_value
-
-
-func _on_delete_pressed():
-	queue_free()
-	update_callback.call()
-
-
-func _on_option_button_item_selected(new_index):
-	if current_type_index != new_index:
-		current_type_index = new_index
-		update_value_edit()
-		update_callback.call()
-
-
-func value_change(_new_value):
-	update_callback.call()
-
-
-func _on_string_edit_focus_exited():
-	_on_string_text_submitted(string_edit.text)
-
-
-func _on_string_text_submitted(new_text):
-	if current_text != new_text:
-		current_text = new_text
-		update_callback.call()
-
-
-func _on_name_edit_focus_exited():
-	_on_name_text_submitted(name_input.text)
-
-
-func _on_name_text_submitted(new_name):
-	if current_name != new_name:
-		current_name = new_name
-		update_callback.call()
+func _type_morph(selected_type: String):
+	match selected_type:
+		"Boolean": value.morph(MonologueGraphNode.TOGGLE)
+		"Integer": value.morph(MonologueGraphNode.SPINBOX)
+		"String": value.morph(MonologueGraphNode.LINE)

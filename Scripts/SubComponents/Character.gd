@@ -1,44 +1,43 @@
-extends PanelContainer
+## Character data builder.
+class_name Character extends RefCounted
 
 
-@onready var ref_input = $MarginContainer/HBoxContainer2/LineEdit
+var name  := Property.new(MonologueGraphNode.LINE)
+var id    := Property.new(MonologueGraphNode.SPINBOX)
 
-var id = -1
-var update_callback: Callable = GlobalVariables.empty_callback
-var character_name : set = set_character_name, get = get_character_name
+var graph: MonologueGraphEdit
+var root: RootNode
+
+
+func _init(node: RootNode):
+	root = node
+	graph = node.get_parent()
+	name.connect("change", change_character_name)
+	name.connect("display", graph.set_selected.bind(root))
+	id.visible = false
+
+
+func change_character_name(old_value: Variant, new_value: Variant):
+	var old_list = root.speakers.value.duplicate(true)
+	var new_list = root.speakers.value.duplicate(true)
+	new_list[id.value]["Reference"] = new_value
+	
+	graph.undo_redo.create_action("Character %s => %s" % [old_value, new_value])
+	graph.undo_redo.add_do_property(root.speakers, "value", new_list)
+	graph.undo_redo.add_do_method(root.speakers.propagate.bind(new_list))
+	graph.undo_redo.add_undo_property(root.speakers, "value", old_list)
+	graph.undo_redo.add_undo_method(root.speakers.propagate.bind(old_list))
+	graph.undo_redo.commit_action()
+
+
+func get_property_names() -> PackedStringArray:
+	return ["name"]
+
+
+func _from_dict(dict: Dictionary) -> void:
+	name.value = dict.get("Reference")
+	id.value = dict.get("ID")
 
 
 func _to_dict():
-	return {
-		"Reference": character_name,
-		"ID": id
-	}
-
-
-func _from_dict(dict):
-	character_name = dict.get("Reference")
-	id = dict.get("ID")
-
-
-func set_character_name(new_name):
-	character_name = new_name
-	ref_input.text = new_name
-
-
-func get_character_name():
-	return character_name
-
-
-func _on_delete_pressed():
-	queue_free()
-	update_callback.call()
-
-
-func _on_line_edit_focus_exited():
-	_on_line_edit_text_submitted(ref_input.text)
-
-
-func _on_line_edit_text_submitted(new_text):
-	if character_name != new_text:
-		character_name = new_text
-		update_callback.call()
+	return { "Reference": name.value, "ID": id.value }
