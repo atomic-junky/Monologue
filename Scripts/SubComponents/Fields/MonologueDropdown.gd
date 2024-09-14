@@ -35,7 +35,7 @@ func get_item_idx_from_text(text: String) -> int:
 
 func propagate(value: Variant) -> void:
 	var index = get_item_idx_from_text(value) if value is String else value
-	if index >= option_button.item_count:  # avoid falsy check
+	if index < 0 or index >= option_button.item_count:  # avoid falsy check
 		option_button.selected = 0
 	else:
 		option_button.selected = index

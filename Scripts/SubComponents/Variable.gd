@@ -3,7 +3,7 @@ class_name Variable extends RefCounted
 
 var name  := Property.new(MonologueGraphNode.LINE)
 var type  := Property.new(MonologueGraphNode.DROPDOWN)
-var value := Property.new(MonologueGraphNode.LINE)
+var value := Property.new(MonologueGraphNode.TOGGLE)
 
 var index: int = -1
 var graph: MonologueGraphEdit
@@ -23,6 +23,7 @@ func _init(node: RootNode):
 		1: load("res://Assets/Icons/int_icon.png"),
 		2: load("res://Assets/Icons/str_icon.png"),
 	}]
+	type.connect("shown", _type_morph)
 	type.connect("change", change.bind("type"))
 	type.connect("display", graph.set_selected.bind(root))
 	name.connect("change", change.bind("name"))
@@ -49,10 +50,10 @@ func get_property_names() -> PackedStringArray:
 
 
 func _from_dict(dict: Dictionary) -> void:
+	_type_morph()
 	name.value = dict.get("Name")
 	type.value = dict.get("Type")
 	value.value = dict.get("Value")
-	_type_morph(type.value)
 
 
 func _to_dict():
@@ -63,7 +64,7 @@ func _to_dict():
 	}
 
 
-func _type_morph(selected_type: String):
+func _type_morph(selected_type: String = type.value):
 	match selected_type:
 		"Boolean": value.morph(MonologueGraphNode.TOGGLE)
 		"Integer": value.morph(MonologueGraphNode.SPINBOX)

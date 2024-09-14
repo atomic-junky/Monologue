@@ -43,7 +43,6 @@ func _ready() -> void:
 	option_id.connect("preview", _option_id_label.set_text)
 	enable.connect("preview", func(e): _bool_label.text = str(e))
 	
-	variable.callers["set_items"] = [get_parent().variables, "Name", "ID", "Type"]
 	variable.connect("preview", _variable_label.set_text)
 	variable.connect("preview", _value_morph)
 	operator.callers["set_items"] = [[
@@ -147,4 +146,7 @@ func _update() -> void:
 	
 	_timer_container.visible = set_type.value == "Timer"
 	_timer_label.text = str(int(time.value))
+	
+	variable.callers["set_items"] = \
+			[get_parent().variables, "Name", "ID", "Type"]
 	super._update()

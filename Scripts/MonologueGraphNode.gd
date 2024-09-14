@@ -91,7 +91,7 @@ func _load_position(data: Dictionary):
 func _to_dict() -> Dictionary:
 	var base_dict = {
 		"$type": node_type,
-		"ID": id,
+		"ID": id.value,
 		"EditorPosition": {
 			"x": int(position_offset.x),
 			"y": int(position_offset.y)
