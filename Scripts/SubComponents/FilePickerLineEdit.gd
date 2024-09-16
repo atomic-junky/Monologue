@@ -7,7 +7,7 @@ signal new_file_path(file_path: String, is_valid: bool)
 @export var warn_label: Label
 @export var base_file_path: String
 
-@onready var file_picker_btn: FilePickerButton = $FilePickerButton
+@onready var file_picker_btn: FilePickerButton = $HBoxContainer/FilePickerButton
 
 var is_valid: bool = true
 

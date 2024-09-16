@@ -1,21 +1,20 @@
-# Monologue is a powerful non-linear dialogue editor made for any game engine. 🦖
+![Monologue](title_banner.png)
 
-*You can find the wiki [here](https://github.com/atomic-junky/Monologue/wiki).*
+![Godot](https://img.shields.io/badge/Godot-v4.3%2B-blue) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/atomic-junky/Monologue/total) ![GitHub License](https://img.shields.io/github/license/atomic-junky/Monologue)
 
+## A powerful non-linear dialogue editor
 
-Monologue is a graph node based system dialogue editor that allows you to create modular and non-linear dialogues in any game engine.
+Monologue is a powerful and flexible dialogue editor designed for creating dialogues in games. With its robust node system, Monologue allows you to design interactive and dynamic dialogues with great freedom and ease.
 
-The principle of Monologue is to assign a unique ID to each node, so that any node can refer to any other node. This powerful mechanism allows you to create amazing dialogues and stories.
+## Table of Contents
 
-![Monologue example](bilUDX.png)
-
-## Super Simple export
-Monologue is working with just a simple JSON file and nothing else. You just need to save your chnages and it will update your JSON file.
-
-The advantage of working with a JSON file is that it's easy to use with any other game engine or programming language.
-
+- Features
+- Documentation
+- Credits
+- License
 
 ## Features
+
 - Easy to use: A simple and intuitive user interface.
 - JSON: Everything is stored in a JSON file.
 - Godot: Monologue is built using a free and open source game engine.
@@ -24,30 +23,13 @@ The advantage of working with a JSON file is that it's easy to use with any othe
 - Events: You create events to execute storylines when something happens.
 - Test: You can test your story directly in Monologue.
 
+## Credits
 
-## The JSON file format
-```json
-{
-	"EditorVersion": "",
-	"RootNodeId": "", # The id of the root node (where all start)
-	"ListNodes": [ # Where all the nodes are stored
-		...
-	],
-	"Characters": [ # All the characters
-		...
-	],
-	"Variables": [ # All the variables
-		...
-	]
-}
-```
+Made by [Atomic Junky](https://github.com/atomic-junky/). </br>
+With the contribution of [RailKill](https://github.com/RailKill) and [Jeremi Biernacki](https://github.com/Jeremi360).
 
+Monologue is originally a fork of [Amberlim's GodotDialogSystem](https://github.com/Amberlim/GodotDialogSystem).
 
-## Interpretation
-You can write your own script or use the **MonologueProcess** script [here](https://github.com/atomic-junky/Monologue/blob/main/Test/Scripts/MonologueProcess.gd) if you're using Godot.
+## License
 
-To use the MonologueProcess script, create a script that extends MonologueProcess. This will allow you to use the built-in signals. You can read more about this in [this script](https://github.com/atomic-junky/Monologue/blob/main/Test/Scripts/Main.gd).
-
-
-## Credits ans Support
-This project is originally from Amberlim (although these two projects no longer share any lines of code), so if you want, here is her [Discord server](https://discord.gg/AAcKmJz7Na). However, if you need help, don't hesitate to create an issue on Github.
+This project is licensed under the terms of the [MIT license](https://github.com/atomic-junky/Monologue/blob/main/LICENSE).

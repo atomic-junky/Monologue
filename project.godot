@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+markdown_book/docs_folder=""
+
 [application]
 
 config/name="Monologue"
@@ -38,7 +42,6 @@ Path="*res://Scripts/Global/Path.gd"
 window/size/viewport_width=1500
 window/size/viewport_height=800
 window/size/borderless=true
-window/size/transparent=true
 window/size/extend_to_title=true
 window/energy_saving/keep_screen_on=false
 window/per_pixel_transparency/allowed=true
