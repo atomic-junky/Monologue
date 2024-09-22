@@ -1,34 +1,26 @@
 ![Monologue](title_banner.png)
 
-![Godot](https://img.shields.io/badge/Godot-v4.3%2B-blue) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/atomic-junky/Monologue/total) ![GitHub License](https://img.shields.io/github/license/atomic-junky/Monologue)
+Monologue is a dynamic, flexible and open-source dialogue editor designed for creating non-linear dialogues in games.
 
-## A powerful non-linear dialogue editor
+[![GitHub Repo stars](https://img.shields.io/github/stars/atomic-junky/Monologue?color=%23dca&label=%E2%AD%90)](https://github.com/deepnight/ldtk)
+[![GitHub All Releases](https://img.shields.io/github/downloads/atomic-junky/Monologue/total?color=%2389b&label=Downloads)](https://github.com/deepnight/ldtk/releases/latest)
+![Godot](https://img.shields.io/badge/Godot-v4.3%2B-blue)
+![GitHub License](https://img.shields.io/github/license/atomic-junky/Monologue)
 
-Monologue is a powerful and flexible dialogue editor designed for creating dialogues in games. With its robust node system, Monologue allows you to design interactive and dynamic dialogues with great freedom and ease.
+## All Features
 
-## Table of Contents
-
-- Features
-- Documentation
-- Credits
-- License
-
-## Features
-
-- Easy to use: A simple and intuitive user interface.
-- JSON: Everything is stored in a JSON file.
-- Godot: Monologue is built using a free and open source game engine.
-- Manage everything: Control audio, backgrounds and characters.
-- Variables: You can define variables, compare them and update their values.
-- Events: You create events to execute storylines when something happens.
-- Test: You can test your story directly in Monologue.
+- **Easy to use:** simple and modern UI.
+- **Modular:** Monologue lets you create dynamic, non-linear stories with events, variables, conditions and actions that have a direct impact on the storyline.
+- **Manage everything:** control audio, backgrounds and characters.
+- **Nodes:** Each stage of your dialogues is defined by a node with specific characteristics and tasks.
+- **Test:** Run your story directly inside Monologue and from the node you want.
 
 ## Credits
 
 Made by [Atomic Junky](https://github.com/atomic-junky/). </br>
 With the contribution of [RailKill](https://github.com/RailKill) and [Jeremi Biernacki](https://github.com/Jeremi360).
 
-Monologue is originally a fork of [Amberlim's GodotDialogSystem](https://github.com/Amberlim/GodotDialogSystem).
+Monologue was originally a fork of [Amberlim's GodotDialogSystem](https://github.com/Amberlim/GodotDialogSystem).
 
 ## License
 
