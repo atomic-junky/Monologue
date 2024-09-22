@@ -1,0 +1,34 @@
+name: "💡 Feature Request"
+description: Create a new ticket for a new feature request
+title: "💡 [REQUEST] - <title>"
+labels: [
+  "question"
+]
+body:
+- type: markdown
+  attributes:
+    value: |
+      - Write a descriptive proposal title above.
+      - Search for existing proposals to ensure that the feature has not already been suggested.
+
+- type: textarea
+  attributes:
+    label: Describe the feature / enhancement and how it helps to overcome the problem or limitation
+    placeholder: Example - "Support for 3D characters."
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Is this a feature for a project you're working on?
+    description: If so, it's important to know the *context* in which the feature is being suggested.
+    placeholder: Example - "A dating sim with aliens and knights and 3D characters."
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: Describe how your proposal will work, with code, pseudo-code, mock-ups, and/or diagrams
+    placeholder: Example - "Add the ability to select a model and render it in a separate viewport..."
+  validations:
+    required: true
