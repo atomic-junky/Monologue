@@ -1,9 +1,7 @@
 name: "💡 Feature Request"
 description: Create a new ticket for a new feature request
-title: "💡 [REQUEST] - <title>"
-labels: [
-  "question"
-]
+title: "[REQUEST] | "
+labels: ["enhancement"]
 body:
 - type: markdown
   attributes:
@@ -13,7 +11,7 @@ body:
 
 - type: textarea
   attributes:
-    label: Describe the feature / enhancement and how it helps to overcome the problem or limitation
+    label: Describe the feature / enhancement.
     placeholder: Example - "Support for 3D characters."
   validations:
     required: true

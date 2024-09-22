@@ -1,6 +1,6 @@
 name: 🐛 Bug Report
 description: Create a new ticket for a bug.
-title: "🐛 [Bug] - <title>"
+title: "[Bug] | "
 labels: ["bug"]
 body:
   - type: textarea
@@ -11,13 +11,6 @@ body:
       value: "A bug happened!"
     validations:
       required: true
-  
-  - type: input
-    attributes:
-      label: System information
-      description: Specify the OS version and relevant hardware information.
-    validations:
-      required: false
 
   - type: textarea
     id: reprod
@@ -29,6 +22,13 @@ body:
         2. Click on '....'
         3. Scroll down to '....'
         4. See error
+    validations:
+      required: true
+  
+  - type: input
+    attributes:
+      label: System information
+      description: Specify the OS version and relevant hardware information.
     validations:
       required: true
 
