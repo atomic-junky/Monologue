@@ -15,6 +15,14 @@ Monologue is a dynamic, flexible and open-source dialogue editor designed for cr
 - **Nodes:** Each stage of your dialogues is defined by a node with specific characteristics and tasks.
 - **Test:** Run your story directly inside Monologue and from the node you want.
 
+## Versioning
+
+Releases are numbered with the [semantic versioning](http://semver.org/) format: `<major>.<minor>.<patch>` and constructed with the following guidelines:
+
+- Breaking backwards compatibility bumps the major
+- New additions without breaking backwards compatibility bumps the minor
+- Bug fixes and misc changes bump the patch
+
 ## Credits
 
 Made by [Atomic Junky](https://github.com/atomic-junky/). </br>
