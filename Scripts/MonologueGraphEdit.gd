@@ -19,6 +19,8 @@ var moving_mode: bool
 var recorded_positions: Dictionary = {}  # for undo/redo positoning purpose
 var selected_nodes: Array[MonologueGraphNode] = []  # for group delete
 
+var mouse_hovering: bool = false
+
 
 func _ready():
 	var auto_arrange_button = get_menu_hbox().get_children().back()
@@ -77,6 +79,20 @@ func _input(event):
 	var is_node_selected = not selected_nodes.is_empty()
 	
 	moving_mode = is_mouse_clicked and is_mouse_moving and is_node_selected
+
+
+func _gui_input(event: InputEvent) -> void:
+	if not mouse_hovering:
+		return
+	
+	if Input.is_action_pressed("Spacebar"):
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			Cursor.shape = Cursor.Shapes.CURSOR_HAND_CLOSED
+		else:
+			Cursor.shape = Cursor.Shapes.CURSOR_DRAG
+	
+	if Input.is_action_just_released("Spacebar"):
+		Cursor.shape = CURSOR_ARROW
 
 
 ## Adds a node of the given type to this graph.
@@ -354,3 +370,12 @@ func get_nodes() -> Array[MonologueGraphNode]:
 		if node is MonologueGraphNode:
 			list.append(node)
 	return list
+
+
+func _on_mouse_entered() -> void:
+	mouse_hovering = true
+
+
+func _on_mouse_exited() -> void:
+	Cursor.shape = CURSOR_ARROW
+	mouse_hovering = false

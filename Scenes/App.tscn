@@ -21,13 +21,13 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 corner_detail = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mgcrx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b06yv"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqi4g"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sua80"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h67qx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eyr2x"]
 bg_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="App" type="Control"]
@@ -78,22 +78,6 @@ texture = ExtResource("2_gc2v2")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="MenuButton" type="MenuButton" parent="Frame/VBoxContainer/CustomTitleBar/MarginContainer/TextureRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_default_cursor_shape = 2
-keep_pressed_outside = true
-item_count = 3
-popup/item_0/text = "File"
-popup/item_1/text = "Edit"
-popup/item_1/id = 1
-popup/item_2/text = "Help"
-popup/item_2/id = 2
-
 [node name="VSeparator" type="VSeparator" parent="Frame/VBoxContainer/CustomTitleBar"]
 layout_mode = 2
 
@@ -119,17 +103,17 @@ theme_override_constants/separation = 10
 
 [node name="tbReduceButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_mgcrx")
+theme_override_styles/hover = SubResource("StyleBoxFlat_b06yv")
 texture = ExtResource("4_b7q52")
 
 [node name="tbSizeButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_pqi4g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_sua80")
 texture = ExtResource("5_fxbua")
 
 [node name="tbCloseButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_h67qx")
+theme_override_styles/hover = SubResource("StyleBoxFlat_eyr2x")
 hover_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]
@@ -141,11 +125,6 @@ layout_mode = 2
 [node name="MonologueControl" parent="Frame/VBoxContainer" node_paths=PackedStringArray("tab_bar") instance=ExtResource("1_kiov6")]
 layout_mode = 2
 tab_bar = NodePath("../CustomTitleBar/HBoxContainer2/TabBar")
-
-[node name="TextureButton" type="TextureButton" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [connection signal="gui_input" from="Frame/VBoxContainer/CustomTitleBar" to="Frame/VBoxContainer/CustomTitleBar" method="_on_gui_input"]
 [connection signal="pressed" from="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer/tbReduceButton" to="Frame/VBoxContainer/CustomTitleBar" method="_on_tb_reduce_button_pressed"]
