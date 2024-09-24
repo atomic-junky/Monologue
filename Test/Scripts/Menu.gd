@@ -20,9 +20,9 @@ func load_scene(scene):
 	queue_free()
 
 
-func _on_return_to_editor_button_pressed():
+func _on_leave_button_pressed():
 	get_window().queue_free()
 
-func _on_test_button_modern_pressed():
+func _on_run_button_pressed():
 	var scene = preload("res://Test/Main.tscn")
 	load_scene(scene)

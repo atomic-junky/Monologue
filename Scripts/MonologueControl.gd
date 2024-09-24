@@ -51,7 +51,6 @@ var node_index = 0
 var all_nodes_index = 0
 var prev_tab: int = 0
 
-var picker_mode: bool = false
 var picker_from_node
 var picker_from_port
 var picker_position
@@ -100,8 +99,12 @@ func _ready():
 	tab_bar.connect("tab_changed", tab_changed)
 	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
-	GlobalSignal.add_listener("enable_build_mode", graph_node_selecter.show)
+	GlobalSignal.add_listener("select_new_node", _select_new_node)
 	GlobalSignal.add_listener("test_trigger", test_project)
+
+
+func _select_new_node() -> void:
+	graph_node_selecter.show()
 
 
 func _shortcut_input(event):
@@ -394,14 +397,12 @@ func enable_picker_mode(from_node, from_port, _release_position):
 	
 	var graph = get_current_graph_edit()
 	picker_position = (graph.get_local_mouse_position() + graph.scroll_offset) / graph.zoom
-	picker_mode = true
 
 
 ## Exit picker mode. Picker mode is where a new node is created from another
 ## node through a connection to empty.
 func disable_picker_mode():
 	graph_node_selecter.hide()
-	picker_mode = false
 	no_interactions_dimmer.hide()
 
 

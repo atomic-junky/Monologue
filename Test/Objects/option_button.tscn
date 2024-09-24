@@ -5,22 +5,13 @@
 [sub_resource type="GDScript" id="GDScript_vu8v5"]
 script/source = "extends Button
 
-var original_text: String = \"\"
-
-
-func _ready():
-	original_text = text
 
 func _on_mouse_entered():
-	text = \"> \" + original_text
-	
 	remove_theme_color_override(\"default_color\")
 	add_theme_color_override(\"default_color\", Color(\"ffffff\"))
 
 
 func _on_mouse_exited():
-	text = original_text
-
 	remove_theme_color_override(\"default_color\")
 	add_theme_color_override(\"default_color\", Color(\"cccccc\"))
 "
@@ -38,7 +29,6 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_fonts/font = ExtResource("1_n87es")
 theme_override_font_sizes/font_size = 16
 text = "It's a pretty long sentence but not that long so..."

@@ -37,31 +37,10 @@ func _ready():
 				
 			for sb_name in ["grabber", "scroll"]:
 				subchild.add_theme_stylebox_override(sb_name, StyleBoxEmpty.new())
-	
-	var toolbar: HBoxContainer
-	for child in get_children(true):
-		if child is GraphNode:
-			continue
-		
-		var subchildren = child.get_children(true).filter(func(c) -> bool: return c is PanelContainer)
-		if subchildren.size() > 0:
-			toolbar = subchildren[0].get_children()[0]
-	toolbar.add_theme_constant_override("separation", 5)
-	
-	var add_btn: Button = Button.new()
-	add_btn.text = "Add a node..."
-	add_btn.connect("pressed", _on_add_btn)
-	
-	for sep_idx in [0, 2]:
-		var vsep := VSeparator.new()
-		toolbar.add_child(vsep)
-		toolbar.move_child(vsep, sep_idx)
-	toolbar.add_child(add_btn)
-	toolbar.move_child(add_btn, 0)
 
 
 func _on_add_btn() -> void:
-	GlobalSignal.emit("enable_build_mode")
+	GlobalSignal.emit("select_new_node")
 
 
 func center_offset(to_root: bool = false):
@@ -104,7 +83,7 @@ func _input(event):
 func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 	# if adding from picker, track existing to_nodes of the picker_from_node
 	var picker_to_names = []
-	if control_node.picker_mode:
+	if control_node.picker_from_node and control_node.picker_from_port:
 		for picker_to_node in get_all_connections_from_slot(
 				control_node.picker_from_node, control_node.picker_from_port):
 			picker_to_names.append(picker_to_node.name)
@@ -238,13 +217,16 @@ func is_unsaved():
 ## Connect picker_from_node to [param node] if needed, reposition nodes.
 func pick_and_center(nodes: Array[MonologueGraphNode]):
 	var offset = ((size / 2) + scroll_offset) / zoom  # center of graph
-	if control_node.picker_mode:
+	if control_node.picker_from_node != null and control_node.picker_from_port != null:
 		var from_node = control_node.picker_from_node
 		var from_port = control_node.picker_from_port
 		disconnect_outbound_from_node(from_node, from_port)
 		propagate_connection(from_node, from_port, nodes[0].name, 0)
 		control_node.disable_picker_mode()
 		offset = control_node.picker_position
+		
+		control_node.picker_from_node = null
+		control_node.picker_from_port = null
 	
 	for node in nodes:
 		node.position_offset = offset - node.size / 2
@@ -351,7 +333,8 @@ func _on_disconnection_request(from_node, from_port, to_node, to_port):
 
 
 func _on_connection_to_empty(from_node, from_port, release_position):
-	control_node.enable_picker_mode(from_node, from_port, release_position)
+	if control_node:
+		control_node.enable_picker_mode(from_node, from_port, release_position)
 
 
 func _on_node_selected(node):

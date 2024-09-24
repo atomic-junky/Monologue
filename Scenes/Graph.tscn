@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=37 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -76,6 +76,22 @@ font_color = Color(0.647059, 0.858824, 0.505882, 1)
 content_margin_left = 10.0
 content_margin_right = 10.0
 bg_color = Color(0.768627, 0.180392, 0.25098, 1)
+
+[sub_resource type="GDScript" id="GDScript_5beyj"]
+script/source = "extends Button
+
+
+func _on_pressed() -> void:
+	GlobalSignal.emit(\"select_new_node\")
+"
+
+[sub_resource type="GDScript" id="GDScript_lenro"]
+script/source = "extends Button
+
+
+func _on_pressed() -> void:
+	GlobalSignal.emit(\"test_trigger\")
+"
 
 [sub_resource type="LabelSettings" id="LabelSettings_1l82f"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
@@ -402,12 +418,21 @@ stretch_mode = 5
 [node name="VSeparator2" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
 layout_mode = 2
 
-[node name="HandButton2" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
+[node name="AddNodeBtn" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
+layout_mode = 2
+text = "Add a node..."
+script = SubResource("GDScript_5beyj")
+
+[node name="VSeparator4" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
+layout_mode = 2
+
+[node name="RunButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 flat = true
+script = SubResource("GDScript_lenro")
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/HandButton2"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/RunButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -416,9 +441,10 @@ grow_horizontal = 2
 grow_vertical = 2
 rotation = -0.00318988
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/HandButton2/CenterContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/RunButton/CenterContainer"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
+tooltip_text = "Run the project from the RootNode."
 texture = ExtResource("15_hn16p")
 expand_mode = 3
 stretch_mode = 5
@@ -545,6 +571,8 @@ script = ExtResource("20_2dvte")
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID/HBoxContainer/Button" to="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails" method="_on_rfh_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/RFHButton" to="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails" method="_on_rfh_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/AddNodeBtn" to="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/AddNodeBtn" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/RunButton" to="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/RunButton" method="_on_pressed"]
 [connection signal="gui_input" from="NoInteractions" to="WelcomeWindow" method="refocus_welcome"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]

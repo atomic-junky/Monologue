@@ -1,15 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://clxk4rmxxwgvh"]
+[gd_scene load_steps=5 format=3 uid="uid://clxk4rmxxwgvh"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Menu.gd" id="1_e8xk2"]
 [ext_resource type="Texture2D" uid="uid://brxuqdgifxqqb" path="res://title_banner.png" id="2_osv2s"]
 [ext_resource type="FontFile" uid="uid://dtcui621somwd" path="res://Test/Font/VT323-Regular.ttf" id="4_drbhn"]
-[ext_resource type="PackedScene" uid="uid://cj80aa4ckke2i" path="res://Test/Objects/option_button.tscn" id="4_qmtb7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_x388r"]
 font_color = Color(0.768627, 0.180392, 0.25098, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_8nbey"]
-font_color = Color(0.498039, 0.498039, 0.498039, 1)
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -29,7 +25,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Title" type="TextureRect" parent="."]
-texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -67,10 +62,12 @@ theme_override_constants/margin_bottom = 15
 [node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
+theme_override_constants/separation = 0
 
-[node name="TestButtonModern" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2" instance=ExtResource("4_qmtb7")]
+[node name="btnRun" type="Button" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
-text = "Test this story"
+mouse_default_cursor_shape = 2
+text = "Run"
 
 [node name="CustomIDLabel" type="Label" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2"]
 unique_name_in_owner = true
@@ -80,17 +77,10 @@ theme_override_font_sizes/font_size = 14
 label_settings = SubResource("LabelSettings_x388r")
 horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2"]
+[node name="btnLeave" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("4_drbhn")
-theme_override_font_sizes/font_size = 14
-text = "(as this is a test, some features may not work as expected)"
-label_settings = SubResource("LabelSettings_8nbey")
-horizontal_alignment = 1
+mouse_default_cursor_shape = 2
+text = "Leave"
 
-[node name="ReturnToEditorButton" parent="CenterContainer/VBoxContainer" instance=ExtResource("4_qmtb7")]
-layout_mode = 2
-text = "Return to the editor"
-
-[connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2/TestButtonModern" to="." method="_on_test_button_modern_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/ReturnToEditorButton" to="." method="_on_return_to_editor_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2/btnRun" to="." method="_on_run_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/btnLeave" to="." method="_on_leave_button_pressed"]
