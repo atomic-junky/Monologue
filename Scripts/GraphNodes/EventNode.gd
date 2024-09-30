@@ -5,19 +5,18 @@ class_name EventNode extends VariableNode
 func _ready():
 	node_type = "NodeEvent"
 	super._ready()
-	variable.callers["set_label_text"] = ["When"]
 
 
 func get_variable_label() -> Label:
-	return $MarginWhenContainer/WhenContainer/VariableLabel
+	return $MarginContainer/HBox/VariableLabel
 
 
 func get_operator_label() -> Label:
-	return $MarginWhenContainer/WhenContainer/OperatorLabel
+	return $MarginContainer/HBox/OperatorLabel
 
 
 func get_value_label() -> Label:
-	return $MarginWhenContainer/WhenContainer/ValueLabel
+	return $MarginContainer/HBox/ValueLabel
 
 
 func get_operator_options():
@@ -34,12 +33,13 @@ func get_operator_disabler():
 
 
 func _from_dict(dict: Dictionary):
-	var condition = dict.get("Condition")
-	for v in get_graph_edit().variables:
-		if v.get("Name") == condition.get("Variable"):
-			variable.value = condition.get("Variable")
-			break
+	var condition = dict.get("Condition", {})
+	if condition:
+		for v in get_graph_edit().variables:
+			if v.get("Name") == condition.get("Variable"):
+				variable.value = condition.get("Variable")
+				break
+		operator.value = condition.get("Operator", "==")
+		value.value = condition.get("Value", "")
 	
-	operator.value = condition.get("Operator", "==")
-	value.value = condition.get("Value", "")
 	super._from_dict(dict)
