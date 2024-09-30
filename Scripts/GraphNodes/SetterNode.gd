@@ -13,7 +13,6 @@ var time      := Property.new(SPINBOX, { "minimum": 0, "maximum": 120 })
 var _control_groups = {
 	"Option": [option_id, enable],
 	"Variable": [variable, operator, value],
-	"Background": [image],
 	"Timer": [time],
 }
 
@@ -24,9 +23,6 @@ var _control_groups = {
 @onready var _variable_label = $VariableContainer/HBox/VariableLabel
 @onready var _operator_label = $VariableContainer/HBox/OperatorLabel
 @onready var _value_label = $VariableContainer/HBox/ValueLabel
-@onready var _background_container = $BackgroundContainer
-@onready var _path_label = $BackgroundContainer/VBox/HBox/PathLabel
-@onready var _preview_rect = $BackgroundContainer/VBox/PreviewRect
 @onready var _timer_container = $TimerContainer
 @onready var _timer_label = $TimerContainer/HBox/TimerLabel
 
@@ -36,7 +32,6 @@ func _ready() -> void:
 	set_type.callers["set_items"] = [[
 		{ "id": 0, "text": "Option"     },
 		{ "id": 1, "text": "Variable"   },
-		{ "id": 2, "text": "Background" },
 		{ "id": 3, "text": "Timer"      },
 	]]
 	set_type.connect("change", func(_old, new): _show_group(new))
@@ -57,8 +52,6 @@ func _ready() -> void:
 	operator.connect("shown", _value_morph)
 	value.connect("preview", func(v): _value_label.text = str(v))
 	
-	image.setters["base_path"] = get_graph_edit().file_path
-	image.connect("preview", _on_image_preview)
 	time.connect("preview", func(t): _timer_label.text = str(t))
 	
 	_show_group(set_type.value)
@@ -91,28 +84,6 @@ func _get_variable_type(variable_name: String) -> String:
 		if data.get("Name") == variable_name:
 			return data.get("Type")
 	return ""
-
-
-func _load_image():
-	_path_label.text = image.value if image.value else "nothing"
-	_preview_rect.hide()
-	size.y = 0
-	var base = image.setters.get("base_path")
-	var path = Path.relative_to_absolute(image.value, base)
-	
-	if FileAccess.file_exists(path):
-		var img = Image.load_from_file(path)
-		if img:
-			_preview_rect.show()
-			_preview_rect.texture = ImageTexture.create_from_image(img)
-			_path_label.text = image.value.get_file()
-		else:
-			_preview_rect.hide()
-
-
-func _on_image_preview(new_path: Variant) -> void:
-	_path_label.text = str(new_path)
-	_load_image()
 
 
 ## Reset the variable dropdown to the first value and return its type.
@@ -166,10 +137,6 @@ func _update(setter_type: Variant = set_type.value) -> void:
 	_variable_label.text = _default_text(variable.value, "variable")
 	_operator_label.text = _default_text(operator.value, "operator")
 	_value_label.text = _default_text(value.value, "value")
-	
-	_background_container.visible = setter_type == "Background"
-	_path_label.text = _default_text(str(image.value).get_file(), "nothing")
-	_load_image()
 	
 	_timer_container.visible = setter_type == "Timer"
 	_timer_label.text = str(int(time.value))

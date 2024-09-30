@@ -6,6 +6,7 @@ var node_dictionary = {
 	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),
 	"Audio": preload("res://Objects/GraphNodes/AudioNode.tscn"),
 	"Action": preload("res://Objects/GraphNodes/ActionNode.tscn"),
+	"Background": preload("res://Objects/GraphNodes/BackgroundNode.tscn"),
 	"Bridge": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
 	"BridgeIn": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
 	"BridgeOut": preload("res://Objects/GraphNodes/BridgeOutNode.tscn"),
