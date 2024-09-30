@@ -26,9 +26,9 @@ corner_radius_bottom_left = 2
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
 [node name="WaitNode" type="GraphNode" groups=["graph_nodes"]]
-custom_minimum_size = Vector2(400, 100)
-offset_right = 400.0
-offset_bottom = 100.0
+custom_minimum_size = Vector2(200, 100)
+offset_right = 200.0
+offset_bottom = 102.0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_v075a")
