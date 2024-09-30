@@ -109,4 +109,5 @@ func _refresh(new_options_list: Array):
 
 
 func _to_fields(dict: Dictionary) -> void:
-	dict["OptionsID"] = get_children().filter(func(c): return c.id.value)
+	var child_options =  get_children().filter(func(c): return c is OptionNode)
+	dict["OptionsID"] = child_options.map(func(o): return o.id.value)
