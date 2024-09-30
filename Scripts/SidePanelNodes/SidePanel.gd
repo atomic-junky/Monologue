@@ -39,6 +39,9 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	selected_node = node
 	node._update()
 	
+	if not node.is_editable():
+		return
+	
 	for property_name in node.get_property_names():
 		if property_name == "id":
 			id_field = node.get(property_name).show(topbox, 0)

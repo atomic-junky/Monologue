@@ -66,6 +66,16 @@ func get_property_names() -> PackedStringArray:
 	return names
 
 
+func is_editable() -> bool:
+	var ignorable := ["id"]
+	
+	for property in get_property_names():
+		if property in ignorable:
+			continue
+		return true
+	return false
+
+
 func _from_dict(dict: Dictionary) -> void:
 	for key in dict.keys():
 		var property = get(key.to_snake_case())
