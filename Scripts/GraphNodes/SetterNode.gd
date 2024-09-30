@@ -39,6 +39,7 @@ func _ready() -> void:
 		{ "id": 2, "text": "Background" },
 		{ "id": 3, "text": "Timer"      },
 	]]
+	set_type.connect("change", func(old, new): _show_group(new))
 	set_type.connect("preview", _show_group)
 	option_id.connect("preview", _option_id_label.set_text)
 	enable.connect("preview", func(e): _bool_label.text = str(e))
@@ -56,7 +57,7 @@ func _ready() -> void:
 	operator.connect("shown", _value_morph)
 	value.connect("preview", func(v): _value_label.text = str(v))
 	
-	image.setters["base_path"] = get_parent().file_path
+	image.setters["base_path"] = get_graph_edit().file_path
 	image.connect("preview", _on_image_preview)
 	time.connect("preview", func(t): _timer_label.text = str(t))
 	super._ready()
@@ -109,12 +110,12 @@ func _show_group(setter_type: Variant) -> void:
 		for property in _control_groups.get(key):
 			property.visible = key == setter_type
 	title = "%s%s" % [_get_emoji(), node_type]
-	_update()
+	_update(setter_type)
 
 
 func _value_morph(_selected_name: Variant = "") -> void:
 	var selected_type = ""
-	for data in get_parent().variables:
+	for data in get_graph_edit().variables:
 		if data.get("Name") == variable.value:
 			selected_type = data.get("Type")
 	
@@ -130,23 +131,23 @@ func _value_morph(_selected_name: Variant = "") -> void:
 			value.morph(LINE)
 
 
-func _update() -> void:
-	_option_container.visible = set_type.value == "Option"
+func _update(setter_type: Variant = set_type.value) -> void:
+	_option_container.visible = setter_type == "Option"
 	_option_id_label.text = _default_text(option_id.value, "option id")
 	_bool_label.text = _default_text(enable.value, "false")
 	
-	_variable_container.visible = set_type.value == "Variable"
+	_variable_container.visible = setter_type == "Variable"
 	_variable_label.text = _default_text(variable.value, "variable")
 	_operator_label.text = _default_text(operator.value, "operator")
 	_value_label.text = _default_text(value.value, "value")
 	
-	_background_container.visible = set_type.value == "Background"
+	_background_container.visible = setter_type == "Background"
 	_path_label.text = _default_text(str(image.value).get_file(), "nothing")
 	_load_image()
 	
-	_timer_container.visible = set_type.value == "Timer"
+	_timer_container.visible = setter_type == "Timer"
 	_timer_label.text = str(int(time.value))
 	
 	variable.callers["set_items"] = \
-			[get_parent().variables, "Name", "ID", "Type"]
+			[get_graph_edit().variables, "Name", "ID", "Type"]
 	super._update()

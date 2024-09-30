@@ -63,7 +63,7 @@ func load_speakers(new_speaker_list: Array):
 		narrator.name.value = "_NARRATOR"
 		new_speaker_list.append(narrator._to_dict())
 	speakers.value = new_speaker_list
-	get_parent().speakers = new_speaker_list
+	get_graph_edit().speakers = new_speaker_list
 
 
 func load_variables(new_variable_list: Array):
@@ -71,7 +71,7 @@ func load_variables(new_variable_list: Array):
 	for variable in new_variable_list:
 		add_variable(variable)
 	variables.value = new_variable_list
-	get_parent().variables = new_variable_list
+	get_graph_edit().variables = new_variable_list
 
 
 func _to_fields(_dict: Dictionary) -> void:
