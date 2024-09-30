@@ -2,7 +2,8 @@
 class_name DiceRollNode extends MonologueGraphNode
 
 
-var target := Property.new(SPINBOX, { "minimum": 0, "maximum": 100 }, 0)
+var target := Property.new(SPINBOX,
+		{ "minimum": 0, "maximum": 100, "suffix": "%" }, 0)
 
 @onready var pass_value = $PassContainer/PassValue
 @onready var fail_value = $FailContainer/FailValue
@@ -11,6 +12,7 @@ var target := Property.new(SPINBOX, { "minimum": 0, "maximum": 100 }, 0)
 func _ready():
 	node_type = "NodeDiceRoll"
 	super._ready()
+	target.connect("preview", _update)
 	_update()
 
 
@@ -30,7 +32,7 @@ func _to_next(dict: Dictionary, key: String = "PassID") -> void:
 	dict["FailID"] = fail_id_node[0].id.value if fail_id_node else -1
 
 
-func _update():
-	pass_value.text = "(" + str(target.value) + "%)"
-	fail_value.text = "(" + str(100 - target.value) + "%)"
+func _update(new_value: Variant = target.value):
+	pass_value.text = "(" + str(new_value) + "%)"
+	fail_value.text = "(" + str(100 - new_value) + "%)"
 	super._update()
