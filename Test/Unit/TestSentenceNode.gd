@@ -3,6 +3,8 @@ extends GdUnitTestSuite
 
 func test_backwards_compatibility():
 	var node = auto_free(SentenceNode.new())
+	var ge = mock(MonologueGraphEdit, CALL_REAL_FUNC)
+	ge.add_child(node)
 	node._preview = mock(Label)
 	
 	node._from_dict({

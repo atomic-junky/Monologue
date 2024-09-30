@@ -15,7 +15,7 @@ func _ready():
 	node_type = "NodeSentence"
 	super._ready()
 	sentence.connect("preview", _on_text_preview)
-	voiceline.setters["base_path"] = get_parent().file_path
+	voiceline.setters["base_path"] = get_graph_edit().file_path
 
 
 func _from_dict(dict: Dictionary):
@@ -32,5 +32,5 @@ func _on_text_preview(text: Variant):
 
 func _update():
 	_preview.text = sentence.value
-	speaker.callers["set_items"] = [get_parent().speakers, "Reference", "ID"]
+	speaker.callers["set_items"] = [get_graph_edit().speakers, "Reference", "ID"]
 	super._update()

@@ -1,4 +1,4 @@
-class_name Variable extends RefCounted
+class_name MonologueVariable extends RefCounted
 
 
 var name  := Property.new(MonologueGraphNode.LINE)

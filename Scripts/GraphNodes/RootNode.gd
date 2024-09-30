@@ -33,8 +33,8 @@ func add_speaker(data: Dictionary = {}) -> Character:
 	return speaker
 
 
-func add_variable(data: Dictionary = {}) -> Variable:
-	var variable = Variable.new(self)
+func add_variable(data: Dictionary = {}) -> MonologueVariable:
+	var variable = MonologueVariable.new(self)
 	if data:
 		variable._from_dict(data)
 	variable.index = _variable_references.size()
