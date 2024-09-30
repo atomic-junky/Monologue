@@ -244,7 +244,13 @@ func _on_auto_arrange_nodes() -> void:
 
 
 func _on_child_entered_tree(node: Node) -> void:
-	if node is MonologueGraphNode and not node is RootNode:
+	if node is MonologueGraphNode:
+		if node is RootNode:
+			return
+		
+		if not node.show_close_button:
+			return
+			
 		var node_header = node.get_children(true)[0]
 		var close_button: TextureButton = close_button_scene.instantiate()
 		

@@ -3,6 +3,8 @@
 class_name MonologueGraphNode extends GraphNode
 
 
+@export var show_close_button: bool = true
+
 # field UI scene definitions that a graph node can have
 const CHECKBOX = preload("res://Objects/SubComponents/Fields/MonologueCheckBox.tscn")
 const DROPDOWN = preload("res://Objects/SubComponents/Fields/MonologueDropdown.tscn")
