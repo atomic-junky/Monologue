@@ -1,7 +1,7 @@
 class_name SetterNode extends MonologueGraphNode
 
 
-var set_type  := Property.new(DROPDOWN)
+var set_type  := Property.new(DROPDOWN, {}, "Option")
 var option_id := Property.new(LINE)
 var enable    := Property.new(TOGGLE)
 var variable  := Property.new(DROPDOWN)
@@ -39,7 +39,7 @@ func _ready() -> void:
 		{ "id": 2, "text": "Background" },
 		{ "id": 3, "text": "Timer"      },
 	]]
-	set_type.connect("change", func(old, new): _show_group(new))
+	set_type.connect("change", func(_old, new): _show_group(new))
 	set_type.connect("preview", _show_group)
 	option_id.connect("preview", _option_id_label.set_text)
 	enable.connect("preview", func(e): _bool_label.text = str(e))
@@ -60,6 +60,8 @@ func _ready() -> void:
 	image.setters["base_path"] = get_graph_edit().file_path
 	image.connect("preview", _on_image_preview)
 	time.connect("preview", func(t): _timer_label.text = str(t))
+	
+	_show_group("Option")
 	super._ready()
 
 
