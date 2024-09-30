@@ -28,7 +28,6 @@ func _ready() -> void:
 	set_type.callers["set_items"] = [[
 		{ "id": 0, "text": "Option"     },
 		{ "id": 1, "text": "Variable"   },
-		{ "id": 3, "text": "Timer"      },
 	]]
 	set_type.connect("change", func(_old, new): _show_group(new))
 	set_type.connect("preview", _show_group)
@@ -67,8 +66,6 @@ func _get_emoji() -> String:
 	match set_type.value:
 		"Option":     return "❔ "
 		"Variable":   return "⚙️ "
-		"Background": return "🖼️ "
-		"Timer":      return "⏱️ "
 		_:            return ""
 
 
