@@ -8,12 +8,10 @@ var variable  := Property.new(DROPDOWN)
 var operator  := Property.new(DROPDOWN, {}, "=")
 var value     := Property.new(LINE)
 var image     := Property.new(FILE, { "filters": FilePicker.IMAGE })
-var time      := Property.new(SPINBOX, { "minimum": 0, "maximum": 120 })
 
 var _control_groups = {
 	"Option": [option_id, enable],
-	"Variable": [variable, operator, value],
-	"Timer": [time],
+	"Variable": [variable, operator, value]
 }
 
 @onready var _option_container = $OptionContainer
@@ -23,8 +21,6 @@ var _control_groups = {
 @onready var _variable_label = $VariableContainer/HBox/VariableLabel
 @onready var _operator_label = $VariableContainer/HBox/OperatorLabel
 @onready var _value_label = $VariableContainer/HBox/ValueLabel
-@onready var _timer_container = $TimerContainer
-@onready var _timer_label = $TimerContainer/HBox/TimerLabel
 
 
 func _ready() -> void:
@@ -51,8 +47,6 @@ func _ready() -> void:
 	operator.connect("preview", _operator_label.set_text)
 	operator.connect("shown", _value_morph)
 	value.connect("preview", func(v): _value_label.text = str(v))
-	
-	time.connect("preview", func(t): _timer_label.text = str(t))
 	
 	_show_group(set_type.value)
 	super._ready()
@@ -137,8 +131,5 @@ func _update(setter_type: Variant = set_type.value) -> void:
 	_variable_label.text = _default_text(variable.value, "variable")
 	_operator_label.text = _default_text(operator.value, "operator")
 	_value_label.text = _default_text(value.value, "value")
-	
-	_timer_container.visible = setter_type == "Timer"
-	_timer_label.text = str(int(time.value))
 	
 	super._update()

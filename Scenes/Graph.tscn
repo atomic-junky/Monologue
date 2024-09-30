@@ -83,7 +83,7 @@ color = Color(0, 0, 0, 0.196078)
 [node name="WelcomeWindow" parent="." instance=ExtResource("8_6u52p")]
 
 [node name="FileDialog" type="FileDialog" parent="."]
-size = Vector2i(351, 149)
+size = Vector2i(351, 175)
 mode_overrides_title = false
 access = 2
 use_native_dialog = true

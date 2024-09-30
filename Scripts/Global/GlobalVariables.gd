@@ -18,6 +18,7 @@ var node_dictionary = {
 	"Event": preload("res://Objects/GraphNodes/EventNode.tscn"),
 	"Sentence": preload("res://Objects/GraphNodes/SentenceNode.tscn"),
 	"Setter": preload("res://Objects/GraphNodes/SetterNode.tscn"),
+	"Wait": preload("res://Objects/GraphNodes/WaitNode.tscn"),
 }
 
 var empty_callback: Callable = func(): return

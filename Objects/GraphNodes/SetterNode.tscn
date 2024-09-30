@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://qd3nbp87ls3r"]
+[gd_scene load_steps=9 format=3 uid="uid://qd3nbp87ls3r"]
 
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_bsa4i"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_t53kr"]
@@ -26,9 +26,6 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_v4ya3"]
-font_color = Color(0.572549, 0.572549, 0.572549, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_jcdax"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
 [node name="SetterNode" type="GraphNode" groups=["graph_nodes"]]
@@ -59,15 +56,6 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = ExtResource("2_t53kr")
 slot/1/draw_stylebox = false
-slot/2/left_enabled = false
-slot/2/left_type = 0
-slot/2/left_color = Color(1, 1, 1, 1)
-slot/2/left_icon = null
-slot/2/right_enabled = false
-slot/2/right_type = 0
-slot/2/right_color = Color(1, 1, 1, 1)
-slot/2/right_icon = null
-slot/2/draw_stylebox = true
 script = ExtResource("3_3ny3s")
 
 [node name="OptionContainer" type="MarginContainer" parent="."]
@@ -128,25 +116,3 @@ theme_override_styles/normal = ExtResource("4_xcnds")
 text = "value
 "
 label_settings = SubResource("LabelSettings_v4ya3")
-
-[node name="TimerContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="HBox" type="HBoxContainer" parent="TimerContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="WaitLabel" type="Label" parent="TimerContainer/HBox"]
-layout_mode = 2
-text = "Set timer for"
-
-[node name="TimerLabel" type="Label" parent="TimerContainer/HBox"]
-layout_mode = 2
-theme_override_styles/normal = ExtResource("4_xcnds")
-text = "0"
-label_settings = SubResource("LabelSettings_jcdax")
-
-[node name="SecondsLabel" type="Label" parent="TimerContainer/HBox"]
-layout_mode = 2
-text = "seconds"

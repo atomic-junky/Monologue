@@ -29,8 +29,8 @@ corner_radius_bottom_left = 2
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
 [node name="Background" type="GraphNode" groups=["graph_nodes"]]
-offset_right = 264.0
-offset_bottom = 184.0
+offset_right = 273.0
+offset_bottom = 82.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
