@@ -30,9 +30,10 @@ func _load_image():
 		else:
 			_preview_rect.hide()
 
+
 func _on_path_preview(path: Variant):
 	_path_label.text = str(path).get_file()
-	_load_image()
+	_load_image.call_deferred()
 
 
 func _update():

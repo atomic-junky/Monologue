@@ -79,6 +79,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.196078)
 
 [node name="GraphNodeSelector" parent="." instance=ExtResource("15_v6y8q")]
+visible = false
 
 [node name="WelcomeWindow" parent="." instance=ExtResource("8_6u52p")]
 
