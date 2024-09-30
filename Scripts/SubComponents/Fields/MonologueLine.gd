@@ -5,15 +5,17 @@ class_name MonologueLine extends MonologueField
 @export var font_size: int = 16
 @export var is_sublabel: bool
 @export var sublabel_prefix: String = "↳ "
+@export var note_text: String
 
 var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
 var revert_text: String
 var validator: Callable = func(_text): return true
 
-@onready var copy_button = $HBox/CopyButton
-@onready var label = $HBox/FieldLabel
-@onready var line_edit = $HBox/VBox/LineEdit
-@onready var warning = $HBox/VBox/WarnLabel
+@onready var copy_button = $OuterVBox/HBox/CopyButton
+@onready var label = $OuterVBox/HBox/FieldLabel
+@onready var line_edit = $OuterVBox/HBox/InnerVBox/LineEdit
+@onready var warning = $OuterVBox/HBox/InnerVBox/WarnLabel
+@onready var note = $OuterVBox/NoteLabel
 
 
 # Called when the node enters the scene tree for the first time.
@@ -23,6 +25,8 @@ func _ready() -> void:
 	line_edit.add_theme_font_size_override("font_size", font_size)
 	warning.add_theme_font_size_override("font_size", font_size)
 	warning.hide()
+	note.visible = !note_text.is_empty()
+	note.text = note_text
 
 
 func set_label_text(text: String) -> void:
