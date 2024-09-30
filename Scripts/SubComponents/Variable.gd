@@ -2,8 +2,8 @@ class_name MonologueVariable extends RefCounted
 
 
 var name  := Property.new(MonologueGraphNode.LINE)
-var type  := Property.new(MonologueGraphNode.DROPDOWN)
-var value := Property.new(MonologueGraphNode.TOGGLE)
+var type  := Property.new(MonologueGraphNode.DROPDOWN, {}, "Boolean")
+var value := Property.new(MonologueGraphNode.TOGGLE, {}, false)
 
 var index: int = -1
 var graph: MonologueGraphEdit

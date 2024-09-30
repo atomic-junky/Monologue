@@ -39,6 +39,7 @@ func propagate(value: Variant) -> void:
 		option_button.selected = 0
 	else:
 		option_button.selected = index
+	validate()
 
 
 func set_icons(index_to_texture: Dictionary):

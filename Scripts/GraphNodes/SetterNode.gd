@@ -61,18 +61,18 @@ func _ready() -> void:
 	image.connect("preview", _on_image_preview)
 	time.connect("preview", func(t): _timer_label.text = str(t))
 	
-	_show_group("Option")
+	_show_group(set_type.value)
 	super._ready()
 
 
 func _default_text(new_value: Variant, default: String) -> String:
-	return str(new_value) if new_value else default
+	var is_not_string = new_value is not String
+	return str(new_value) if is_not_string or new_value != "" else default
 
 
 func _from_dict(dict: Dictionary) -> void:
 	super._from_dict(dict)
 	_show_group(set_type.value)
-	_value_morph(variable.value)
 
 
 ## Just a fun thing to do as a throwback to the old CustomAction.
@@ -83,6 +83,14 @@ func _get_emoji() -> String:
 		"Background": return "🖼️ "
 		"Timer":      return "⏱️ "
 		_:            return ""
+
+
+## Returns the variable's typestring from the graph edit.
+func _get_variable_type(variable_name: String) -> String:
+	for data in get_graph_edit().variables:
+		if data.get("Name") == variable_name:
+			return data.get("Type")
+	return ""
 
 
 func _load_image():
@@ -107,6 +115,16 @@ func _on_image_preview(new_path: Variant) -> void:
 	_load_image()
 
 
+## Reset the variable dropdown to the first value and return its type.
+func _reset_variable() -> String:
+	if get_graph_edit().variables:
+		variable.value = get_graph_edit().variables[0].get("Name")
+		return get_graph_edit().variables[0].get("Type")
+	else:
+		variable.value = ""
+		return ""
+
+
 func _show_group(setter_type: Variant) -> void:
 	for key in _control_groups.keys():
 		for property in _control_groups.get(key):
@@ -115,19 +133,22 @@ func _show_group(setter_type: Variant) -> void:
 	_update(setter_type)
 
 
-func _value_morph(_selected_name: Variant = "") -> void:
-	var selected_type = ""
-	for data in get_graph_edit().variables:
-		if data.get("Name") == variable.value:
-			selected_type = data.get("Type")
+func _value_morph(selected_name: Variant = variable.value) -> void:
+	var selected_type = _get_variable_type(selected_name)
+	if not selected_type:
+		selected_type = _reset_variable()
 	
 	match selected_type:
 		"Boolean":
 			operator.invoke("disable_items", [[1, 2, 3, 4]])
 			value.morph(TOGGLE)
+			if not value.value:
+				value.value = false
 		"Integer":
 			operator.invoke("disable_items", [[]])
 			value.morph(SPINBOX)
+			if not value.value:
+				value.value = 0
 		"String":
 			operator.invoke("disable_items", [[1, 2, 3, 4]])
 			value.morph(LINE)
@@ -139,6 +160,9 @@ func _update(setter_type: Variant = set_type.value) -> void:
 	_bool_label.text = _default_text(enable.value, "false")
 	
 	_variable_container.visible = setter_type == "Variable"
+	variable.callers["set_items"] = \
+		[get_graph_edit().variables, "Name", "ID", "Type"]
+	_value_morph(variable.value)
 	_variable_label.text = _default_text(variable.value, "variable")
 	_operator_label.text = _default_text(operator.value, "operator")
 	_value_label.text = _default_text(value.value, "value")
@@ -150,6 +174,4 @@ func _update(setter_type: Variant = set_type.value) -> void:
 	_timer_container.visible = setter_type == "Timer"
 	_timer_label.text = str(int(time.value))
 	
-	variable.callers["set_items"] = \
-			[get_graph_edit().variables, "Name", "ID", "Type"]
 	super._update()
