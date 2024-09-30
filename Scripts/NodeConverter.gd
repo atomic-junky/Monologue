@@ -38,14 +38,12 @@ func convert_action(dict: Dictionary) -> Dictionary:
 						dict["Pitch"] = action_dict.get("Pitch")
 						dict["Audio"] = value
 					"UpdateBackground":
-						dict["$type"] = "NodeSetter"
-						dict["SetType"] = "Background"
+						dict["$type"] = "NodeBackground"
 						dict["Image"] = value
 					"Other":
 						dict["Action"] = value
 			"ActionTimer":
-				dict["$type"] = "NodeSetter"
-				dict["SetType"] = "Timer"
+				dict["$type"] = "NodeWait"
 				dict["Time"] = value
 	
 	return dict

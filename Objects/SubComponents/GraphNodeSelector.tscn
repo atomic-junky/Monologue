@@ -31,8 +31,7 @@ bg_color = Color(0.128906, 0.148438, 0.179688, 1)
 auto_translate_mode = 1
 title = "Graph Node Picker"
 position = Vector2i(0, 36)
-size = Vector2i(210, 305)
-visible = false
+size = Vector2i(220, 360)
 unresizable = true
 always_on_top = true
 popup_window = true
@@ -104,11 +103,31 @@ size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Node Audio"
 
+[node name="BackgroundSelector" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Background
+"
+
+[node name="WaitNode" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Wait
+"
+
 [node name="SetterSelector" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Node Setter"
+
+[node name="RerouteSelector" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Reroute"
 
 [node name="EndPathSelector" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -126,5 +145,8 @@ icon = ExtResource("7_d1a3x")
 [connection signal="pressed" from="PanelContainer/VBoxContainer/ConditionSelector" to="." method="_on_selector_btn_pressed" binds= ["Condition"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/ActionSelector" to="." method="_on_selector_btn_pressed" binds= ["Action"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/AudioSelector" to="." method="_on_selector_btn_pressed" binds= ["Audio"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/BackgroundSelector" to="." method="_on_selector_btn_pressed" binds= ["Background"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/WaitNode" to="." method="_on_selector_btn_pressed" binds= ["Wait"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SetterSelector" to="." method="_on_selector_btn_pressed" binds= ["Setter"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/RerouteSelector" to="." method="_on_selector_btn_pressed" binds= ["Reroute"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/EndPathSelector" to="." method="_on_selector_btn_pressed" binds= ["EndPath"]]

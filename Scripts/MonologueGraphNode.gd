@@ -3,6 +3,8 @@
 class_name MonologueGraphNode extends GraphNode
 
 
+@export var show_close_button: bool = true
+
 # field UI scene definitions that a graph node can have
 const CHECKBOX = preload("res://Objects/SubComponents/Fields/MonologueCheckBox.tscn")
 const DROPDOWN = preload("res://Objects/SubComponents/Fields/MonologueDropdown.tscn")
@@ -62,6 +64,16 @@ func get_property_names() -> PackedStringArray:
 		if property.class_name == "Property":
 			names.append(property.name)
 	return names
+
+
+func is_editable() -> bool:
+	var ignorable := ["id"]
+	
+	for property in get_property_names():
+		if property in ignorable:
+			continue
+		return true
+	return false
 
 
 func _from_dict(dict: Dictionary) -> void:
