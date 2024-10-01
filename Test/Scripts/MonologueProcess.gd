@@ -127,7 +127,7 @@ func process_node(node: Dictionary) -> void:
 					monologue_notify.emit(NotificationLevel.WARN,
 							"Can't find option with id: %s" % option_id)
 					continue
-				if option.get("Enable") == false:
+				if option.get("EnableByDefault") == false:
 					continue
 				options.append(option)
 			monologue_new_choice.emit(options)

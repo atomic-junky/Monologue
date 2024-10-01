@@ -45,6 +45,7 @@ func get_value_label() -> Label:
 
 
 func _from_dict(dict: Dictionary) -> void:
+	record_morph(dict.get("Value"))
 	super._from_dict(dict)
 	_show_group(set_type.value)
 
