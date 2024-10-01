@@ -1,5 +1,5 @@
 ## Common abstract class for nodes that deal with variables.
-class_name VariableNode extends MonologueGraphNode
+class_name AbstractVariableNode extends MonologueGraphNode
 
 
 var variable  := Property.new(DROPDOWN)

@@ -1,5 +1,5 @@
 @icon("res://Assets/Icons/NodesIcons/Event.svg")
-class_name EventNode extends VariableNode
+class_name EventNode extends AbstractVariableNode
 
 
 func _ready():

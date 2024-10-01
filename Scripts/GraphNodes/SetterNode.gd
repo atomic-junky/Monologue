@@ -1,4 +1,4 @@
-class_name SetterNode extends VariableNode
+class_name SetterNode extends AbstractVariableNode
 
 
 var set_type  := Property.new(DROPDOWN, {}, "Option")
