@@ -72,7 +72,7 @@ func get_character_asset(character: String, _variant = null):
 
 
 func _on_monologue_end(raw_end):
-	if not raw_end or not raw_end.get("NextStoryName"):
+	if not raw_end or not raw_end.get("NextStory", raw_end.get("NextStoryName")):
 		_exit()
 
 

@@ -107,8 +107,8 @@ func process_node(node: Dictionary) -> void:
 		"NodeSentence":
 			next_id = node.get("NextID")
 			var sentence = process_conditional_text(node.get("Sentence"))
-			var speaker_name = get_speaker_name(node.get("SpeakerID"))
-			var display_name = node.get("DisplaySpeakerName")
+			var speaker_name = get_speaker_name(node.get("Speaker", node.get("SpeakerID")))
+			var display_name = node.get("DisplayName", node.get("DisplaySpeakerName"))
 			if not display_name:
 				display_name = speaker_name
 			
@@ -170,7 +170,7 @@ func process_node(node: Dictionary) -> void:
 		
 		"NodeEndPath":
 			monologue_end.emit(node)
-			next_story(node.get("NextStory"))
+			next_story(node.get("NextStory", node.get("NextStoryName")))
 
 
 ## @deprecated: v3.x no longer uses NodeAction in this way
