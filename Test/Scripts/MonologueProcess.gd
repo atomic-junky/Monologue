@@ -62,14 +62,13 @@ func next() -> void:
 
 func parse_events() -> void:
 	for event in events:
-		var condition = event.get("Condition")
-		var variable = get_variable(condition.get("Variable"))
+		var variable = get_variable(event.get("Variable"))
 		if not variable:
 			continue
 		var v_value = variable.get("Value")
-		var c_value = condition.get("Value")
+		var c_value = event.get("Value")
 		var condition_pass: bool
-		match condition.get("Operator"):
+		match event.get("Operator"):
 			"==": condition_pass = v_value == c_value
 			">=": condition_pass = v_value >= c_value
 			"<=": condition_pass = v_value <= c_value
@@ -140,20 +139,57 @@ func process_node(node: Dictionary) -> void:
 				next_id = node.get("FailID")
 			next()
 		
-		"NodeAction":
+		"NodeSetter":
 			next_id = node.get("NextID")
-			process_action(node.get("Action"))
+			process_setter(node)
+			next()
+		
+		"NodeAudio":
+			next_id = node.get("NextID")
+			var path = node.get("Audio")
+			if path.is_relative_path():
+				path = base_path + "/" + path
+				if not FileAccess.file_exists(path):
+					var backup = "/assets/audios/"
+					path = base_path + backup + path.get_file()
+			
+			var volume = node.get("Volume")
+			var pitch = node.get("Pitch")
+			var loop = node.get("Loop")
+			var track = play_audio(path, loop, volume, pitch)
+			if track:
+				monologue_play_audio.emit(path, track)
+			next()
+		
+		"NodeBackground":
+			next_id = node.get("NextID")
+			var bg = Image.new()
+			var path = node.get("Image")
+			if path.is_relative_path():
+				path = base_path + "/" + path
+				if not FileAccess.file_exists(path):
+					var backup = "/assets/backgrounds/"
+					path = base_path + backup + path.get_file()
+
+			if FileAccess.file_exists(path):
+				var status = bg.load(path)
+				if status == OK:
+					var texture = ImageTexture.create_from_image(bg)
+					monologue_update_background.emit(path, texture)
+				else:
+					monologue_notify.emit(NotificationLevel.WARN,
+							"Failed to load background (%s)" % path)
+			next()
 		
 		"NodeCondition":
-			var condition = node.get("Condition")
-			var variable = get_variable(condition.get("Variable"))
+			var variable = get_variable(node.get("Variable"))
 			if variable:
 				var if_nid = node.get("IfNextID")
 				var else_nid = node.get("ElseNextID")
 				var v_val = variable.get("Value")
-				var c_val = condition.get("Value")
+				var c_val = node.get("Value")
 				next_id = if_nid
-				match condition.get("Operator"):
+				match node.get("Operator"):
 					"==": next_id = if_nid if v_val == c_val else else_nid
 					">=": next_id = if_nid if v_val >= c_val else else_nid
 					"<=": next_id = if_nid if v_val <= c_val else else_nid
@@ -164,30 +200,34 @@ func process_node(node: Dictionary) -> void:
 				monologue_notify.emit(NotificationLevel.WARN, warning)
 			next()
 		
+		"NodeWait":
+			next_id = node.get("NextID")
+			start_timer(node.get("Time", 0.0))
+		
 		"NodeEndPath":
 			monologue_end.emit(node)
-			next_story(node.get("NextStoryName"))
+			next_story(node.get("NextStory"))
 
 
-func process_action(raw_action: Dictionary) -> void:
-	match raw_action.get("$type"):
-		"ActionOption":
-			var option_id = raw_action.get("OptionID")
-			var value = raw_action.get("Value")
+func process_setter(raw_setter: Dictionary) -> void:
+	match raw_setter.get("SetType"):
+		"Option":
+			var option_id = raw_setter.get("OptionID")
+			var value = raw_setter.get("Value")
 			set_option_value(option_id, value if value is bool else false)
 		
-		"ActionVariable":
-			var variable = get_variable(raw_action.get("Variable"))
+		"Variable":
+			var variable = get_variable(raw_setter.get("Variable"))
 			if variable:
-				var action_value = raw_action.get("Value")
-				match raw_action.get("Operator"):
-					"=": variable["Value"] = action_value
-					"+": variable["Value"] += action_value
-					"-": variable["Value"] -= action_value
-					"*": variable["Value"] *= action_value
+				var setter_value = raw_setter.get("Value")
+				match raw_setter.get("Operator"):
+					"=": variable["Value"] = setter_value
+					"+": variable["Value"] += setter_value
+					"-": variable["Value"] -= setter_value
+					"*": variable["Value"] *= setter_value
 					"/":
-						if action_value != 0:
-							variable["Value"] /= action_value
+						if setter_value != 0:
+							variable["Value"] /= setter_value
 						else:
 							monologue_notify.emit(NotificationLevel.WARN,
 								"Can't divide %s by 0." % variable.get("Name"))
@@ -196,47 +236,8 @@ func process_action(raw_action: Dictionary) -> void:
 				monologue_notify.emit(NotificationLevel.WARN, warning)
 		
 		"ActionCustom":
-			match raw_action.get("CustomType"):
-				"PlayAudio":
-					var path = raw_action.get("Value")
-					if path.is_relative_path():
-						path = base_path + "/" + path
-						if not FileAccess.file_exists(path):
-							var backup = "/assets/audios/"
-							path = base_path + backup + path.get_file()
-					
-					var volume = raw_action.get("Volume")
-					var pitch = raw_action.get("Pitch")
-					var loop = raw_action.get("Loop")
-					var track = play_audio(path, loop, volume, pitch)
-					if track:
-						monologue_play_audio.emit(path, track)
-				
-				"UpdateBackground":
-					var bg = Image.new()
-					var path = raw_action.get("Value")
-					if path.is_relative_path():
-						path = base_path + "/" + path
-						if not FileAccess.file_exists(path):
-							var backup = "/assets/backgrounds/"
-							path = base_path + backup + path.get_file()
-
-					if FileAccess.file_exists(path):
-						var status = bg.load(path)
-						if status == OK:
-							var texture = ImageTexture.create_from_image(bg)
-							monologue_update_background.emit(path, texture)
-						else:
-							monologue_notify.emit(NotificationLevel.WARN,
-									"Failed to load background (%s)" % path)
-				
-				"Other":
-					monologue_custom_action.emit(raw_action)
-		
-		"ActionTimer":
-			start_timer(raw_action.get("Value", 0.0))
-			return  # return so next() is not called immediately
-	next()
+			# TODO: Move out to NodeAction
+			monologue_custom_action.emit(raw_setter)
 
 
 func process_conditional_text(text: String) -> String:
@@ -392,10 +393,10 @@ func set_option_value(option_id: String, value: bool) -> void:
 func select_option(raw_option: Dictionary) -> void:
 	monologue_option_chosen.emit(raw_option)
 	
-	if raw_option.keys().has("OneShot") and raw_option.keys().has("Enable"):
+	if raw_option.keys().has("OneShot") and raw_option.keys().has("EnableByDefault"):
 		next_id = raw_option.get("NextID", -1)
 		if raw_option.get("OneShot") == true:
-			raw_option["Enable"] = false
+			raw_option["EnableByDefault"] = false
 		next()
 	else:
 		var error_message = "Invalid option. Unexpected exit."

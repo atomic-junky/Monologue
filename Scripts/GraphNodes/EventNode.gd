@@ -34,12 +34,15 @@ func get_operator_disabler():
 
 func _from_dict(dict: Dictionary):
 	var condition = dict.get("Condition", {})
+	var morphing_value = dict.get("Value", "")
 	if condition:
 		for v in get_graph_edit().variables:
 			if v.get("Name") == condition.get("Variable"):
 				variable.value = condition.get("Variable")
 				break
 		operator.value = condition.get("Operator", "==")
-		value.value = condition.get("Value", "")
+		morphing_value = condition.get("Value", "")
+		value.value = morphing_value
 	
+	record_morph(morphing_value)
 	super._from_dict(dict)

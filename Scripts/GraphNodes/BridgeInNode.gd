@@ -43,3 +43,8 @@ func _on_position_offset_changed():
 func _to_fields(dict: Dictionary) -> void:
 	super._to_fields(dict)
 	dict["NumberSelector"] = number_selector.value
+
+
+func _to_next(dict: Dictionary, key: String = "NextID") -> void:
+	var next_node = get_parent().get_linked_bridge_node(number_selector.value)
+	dict[key] = next_node.id.value if next_node else -1
