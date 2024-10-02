@@ -29,6 +29,7 @@ GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
 SfxLoader="*res://Test/Scripts/SfxLoader.gd"
 GlobalSignal="*res://Scripts/Global/GlobalSignal.gd"
 Path="*res://Scripts/Global/Path.gd"
+IDGen="*res://Scripts/Global/IDGen.gd"
 
 [display]
 

@@ -16,7 +16,7 @@ const SPINBOX = preload("res://Objects/SubComponents/Fields/MonologueSpinBox.tsc
 const TEXT = preload("res://Objects/SubComponents/Fields/MonologueText.tscn")
 const TOGGLE = preload("res://Objects/SubComponents/Fields/MonologueToggle.tscn")
 
-var id := Property.new(LINE, {}, UUID.v4())
+var id := Property.new(LINE, {}, IDGen.generate())
 var node_type: String = "NodeUnknown"
 
 
@@ -31,8 +31,10 @@ func _ready() -> void:
 		get(property_name).connect("display", display)
 
 
-func add_to(graph) -> Array[MonologueGraphNode]:
+func add_to(graph: MonologueGraphEdit) -> Array[MonologueGraphNode]:
 	graph.add_child(self, true)
+	var all_ids := graph.get_nodes().map(func(n) -> String: return n.id.value)
+	id.setters["value"] = IDGen.generate(10, all_ids)
 	return [self]
 
 
