@@ -24,8 +24,8 @@ func _ready():
 	variables.connect("preview", load_variables)
 
 
-func add_speaker(data: Dictionary = {}) -> Character:
-	var speaker = Character.new(self)
+func add_speaker(data: Dictionary = {}) -> MonologueCharacter:
+	var speaker = MonologueCharacter.new(self)
 	if data:
 		speaker._from_dict(data)
 	speaker.id.value = _speaker_references.size()

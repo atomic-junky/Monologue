@@ -1,5 +1,5 @@
 ## Character data builder.
-class_name Character extends RefCounted
+class_name MonologueCharacter extends RefCounted
 
 
 var name  := Property.new(MonologueGraphNode.LINE)

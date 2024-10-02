@@ -149,7 +149,11 @@ func process_node(node: Dictionary) -> void:
 		
 		"NodeAction":
 			next_id = node.get("NextID")
-			process_action(node.get("Action"))
+			if node.keys().has("Arguments"):
+				monologue_custom_action.emit(node)
+				next()
+			else:
+				process_action(node.get("Action"))
 		
 		"NodeAudio":
 			next_id = node.get("NextID")

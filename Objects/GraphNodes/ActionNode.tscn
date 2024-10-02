@@ -28,9 +28,9 @@ corner_radius_bottom_left = 2
 [sub_resource type="LabelSettings" id="LabelSettings_v4ya3"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
-[node name="ActionNode" type="GraphNode" groups=["graph_nodes"]]
-offset_right = 300.0
-offset_bottom = 116.0
+[node name="ActionNode" type="GraphNode" node_paths=PackedStringArray("arg_box", "action_label", "no_args_label") groups=["graph_nodes"]]
+offset_right = 343.0
+offset_bottom = 87.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
@@ -57,6 +57,9 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = ExtResource("2_6rvj1")
 slot/1/draw_stylebox = false
 script = ExtResource("3_s1gpj")
+arg_box = NodePath("ArgBox")
+action_label = NodePath("CallContainer/CallBox/ActionLabel")
+no_args_label = NodePath("CallContainer/CallBox/NoArgsLabel")
 
 [node name="CallContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -86,16 +89,6 @@ theme_override_styles/normal = ExtResource("4_286lp")
 text = "no arguments"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="ArgBox" type="HBoxContainer" parent="."]
+[node name="ArgBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
-
-[node name="ArgLabel" type="Label" parent="ArgBox"]
-layout_mode = 2
-text = "argument 1:"
-
-[node name="ValueLabel" type="Label" parent="ArgBox"]
-layout_mode = 2
-theme_override_styles/normal = ExtResource("4_286lp")
-text = "empty string"
-label_settings = SubResource("LabelSettings_v4ya3")

@@ -93,7 +93,7 @@ func _load_connections(data: Dictionary, key: String = "NextID") -> void:
 		get_graph_edit().connect_node(name, 0, next_node.name, 0)
 
 
-func _load_position(data: Dictionary):
+func _load_position(data: Dictionary) -> void:
 	var editor_position = data.get("EditorPosition")
 	if editor_position:
 		position_offset.x = editor_position.get("x", randi_range(-400, 400))
@@ -101,22 +101,21 @@ func _load_position(data: Dictionary):
 
 
 func _to_dict() -> Dictionary:
-	var base_dict = {
-		"$type": node_type,
-		"ID": id.value,
-		"EditorPosition": {
+	var base_dict = { "$type": node_type, "ID": id.value }
+	_to_next(base_dict)
+	_to_fields(base_dict)
+	
+	base_dict["EditorPosition"] = {
 			"x": int(position_offset.x),
 			"y": int(position_offset.y)
-		}
 	}
-	_to_fields(base_dict)
-	_to_next(base_dict)
 	return base_dict
 
 
 func _to_fields(dict: Dictionary) -> void:
 	for property_name in get_property_names():
-		dict[Util.to_key_name(property_name)] = get(property_name).value
+		if get(property_name).visible:
+			dict[Util.to_key_name(property_name)] = get(property_name).value
 
 
 func _to_next(dict: Dictionary, key: String = "NextID") -> void:

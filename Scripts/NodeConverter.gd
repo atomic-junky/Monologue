@@ -42,6 +42,7 @@ func convert_action(dict: Dictionary) -> Dictionary:
 						dict["Image"] = value
 					"Other":
 						dict["Action"] = value
+						dict["Arguments"] = []
 			"ActionTimer":
 				dict["$type"] = "NodeWait"
 				dict["Time"] = value

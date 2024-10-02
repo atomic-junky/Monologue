@@ -184,7 +184,8 @@ func _on_monologue_play_audio(path, _player):
 
 
 func _on_monologue_custom_action(raw_action):
-	$Notification.debug("Custom action received [color=7f7f7f](%s)[/color]" % raw_action.get("Value"))
+	$Notification.debug("Custom action received [color=7f7f7f](%s)[/color]" % \
+			raw_action.get("Value", raw_action.get("Action", "<<unnamed>>")))
 
 
 func _on_monologue_timer_started(wait_time):
