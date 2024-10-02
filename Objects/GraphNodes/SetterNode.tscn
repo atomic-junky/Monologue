@@ -57,7 +57,6 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = ExtResource("2_t53kr")
 slot/1/draw_stylebox = false
 script = ExtResource("3_3ny3s")
-show_close_button = null
 
 [node name="OptionContainer" type="MarginContainer" parent="."]
 layout_mode = 2
