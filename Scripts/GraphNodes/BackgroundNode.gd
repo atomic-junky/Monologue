@@ -70,7 +70,7 @@ func _show_group(setter_type: Variant) -> void:
 	title = node_type
 
 
-func _update():
+func _update(_bg_type: Variant = background_type.value):
 	_path_label.text = image.value
 	_load_image()
 	super._update()
