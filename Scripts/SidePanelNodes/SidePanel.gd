@@ -6,7 +6,6 @@ class_name SidePanel extends PanelContainer
 @onready var fields_container = $OuterMargin/Scroller/InnerMargin/VBox/Fields
 @onready var topbox = $OuterMargin/Scroller/InnerMargin/VBox/HBox
 @onready var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
-@onready var node_panel = preload("res://Scripts/MonologueNodePanel.gd")
 
 var id_field: MonologueField
 var selected_node: MonologueGraphNode
