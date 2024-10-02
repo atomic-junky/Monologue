@@ -100,7 +100,7 @@ func find_node_from_id(node_id: Variant) -> Dictionary:
 
 func process_node(node: Dictionary) -> void:
 	match node.get("$type"):
-		"NodeRoot", "NodeBridgeIn", "NodeBridgeOut":
+		"NodeRoot", "NodeBridgeIn", "NodeBridgeOut", "NodeReroute":
 			next_id = node.get("NextID")
 			next()
 		
