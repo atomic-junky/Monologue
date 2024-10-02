@@ -63,12 +63,12 @@ mouse_filter = 2
 
 [node name="BgLabel" type="Label" parent="BackgroundContainer/VBox/HBox"]
 layout_mode = 2
-text = "Update background to"
+text = "Show Image"
 
 [node name="PathLabel" type="Label" parent="BackgroundContainer/VBox/HBox"]
 layout_mode = 2
 theme_override_styles/normal = ExtResource("4_qtkwm")
-text = "nothing"
+text = "No Image"
 label_settings = SubResource("LabelSettings_ae3bv")
 
 [node name="PreviewRect" type="TextureRect" parent="BackgroundContainer/VBox"]
