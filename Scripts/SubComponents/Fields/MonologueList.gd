@@ -70,7 +70,7 @@ func propagate(_data: Variant) -> void:
 	clear_list()
 	data_list = get_callback.call()
 	for reference in data_list:
-			append_list_item(reference)
+		append_list_item(reference)
 	data_list = data_list.map(func(r): return r._to_dict())
 
 

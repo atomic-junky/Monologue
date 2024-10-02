@@ -33,8 +33,8 @@ func _on_focus_exited() -> void:
 	_on_text_submitted(spin_box.value)
 
 
-func _on_text_submitted(new_value: Variant) -> void:
-	field_updated.emit(new_value)
+func _on_text_submitted(_new_value: Variant) -> void:
+	field_updated.emit(spin_box.value)
 
 
 func _on_value_changed(value: float) -> void:
