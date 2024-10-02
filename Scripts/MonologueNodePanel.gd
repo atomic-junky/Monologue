@@ -1,5 +1,6 @@
 ## Panel control that allows editing of [MonologueGraphNode] values.
-class_name MonologueNodePanel extends VBoxContainer
+class_name MonologueNodePanel
+extends VBoxContainer
 
 
 var fields: Dictionary = {}
@@ -19,8 +20,9 @@ func set_field_values(change_list: Array[PropertyChange], is_after: bool):
 			field.value = change.after if is_after else change.before
 
 
-func _set_graph_node(new_graph_node: MonologueGraphNode) -> void:
-	graph_node = new_graph_node
+func _set_gn(new_gn):
+	graph_node = new_gn
+	graph_node._connect_to_panel(change)
 	undo_redo = graph_node.get_parent().undo_redo
 	
 	#for field in graph_node.get_fields():
