@@ -6,7 +6,7 @@ extends MonologueGraphNode
 
 
 ## Spinner control which selects what number to bridge to.
-@onready var number_selector: SpinBox = $MarginContainer/HBoxContainer/LinkNumber
+@onready var number_selector: SpinBox = $HBoxContainer/LinkNumber
 
 
 func _ready():

@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_h62ch"]
 
 [node name="BridgeInNode" type="GraphNode"]
-offset_right = 172.0
-offset_bottom = 122.0
+offset_right = 185.0
+offset_bottom = 72.0
 scale = Vector2(0.6, 0.6)
 mouse_filter = 1
 mouse_default_cursor_shape = 6
@@ -23,22 +23,15 @@ slot/0/draw_stylebox = false
 script = ExtResource("1_8y1eo")
 titlebar_color = Color(0.698039, 0.698039, 0.698039, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer"]
 layout_mode = 2
 text = "Link to"
 
-[node name="LinkNumber" type="SpinBox" parent="MarginContainer/HBoxContainer"]
+[node name="LinkNumber" type="SpinBox" parent="HBoxContainer"]
 layout_mode = 2
 min_value = 1.0
 value = 1.0
