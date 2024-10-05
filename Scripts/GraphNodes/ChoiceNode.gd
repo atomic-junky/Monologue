@@ -2,9 +2,6 @@
 class_name ChoiceNode extends MonologueGraphNode
 
 
-const left_arrow_icon = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
-const right_arrow_icon = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
-
 var option_scene = preload("res://Objects/GraphNodes/OptionNode.tscn")
 var options := Property.new(LIST, {}, [])
 
@@ -38,7 +35,7 @@ func add_option(reference: Dictionary = {}) -> OptionNode:
 	
 	var is_first = get_child_count() <= 1
 	set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true,
-			0, Color("ffffff"), left_arrow_icon, right_arrow_icon, false)
+			0, Color("ffffff"), LEFT_ARROW_SLOT_TEXTURE, RIGHT_ARROW_SLOT_TEXTURE, false)
 	return new_option
 
 

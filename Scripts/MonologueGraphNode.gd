@@ -16,6 +16,9 @@ const SPINBOX = preload("res://Objects/SubComponents/Fields/MonologueSpinBox.tsc
 const TEXT = preload("res://Objects/SubComponents/Fields/MonologueText.tscn")
 const TOGGLE = preload("res://Objects/SubComponents/Fields/MonologueToggle.tscn")
 
+const LEFT_ARROW_SLOT_TEXTURE = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
+const RIGHT_ARROW_SLOT_TEXTURE = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
+
 var id := Property.new(LINE, {}, IDGen.generate())
 var node_type: String = "NodeUnknown"
 

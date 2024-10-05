@@ -69,11 +69,11 @@ mouse_default_cursor_shape = 2
 text = "Node Choice"
 icon = ExtResource("2_637k5")
 
-[node name="DiceRollSelector" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="RandomSelector" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-text = "Node DiceRoll"
+text = "Node Random"
 icon = ExtResource("3_sek5i")
 
 [node name="BridgeSelector" type="Button" parent="PanelContainer/VBoxContainer"]
@@ -140,7 +140,7 @@ icon = ExtResource("7_d1a3x")
 [connection signal="focus_exited" from="." to="." method="disable_picker_mode"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SentenceSelector" to="." method="_on_selector_btn_pressed" binds= ["Sentence"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/ChoiceSelector" to="." method="_on_selector_btn_pressed" binds= ["Choice"]]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/DiceRollSelector" to="." method="_on_selector_btn_pressed" binds= ["DiceRoll"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/RandomSelector" to="." method="_on_selector_btn_pressed" binds= ["DiceRoll"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/BridgeSelector" to="." method="_on_selector_btn_pressed" binds= ["Bridge"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/ConditionSelector" to="." method="_on_selector_btn_pressed" binds= ["Condition"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/ActionSelector" to="." method="_on_selector_btn_pressed" binds= ["Action"]]
