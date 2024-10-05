@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=75 format=3 uid="uid://budfhk1hudcfj"]
+[gd_resource type="Theme" load_steps=76 format=3 uid="uid://budfhk1hudcfj"]
 
 [ext_resource type="FontFile" uid="uid://cfima7icjyyky" path="res://Assets/Fonts/NotoSans-SemiBold.ttf" id="1_l3k8r"]
 [ext_resource type="Texture2D" uid="uid://b0umav8s8l2qa" path="res://Assets/Icons/cross.svg" id="2_vfihn"]
@@ -22,13 +22,32 @@ content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_83bka"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nsbic"]
 content_margin_left = 10.0
 content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
-bg_color = Color(0.12549, 0.12549, 0.12549, 1)
+bg_color = Color(0.27451, 0.27451, 0.301961, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qp5po"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.125, 0.125, 0.125, 0.5)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34y6h"]
 content_margin_left = 10.0
@@ -36,6 +55,10 @@ content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Image" id="Image_abgl2"]
 data = {
@@ -581,8 +604,8 @@ vertical = true
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_fn1gx")
 Button/styles/disabled = SubResource("StyleBoxEmpty_imxbs")
 Button/styles/focus = SubResource("StyleBoxFlat_25j0j")
-Button/styles/hover = SubResource("StyleBoxFlat_83bka")
-Button/styles/normal = SubResource("StyleBoxEmpty_imxbs")
+Button/styles/hover = SubResource("StyleBoxFlat_nsbic")
+Button/styles/normal = SubResource("StyleBoxFlat_qp5po")
 Button/styles/pressed = SubResource("StyleBoxFlat_34y6h")
 CheckBox/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 CheckBox/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)

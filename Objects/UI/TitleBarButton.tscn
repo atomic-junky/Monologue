@@ -1,14 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2k0l1j45eshc"]
+[gd_scene load_steps=5 format=3 uid="uid://c2k0l1j45eshc"]
 
 [ext_resource type="Script" path="res://Scripts/UI/title_bar_button.gd" id="1_egvia"]
 [ext_resource type="Texture2D" uid="uid://kk5em170gn2b" path="res://Assets/Icons/UI/ui_close.svg" id="1_itj8o"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_domk4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xb6d2"]
 bg_color = Color(1, 1, 1, 0.12549)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tjs5r"]
+
 [node name="TitleBarButton" type="Button"]
-custom_minimum_size = Vector2(50, 30)
-theme_override_styles/hover = SubResource("StyleBoxFlat_domk4")
+custom_minimum_size = Vector2(60, 30)
+offset_right = 60.0
+offset_bottom = 30.0
+theme_override_styles/hover = SubResource("StyleBoxFlat_xb6d2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_tjs5r")
 script = ExtResource("1_egvia")
 texture = ExtResource("1_itj8o")
 
