@@ -10,4 +10,4 @@ mouse_default_cursor_shape = 2
 theme_override_constants/separation = 15
 title = "ChoiceNode"
 script = ExtResource("1_nn3v2")
-titlebar_color = Color(0.94902, 0.843137, 0.196078, 1)
+titlebar_color = Color(0.733333, 0.392157, 0.188235, 1)

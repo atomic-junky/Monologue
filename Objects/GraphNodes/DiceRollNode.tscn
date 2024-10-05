@@ -40,7 +40,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = ExtResource("2_ruyti")
 slot/1/draw_stylebox = false
 script = ExtResource("4_4behm")
-titlebar_color = Color(0.607843, 0.34902, 0.713726, 1)
+titlebar_color = Color(0.360784, 0.501961, 0.184314, 1)
 
 [node name="PassContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
