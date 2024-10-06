@@ -6,6 +6,7 @@ class_name RandomNode extends MonologueGraphNode
 
 var outputs := Property.new(LIST, { }, [])
 
+var _is_redistributing_weight: bool
 var _output_references: Array = []
 
 
@@ -44,9 +45,15 @@ func add_output(data: Dictionary = {}) -> MonologueRandomOutput:
 	output.id.value = _output_references.size()
 	_output_references.append(output)
 	
-	var shared_weight = 100/_output_references.size()
-	for idx in _output_references.size():
-		_output_references[idx].weight.value = shared_weight
+	if not data:  # if output was added from scratch, redistribute all equally
+		var share = 100.0 / _output_references.size()
+		for idx in range(_output_references.size()):
+			var weight = ceil(share) if idx == 0 else floor(share)
+			_output_references[idx].weight.value = weight
+		
+		var refs = _output_references.slice(0, _output_references.size() - 1)
+		var dicts = refs.map(func(r): return r._to_dict())
+		outputs.propagate(dicts)
 	
 	return output
 
@@ -65,8 +72,8 @@ func load_outputs(new_output_list: Array):
 	if _output_references.is_empty():
 		var first = add_output()
 		var second = add_output()
-		first.weight.value = 50
-		second.weight.value = 50
+		#first.weight.value = 50
+		#second.weight.value = 50
 		new_output_list.append(first._to_dict())
 		new_output_list.append(second._to_dict())
 	outputs.value = new_output_list
