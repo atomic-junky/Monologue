@@ -10,7 +10,7 @@ func before_test():
 	switcher.graph_edits.add_child(auto_free(Control.new()))
 	switcher.tab_bar = auto_free(TabBar.new())
 	switcher.tab_bar.add_tab("+")
-	switcher.side_panel = mock(SidePanelNodeDetails)
+	switcher.side_panel = mock(SidePanel)
 
 
 func test_add_root():

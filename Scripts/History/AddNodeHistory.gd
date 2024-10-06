@@ -33,7 +33,7 @@ func _init(graph: MonologueGraphEdit, nodes: Array[MonologueGraphNode]):
 		_record_connections(node)
 		restoration_data[node.name] = node._to_dict()
 		if "options" in node:
-			restoration_data[node.name]["Options"] = node.options
+			restoration_data[node.name]["Options"] = node.options.value
 	
 	_undo_callback = _delete_callback_for_tracked_nodes
 	_redo_callback = func() -> Array[MonologueGraphNode]:
@@ -64,8 +64,8 @@ func redo():
 		# but it's okay, we can restore the changes in options from here
 		var options = node_data.get("Options")
 		if options:
-			deletion_nodes[i].options = options
-			deletion_nodes[i]._update()
+			deletion_nodes[i].options.value = options
+			deletion_nodes[i]._refresh(options)
 		
 		# restore graph node connections
 		_restore_connections(node_name)

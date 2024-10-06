@@ -5,371 +5,370 @@
 		{
 			"$type": "NodeBridgeOut",
 			"ID": "4f2d9e0e-4d3c-4bdd-a60e-2d2225604ad6",
-			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
-			"NumberSelector": 1,
 			"EditorPosition": {
 				"x": 1060,
 				"y": 140
-			}
+			},
+			"NumberSelector": 1,
+			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc"
 		},
 		{
 			"$type": "NodeSentence",
 			"ID": "907c77fb-5887-47da-bed4-a85b6cf50dc5",
-			"NextID": "239b62c5-7be3-49fa-8dcf-c19e23a639a6",
-			"Sentence": "Hey man no, I've got help now. ",
-			"SpeakerID": 1,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 2080,
 				"y": 140
-			}
+			},
+			"Speaker": 1,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "Hey man no, I've got help now. ",
+			"Voiceline": "",
+			"NextID": "239b62c5-7be3-49fa-8dcf-c19e23a639a6"
 		},
 		{
 			"$type": "NodeSentence",
 			"ID": "239b62c5-7be3-49fa-8dcf-c19e23a639a6",
-			"NextID": "aca21898-2092-44cc-845f-3a7d804d500b",
-			"Sentence": "It's not right to want to hurt people",
-			"SpeakerID": 1,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 2560,
 				"y": 140
-			}
+			},
+			"Speaker": 1,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "It's not right to want to hurt people",
+			"Voiceline": "",
+			"NextID": "aca21898-2092-44cc-845f-3a7d804d500b"
 		},
 		{
 			"$type": "NodeCondition",
 			"ID": "55d5315b-896b-40c3-a59d-c890cebc15a7",
-			"IfNextID": "907c77fb-5887-47da-bed4-a85b6cf50dc5",
-			"ElseNextID": "889a22da-0ea8-42f7-a8c8-fa26d339fef0",
-			"Condition": {
-				"Variable": "TookHelp",
-				"Operator": "==",
-				"Value": true
-			},
 			"EditorPosition": {
 				"x": 1700,
 				"y": 140
-			}
+			},
+			"Variable": "TookHelp",
+			"Operator": "==",
+			"Value": true,
+			"IfNextID": "907c77fb-5887-47da-bed4-a85b6cf50dc5",
+			"ElseNextID": "889a22da-0ea8-42f7-a8c8-fa26d339fef0"
 		},
 		{
 			"$type": "NodeSentence",
 			"ID": "889a22da-0ea8-42f7-a8c8-fa26d339fef0",
-			"NextID": "ce58e64a-62bd-4383-9331-99df9ed625bd",
-			"Sentence": "Oh, thanks",
-			"SpeakerID": 1,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 2080,
 				"y": 260
-			}
+			},
+			"Speaker": 1,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "Oh, thanks",
+			"Voiceline": "",
+			"NextID": "ce58e64a-62bd-4383-9331-99df9ed625bd"
 		},
 		{
 			"$type": "NodeEvent",
 			"ID": "8db56180-b83d-429b-b6c1-1395b348996c",
-			"NextID": "3e47d27d-0bd4-40e6-bb9e-d0337e0f91fe",
-			"Condition": {
-				"Variable": "TookHelp",
-				"Operator": "==",
-				"Value": true
-			},
 			"EditorPosition": {
 				"x": 0,
 				"y": 400
-			}
+			},
+			"Variable": "TookHelp",
+			"Operator": "==",
+			"Value": true,
+			"NextID": "3e47d27d-0bd4-40e6-bb9e-d0337e0f91fe"
 		},
 		{
 			"$type": "NodeSentence",
 			"ID": "05f9fa16-04ba-466c-8490-79110a676865",
-			"NextID": "8ac967a5-fa9c-4d72-b149-28296d409e06",
-			"Sentence": "Thanks for the advice men, I'll take some help !",
-			"SpeakerID": 1,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 2180,
 				"y": 0
-			}
+			},
+			"Speaker": 1,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "Thanks for the advice men, I'll take some help !",
+			"Voiceline": "",
+			"NextID": "8ac967a5-fa9c-4d72-b149-28296d409e06"
 		},
 		{
-			"$type": "NodeAction",
+			"$type": "NodeWait",
 			"ID": "ce58e64a-62bd-4383-9331-99df9ed625bd",
-			"NextID": "001e18dd-8398-4564-9316-4687b828402d",
-			"Action": {
-				"$type": "ActionTimer",
-				"Value": 1
-			},
 			"EditorPosition": {
 				"x": 2560,
 				"y": 280
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
-			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
-			"Sentence": "[shake rate=20.0 level=5]I... I need to hurt...\nGi-give me a pencil...[shake]",
-			"SpeakerID": 1,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
-			"EditorPosition": {
-				"x": 820,
-				"y": 0
-			}
+			},
+			"Time": 1,
+			"NextID": "001e18dd-8398-4564-9316-4687b828402d"
 		},
 		{
 			"$type": "NodeSentence",
 			"ID": "7e24e282-b823-45c9-8a5c-aec03fd1b64a",
-			"NextID": "05f9fa16-04ba-466c-8490-79110a676865",
-			"Sentence": "You think ?",
-			"SpeakerID": 1,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 1700,
 				"y": 0
-			}
+			},
+			"Speaker": 1,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "You think ?",
+			"Voiceline": "",
+			"NextID": "05f9fa16-04ba-466c-8490-79110a676865"
 		},
 		{
-			"$type": "NodeAction",
+			"$type": "NodeSetter",
 			"ID": "8ac967a5-fa9c-4d72-b149-28296d409e06",
-			"NextID": "b539d88c-4032-4a18-a146-212a25741cd2",
-			"Action": {
-				"$type": "ActionVariable",
-				"Operator": "=",
-				"Variable": "TookHelp",
-				"Value": true
-			},
 			"EditorPosition": {
 				"x": 2640,
 				"y": 0
-			}
+			},
+			"SetType": "Variable",
+			"OptionID": "",
+			"Enable": "",
+			"Variable": "TookHelp",
+			"Operator": "=",
+			"Value": true,
+			"NextID": "b539d88c-4032-4a18-a146-212a25741cd2"
 		},
 		{
 			"$type": "NodeSentence",
 			"ID": "3e47d27d-0bd4-40e6-bb9e-d0337e0f91fe",
-			"NextID": -1,
-			"Sentence": "Mr.Sharpener got help and is no longer crazy.",
-			"SpeakerID": 0,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 400,
 				"y": 400
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
-			"NextID": "98bc9817-7b7d-4dea-8bb7-626192069677",
-			"Sentence": "You see a sharpener in front of you. He appears to be mad.",
-			"SpeakerID": 0,
-			"DisplaySpeakerName": "",
+			},
+			"Speaker": 0,
+			"DisplayName": "",
 			"DisplayVariant": "",
-			"VoicelinePath": "",
-			"EditorPosition": {
-				"x": 380,
-				"y": 0
-			}
+			"Sentence": "Mr.Sharpener got help and is no longer crazy.",
+			"Voiceline": "",
+			"NextID": -1
 		},
 		{
 			"$type": "NodeDiceRoll",
 			"ID": "001e18dd-8398-4564-9316-4687b828402d",
-			"Skill": "",
-			"Target": 50,
-			"PassID": "2078d00f-3af9-4d6e-88ac-fb0679ce625a",
-			"FailID": "749ea0bf-a997-4c47-9a13-c9221b4b6381",
 			"EditorPosition": {
 				"x": 3040,
 				"y": 300
-			}
+			},
+			"Target": 50,
+			"PassID": "2078d00f-3af9-4d6e-88ac-fb0679ce625a",
+			"FailID": "749ea0bf-a997-4c47-9a13-c9221b4b6381"
 		},
 		{
 			"$type": "NodeSentence",
 			"ID": "749ea0bf-a997-4c47-9a13-c9221b4b6381",
-			"NextID": "73d66209-10f3-4e14-82c4-5a42e7de7049",
-			"Sentence": "Sadly, Mr.Sharpener sank into the desire to do harm and is now in prison to answer for all the harm he has caused. He could have done with a little help...",
-			"SpeakerID": 0,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 3360,
 				"y": 380
-			}
+			},
+			"Speaker": 0,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "Sadly, Mr.Sharpener sank into the desire to do harm and is now in prison to answer for all the harm he has caused. He could have done with a little help...",
+			"Voiceline": "",
+			"NextID": "73d66209-10f3-4e14-82c4-5a42e7de7049"
 		},
 		{
 			"$type": "NodeComment",
 			"ID": "44f20380-db65-4442-9036-cfa47a98e2f0",
-			"Comment": "A random bad ending",
 			"EditorPosition": {
 				"x": 3360,
 				"y": 560
-			}
+			},
+			"Comment": "A random bad ending",
+			"NextID": -1
 		},
 		{
 			"$type": "NodeComment",
 			"ID": "04eb395b-9548-4d10-b399-5e1b5337dca0",
-			"Comment": "You can use BBCode inside NodeSentence",
 			"EditorPosition": {
 				"x": 820,
 				"y": -120
-			}
+			},
+			"Comment": "You can use BBCode inside NodeSentence",
+			"NextID": -1
 		},
 		{
 			"$type": "NodeComment",
 			"ID": "d7e8856e-adeb-4e5f-83a3-766381d0f3ea",
-			"Comment": "Setting TookHelp to true will trigger an event and cause the ConditionNode to return true.",
 			"EditorPosition": {
 				"x": 2580,
 				"y": -140
-			}
+			},
+			"Comment": "Setting TookHelp to true will trigger an event and cause the ConditionNode to return true.",
+			"NextID": -1
 		},
 		{
 			"$type": "NodeComment",
 			"ID": "11812fee-1f97-4b71-84b8-6df22dfda46e",
-			"Comment": "Write a message when the player save Mr.sharpener.",
 			"EditorPosition": {
 				"x": 0,
 				"y": 500
-			}
+			},
+			"Comment": "Write a message when the player save Mr.sharpener.",
+			"NextID": -1
 		},
 		{
 			"$type": "NodeChoice",
 			"ID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
+			"EditorPosition": {
+				"x": 1300,
+				"y": 0
+			},
 			"OptionsID": [
 				"db255a89-210b-4092-90fc-5f73578f4210",
 				"8d501872-3726-4697-bc51-a5e706ed4306"
 			],
-			"EditorPosition": {
-				"x": 1300,
-				"y": 0
-			}
+			"NextID": "7e24e282-b823-45c9-8a5c-aec03fd1b64a"
 		},
 		{
 			"$type": "NodeOption",
 			"ID": "db255a89-210b-4092-90fc-5f73578f4210",
-			"NextID": "7e24e282-b823-45c9-8a5c-aec03fd1b64a",
-			"Sentence": "Dude, you need help I think",
-			"Enable": true,
-			"OneShot": true
+			"EditorPosition": {
+				"x": 0,
+				"y": 0
+			},
+			"Option": "Dude, you need help I think",
+			"EnableByDefault": true,
+			"OneShot": true,
+			"NextID": "7e24e282-b823-45c9-8a5c-aec03fd1b64a"
 		},
 		{
 			"$type": "NodeOption",
 			"ID": "8d501872-3726-4697-bc51-a5e706ed4306",
-			"NextID": "55d5315b-896b-40c3-a59d-c890cebc15a7",
-			"Sentence": "I have a pencil...",
-			"Enable": true,
-			"OneShot": false
+			"EditorPosition": {
+				"x": 0,
+				"y": 0
+			},
+			"Option": "I have a pencil...",
+			"EnableByDefault": true,
+			"OneShot": false,
+			"NextID": "55d5315b-896b-40c3-a59d-c890cebc15a7"
 		},
 		{
 			"$type": "NodeBridgeIn",
 			"ID": "44244013-8168-4507-af13-7c24f62a75c2",
-			"NextID": "4f2d9e0e-4d3c-4bdd-a60e-2d2225604ad6",
-			"NumberSelector": 1,
 			"EditorPosition": {
 				"x": 3360,
 				"y": 0
-			}
+			},
+			"NumberSelector": 1,
+			"NextID": "4f2d9e0e-4d3c-4bdd-a60e-2d2225604ad6"
 		},
 		{
-			"$type": "NodeAction",
+			"$type": "NodeAudio",
 			"ID": "b539d88c-4032-4a18-a146-212a25741cd2",
-			"NextID": "44244013-8168-4507-af13-7c24f62a75c2",
-			"Action": {
-				"$type": "ActionCustom",
-				"CustomType": "PlayAudio",
-				"Value": "sound.mp3",
-				"Volume": 10,
-				"Pitch": 1,
-				"Loop": false
-			},
 			"EditorPosition": {
 				"x": 3000,
 				"y": 0
-			}
+			},
+			"Loop": false,
+			"Volume": 10,
+			"Pitch": 1,
+			"Audio": "sound.mp3",
+			"NextID": "44244013-8168-4507-af13-7c24f62a75c2"
 		},
 		{
-			"$type": "NodeAction",
+			"$type": "NodeAudio",
 			"ID": "57c841c9-0ebf-464c-aa25-24c2f7dfb0a8",
-			"NextID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
-			"Action": {
-				"$type": "ActionCustom",
-				"CustomType": "PlayAudio",
-				"Value": "on_the_road.mp3",
-				"Volume": -10,
-				"Pitch": 1.2,
-				"Loop": true
-			},
 			"EditorPosition": {
 				"x": -40,
 				"y": 0
-			}
+			},
+			"Loop": true,
+			"Volume": -10,
+			"Pitch": 1.2,
+			"Audio": "on_the_road.mp3",
+			"NextID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b"
 		},
 		{
 			"$type": "NodeSentence",
 			"ID": "2078d00f-3af9-4d6e-88ac-fb0679ce625a",
-			"NextID": "f6a10820-98e9-4f3e-b1fb-60392c14fe64",
-			"Sentence": "When the police ordered Mr. Sharpener to give himself up, he did not hear them and continued to harm those around him. Unfortunately, the police had no choice but to end his life.",
-			"SpeakerID": 0,
-			"DisplaySpeakerName": "",
-			"DisplayVariant": "",
-			"VoicelinePath": "",
 			"EditorPosition": {
 				"x": 3360,
 				"y": 180
-			}
+			},
+			"Speaker": 0,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "When the police ordered Mr. Sharpener to give himself up, he did not hear them and continued to harm those around him. Unfortunately, the police had no choice but to end his life.",
+			"Voiceline": "",
+			"NextID": "f6a10820-98e9-4f3e-b1fb-60392c14fe64"
 		},
 		{
 			"$type": "NodeEndPath",
 			"ID": "aca21898-2092-44cc-845f-3a7d804d500b",
-			"NextStoryName": "ending_01.json",
 			"EditorPosition": {
 				"x": 3040,
 				"y": 140
-			}
+			},
+			"NextStory": "ending_01.json",
+			"NextID": -1
 		},
 		{
 			"$type": "NodeRoot",
 			"ID": "cbfb0a4b-7517-4411-a447-314d106fe280",
-			"NextID": "57c841c9-0ebf-464c-aa25-24c2f7dfb0a8",
 			"EditorPosition": {
 				"x": -420,
 				"y": 0
-			}
+			},
+			"NextID": "57c841c9-0ebf-464c-aa25-24c2f7dfb0a8"
 		},
 		{
-			"$type": "NodeAction",
+			"$type": "NodeSetter",
 			"ID": "f6a10820-98e9-4f3e-b1fb-60392c14fe64",
-			"NextID": "73d66209-10f3-4e14-82c4-5a42e7de7049",
-			"Action": {
-				"$type": "ActionVariable",
-				"Operator": "=",
-				"Variable": "isDead",
-				"Value": true
-			},
 			"EditorPosition": {
 				"x": 3800,
 				"y": 220
-			}
+			},
+			"SetType": "Variable",
+			"OptionID": "",
+			"Enable": "",
+			"Variable": "isDead",
+			"Operator": "=",
+			"Value": true,
+			"NextID": "73d66209-10f3-4e14-82c4-5a42e7de7049"
 		},
 		{
 			"$type": "NodeEndPath",
 			"ID": "73d66209-10f3-4e14-82c4-5a42e7de7049",
-			"NextStoryName": "ending_02.json",
 			"EditorPosition": {
 				"x": 4260,
 				"y": 400
-			}
+			},
+			"NextStory": "ending_02.json",
+			"NextID": -1
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
+			"EditorPosition": {
+				"x": 380,
+				"y": 0
+			},
+			"Speaker": 0,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "You see a sharpener in front of you. He appears to be mad.",
+			"Voiceline": "",
+			"NextID": "98bc9817-7b7d-4dea-8bb7-626192069677"
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
+			"EditorPosition": {
+				"x": 820,
+				"y": 0
+			},
+			"Speaker": 1,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "[shake rate=20.0 level=5]I... I need to hurt...\nGi-give me a pencil...[shake]",
+			"Voiceline": "",
+			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc"
 		}
 	],
 	"Characters": [

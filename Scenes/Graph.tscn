@@ -1,26 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=8 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="PackedScene" uid="uid://cv3ej5ymwd0y3" path="res://Objects/SubComponents/Header.tscn" id="2_u4ama"]
-[ext_resource type="Texture2D" uid="uid://c7vdr4e0mxst6" path="res://Assets/Icons/close_icon.png" id="5_f42wd"]
+[ext_resource type="PackedScene" uid="uid://dgvhvxdrd58qp" path="res://Objects/SidePanelNodes/SidePanel.tscn" id="4_blvw7"]
 [ext_resource type="PackedScene" uid="uid://bqqcww601rcx5" path="res://Objects/Windows/WelcomeWindow.tscn" id="8_6u52p"]
-[ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
 [ext_resource type="PackedScene" uid="uid://cvjfcgqktlyc2" path="res://Objects/SubComponents/GraphEditSwitcher.tscn" id="11_ktgpb"]
-[ext_resource type="Texture2D" uid="uid://dm2u0xqmmcorj" path="res://Assets/Icons/copy.png" id="14_8lefg"]
 [ext_resource type="PackedScene" uid="uid://djcfm0pl15x87" path="res://Objects/SubComponents/GraphNodeSelector.tscn" id="15_v6y8q"]
 [ext_resource type="Script" path="res://Scripts/GlobalFileDialog.gd" id="20_2dvte"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ehqk"]
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28b4a"]
-content_margin_left = 7.0
-content_margin_right = 7.0
-bg_color = Color(0.768627, 0.180392, 0.25098, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [node name="MonologueControl" type="Control"]
 layout_mode = 3
@@ -61,7 +47,7 @@ mouse_filter = 2
 [node name="GraphEditSwitcher" parent="MarginContainer/MainContainer/GraphEditsArea" node_paths=PackedStringArray("side_panel") instance=ExtResource("11_ktgpb")]
 unique_name_in_owner = true
 layout_mode = 1
-side_panel = NodePath("../MarginContainer/SidePanelNodeDetails")
+side_panel = NodePath("../MarginContainer/SidePanel")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -80,55 +66,8 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 20
 
-[node name="SidePanelNodeDetails" type="PanelContainer" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer"]
+[node name="SidePanel" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer" instance=ExtResource("4_blvw7")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0ehqk")
-script = ExtResource("9_cxmnj")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer"]
-layout_mode = 2
-
-[node name="PanelContainer" type="VBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 10
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="LineEditID" type="LineEdit" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 11
-placeholder_text = "id"
-
-[node name="CopyIDBtn" type="TextureButton" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("14_8lefg")
-stretch_mode = 3
-
-[node name="TFHBtn" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 14
-theme_override_styles/focus = SubResource("StyleBoxFlat_28b4a")
-theme_override_styles/normal = SubResource("StyleBoxFlat_28b4a")
-text = "Test from here"
-
-[node name="TextureButton" type="TextureButton" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("5_f42wd")
-stretch_mode = 3
 
 [node name="NoInteractions" type="ColorRect" parent="."]
 layout_mode = 1
@@ -140,17 +79,15 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.196078)
 
 [node name="GraphNodeSelector" parent="." instance=ExtResource("15_v6y8q")]
+visible = false
 
 [node name="WelcomeWindow" parent="." instance=ExtResource("8_6u52p")]
 
 [node name="FileDialog" type="FileDialog" parent="."]
+size = Vector2i(351, 175)
 mode_overrides_title = false
 access = 2
 use_native_dialog = true
 script = ExtResource("20_2dvte")
 
-[connection signal="text_changed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_line_edit_id_text_changed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/CopyIDBtn" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_id_copy_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TFHBtn" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_tfh_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="file_selected" from="FileDialog" to="FileDialog" method="_on_file_selected"]

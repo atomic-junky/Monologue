@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0d8fac8so0p0"]
+
+[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueSpinBox.gd" id="1_wmtop"]
+
+[node name="MonologueSpinBox" type="HBoxContainer"]
+script = ExtResource("1_wmtop")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 0
+text = "Value"
+
+[node name="SpinBox" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+update_on_text_changed = true
+
+[connection signal="value_changed" from="SpinBox" to="." method="_on_value_changed"]
