@@ -6,7 +6,6 @@ class_name RandomNode extends MonologueGraphNode
 
 var outputs := Property.new(LIST, { }, [])
 
-var _is_redistributing_weight: bool
 var _output_references: Array = []
 
 
@@ -72,19 +71,16 @@ func load_outputs(new_output_list: Array):
 	if _output_references.is_empty():
 		var first = add_output()
 		var second = add_output()
-		#first.weight.value = 50
-		#second.weight.value = 50
 		new_output_list.append(first._to_dict())
 		new_output_list.append(second._to_dict())
 	outputs.value = new_output_list
 
 
-func _update(new_value: Variant = null) -> void:
+func _update(_new_value: Variant = null) -> void:
 	for child in get_children():
 		child.free()
 	
 	for output in _output_references:
-		var idx: int = _output_references.bsearch(output)
 		var output_ref := output_line.instantiate()
 		add_child(output_ref)
 		output_ref.update_label(str(output.weight.value) + "%")
