@@ -13,7 +13,7 @@ var node_dictionary = {
 	"Choice": preload("res://Objects/GraphNodes/ChoiceNode.tscn"),
 	"Comment": preload("res://Objects/GraphNodes/CommentNode.tscn"),
 	"Condition": preload("res://Objects/GraphNodes/ConditionNode.tscn"),
-	"DiceRoll": preload("res://Objects/GraphNodes/DiceRollNode.tscn"),
+	"Random": preload("res://Objects/GraphNodes/RandomNode.tscn"),
 	"EndPath": preload("res://Objects/GraphNodes/EndPathNode.tscn"),
 	"Event": preload("res://Objects/GraphNodes/EventNode.tscn"),
 	"Sentence": preload("res://Objects/GraphNodes/SentenceNode.tscn"),

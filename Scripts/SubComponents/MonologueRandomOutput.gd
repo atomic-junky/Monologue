@@ -5,6 +5,7 @@ class_name MonologueRandomOutput extends RefCounted
 var weight := Property.new(MonologueGraphNode.SPINBOX, { "minimum": 0, "maximum": 100 })
 var id     := Property.new(MonologueGraphNode.SPINBOX)
 
+
 var graph: MonologueGraphEdit
 var graph_node: RandomNode
 
@@ -57,4 +58,5 @@ func _from_dict(dict: Dictionary) -> void:
 
 
 func _to_dict():
-	return { "ID": id.value, "Weight": weight.value }
+	var next_id_node = graph.get_all_connections_from_slot(graph_node.name, id.value)
+	return { "ID": id.value, "Weight": weight.value, "NextID": next_id_node[0].id.value if next_id_node else -1 }

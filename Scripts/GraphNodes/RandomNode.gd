@@ -13,7 +13,6 @@ func _ready():
 	node_type = "NodeRandom"
 	super._ready()
 	
-	load_outputs(outputs.value)
 	outputs.setters["add_callback"] = add_output
 	outputs.setters["get_callback"] = get_outputs
 	outputs.connect("preview", load_outputs)
@@ -21,27 +20,29 @@ func _ready():
 	_update()
 
 
-func _load_connections(data: Dictionary, key: String = "PassID") -> void:
-	super._load_connections(data, key)
-	var fail_id = data.get("FailID")
-	if fail_id is String:
-		var fail_node = get_parent().get_node_by_id(fail_id)
-		get_parent().connect_node(name, 1, fail_node.name, 0)
+func _from_dict(dict: Dictionary) -> void:
+	super._from_dict(dict)
+	load_outputs(outputs.value)
+	_update()
+
+
+func _load_connections(data: Dictionary, key: String = "NextID") -> void:
+	for output in data.get("Outputs"):
+		var next_id = output.get(key)
+		if next_id is String:
+			var next_node = get_parent().get_node_by_id(next_id)
+			get_parent().connect_node(name, output["ID"], next_node.name, 0)
 
 
 func _to_next(dict: Dictionary, key: String = "PassID") -> void:
-	var pass_id_node = get_graph_edit().get_all_connections_from_slot(name, 0)
-	dict[key] = pass_id_node[0].id.value if pass_id_node else -1
-	
-	var fail_id_node = get_graph_edit().get_all_connections_from_slot(name, 1)
-	dict["FailID"] = fail_id_node[0].id.value if fail_id_node else -1
+	pass
 
 
 func add_output(data: Dictionary = {}) -> MonologueRandomOutput:
 	var output = MonologueRandomOutput.new(self)
+	output.id.value = _output_references.size()
 	if data:
 		output._from_dict(data)
-	output.id.value = _output_references.size()
 	_output_references.append(output)
 	
 	if not data:  # if output was added from scratch, redistribute all equally

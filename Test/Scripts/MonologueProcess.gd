@@ -135,11 +135,9 @@ func process_node(node: Dictionary) -> void:
 				options.append(option)
 			monologue_new_choice.emit(options)
 		
-		"NodeDiceRoll":
-			if roll_dice() <= node.get("Target"):
-				next_id = node.get("PassID")
-			else:
-				next_id = node.get("FailID")
+		"NodeRandom":
+			print(node)
+			next_id = node.get("NextID")
 			next()
 		
 		"NodeSetter":
@@ -380,12 +378,6 @@ func add_variables(new_variables: Array) -> void:
 		var exists = get_variable(data.get("Name"))
 		if not exists:
 			variables.append(data)
-
-
-func roll_dice(minimum: int = 0, maximum: int = 100) -> int:
-	var dice = RandomNumberGenerator.new()
-	dice.randomize()
-	return dice.randi_range(minimum, maximum)
 
 
 func start_timer(wait_time: float) -> void:
