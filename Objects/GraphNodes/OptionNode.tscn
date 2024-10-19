@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccuhx5vr7t50a"]
+
+[ext_resource type="Script" path="res://Scripts/GraphNodes/OptionNode.gd" id="1_67u8k"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vd2tk"]
+
+[node name="OptionNode" type="GraphNode"]
+offset_right = 100.0
+offset_bottom = 91.0
+mouse_filter = 2
+theme_override_styles/slot = SubResource("StyleBoxEmpty_vd2tk")
+draggable = false
+selectable = false
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("1_67u8k")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CountLabel" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.686275, 0.686275, 0.686275, 1)
+text = "Option 1"
+text_overrun_behavior = 3
+
+[node name="PreviewLabel" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.686275, 0.686275, 0.686275, 1)
+clip_text = true
+text_overrun_behavior = 3

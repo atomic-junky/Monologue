@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cifg2nritn8t6"]
 
-[ext_resource type="Script" path="res://Scripts/GraphNodes/NodeSentence.gd" id="1_at5jy"]
+[ext_resource type="Script" path="res://Scripts/GraphNodes/SentenceNode.gd" id="1_at5jy"]
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_hvs86"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_5kymc"]
 

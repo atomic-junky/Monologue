@@ -1,72 +1,48 @@
 @icon("res://Assets/Icons/NodesIcons/Event.svg")
+class_name EventNode extends AbstractVariableNode
 
-class_name EventNode
-
-extends MonologueGraphNode
-
-
-@onready var variable_label = $MarginWhenContainer/WhenContainer/VariableLabel
-@onready var operator_label = $MarginWhenContainer/WhenContainer/OperatorLabel
-@onready var value_label = $MarginWhenContainer/WhenContainer/ValueLabel
-
-var variable_name: String = ""
-var operator: String = ""
-var value = null
 
 func _ready():
 	node_type = "NodeEvent"
-	title = node_type
+	super._ready()
 
 
-func _to_dict() -> Dictionary:
-	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)
-	
-	return {
-		"$type": node_type,
-		"ID": id,
-		"NextID": next_id_node[0].id if next_id_node else -1,
-		"Condition": _condtion_to_dict(),
-		"EditorPosition": {
-			"x": position_offset.x,
-			"y": position_offset.y
-		}
-	}
+func get_variable_label() -> Label:
+	return $MarginContainer/HBox/VariableLabel
+
+
+func get_operator_label() -> Label:
+	return $MarginContainer/HBox/OperatorLabel
+
+
+func get_value_label() -> Label:
+	return $MarginContainer/HBox/ValueLabel
+
+
+func get_operator_options():
+	return [
+		{ "id": 0, "text": "=="  },
+		{ "id": 1, "text": ">=" },
+		{ "id": 2, "text": "<=" },
+		{ "id": 3, "text": "!=" },
+	]
+
+
+func get_operator_disabler():
+	return [1, 2]
 
 
 func _from_dict(dict: Dictionary):
-	id = dict.get("ID")
+	var condition = dict.get("Condition", {})
+	var morphing_value = dict.get("Value", "")
+	if condition:
+		for v in get_graph_edit().variables:
+			if v.get("Name") == condition.get("Variable"):
+				variable.value = condition.get("Variable")
+				break
+		operator.value = condition.get("Operator", "==")
+		morphing_value = condition.get("Value", "")
+		value.value = morphing_value
 	
-	var condition = dict.get("Condition")
-	var variables_filter = get_parent().variables.filter(func(v): return v.get("Name") == condition.get("Variable"))
-	if variables_filter.size() > 0:
-		variable_name = condition.get("Variable")
-	else:
-		variable_name = "variable"
-	operator = condition.get("Operator")
-	value = condition.get("Value")
-	
-	var _pos = dict.get("EditorPosition")
-	position_offset.x = _pos.get("x")
-	position_offset.y = _pos.get("y")
-	
-	_update()
-
-
-func _condtion_to_dict() -> Dictionary:
-	return {
-		"Variable": variable_name,
-		"Operator": operator,
-		"Value": value
-	}
-
-
-func _update(panel: ConditionNodePanel = null):
-	if panel != null:
-		if panel.variable_drop_node.selected >= 0:
-			variable_name = panel.variable_drop_node.get_item_text(panel.variable_drop_node.selected)
-		operator = panel.operator_drop_node.get_item_text(panel.operator_drop_node.selected)
-		value = panel.get_value()
-		
-	variable_label.text = variable_name
-	operator_label.text = operator
-	value_label.text = str(value)
+	record_morph(morphing_value)
+	super._from_dict(dict)

@@ -71,41 +71,41 @@ slot/1/right_icon = ExtResource("1_242j4")
 slot/1/draw_stylebox = false
 script = ExtResource("3_vhhwe")
 
-[node name="MarginIfContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 
-[node name="IfContainer" type="HBoxContainer" parent="MarginIfContainer"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="IfLabel" type="Label" parent="MarginIfContainer/IfContainer"]
+[node name="IfLabel" type="Label" parent="MarginContainer/HBox"]
 layout_mode = 2
 text = "If"
 
-[node name="VariableLabel" type="Label" parent="MarginIfContainer/IfContainer"]
+[node name="VariableLabel" type="Label" parent="MarginContainer/HBox"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_sipot")
 text = "variable"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="OperatorLabel" type="Label" parent="MarginIfContainer/IfContainer"]
+[node name="OperatorLabel" type="Label" parent="MarginContainer/HBox"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_sipot")
 text = "condition"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="ValueLabel" type="Label" parent="MarginIfContainer/IfContainer"]
+[node name="ValueLabel" type="Label" parent="MarginContainer/HBox"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_sipot")
 text = "value"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="ThenLabel" type="Label" parent="MarginIfContainer/IfContainer"]
+[node name="ThenLabel" type="Label" parent="MarginContainer/HBox"]
 layout_mode = 2
 text = "then"
 
-[node name="MarginElseContainer" type="MarginContainer" parent="."]
+[node name="ElseContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginElseContainer"]
+[node name="ElseLabel" type="Label" parent="ElseContainer"]
 layout_mode = 2
 text = "Else"

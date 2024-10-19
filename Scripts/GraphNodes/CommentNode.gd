@@ -1,32 +1,20 @@
 @icon("res://Assets/Icons/NodesIcons/Comment.png")
-
-class_name CommentNode
-
-extends MonologueGraphNode
+class_name CommentNode extends MonologueGraphNode
 
 
 @onready var comment_edit = $MainContainer/CommentEdit
 
 
-func _to_dict() -> Dictionary:
+func _ready() -> void:
 	node_type = "NodeComment"
-	return {
-		"$type": node_type,
-		"ID": id,
-		"Comment": comment_edit.text,
-		"EditorPosition": {
-			"x": position_offset.x,
-			"y": position_offset.y
-		}
-	}
+	super._ready()
+
 
 func _from_dict(dict: Dictionary) -> void:
-	id = dict.get("ID")
 	comment_edit.text = dict.get("Comment")
-	
-	position_offset.x = dict.EditorPosition.get("x")
-	position_offset.y = dict.EditorPosition.get("y")
+	super._from_dict(dict)
 
 
-func _on_close_request():
-	queue_free()
+func _to_fields(dict: Dictionary) -> void:
+	super._to_fields(dict)
+	dict["Comment"] = comment_edit.text
