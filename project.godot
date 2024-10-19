@@ -67,6 +67,7 @@ import/blender/enabled=false
 
 settings/test/test_lookup_folder="Unit"
 ui/toolbar/run_overall=true
+ui/inspector/tree_view_mode=1
 
 [gui]
 

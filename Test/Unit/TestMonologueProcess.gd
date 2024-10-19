@@ -283,19 +283,26 @@ func test_process_node_sentence():
 	await assert_signal(monitor).is_emitted("monologue_sentence", signal_args)
 
 
-func test_roll_dice():
-	var fifty_or_more = []
-	var less_than_fifty = []
-	for i in range(100):
-		var roll = runner.roll_dice()
-		assert_int(roll).is_less_equal(100)
-		assert_int(roll).is_greater_equal(0)
-		if roll >= 50:
-			fifty_or_more.append(roll)
-		else:
-			less_than_fifty.append(roll)
-	assert_int(fifty_or_more.size()).is_greater(1)
-	assert_int(less_than_fifty.size()).is_greater(1)
+func test_pick_random_output():
+	var outputs := [
+		{ "ID": 0, "Weight": 5, "NextID": "MxRNES6j8G" },
+		{ "ID": 1, "Weight": 25, "NextID": "MxRNES6j8G" },
+		{ "ID": 2, "Weight": 55, "NextID": "MxRNES6j8G" },
+		{ "ID": 3, "Weight": 15, "NextID": "MxRNES6j8G" },
+	]
+	var results := {}
+	
+	for output in outputs:
+		results[output["ID"]] = 0
+
+	for i in range(10_000):
+		var output = runner.pick_random_output(outputs)
+		results[output["ID"]] += 1
+		
+	for output in outputs:
+		var expected_probability: float = output.get("Weight")/100
+		var actual_probability: float = results[output["ID"]]/10_000
+		assert_float(actual_probability).is_between(expected_probability-1, expected_probability+1)
 
 
 func test_set_option_value():

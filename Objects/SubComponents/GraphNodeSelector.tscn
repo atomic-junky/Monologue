@@ -110,7 +110,7 @@ mouse_default_cursor_shape = 2
 text = "Node Background
 "
 
-[node name="WaitNode" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="WaitSelector" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
@@ -146,7 +146,7 @@ icon = ExtResource("7_d1a3x")
 [connection signal="pressed" from="PanelContainer/VBoxContainer/ActionSelector" to="." method="_on_selector_btn_pressed" binds= ["Action"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/AudioSelector" to="." method="_on_selector_btn_pressed" binds= ["Audio"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/BackgroundSelector" to="." method="_on_selector_btn_pressed" binds= ["Background"]]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/WaitNode" to="." method="_on_selector_btn_pressed" binds= ["Wait"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/WaitSelector" to="." method="_on_selector_btn_pressed" binds= ["Wait"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SetterSelector" to="." method="_on_selector_btn_pressed" binds= ["Setter"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/RerouteSelector" to="." method="_on_selector_btn_pressed" binds= ["Reroute"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/EndPathSelector" to="." method="_on_selector_btn_pressed" binds= ["EndPath"]]

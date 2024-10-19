@@ -136,8 +136,8 @@ func process_node(node: Dictionary) -> void:
 			monologue_new_choice.emit(options)
 		
 		"NodeRandom":
-			print(node)
-			next_id = node.get("NextID")
+			var picked_output: Dictionary = pick_random_output(node.get("Outputs"))
+			next_id = picked_output.get("NextID")
 			next()
 		
 		"NodeSetter":
@@ -173,6 +173,19 @@ func process_node(node: Dictionary) -> void:
 		"NodeEndPath":
 			monologue_end.emit(node)
 			next_story(node.get("NextStory", node.get("NextStoryName")))
+
+
+func pick_random_output(outputs):
+	var random_number: int = randi_range(0, 100)
+	var cumulative_weight: int = 0
+	
+	print(random_number)
+	for output in outputs:
+		cumulative_weight += output.get("Weight")
+		if random_number <= cumulative_weight:
+			return output
+	
+	return null
 
 
 ## @deprecated: v3.x no longer uses NodeAction in this way
