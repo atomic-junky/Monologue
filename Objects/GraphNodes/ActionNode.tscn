@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://c02gpa5cixyfm"]
+[gd_scene load_steps=9 format=3 uid="uid://dg1if067aop0p"]
 
-[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_i5rqj"]
-[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_25hre"]
-[ext_resource type="Script" path="res://Scripts/GraphNodes/ActionNode.gd" id="3_fftd2"]
+[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_te18b"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_6rvj1"]
+[ext_resource type="Script" path="res://Scripts/GraphNodes/ActionNode.gd" id="3_s1gpj"]
+[ext_resource type="StyleBox" uid="uid://bmb6fo20hn20m" path="res://Assets/NodeValue.stylebox" id="4_286lp"]
 
 [sub_resource type="Theme" id="Theme_llmqa"]
 
@@ -24,110 +25,12 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kkyig"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
 [sub_resource type="LabelSettings" id="LabelSettings_v4ya3"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_awqig"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umba5"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k05xj"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c62mb"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldvoo"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mt5tg"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0784314, 0.0862745, 0.0980392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[node name="ActionNode" type="GraphNode" groups=["graph_nodes"]]
-offset_right = 300.0
-offset_bottom = 116.0
+[node name="ActionNode" type="GraphNode" node_paths=PackedStringArray("arg_box", "action_label", "no_args_label") groups=["graph_nodes"]]
+offset_right = 343.0
+offset_bottom = 87.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
@@ -138,11 +41,11 @@ title = "ActionNode"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
-slot/0/left_icon = ExtResource("1_i5rqj")
+slot/0/left_icon = ExtResource("1_te18b")
 slot/0/right_enabled = true
 slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
-slot/0/right_icon = ExtResource("2_25hre")
+slot/0/right_icon = ExtResource("2_6rvj1")
 slot/0/draw_stylebox = false
 slot/1/left_enabled = false
 slot/1/left_type = 0
@@ -151,205 +54,41 @@ slot/1/left_icon = null
 slot/1/right_enabled = false
 slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
-slot/1/right_icon = ExtResource("2_25hre")
+slot/1/right_icon = ExtResource("2_6rvj1")
 slot/1/draw_stylebox = false
-slot/2/left_enabled = false
-slot/2/left_type = 0
-slot/2/left_color = Color(1, 1, 1, 1)
-slot/2/left_icon = null
-slot/2/right_enabled = false
-slot/2/right_type = 0
-slot/2/right_color = Color(1, 1, 1, 1)
-slot/2/right_icon = ExtResource("2_25hre")
-slot/2/draw_stylebox = false
-slot/3/left_enabled = false
-slot/3/left_type = 0
-slot/3/left_color = Color(1, 1, 1, 1)
-slot/3/left_icon = null
-slot/3/right_enabled = false
-slot/3/right_type = 0
-slot/3/right_color = Color(1, 1, 1, 1)
-slot/3/right_icon = null
-slot/3/draw_stylebox = true
-slot/4/left_enabled = false
-slot/4/left_type = 0
-slot/4/left_color = Color(1, 1, 1, 1)
-slot/4/left_icon = null
-slot/4/right_enabled = false
-slot/4/right_type = 0
-slot/4/right_color = Color(1, 1, 1, 1)
-slot/4/right_icon = null
-slot/4/draw_stylebox = true
-script = ExtResource("3_fftd2")
+script = ExtResource("3_s1gpj")
+arg_box = NodePath("ArgBox")
+action_label = NodePath("CallContainer/CallBox/ActionLabel")
+no_args_label = NodePath("CallContainer/CallBox/NoArgsLabel")
 
-[node name="ActionTypeMarginContainer" type="MarginContainer" parent="."]
+[node name="CallContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ActionTypeContainer" type="HBoxContainer" parent="ActionTypeMarginContainer"]
+[node name="CallBox" type="HBoxContainer" parent="CallContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ActionTypeLabel" type="Label" parent="ActionTypeMarginContainer/ActionTypeContainer"]
+[node name="CallLabel" type="Label" parent="CallContainer/CallBox"]
 layout_mode = 2
-text = "Action"
+text = "Call"
 
-[node name="ActionTypeContainer" type="PanelContainer" parent="ActionTypeMarginContainer/ActionTypeContainer"]
+[node name="ActionLabel" type="Label" parent="CallContainer/CallBox"]
 layout_mode = 2
-mouse_filter = 2
-
-[node name="ActionTypeLabel" type="Label" parent="ActionTypeMarginContainer/ActionTypeContainer/ActionTypeContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_kkyig")
-text = "action type"
+theme_override_styles/normal = ExtResource("4_286lp")
+text = "custom action"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="OptionMarginContainer" type="MarginContainer" parent="."]
-visible = false
+[node name="WithLabel" type="Label" parent="CallContainer/CallBox"]
 layout_mode = 2
-mouse_filter = 2
+text = "with"
 
-[node name="OptionContainer" type="HBoxContainer" parent="OptionMarginContainer"]
+[node name="NoArgsLabel" type="Label" parent="CallContainer/CallBox"]
 layout_mode = 2
-mouse_filter = 2
-
-[node name="OptionLabel" type="Label" parent="OptionMarginContainer/OptionContainer"]
-layout_mode = 2
-text = "Enable Option"
-
-[node name="OptionIdContainer" type="PanelContainer" parent="OptionMarginContainer/OptionContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="OptionIdLabel" type="Label" parent="OptionMarginContainer/OptionContainer/OptionIdContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_awqig")
-text = "option id"
+theme_override_styles/normal = ExtResource("4_286lp")
+text = "no arguments"
 label_settings = SubResource("LabelSettings_v4ya3")
 
-[node name="Label" type="Label" parent="OptionMarginContainer/OptionContainer"]
-layout_mode = 2
-text = "?"
-
-[node name="ValueContainer" type="PanelContainer" parent="OptionMarginContainer/OptionContainer"]
+[node name="ArgBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
-
-[node name="ValueLabel" type="Label" parent="OptionMarginContainer/OptionContainer/ValueContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_umba5")
-text = "value"
-label_settings = SubResource("LabelSettings_v4ya3")
-
-[node name="VariableMarginContainer" type="MarginContainer" parent="."]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-
-[node name="VariableContainer" type="HBoxContainer" parent="VariableMarginContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="DoLabel" type="Label" parent="VariableMarginContainer/VariableContainer"]
-layout_mode = 2
-text = "Do"
-
-[node name="VariableNameContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="VariableNameLabel" type="Label" parent="VariableMarginContainer/VariableContainer/VariableNameContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_k05xj")
-text = "variable"
-label_settings = SubResource("LabelSettings_v4ya3")
-
-[node name="OperatorContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="OperatorLabel" type="Label" parent="VariableMarginContainer/VariableContainer/OperatorContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_c62mb")
-text = "operator"
-label_settings = SubResource("LabelSettings_v4ya3")
-
-[node name="ValueContainer" type="PanelContainer" parent="VariableMarginContainer/VariableContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ldvoo")
-
-[node name="ValueLabel" type="Label" parent="VariableMarginContainer/VariableContainer/ValueContainer"]
-layout_mode = 2
-text = "value
-"
-label_settings = SubResource("LabelSettings_v4ya3")
-
-[node name="TimerMarginContainer" type="MarginContainer" parent="."]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-
-[node name="CustomContainer" type="HBoxContainer" parent="TimerMarginContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="DoLabel" type="Label" parent="TimerMarginContainer/CustomContainer"]
-layout_mode = 2
-text = "Wait"
-
-[node name="TimerValueContainer" type="PanelContainer" parent="TimerMarginContainer/CustomContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TimerValueLabel" type="Label" parent="TimerMarginContainer/CustomContainer/TimerValueContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
-text = "0"
-label_settings = SubResource("LabelSettings_v4ya3")
-
-[node name="SecondsLabel" type="Label" parent="TimerMarginContainer/CustomContainer"]
-layout_mode = 2
-text = "seconds"
-
-[node name="CustomMarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="CustomContainer" type="HBoxContainer" parent="CustomMarginContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="DoLabel" type="Label" parent="CustomMarginContainer/CustomContainer"]
-layout_mode = 2
-text = "Do"
-
-[node name="CustomTypeContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="CustomTypeLabel" type="Label" parent="CustomMarginContainer/CustomContainer/CustomTypeContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
-text = "custom type"
-label_settings = SubResource("LabelSettings_v4ya3")
-
-[node name="CustomValueContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="CustomValueLabel" type="Label" parent="CustomMarginContainer/CustomContainer/CustomValueContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
-text = "nothing"
-label_settings = SubResource("LabelSettings_v4ya3")
-
-[node name="LoopValueContainer" type="PanelContainer" parent="CustomMarginContainer/CustomContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="LoopValueLabel" type="Label" parent="CustomMarginContainer/CustomContainer/LoopValueContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_mt5tg")
-text = "and loop"
-label_settings = SubResource("LabelSettings_v4ya3")

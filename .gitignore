@@ -23,3 +23,4 @@ addons/script-ide
 
 # VSCode
 .vscode/
+/addons/gdUnit4/tmp-update

@@ -2,9 +2,11 @@ extends GdUnitTestSuite
 
 
 var buttons = [
-	["SentenceSelector"], ["ChoiceSelector"], ["DiceRollSelector"], 
+	["SentenceSelector"], ["ChoiceSelector"], ["RandomSelector"], 
 	["BridgeSelector"], ["ConditionSelector"], 
-	["ActionSelector"], ["EndPathSelector"]
+	["ActionSelector"], ["AudioSelector"],
+	["BackgroundSelector"], ["WaitSelector"],
+	["SetterSelector"], ["RerouteSelector"], ["EndPathSelector"]
 ]
 
 

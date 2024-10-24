@@ -72,7 +72,7 @@ func get_character_asset(character: String, _variant = null):
 
 
 func _on_monologue_end(raw_end):
-	if not raw_end or not raw_end.get("NextStoryName"):
+	if not raw_end or not raw_end.get("NextStory", raw_end.get("NextStoryName")):
 		_exit()
 
 
@@ -136,7 +136,7 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 
 func _instantiate_option(option):
 	var new_option = option_button.instantiate()
-	new_option.text = option.get("Sentence")
+	new_option.text = option.get("Option")
 	new_option.connect("pressed", select_option.bind(option))
 	return new_option
 
@@ -163,10 +163,9 @@ func _on_monologue_option_chosen(_raw_option):
 func _on_monologue_event_triggered(raw_event):
 	var event_id = raw_event.get("ID").split("-")[0]
 	
-	var condition = raw_event.get("Condition")
-	var variable = str(condition.get("Variable"))
-	var operator = str(condition.get("Operator"))
-	var value = str(condition.get("Value"))
+	var variable = str(raw_event.get("Variable"))
+	var operator = str(raw_event.get("Operator"))
+	var value = str(raw_event.get("Value"))
 	
 	var message = "Event triggered [color=7f7f7f](%s)[/color]\n" + \
 			"Condition: [color=7f7f7f]%s %s %s[/color]"
@@ -185,7 +184,10 @@ func _on_monologue_play_audio(path, _player):
 
 
 func _on_monologue_custom_action(raw_action):
-	$Notification.debug("Custom action received [color=7f7f7f](%s)[/color]" % raw_action.get("Value"))
+	var action_name = raw_action.get("Value", raw_action.get("Action"))
+	if not action_name:
+		action_name = "<<unnamed>>"
+	$Notification.debug("Custom action received [color=7f7f7f](%s)[/color]" % action_name)
 
 
 func _on_monologue_timer_started(wait_time):

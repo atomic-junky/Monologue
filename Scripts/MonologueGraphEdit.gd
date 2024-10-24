@@ -4,6 +4,7 @@ extends GraphEdit
 
 
 var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
+var base_options = {}
 var data: Dictionary
 var file_path: String
 var undo_redo := HistoryHandler.new()
@@ -79,8 +80,8 @@ func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	
 	var node_data = node._to_dict()
 	if "options" in node:
-		# tag options into the node_data without NextIDs
-		node_data.merge({"Options": node.options})
+		# tag options into the node_data
+		node_data.merge({ "Options": node.options.value })
 	if active_graphnode == node:
 		active_graphnode = null
 	
@@ -88,7 +89,7 @@ func free_graphnode(node: MonologueGraphNode) -> Dictionary:
 	recorded_positions.erase(node)
 	node.queue_free()
 	# if side panel is showing this node, close it since it's gone
-	GlobalSignal.emit("clear_current_panel", [node])
+	GlobalSignal.emit("close_panel", [node])
 	return node_data
 
 
@@ -144,23 +145,17 @@ func get_root_node() -> RootNode:
 	return null
 
 
+## Find a graph node by ID. Includes OptionNodes.
 func get_node_by_id(id: String) -> MonologueGraphNode:
 	if not id.is_empty():
 		for node in get_nodes():
-			if node.id == id:
+			if node.id.value == id:
 				return node
+			elif node is ChoiceNode:
+				var option = node.get_option_by_id(id)
+				if option:
+					return option
 	return null
-
-
-## Check if an option ID exists in the entirety of the graph.
-func is_option_id_exists(option_id: String) -> bool:
-	for node in get_nodes():
-		if node.node_type != "NodeChoice":
-			continue
-		var node_options_id: Array = node.get_all_options_id()
-		if node_options_id.has(option_id):
-			return true
-	return false
 
 
 func is_unsaved() -> bool:
@@ -249,14 +244,20 @@ func _on_auto_arrange_nodes() -> void:
 
 
 func _on_child_entered_tree(node: Node) -> void:
-	if node is MonologueGraphNode and not node is RootNode:
+	if node is MonologueGraphNode:
+		if node is RootNode:
+			return
+		
+		if not node.show_close_button:
+			return
+			
 		var node_header = node.get_children(true)[0]
 		var close_button: TextureButton = close_button_scene.instantiate()
 		
 		var close_callback = func():
 				var delete_history = DeleteNodeHistory.new(self, [node])
 				var message = "Delete %s (id: %s)"
-				undo_redo.create_action(message % [node.node_type, node.id])
+				undo_redo.create_action(message % [node.node_type, node.id.value])
 				undo_redo.add_prepared_history(delete_history)
 				undo_redo.commit_action(false)
 				selected_nodes.erase(node)
