@@ -1,43 +1,22 @@
 @icon("res://Assets/Icons/NodesIcons/Exit.svg")
-
-class_name EndPathNode
-
-extends MonologueGraphNode
+class_name EndPathNode extends MonologueGraphNode
 
 
-var next_story_name = ""
+const NOTE = "Note: Variables are kept with their values between stories when you use this node."
+
+var next_story := Property.new(LINE, { "note_text": NOTE })
 
 
 func _ready():
 	node_type = "NodeEndPath"
-	title = node_type
+	super._ready()
 
 
-func _to_dict():
-	return {
-		"$type": node_type,
-		"ID": id,
-		"NextStoryName": next_story_name,
-		"EditorPosition": {
-			"x": position_offset.x,
-			"y": position_offset.y
-		}
-	}
-
-
-func _from_dict(dict):
-	id = dict.get("ID")
-	next_story_name = dict.get("NextStoryName", "")
-	
-	position_offset.x = dict.EditorPosition.get("x")
-	position_offset.y = dict.EditorPosition.get("y")
+func _from_dict(dict: Dictionary):
+	next_story.value = dict.get("NextStoryName", "")  # backwards compatibility
+	super._from_dict(dict)
 
 
 func _on_close_request():
 	queue_free()
 	get_parent().clear_all_empty_connections()
-
-
-func _update(panel: EndPathNodePanel = null):
-	if panel != null:
-		next_story_name = panel.next_story_name

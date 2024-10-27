@@ -37,6 +37,7 @@ SfxLoader="*res://Test/Scripts/SfxLoader.gd"
 GlobalSignal="*res://Scripts/Global/GlobalSignal.gd"
 Path="*res://Scripts/Global/Path.gd"
 Cursor="*res://addons/awesome_custom_cursor/Autoloads/Cursor.tscn"
+IDGen="*res://Scripts/Global/IDGen.gd"
 
 [display]
 
@@ -78,6 +79,7 @@ import/blender/enabled=false
 
 settings/test/test_lookup_folder="Unit"
 ui/toolbar/run_overall=true
+ui/inspector/tree_view_mode=1
 
 [gui]
 

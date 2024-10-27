@@ -6,7 +6,7 @@ class_name GraphEditSwitcher extends VBoxContainer
 const UNSAVED_FILE_SUFFIX: String = "*"
 
 ## Reference to the side panel control to connect graph edits to.
-@export var side_panel: SidePanelNodeDetails
+@export var side_panel: SidePanel
 
 var graph_edit_scene = preload("res://Objects/MonologueGraphEdit.tscn")
 var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")

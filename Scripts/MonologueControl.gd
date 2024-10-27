@@ -9,22 +9,6 @@ var dialog_for_localisation = []
 const HISTORY_FILE_PATH: String = "user://history.save"
 const UNSAVED_FILE_SUFFIX: String = "*"
 
-## Dictionary of Monologue node types and their corresponding scenes.
-var scene_dictionary = {
-	"Root": preload("res://Objects/GraphNodes/RootNode.tscn"),
-	"Action": preload("res://Objects/GraphNodes/ActionNode.tscn"),
-	"Bridge": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
-	"BridgeIn": preload("res://Objects/GraphNodes/BridgeInNode.tscn"),
-	"BridgeOut": preload("res://Objects/GraphNodes/BridgeOutNode.tscn"),
-	"Choice": preload("res://Objects/GraphNodes/ChoiceNode.tscn"),
-	"Comment": preload("res://Objects/GraphNodes/CommentNode.tscn"),
-	"Condition": preload("res://Objects/GraphNodes/ConditionNode.tscn"),
-	"DiceRoll": preload("res://Objects/GraphNodes/DiceRollNode.tscn"),
-	"EndPath": preload("res://Objects/GraphNodes/EndPathNode.tscn"),
-	"Event": preload("res://Objects/GraphNodes/EventNode.tscn"),
-	"Sentence": preload("res://Objects/GraphNodes/SentenceNode.tscn"),
-}
-
 @onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
@@ -37,7 +21,7 @@ var scene_dictionary = {
 @onready var file_dialog = $FileDialog
 @onready var no_interactions_dimmer = $NoInteractions
 
-var root_scene = scene_dictionary.get("Root")
+var root_scene = GlobalVariables.node_dictionary.get("Root")
 var live_dict: Dictionary
 
 ## Set to true if a file operation is triggered from Header instead of WelcomeWindow.
@@ -64,8 +48,8 @@ var picker_position
 func _ready():
 	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
 	var new_root_node = root_scene.instantiate()
-	get_current_graph_edit().add_child(new_root_node)
-	connect_side_panel(get_current_graph_edit())
+	graph.current.add_child(new_root_node)
+	connect_side_panel(graph.current)
 	
 	# Load recent files
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
@@ -235,22 +219,24 @@ func _connect_nodes(node_list: Array) -> void:
 		var current_node = graph.current.get_node_by_id(node.get("ID", ""))
 		if current_node:
 			current_node._load_connections(node)
-			if node.has("EditorPosition"):
-				current_node.position_offset.x = node.EditorPosition.get("x")
-				current_node.position_offset.y = node.EditorPosition.get("y")
 
 
 func _load_nodes(node_list: Array) -> void:
+	var converter = NodeConverter.new()
 	for node in node_list:
-		var node_type = node.get("$type").trim_prefix("Node")
-		var node_scene = GlobalVariables.node_dictionary.get(node_type)
-		if not node_scene:
-			continue
 
-		var new_node = node_scene.instantiate()
-		new_node.id = node.get("ID")
-		graph.current.add_child(new_node, true)
-		new_node._from_dict(node)
+		var data = converter.convert_node(node)
+		var node_type = data.get("$type").trim_prefix("Node")
+		if node_type == "Option":
+			# option data gets sent to the base_options dictionary
+			graph.current.base_options[data.get("ID")] = data
+		else:
+			var node_scene = GlobalVariables.node_dictionary.get(node_type)
+			if node_scene:
+				var node_instance = node_scene.instantiate()
+				node_instance.id.value = data.get("ID")
+				graph.current.add_child(node_instance, true)
+				node_instance._from_dict(data)
 
 
 func _notification(what: int) -> void:

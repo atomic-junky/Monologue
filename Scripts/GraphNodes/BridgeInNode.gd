@@ -14,28 +14,6 @@ func _ready():
 	title = node_type
 
 
-func _to_dict() -> Dictionary:
-	var next_node = get_parent().get_linked_bridge_node(number_selector.value)
-	return {
-		"$type": node_type,
-		"ID": id,
-		"NextID": next_node.id if next_node else -1,
-		"NumberSelector": number_selector.value,
-		"EditorPosition": {
-			"x": position_offset.x,
-			"y": position_offset.y
-		}
-	}
-
-
-func _from_dict(dict):
-	id = dict.get("ID")
-	number_selector.value = dict.get("NumberSelector")
-	
-	position_offset.x = dict.EditorPosition.get("x")
-	position_offset.y = dict.EditorPosition.get("y")
-
-
 func add_to(graph):
 	var created = super.add_to(graph)
 	var number = graph.get_free_bridge_number()
@@ -49,14 +27,24 @@ func add_to(graph):
 	return created
 
 
+func _from_dict(dict):
+	number_selector.value = dict.get("NumberSelector")
+	super._from_dict(dict)
+
+
 func _load_connections(_data: Dictionary, _key: String = "") -> void:
 	return  # BridgeIn uses NextID covertly, not as a graph connection
 
 
-func _on_close_request():
-	queue_free()
-	get_parent().clear_all_empty_connections()
-
-
 func _on_position_offset_changed():
 	return
+
+
+func _to_fields(dict: Dictionary) -> void:
+	super._to_fields(dict)
+	dict["NumberSelector"] = number_selector.value
+
+
+func _to_next(dict: Dictionary, key: String = "NextID") -> void:
+	var next_node = get_parent().get_linked_bridge_node(number_selector.value)
+	dict[key] = next_node.id.value if next_node else -1
