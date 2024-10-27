@@ -11,7 +11,7 @@ var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
 var revert_text: String
 var validator: Callable = func(_text): return true
 
-@onready var copy_button = $OuterVBox/HBox/CopyButton
+@onready var copy_button = $OuterVBox/HBox/InnerVBox/LineEdit/HBoxContainer/CopyButton
 @onready var label = $OuterVBox/HBox/FieldLabel
 @onready var line_edit = $OuterVBox/HBox/InnerVBox/LineEdit
 @onready var warning = $OuterVBox/HBox/InnerVBox/WarnLabel

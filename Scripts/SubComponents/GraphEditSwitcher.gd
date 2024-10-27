@@ -14,13 +14,17 @@ var root_scene = GlobalVariables.node_dictionary.get("Root")
 var current: MonologueGraphEdit: get = get_current_graph_edit
 var is_closing_all_tabs: bool
 
-@onready var graph_edits: Control = $GraphEdits
-@onready var tab_bar: TabBar = $TabBar
+var tab_bar: TabBar
+
+@onready var graph_edits: Control = $GraphEditZone/GraphEdits
+@onready var control: MonologueControl = $"../../../.."
 
 
 func _ready() -> void:
+	tab_bar = control.tab_bar
+	tab_bar.connect("tab_changed", _on_tab_changed)
+	new_graph_edit()
 	current.add_child(root_scene.instantiate())
-	connect_side_panel(current)
 	GlobalSignal.add_listener("previous_tab", previous_tab)
 	GlobalSignal.add_listener("show_current_config", show_current_config)
 
@@ -72,17 +76,19 @@ func is_file_opened(filepath: String) -> bool:
 	return false
 
 
-func new_graph_edit() -> void:
+func new_graph_edit() -> MonologueGraphEdit:
 	var graph_edit = graph_edit_scene.instantiate()
 	var root_node = root_scene.instantiate()
 	
-	graph_edit.name = "new"
+	graph_edit.control_node = control
 	graph_edit.add_child(root_node)
 	connect_side_panel(graph_edit)
 	graph_edits.add_child(graph_edit)
 	
 	for ge in graph_edits.get_children():
 		ge.visible = ge == graph_edit
+	
+	return graph_edit
 
 
 func on_tab_close_pressed(tab: int) -> void:
@@ -133,7 +139,7 @@ func _close_tab(graph_edit, tab_index, save_first = false) -> void:
 
 
 func _on_tab_changed(tab: int) -> void:
-	if tab_bar.get_tab_title(tab) != "+":
+	if tab < tab_bar.tab_count-1:
 		for ge in graph_edits.get_children():
 			if graph_edits.get_child(tab) == ge:
 				ge.visible = true
@@ -145,6 +151,7 @@ func _on_tab_changed(tab: int) -> void:
 				ge.visible = false
 		return
 	
+	tab_bar.current_tab = tab_bar.get_previous_tab()
 	new_graph_edit()
 	GlobalSignal.emit("show_welcome", [tab_bar.tab_count > 1])
 	side_panel.hide()

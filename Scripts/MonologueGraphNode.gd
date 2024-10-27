@@ -26,7 +26,7 @@ var node_type: String = "NodeUnknown"
 
 func _ready() -> void:
 	_set_titlebar_color(titlebar_color)
-	
+
 	title = node_type
 	id.setters["copyable"] = true
 	id.setters["font_size"] = 11

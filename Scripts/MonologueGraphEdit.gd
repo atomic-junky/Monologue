@@ -1,6 +1,5 @@
 ## Represents the graph area which creates and connects MonologueGraphNodes.
-class_name MonologueGraphEdit
-extends GraphEdit
+class_name MonologueGraphEdit extends GraphEdit
 
 
 var close_button_scene = preload("res://Objects/SubComponents/CloseButton.tscn")
@@ -27,7 +26,7 @@ func _ready() -> void:
 	var auto_arrange_button = get_menu_hbox().get_children().back()
 	auto_arrange_button.connect("pressed", _on_auto_arrange_nodes)
 	
-	center_offset.bindv([true]).call_deferred()
+	center_offset.call_deferred()
 	
 	# Hide scroll bar
 	for child in get_children(true):
@@ -46,10 +45,10 @@ func _on_add_btn() -> void:
 	GlobalSignal.emit("select_new_node")
 
 
-func center_offset(to_root: bool = false):
+func center_offset():
 	var base_offset = Vector2.ZERO
-	if to_root:
-		var root_node: RootNode = get_root_node()
+	var root_node: RootNode = get_root_node()
+	if root_node:
 		base_offset = root_node.position_offset + (root_node.size/2)*zoom
 	
 	scroll_offset = -size/2 + base_offset
@@ -83,18 +82,18 @@ func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
 				control_node.picker_from_node, control_node.picker_from_port):
 			picker_to_names.append(picker_to_node.name)
 	
-	var node_scene = control_node.scene_dictionary.get(node_type)
+	var node_scene = GlobalVariables.node_dictionary.get(node_type)
 	var new_node = node_scene.instantiate()
 	
 	# created_nodes include auxilliary nodes from new_node, such as BridgeOut
 	var created_nodes = new_node.add_to(self)
 	
 	# if enabled, track the addition of created_nodes into the graph history
-	if record_history:
+	if record:
 		var addition = AddNodeHistory.new(self, created_nodes)
 		if not picker_to_names.is_empty():
-			addition.picker_from_node = picker.node
-			addition.picker_from_port = picker.port
+			addition.picker_from_node = control_node.picker_from_node
+			addition.picker_from_port = control_node.picker_from_port
 			addition.picker_to_names = picker_to_names
 		
 		undo_redo.create_action("Add new %s" % [new_node.node_type])

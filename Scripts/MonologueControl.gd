@@ -13,13 +13,11 @@ const UNSAVED_FILE_SUFFIX: String = "*"
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
-@onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEditZone/GraphEdits
+@onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/GraphEdits
 @onready var side_panel_node = %SidePanelNodeDetails
 @onready var graph_node_selecter = $GraphNodePicker
-@onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
-@onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Edit
-@onready var file_dialog = $FileDialog
-@onready var no_interactions_dimmer = $NoInteractions
+@onready var file_dialog = $FileDialogv2
+@onready var graph: GraphEditSwitcher = %GraphEditSwitcher
 
 var root_scene = GlobalVariables.node_dictionary.get("Root")
 var live_dict: Dictionary
@@ -38,18 +36,11 @@ var picker_from_node
 var picker_from_port
 var picker_position
 
-@onready var dimmer: ColorRect = $NoInteractions
-@onready var graph: GraphEditSwitcher = %GraphEditSwitcher
-@onready var header: Header = %Header
-@onready var welcome: WelcomeWindow = $WelcomeWindow
-
-
 
 func _ready():
 	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
 	var new_root_node = root_scene.instantiate()
 	graph.current.add_child(new_root_node)
-	connect_side_panel(graph.current)
 	
 	# Load recent files
 	if not FileAccess.file_exists(HISTORY_FILE_PATH):
@@ -76,22 +67,14 @@ func _ready():
 					btn_text = btn_text.back()
 				
 				btn.text = Util.truncate_filename(btn_text)
-				btn.pressed.connect(file_selected.bind(path, 1))
+				btn.pressed.connect(GlobalSignal.emit.bind("load_project", [path, true]))
 				%RecentFilesButtonContainer.add_child(btn)
 			%RecentFilesContainer.show()
 		else:
 			%RecentFilesContainer.hide()
 	
-	welcome_window.show()
-	no_interactions_dimmer.show()
-	welcome.open()
-	
-	tab_bar.connect("tab_changed", tab_changed)
-	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
 	GlobalSignal.add_listener("select_new_node", _select_new_node)
-	GlobalSignal.add_listener("show_dimmer", dimmer.show)
-	GlobalSignal.add_listener("hide_dimmer", dimmer.hide)
 	GlobalSignal.add_listener("load_project", load_project)
 	GlobalSignal.add_listener("test_trigger", test_project)
 	GlobalSignal.add_listener("save", save)
@@ -108,7 +91,7 @@ func _shortcut_input(event):
 
 func _to_dict() -> Dictionary:
 	var list_nodes: Array[Dictionary] = []
-	var graph_edit = get_current_graph_edit()
+	var graph_edit = graph.current
 	
 	# compile all node data of the current graph edit
 	for node in graph_edit.get_nodes():
@@ -135,7 +118,6 @@ func _to_dict() -> Dictionary:
 			"Reference": "_NARRATOR",
 			"ID": 0
 		})
-	header.increment_save_progress()
 	
 	return {
 		"EditorVersion": ProjectSettings.get_setting("application/config/version", "unknown"),
@@ -149,7 +131,7 @@ func _to_dict() -> Dictionary:
 ## Function callback for when the user wants to add a node from global context.
 ## Used by header menu and graph node selector (picker).
 func add_node_from_global(node_type: String, picker: GraphNodeSelector = null):
-	graph.current.add_node(node_type, true, picker)
+	graph.current.add_node(node_type, true)
 
 
 func get_root_dict(node_list: Array) -> Dictionary:
@@ -165,8 +147,6 @@ func load_project(path: String, new_graph: bool = false) -> void:
 		if new_graph: graph.new_graph_edit()
 		graph.add_tab(path.get_file())
 		graph.current.file_path = path
-		welcome.add_recent_file(path)
-		welcome.close()
 		
 		var data = {}
 		var text = file.get_as_text()
@@ -186,6 +166,10 @@ func load_project(path: String, new_graph: bool = false) -> void:
 		_connect_nodes(node_list)
 		graph.add_root()
 		graph.current.update_node_positions()
+	elif graph.is_file_opened(path):
+		# Switch to path tab
+		pass
+	file_dialog.hide()
 
 
 func save(quick: bool = false):
@@ -197,9 +181,6 @@ func save(quick: bool = false):
 		file.close()
 		graph.current.update_version()
 		graph.update_save_state()
-		header.show_save_notification(0.0 if quick else 1.5)
-	else:
-		header.hide_save_notification()  # fail to load
 
 
 func test_project(from_node: String = "-1"):
@@ -224,7 +205,6 @@ func _connect_nodes(node_list: Array) -> void:
 func _load_nodes(node_list: Array) -> void:
 	var converter = NodeConverter.new()
 	for node in node_list:
-
 		var data = converter.convert_node(node)
 		var node_type = data.get("$type").trim_prefix("Node")
 		if node_type == "Option":
