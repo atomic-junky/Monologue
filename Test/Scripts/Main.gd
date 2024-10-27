@@ -1,7 +1,6 @@
 extends MonologueProcess
 
 
-@onready var menu_scene = load("res://Test/Menu.tscn").instantiate()
 @onready var text_box = preload("res://Test/Objects/text_box.tscn")
 @onready var option_button = preload("res://Test/Objects/option_button.tscn")
 
@@ -41,16 +40,19 @@ func _input(event):
 			is_notification_skippable = false
 		next()
 
+
 func _handle_scrollbar_changed():
 	sp_scroll_container.scroll_vertical = int(sp_scrollbar.max_value)
+
 
 func get_character_asset(character: String, _variant = null):
 	if character.begins_with("_"):
 		return
-		
+	
+	var rng = RandomNumberGenerator.new()
 	rng.seed = hash(character)
 	var rng_nbr = rng.randi_range(0, 5)
-	match  rng_nbr:
+	match rng_nbr:
 		0:
 			return
 		1:
@@ -134,8 +136,7 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 func _instantiate_option(option):
 	var new_option = option_button.instantiate()
 	new_option.text = option.get("Sentence")
-	new_option.connect("pressed", option_selected.bind(option))
-	
+	new_option.connect("pressed", select_option.bind(option))
 	return new_option
 
 
@@ -148,7 +149,7 @@ func _on_monologue_new_choice(options):
 	sp_choice_container.show()
 
 
-func _on_monologue_option_choosed(_raw_option):
+func _on_monologue_option_chosen(_raw_option):
 	tb_choice_container.hide()
 	sp_choice_container.hide()
 	
@@ -162,25 +163,28 @@ func _on_monologue_event_triggered(raw_event):
 	var event_id = raw_event.get("ID").split("-")[0]
 	
 	var condition = raw_event.get("Condition")
-	var condition_display = str(condition.get("Variable")) + " " + str(condition.get("Operator")) + " " + str(condition.get("Value"))
+	var variable = str(condition.get("Variable"))
+	var operator = str(condition.get("Operator"))
+	var value = str(condition.get("Value"))
 	
-	$Notification.debug("Event triggered [color=7f7f7f](" + event_id + ")[/color]\n" + "Condition: [color=7f7f7f]" + condition_display + "[/color]")
+	var message = "Event triggered [color=7f7f7f](%s)[/color]\n" + \
+			"Condition: [color=7f7f7f]%s %s %s[/color]"
+	$Notification.debug(message % [event_id, variable, operator, value])
 
 
 func _on_monologue_update_background(path, texture):
-	
 	if texture:
 		background_node.texture = texture
 	else:
-		$Notification.debug("Update Background instruction received [color=7f7f7f](" + path + ")[/color]")
+		$Notification.debug("Update Background instruction received [color=7f7f7f](%s)[/color]" % path)
 
 
-func _on_monologue_play_audio(path, _stream):
-	$Notification.debug("Play Audio instruction received [color=7f7f7f](" + path + ")[/color]")
+func _on_monologue_play_audio(path, _player):
+	$Notification.debug("Play Audio instruction received [color=7f7f7f](%s)[/color]" % path.get_file())
 
 
 func _on_monologue_custom_action(raw_action):
-	$Notification.debug("Custom action received [color=7f7f7f](" + raw_action.get("Value") + ")[/color]")
+	$Notification.debug("Custom action received [color=7f7f7f](%s)[/color]" % raw_action.get("Value"))
 
 
 func _on_monologue_timer_started(wait_time):
@@ -193,7 +197,7 @@ func _switch_mode_pressed(sp: bool = false):
 	$TextBoxContainer.visible = sp
 
 
-func _notify(level: NotificationLevel, text: String):
+func _on_monologue_notify(level: NotificationLevel, text: String):
 	match level:
 		NotificationLevel.INFO:
 			$Notification.info(text)

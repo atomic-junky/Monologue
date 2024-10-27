@@ -47,6 +47,13 @@ func _from_dict(_dict: Dictionary):
 	pass
 
 
+func _load_connections(data: Dictionary, key: String = "NextID"):
+	var next_id = data.get(key)
+	if next_id is String:
+		var next_node = get_parent().get_node_by_id(next_id)
+		get_parent().connect_node(name, 0, next_node.name, 0)
+
+
 func _to_dict():
 	pass
 

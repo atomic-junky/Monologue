@@ -24,6 +24,7 @@ script = ExtResource("1_vdup8")
 titlebar_color = Color(0.85098, 0.32549, 0.309804, 1)
 
 [node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(87, 87)
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("2_nabb1")

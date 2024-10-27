@@ -43,6 +43,14 @@ func _from_dict(dict):
 	position_offset.y = dict.EditorPosition.get("y")
 
 
+func _load_connections(data: Dictionary, key: String = "PassID") -> void:
+	super._load_connections(data, key)
+	var fail_id = data.get("FailID")
+	if fail_id is String:
+		var fail_node = get_parent().get_node_by_id(fail_id)
+		get_parent().connect_node(name, 1, fail_node.name, 0)
+
+
 func _update(panel: DiceRollNodePanel = null):
 	if panel != null:
 		target_number = panel.target_number

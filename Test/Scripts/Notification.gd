@@ -14,7 +14,12 @@ func _ready():
 
 
 func notify(text, tag, color, time):
-	print("[%s] %s" % [tag, text])
+	var bb_parser = RichTextLabel.new()
+	bb_parser.parse_bbcode(text)
+	bb_parser.get_parsed_text()
+	print("[%s] %s" % [tag, bb_parser.get_parsed_text()])
+	bb_parser.free()
+	
 	label.text = "[color=%s][%s][/color] %s" % [color.to_html(false), tag, text]
 	timeleft.custom_minimum_size.x = size.x
 	timeleft.get_theme_stylebox("panel").bg_color = color

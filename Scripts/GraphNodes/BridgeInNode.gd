@@ -1,9 +1,9 @@
 ## Continues the dialogue from BridgeIn node to its counterpart BridgeOut node.
 @icon("res://Assets/Icons/NodesIcons/Link.svg")
+class_name BridgeInNode extends MonologueGraphNode
 
-class_name BridgeInNode
-extends MonologueGraphNode
 
+var bridge_out_scene = preload("res://Objects/GraphNodes/BridgeOutNode.tscn")
 
 ## Spinner control which selects what number to bridge to.
 @onready var number_selector: SpinBox = $HBoxContainer/LinkNumber
@@ -41,12 +41,16 @@ func add_to(graph):
 	var number = graph.get_free_bridge_number()
 	number_selector.value = number
 	
-	var bridge_out = graph.control_node.scene_dictionary.get("BridgeOut").instantiate()
+	var bridge_out = bridge_out_scene.instantiate()
 	bridge_out.add_to(graph)
 	bridge_out.number_selector.value = number
 	created.append(bridge_out)
 	
 	return created
+
+
+func _load_connections(_data: Dictionary, _key: String = "") -> void:
+	return  # BridgeIn uses NextID covertly, not as a graph connection
 
 
 func _on_close_request():
