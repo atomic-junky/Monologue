@@ -13,7 +13,6 @@ func _ready():
 	GlobalSignal.add_listener("enable_picker_mode", _on_enable_picker_mode)
 
 func _on_enable_picker_mode(node: String = "", port: int = -1, release_pos = null, center_pos = null):
-	print(node)
 	from_node = node
 	from_port = port
 	release = release_pos
