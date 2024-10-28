@@ -1,27 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cmpsaafag7cwl"]
 
+[ext_resource type="Script" path="res://Scripts/Windows/GraphNodePicker.gd" id="1_bo8rm"]
 [ext_resource type="Script" path="res://Scripts/UI/GraphNodeTree.gd" id="1_drh42"]
-
-[sub_resource type="GDScript" id="GDScript_n7pld"]
-script/source = "extends Window
-
-
-func _ready():
-	hide()
-	force_native = true
-
-
-func _on_close_requested() -> void:
-	hide()
-
-
-func _on_cancel_button_pressed() -> void:
-	hide()
-
-
-func _on_create_button_pressed() -> void:
-	hide()
-"
 
 [node name="GraphNodePicker" type="Window"]
 auto_translate_mode = 1
@@ -34,7 +14,7 @@ exclusive = true
 extend_to_title = true
 keep_title_visible = true
 content_scale_mode = 1
-script = SubResource("GDScript_n7pld")
+script = ExtResource("1_bo8rm")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15

@@ -2,26 +2,34 @@ extends Tree
 
 
 @onready var create_btn: Button = %CreateButton
+@onready var window: GraphNodePicker = $"../../../.."
 
 ## The data to build the tree
 ## An oject can contain keys with name "text", "value", icon" and "children".
 var _data =  [
-		{"text": "Main", "children": [
+		{"text": "Narration", "children": [
 			{"text": "Sentence", "icon": "Graph/text.svg"},
 			{"text": "Choice", "icon": "Graph/choice.svg"},
 		]},
 		{"text": "Logic", "children": [
 			{"text": "Action", "icon": "Graph/action.svg"},
 			{"text": "Condition", "icon": "Graph/condition.svg"},
-			{"text": "DiceRoll", "icon": "Graph/dice.svg"},
+			{"text": "Random", "icon": "Graph/dice.svg"},
+			{"text": "Setter", "icon": "Graph/action.svg"},
 		]},
 		{"text": "Flow", "children": [
 			{"text": "Event", "icon": "Graph/calendar.svg"},
 			{"text": "Bridge", "icon": "Graph/link.svg"},
 			{"text": "EndPath", "icon": "Graph/exit.svg"},
+			{"text": "Wait", "icon": "Graph/exit.svg"},
+		]},
+		{"text": "Audio and Visuals", "children": [
+			{"text": "Audio", "icon": "Graph/exit.svg"},
+			{"text": "Background", "icon": "Graph/exit.svg"},
 		]},
 		{"text": "Helpers", "children": [
 			{"text": "Comment", "icon": "Graph/comment.svg"},
+			{"text": "Reroute", "icon": "Graph/comment.svg"},
 		]}
 	]
 
@@ -33,6 +41,7 @@ func _ready() -> void:
 	var root = create_item()
 	_recusive_load_data(_data, root)
 	deselect_all()
+
 
 func _recusive_load_data(items: Array, tree_parent: TreeItem) -> void:
 	for obj: Dictionary in items:
@@ -50,7 +59,7 @@ func _recusive_load_data(items: Array, tree_parent: TreeItem) -> void:
 
 func _create() -> void:
 	var node_type = get_selected().get_text(0)
-	GlobalSignal.emit("add_graph_node", [node_type])
+	GlobalSignal.emit("add_graph_node", [node_type, window])
 
 
 func _on_item_selected() -> void:

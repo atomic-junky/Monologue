@@ -130,8 +130,12 @@ func _to_dict() -> Dictionary:
 
 ## Function callback for when the user wants to add a node from global context.
 ## Used by header menu and graph node selector (picker).
-func add_node_from_global(node_type: String, picker: GraphNodeSelector = null):
-	graph.current.add_node(node_type, true)
+func add_node_from_global(node_type: String, picker: GraphNodePicker = null):
+	picker_from_node = picker.from_node
+	picker_from_port = picker.from_port
+	
+	var new_nodes: Array[MonologueGraphNode] = graph.current.add_node(node_type, true)
+	graph.current.pick_and_center(new_nodes, picker)
 
 
 func get_root_dict(node_list: Array) -> Dictionary:

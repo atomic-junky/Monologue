@@ -1,6 +1,5 @@
 [gd_scene load_steps=11 format=3 uid="uid://djcfm0pl15x87"]
 
-[ext_resource type="Script" path="res://Scripts/SubComponents/GraphNodeSelector.gd" id="1_5l6lg"]
 [ext_resource type="Texture2D" uid="uid://3cbk6gtd8pis" path="res://Assets/Icons/NodesIcons/Sentence.svg" id="1_ojtey"]
 [ext_resource type="Texture2D" uid="uid://cpirwf2kaphk0" path="res://Assets/Icons/NodesIcons/Multiple Choice.svg" id="2_637k5"]
 [ext_resource type="Texture2D" uid="uid://duc8w81evfnqw" path="res://Assets/Icons/NodesIcons/DiceRoll.svg" id="3_sek5i"]
@@ -20,6 +19,44 @@ expand_margin_top = 35.0
 expand_margin_right = 5.0
 expand_margin_bottom = 5.0
 
+[sub_resource type="GDScript" id="GDScript_whwvk"]
+script/source = "class_name GraphNodeSelector extends Window
+
+
+var node: String
+var port: int
+var location: Vector2
+
+
+func _ready() -> void:
+	hide()
+	GlobalSignal.add_listener(\"enable_picker_mode\", enable_picker_mode)
+	GlobalSignal.add_listener(\"disable_picker_mode\", disable_picker_mode)
+
+
+## Start the picker mode from a given node and port. Picker mode is where
+## a new node is created from another node through a connection to empty.
+func enable_picker_mode(from_node: String, from_port: int,
+			release_position: Vector2, center_position: Vector2) -> void:
+	position = Vector2i(release_position) - size / 2 * Vector2i(1, 0)
+	location = center_position
+	node = from_node
+	port = from_port
+	GlobalSignal.emit(\"show_dimmer\")
+	show()
+
+
+## Exit picker mode. Picker mode is where a new node is created from another
+## node through a connection to empty.
+func disable_picker_mode() -> void:
+	GlobalSignal.emit(\"hide_dimmer\")
+	hide()
+
+
+func _on_selector_btn_pressed(node_type: String) -> void:
+	GlobalSignal.emit(\"add_graph_node\", [node_type, self])
+"
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whi7p"]
 content_margin_left = 10.0
 content_margin_top = 10.0
@@ -38,7 +75,7 @@ popup_window = true
 extend_to_title = true
 content_scale_mode = 1
 theme_override_styles/embedded_border = SubResource("StyleBoxFlat_qj61b")
-script = ExtResource("1_5l6lg")
+script = SubResource("GDScript_whwvk")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15

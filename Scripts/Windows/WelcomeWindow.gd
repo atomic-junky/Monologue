@@ -14,7 +14,7 @@ func _on_load_project(_path, _new_graph) -> void:
 	hide()
 
 
-func _on_show_welcome(idk) -> void:
+func _on_show_welcome(_x) -> void:
 	show()
 
 

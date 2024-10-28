@@ -212,28 +212,22 @@ func is_unsaved() -> bool:
 
 ## Connect picker_from_node to [param node] if needed, reposition nodes.
 func pick_and_center(nodes: Array[MonologueGraphNode], 
-			picker: GraphNodeSelector) -> PackedStringArray:
+			picker: GraphNodePicker) -> PackedStringArray:
 	var to_names = []
 	var offset = ((size / 2) + scroll_offset) / zoom  # center of graph
 
-	if control_node.picker_from_node != null and control_node.picker_from_port != null:
-		var from_node = control_node.picker_from_node
-		var from_port = control_node.picker_from_port
-		disconnect_outbound_from_node(from_node, from_port)
-		propagate_connection(from_node, from_port, nodes[0].name, 0)
-		control_node.disable_picker_mode()
-		offset = control_node.picker_position
+	if picker.from_node and picker.from_port != -1:
+		if nodes[0].get_input_port_count() > 0:
+			var from_node = picker.from_node
+			var from_port = picker.from_port
+			disconnect_outbound_from_node(from_node, from_port)
+			propagate_connection(from_node, from_port, nodes[0].name, 0)
+		if picker.release:
+			offset = picker.release
 		
 		control_node.picker_from_node = null
 		control_node.picker_from_port = null
-
-	# if picker:  # if adding from picker, track existing to_nodes from picker
-	#	for to_node in get_all_connections_from_slot(picker.node, picker.port):
-	#		to_names.append(to_node.name)
-	#	disconnect_outbound_from_node(picker.node, picker.port)
-	#	propagate_connection(picker.node, picker.port, nodes[0].name, 0)
-	#	GlobalSignal.emit("disable_picker_mode")
-	#	offset = picker.location
+		picker.flush()
 	
 	for node in nodes:
 		node.position_offset = offset - node.size / 2
@@ -247,6 +241,7 @@ func pick_and_center(nodes: Array[MonologueGraphNode],
 func propagate_connection(from_node, from_port, to_node, to_port, next = true) -> void:
 	if next:
 		connect_node(from_node, from_port, to_node, to_port)
+		
 	else:
 		disconnect_node(from_node, from_port, to_node, to_port)
 	

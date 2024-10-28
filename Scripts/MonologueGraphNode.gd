@@ -3,6 +3,9 @@
 class_name MonologueGraphNode extends GraphNode
 
 
+static var subclasses = []
+
+@export_group("Appearance")
 @export var titlebar_color: Color = Color("ff0000") : set = _set_titlebar_color
 @export var show_close_button: bool = true
 
