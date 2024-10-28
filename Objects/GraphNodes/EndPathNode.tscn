@@ -21,7 +21,7 @@ slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = false
 script = ExtResource("1_vdup8")
-titlebar_color = Color(0.85098, 0.32549, 0.309804, 1)
+titlebar_color = Color(0.0196078, 0.513726, 0.341176, 1)
 
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(87, 87)

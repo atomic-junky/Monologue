@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dg1if067aop0p"]
+[gd_scene load_steps=7 format=3 uid="uid://dg1if067aop0p"]
 
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_te18b"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_6rvj1"]
@@ -6,24 +6,6 @@
 [ext_resource type="StyleBox" uid="uid://bmb6fo20hn20m" path="res://Assets/NodeValue.stylebox" id="4_286lp"]
 
 [sub_resource type="Theme" id="Theme_llmqa"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bcq14"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f44r"]
-content_margin_left = 10.0
-content_margin_top = 2.0
-content_margin_right = 10.0
-content_margin_bottom = 2.0
-bg_color = Color(0.337255, 0.631373, 0.788235, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_v4ya3"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
@@ -35,8 +17,6 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_llmqa")
-theme_override_styles/panel = SubResource("StyleBoxFlat_bcq14")
-theme_override_styles/titlebar = SubResource("StyleBoxFlat_2f44r")
 title = "ActionNode"
 slot/0/left_enabled = true
 slot/0/left_type = 0
@@ -60,6 +40,7 @@ script = ExtResource("3_s1gpj")
 arg_box = NodePath("ArgBox")
 action_label = NodePath("CallContainer/CallBox/ActionLabel")
 no_args_label = NodePath("CallContainer/CallBox/NoArgsLabel")
+titlebar_color = Color(0.733333, 0.392157, 0.188235, 1)
 
 [node name="CallContainer" type="MarginContainer" parent="."]
 layout_mode = 2

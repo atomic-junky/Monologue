@@ -21,6 +21,7 @@ slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
 script = ExtResource("1_67u8k")
+titlebar_color = Color(0.835294, 0.317647, 0.376471, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

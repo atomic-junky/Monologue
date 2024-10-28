@@ -190,7 +190,7 @@ corner_radius_bottom_left = 5
 corner_detail = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2douw"]
-bg_color = Color(0.117647, 0.133333, 0.164706, 1)
+bg_color = Color(0.192157, 0.192157, 0.211765, 1)
 expand_margin_top = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f44r"]

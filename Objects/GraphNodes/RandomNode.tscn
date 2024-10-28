@@ -1,30 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://b6mcmodpmsacw"]
+[gd_scene load_steps=2 format=3 uid="uid://b6mcmodpmsacw"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/RandomNode.gd" id="1_qeufj"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njth6"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0tncv"]
-content_margin_left = 10.0
-content_margin_top = 2.0
-content_margin_right = 10.0
-content_margin_bottom = 2.0
-bg_color = Color(0.388235, 0.380392, 0.796078, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
 
 [node name="RandomNode" type="GraphNode" groups=["graph_nodes"]]
 offset_right = 127.0
 offset_bottom = 53.0
 mouse_default_cursor_shape = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_njth6")
-theme_override_styles/titlebar = SubResource("StyleBoxFlat_0tncv")
 title = "RandomNode"
 script = ExtResource("1_qeufj")
+titlebar_color = Color(0.560784, 0.462745, 0.0980392, 1)

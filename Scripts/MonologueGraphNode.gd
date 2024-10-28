@@ -6,8 +6,9 @@ class_name MonologueGraphNode extends GraphNode
 static var subclasses = []
 
 @export_group("Appearance")
-@export var titlebar_color: Color = Color("ff0000") : set = _set_titlebar_color
+@export var titlebar_color: Color = Color("ff0000")
 @export var show_close_button: bool = true
+@export var show_titlebar: bool = true
 
 # field UI scene definitions that a graph node can have
 const CHECKBOX = preload("res://Objects/SubComponents/Fields/MonologueCheckBox.tscn")
@@ -28,7 +29,8 @@ var node_type: String = "NodeUnknown"
 
 
 func _ready() -> void:
-	_set_titlebar_color(titlebar_color)
+	if show_titlebar:
+		_set_titlebar_color(titlebar_color)
 
 	title = node_type
 	id.setters["copyable"] = true
