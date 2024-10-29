@@ -65,8 +65,8 @@ folder_colors={
 "res://Scenes/": "yellow",
 "res://Scripts/": "yellow",
 "res://Scripts/GraphNodes/": "green",
+"res://Scripts/History/": "teal",
 "res://Scripts/SidePanelNodes/": "teal",
-"res://Scripts/SidePanelNodes/History/": "teal",
 "res://Scripts/SubComponents/": "blue",
 "res://Test/": "red"
 }
@@ -126,7 +126,6 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-textures/vram_compression/import_etc2_astc=true
 anti_aliasing/quality/msaa_2d=2
 viewport/transparent_background=true
 anti_aliasing/quality/screen_space_aa=1

@@ -16,7 +16,7 @@ extends MonologueProcess
 @onready var background_node = $Background
 @onready var character_container = $CharacterAssetContainer/Asset
 
-var from_node: Variant
+var from_node: String
 var file_path: String
 
 var is_completed: bool = true
@@ -27,10 +27,9 @@ func _ready():
 	sp_scrollbar.connect("changed", _handle_scrollbar_changed)
 	
 	if file_path:
-		from_node = null if from_node == "-1" else from_node
 		if from_node:
 			_on_monologue_sentence("Skipped to the node " + from_node + "!", "_DEBUG", "_DEBUG", true)
-		load_dialogue(file_path, from_node)
+		load_dialogue(file_path.get_basename(), from_node)
 		next()
 
 

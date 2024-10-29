@@ -1,16 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://ccuhx5vr7t50a"]
+[gd_scene load_steps=3 format=3 uid="uid://ccuhx5vr7t50a"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/OptionNode.gd" id="1_67u8k"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_32su8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vd2tk"]
 
 [node name="OptionNode" type="GraphNode"]
-offset_right = 341.0
-offset_bottom = 112.0
+offset_right = 100.0
+offset_bottom = 91.0
 mouse_filter = 2
-theme_override_styles/titlebar = SubResource("StyleBoxEmpty_32su8")
 theme_override_styles/slot = SubResource("StyleBoxEmpty_vd2tk")
 draggable = false
 selectable = false
@@ -25,7 +22,6 @@ slot/0/right_icon = null
 slot/0/draw_stylebox = true
 script = ExtResource("1_67u8k")
 titlebar_color = Color(0.835294, 0.317647, 0.376471, 1)
-show_titlebar = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
