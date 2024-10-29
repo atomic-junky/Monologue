@@ -187,16 +187,10 @@ func save(quick: bool = false):
 		graph.update_save_state()
 
 
-func test_project(from_node: String = "-1"):
+func test_project(from_node: Variant = null):
 	await save(true)
-	GlobalVariables.test_path = graph.current.file_path
-	var test_scene = preload("res://Test/Menu.tscn")
-	var test_instance = test_scene.instantiate()
-	
-	if graph.current.get_node_by_id(from_node) != null:
-		test_instance._from_node_id = from_node
-	
-	get_tree().root.add_child(test_instance)
+	var test_window: TestWindow = TestWindow.new(graph.current.file_path, from_node)
+	get_tree().root.add_child(test_window)
 
 
 func _connect_nodes(node_list: Array) -> void:

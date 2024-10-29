@@ -4,10 +4,10 @@ class_name TestWindow extends Window
 @onready var test_instance := preload("res://Test/Menu.tscn")
 
 var file_path: String
-var from_node: String
+var from_node: Variant
 
 
-func _init(path: String, _from_node: String) -> void:
+func _init(path: String, _from_node: Variant = null) -> void:
 	file_path = path
 	from_node = _from_node
 
@@ -20,7 +20,7 @@ func _ready() -> void:
 	transient = true
 	
 	var test_scene = test_instance.instantiate()
-	test_scene.from_node = from_node
+	if from_node: test_scene.from_node = from_node
 	test_scene.file_path = file_path
 	add_child(test_scene)
 	
