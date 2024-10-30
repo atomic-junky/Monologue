@@ -30,3 +30,15 @@ func refocus_welcome(event: InputEvent):
 
 func _on_resized():
 	move_to_center()
+
+
+func _on_new_file_btn_pressed() -> void:
+	GlobalSignal.emit("save_file_request", [load_callback, ["*.json"]])
+
+
+func _on_open_file_btn_pressed() -> void:
+	GlobalSignal.emit("open_file_request", [load_callback, ["*.json"]])
+
+
+func load_callback(path: String) -> void:
+	GlobalSignal.emit("load_project", [path, true])

@@ -59,7 +59,7 @@ func _input(event: InputEvent) -> void:
 			event is InputEventMouseMotion and not selected_nodes.is_empty()
 
 
-func _gui_input(event: InputEvent) -> void:
+func _gui_input(_event: InputEvent) -> void:
 	if not mouse_hovering:
 		return
 	

@@ -176,7 +176,7 @@ func load_project(path: String, new_graph: bool = false) -> void:
 	file_dialog.hide()
 
 
-func save(quick: bool = false):
+func save(_quick: bool = false):
 	var data = JSON.stringify(_to_dict(), "\t", false, true)
 	if data:
 		var path = graph.current.file_path

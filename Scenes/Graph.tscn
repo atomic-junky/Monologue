@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanel.gd" id="7_jvmtj"]
+[ext_resource type="Texture2D" uid="uid://bddodmw1pm42r" path="res://title_banner@0.5x.png" id="10_m5ce4"]
 [ext_resource type="Script" path="res://Scripts/SubComponents/GraphEditSwitcher.gd" id="11_k843q"]
 [ext_resource type="Texture2D" uid="uid://dhlu3mvdkvea6" path="res://Assets/Icons/cursor.svg" id="15_dc63e"]
 [ext_resource type="Texture2D" uid="uid://kk5em170gn2b" path="res://Assets/Icons/UI/ui_close.svg" id="15_dv5d5"]
@@ -14,7 +15,6 @@
 [ext_resource type="Texture2D" uid="uid://bbw07aw88fo0p" path="res://Assets/Icons/folder_search.svg" id="17_g5nwh"]
 [ext_resource type="PackedScene" uid="uid://cmpsaafag7cwl" path="res://Objects/UI/GraphNodePicker.tscn" id="19_myvjg"]
 [ext_resource type="Script" path="res://Scripts/GlobalFileDialog.gd" id="20_2dvte"]
-[ext_resource type="Texture2D" uid="uid://bw473utd8l2a3" path="res://Assets/Cover/Banner.png" id="21_xtx4h"]
 
 [sub_resource type="GDScript" id="GDScript_5beyj"]
 script/source = "extends Button
@@ -271,7 +271,7 @@ visible = false
 [node name="WelcomeWindow" type="Window" parent="."]
 transparent_bg = true
 initial_position = 2
-size = Vector2i(400, 338)
+size = Vector2i(450, 235)
 wrap_controls = true
 unresizable = true
 borderless = true
@@ -293,10 +293,17 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="TextureRect" type="TextureRect" parent="WelcomeWindow/PanelContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="WelcomeWindow/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer2"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-texture = ExtResource("21_xtx4h")
+texture = ExtResource("10_m5ce4")
 expand_mode = 5
 stretch_mode = 5
 
@@ -372,8 +379,8 @@ script = ExtResource("20_2dvte")
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/RunButton" to="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/HBoxContainer/RunButton" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/OuterMargin/Scroller/InnerMargin/VBox/HBox/RFHButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_rfh_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/OuterMargin/Scroller/InnerMargin/VBox/HBox/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NewFileBtn" to="WelcomeWindow" method="_on_new_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/OpenFileBtn" to="WelcomeWindow" method="_on_open_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CloseButton" to="." method="close_welcome_tab"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_selected"]
 [connection signal="file_selected" from="FileDialogv2" to="FileDialogv2" method="_on_file_selected"]

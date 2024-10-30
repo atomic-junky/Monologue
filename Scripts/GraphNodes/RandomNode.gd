@@ -34,7 +34,7 @@ func _load_connections(data: Dictionary, key: String = "NextID") -> void:
 			get_parent().connect_node(name, output["ID"], next_node.name, 0)
 
 
-func _to_next(dict: Dictionary, key: String = "PassID") -> void:
+func _to_next(_dict: Dictionary, _key: String = "PassID") -> void:
 	pass
 
 
