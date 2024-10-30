@@ -3,7 +3,7 @@ class_name OptionNode extends MonologueGraphNode
 
 var option := Property.new(TEXT, { "minimum_size": Vector2(200, 60) })
 var enable_by_default := Property.new(CHECKBOX, {}, true)
-var one_shot := Property.new(CHECKBOX)
+var one_shot := Property.new(CHECKBOX, {}, false)
 var next_id := Property.new(LINE, {}, -1)
 
 @onready var count_label = $MarginContainer/VBox/CountLabel

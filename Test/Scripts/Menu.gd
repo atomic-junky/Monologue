@@ -2,7 +2,7 @@ extends Control
 
 
 var file_path: String
-var from_node: String
+var from_node: Variant
 
 
 func _ready():
