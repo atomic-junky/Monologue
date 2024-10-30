@@ -9,7 +9,7 @@ const IMAGE = ["*.bmp,*.jpg,*.jpeg,*.png,*.svg,*.webp;Image Files"]
 
 @onready var label: Label = $Label
 @onready var line_edit: LineEdit = $VBox/LineEdit
-@onready var picker_button: Button = $VBox/LineEdit/FilePickerButton
+@onready var picker_button: Button = $VBox/LineEdit/HBoxContainer/FilePickerButton
 @onready var warn_label: Label = $VBox/WarnLabel
 
 

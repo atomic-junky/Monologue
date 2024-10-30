@@ -5,8 +5,8 @@
 [ext_resource type="FontFile" uid="uid://2eq6t1lcw61" path="res://Assets/Fonts/NotoSans-Italic.ttf" id="3_bg611"]
 
 [node name="MonologueLine" type="MarginContainer"]
-offset_right = 122.0
-offset_bottom = 29.0
+offset_right = 300.0
+offset_bottom = 97.0
 size_flags_horizontal = 3
 script = ExtResource("1_toqtt")
 
@@ -36,14 +36,13 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -36.0
-offset_bottom = 1.0
+offset_left = -30.0
 grow_horizontal = 0
 grow_vertical = 2
 alignment = 2
 
 [node name="CopyButton" type="Button" parent="OuterVBox/HBox/InnerVBox/LineEdit/HBoxContainer"]
-custom_minimum_size = Vector2(30, 25)
+custom_minimum_size = Vector2(33, 25)
 layout_mode = 2
 icon = ExtResource("2_lbcco")
 flat = true
