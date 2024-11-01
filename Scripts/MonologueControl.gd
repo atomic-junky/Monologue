@@ -86,7 +86,7 @@ func _select_new_node() -> void:
 
 func _shortcut_input(event):
 	if event.is_action_pressed("Save"):
-		save(false)
+		save()
 
 
 func _to_dict() -> Dictionary:
@@ -157,7 +157,7 @@ func load_project(path: String, new_graph: bool = false) -> void:
 		if text: data = JSON.parse_string(text)
 		if not data:
 			data = _to_dict()
-			save(true)
+			save()
 		
 		graph.current.clear()
 		graph.current.name = path.get_file().trim_suffix(".json")
@@ -176,7 +176,7 @@ func load_project(path: String, new_graph: bool = false) -> void:
 	file_dialog.hide()
 
 
-func save(_quick: bool = false):
+func save():
 	var data = JSON.stringify(_to_dict(), "\t", false, true)
 	if data:
 		var path = graph.current.file_path
@@ -188,7 +188,7 @@ func save(_quick: bool = false):
 
 
 func test_project(from_node: Variant = null):
-	await save(true)
+	await save()
 	var test_window: TestWindow = TestWindow.new(graph.current.file_path, from_node)
 	get_tree().root.add_child(test_window)
 
