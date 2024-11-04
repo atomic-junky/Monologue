@@ -12,13 +12,13 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_da2f7"]
 bg_color = Color(0.192157, 0.192157, 0.211765, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxui7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q4dbv"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t4vsd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2d6nc"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rg2k2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jbgdg"]
 bg_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="App" type="Control"]
@@ -88,17 +88,17 @@ theme_override_constants/separation = 0
 
 [node name="tbReduceButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_vxui7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_q4dbv")
 texture = ExtResource("4_b7q52")
 
 [node name="tbSizeButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_t4vsd")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2d6nc")
 texture = ExtResource("5_fxbua")
 
 [node name="tbCloseButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_rg2k2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jbgdg")
 hover_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]

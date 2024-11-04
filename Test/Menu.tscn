@@ -57,6 +57,8 @@ layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/VBoxContainer/MarginContainer"]

@@ -225,10 +225,12 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 85.0
 grow_horizontal = 2
+mouse_filter = 2
 theme_override_constants/margin_top = 20
 
 [node name="CenterContainer" type="CenterContainer" parent="NotificationContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Notification" type="PanelContainer" parent="NotificationContainer/CenterContainer"]
 custom_minimum_size = Vector2(350, 75)
