@@ -107,8 +107,8 @@ func process_node(node: Dictionary) -> void:
 		"NodeSentence":
 			next_id = node.get("NextID")
 			var sentence = process_conditional_text(node.get("Sentence"))
-			var speaker_name = get_speaker_name(node.get("SpeakerID"))
-			var display_name = node.get("DisplayName", node.get("DisplaySpeakerName"))
+			var speaker_name = get_speaker_name(node.get("Speaker"))
+			var display_name = node.get("DisplayName", node.get("DisplayName"))
 			if not display_name:
 				display_name = speaker_name
 			
@@ -179,7 +179,6 @@ func pick_random_output(outputs):
 	var random_number: int = randi_range(0, 100)
 	var cumulative_weight: int = 0
 	
-	print(random_number)
 	for output in outputs:
 		cumulative_weight += output.get("Weight")
 		if random_number <= cumulative_weight:

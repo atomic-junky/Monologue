@@ -5,16 +5,17 @@ extends MonologueProcess
 @onready var option_button = preload("res://Test/Objects/option_button.tscn")
 
 # SidePanel nodes
-@onready var sp_text_box_container = $SidePanelContainer/MarginContainer/ScrollContainer/Container/ScrollContainer/TextBoxContainer
-@onready var sp_choice_container = $SidePanelContainer/MarginContainer/ScrollContainer/Container/ChoiceContainer
-@onready var sp_scroll_container: ScrollContainer = $SidePanelContainer/MarginContainer/ScrollContainer/Container/ScrollContainer
+@onready var sp_text_box_container = $SidePanelContainer/PanelContainer/MarginContainer/ScrollContainer/Container/ScrollContainer/TextBoxContainer
+@onready var sp_choice_container = $SidePanelContainer/PanelContainer/MarginContainer/ScrollContainer/Container/ChoiceContainer
+@onready var sp_scroll_container: ScrollContainer = $SidePanelContainer/PanelContainer/MarginContainer/ScrollContainer/Container/ScrollContainer
 @onready var sp_scrollbar: ScrollBar = sp_scroll_container.get_v_scroll_bar()
 # TextBox nodes
-@onready var tb_text_label = $TextBoxContainer/Panel/MarginContainer/Container/TextLabel
-@onready var tb_choice_container = $TextBoxContainer/Panel/MarginContainer/Container/ChoiceContainer
+@onready var tb_text_label = $TextBoxContainer/PanelContainer/MarginContainer/Container/TextLabel
+@onready var tb_choice_container = $TextBoxContainer/PanelContainer/MarginContainer/Container/ChoiceContainer
 
 @onready var background_node = $Background
 @onready var character_container = $CharacterAssetContainer/Asset
+@onready var notification = $NotificationContainer/CenterContainer/Notification
 
 var from_node: Variant
 var file_path: String
@@ -37,7 +38,7 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("ui_accept") and is_completed and not sp_choice_container.visible:
 		if is_notification_skippable:
-			$Notification.hide()
+			notification.hide()
 			is_notification_skippable = false
 		next()
 
@@ -169,30 +170,30 @@ func _on_monologue_event_triggered(raw_event):
 	
 	var message = "Event triggered [color=7f7f7f](%s)[/color]\n" + \
 			"Condition: [color=7f7f7f]%s %s %s[/color]"
-	$Notification.debug(message % [event_id, variable, operator, value])
+	notification.debug(message % [event_id, variable, operator, value])
 
 
 func _on_monologue_update_background(path, texture):
 	if texture:
 		background_node.texture = texture
 	else:
-		$Notification.debug("Update Background instruction received [color=7f7f7f](%s)[/color]" % path)
+		notification.debug("Update Background instruction received [color=7f7f7f](%s)[/color]" % path)
 
 
 func _on_monologue_play_audio(path, _player):
-	$Notification.debug("Play Audio instruction received [color=7f7f7f](%s)[/color]" % path.get_file())
+	notification.debug("Play Audio instruction received [color=7f7f7f](%s)[/color]" % path.get_file())
 
 
 func _on_monologue_custom_action(raw_action):
 	var action_name = raw_action.get("Value", raw_action.get("Action"))
 	if not action_name:
 		action_name = "<<unnamed>>"
-	$Notification.debug("Custom action received [color=7f7f7f](%s)[/color]" % action_name)
+	notification.debug("Custom action received [color=7f7f7f](%s)[/color]" % action_name)
 
 
 func _on_monologue_timer_started(wait_time):
 	is_notification_skippable = true
-	$Notification.info("Timer started for %d seconds" % wait_time, wait_time)
+	notification.info("Timer started for %d seconds" % wait_time, wait_time)
 
 
 func _switch_mode_pressed(sp: bool = false):
@@ -203,12 +204,12 @@ func _switch_mode_pressed(sp: bool = false):
 func _on_monologue_notify(level: NotificationLevel, text: String):
 	match level:
 		NotificationLevel.INFO:
-			$Notification.info(text)
+			notification.info(text)
 		NotificationLevel.DEBUG:
-			$Notification.debug(text)
+			notification.debug(text)
 		NotificationLevel.WARN:
-			$Notification.warn(text)
+			notification.warn(text)
 		NotificationLevel.ERROR:
-			$Notification.error(text)
+			notification.error(text)
 		NotificationLevel.CRITICAL:
-			$Notification.critical(text)
+			notification.critical(text)

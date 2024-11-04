@@ -1,20 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj80aa4ckke2i"]
-
-[ext_resource type="FontFile" uid="uid://sx7iusrmfmsg" path="res://Test/Font/VCREAS 3.0.ttf" id="1_n87es"]
-
-[sub_resource type="GDScript" id="GDScript_vu8v5"]
-script/source = "extends Button
-
-
-func _on_mouse_entered():
-	remove_theme_color_override(\"default_color\")
-	add_theme_color_override(\"default_color\", Color(\"ffffff\"))
-
-
-func _on_mouse_exited():
-	remove_theme_color_override(\"default_color\")
-	add_theme_color_override(\"default_color\", Color(\"cccccc\"))
-"
+[gd_scene format=3 uid="uid://cj80aa4ckke2i"]
 
 [node name="ChoiceButton" type="Button"]
 texture_filter = 1
@@ -29,13 +13,9 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
-theme_override_fonts/font = ExtResource("1_n87es")
-theme_override_font_sizes/font_size = 16
 text = "It's a pretty long sentence but not that long so..."
-flat = true
 text_overrun_behavior = 4
 clip_text = true
-script = SubResource("GDScript_vu8v5")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
