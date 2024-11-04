@@ -59,17 +59,26 @@ func _input(event: InputEvent) -> void:
 			event is InputEventMouseMotion and not selected_nodes.is_empty()
 
 
-func _gui_input(_event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if not mouse_hovering:
 		return
 	
-	if Input.is_action_pressed("Spacebar"):
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			Cursor.shape = Cursor.Shapes.CURSOR_HAND_CLOSED
-		else:
-			Cursor.shape = Cursor.Shapes.CURSOR_DRAG
+	var cursor_drag: bool = false
+	var cursor_hand_closed: bool = false
 	
-	if Input.is_action_just_released("Spacebar"):
+	if Input.is_action_pressed("Spacebar"):
+		cursor_drag = true
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			cursor_hand_closed = true
+
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
+		cursor_hand_closed = true
+	
+	if cursor_hand_closed:
+		Cursor.shape = Cursor.Shapes.CURSOR_HAND_CLOSED
+	elif cursor_drag:
+		Cursor.shape = Cursor.Shapes.CURSOR_DRAG
+	else:
 		Cursor.shape = CURSOR_ARROW
 
 

@@ -5,7 +5,7 @@ extends MenuButton
 
 
 func _ready() -> void:
-	var popup = get_popup()
+	var popup: PopupMenu = get_popup()
 	
 	# Search item
 	popup.add_icon_item(search_icon, "Search...")
@@ -30,7 +30,7 @@ func _ready() -> void:
 	edit_submenu.add_item("Undo")
 	edit_submenu.add_item("Redo")
 	edit_submenu.add_separator()
-	edit_submenu.add_item("Add node")
+	edit_submenu.add_item("Preferences")
 	
 	edit_submenu.set_item_shortcut(0, create_shortcut("Undo"))
 	edit_submenu.set_item_shortcut(1, create_shortcut("Redo"))
@@ -51,6 +51,18 @@ func _ready() -> void:
 	popup.add_submenu_node_item("View", view_submenu)
 	
 	# Node item
+	var node_submenu: PopupMenu = PopupMenu.new()
+	node_submenu.add_item("Add node")
+	node_submenu.add_item("Arrange nodes")
+	
+	node_submenu.set_item_shortcut(0, create_shortcut("Add node"))
+	
+	popup.add_submenu_node_item("Node", node_submenu)
+	popup.add_separator()
+	
+	# Exit item
+	popup.add_item("Exit")
+	popup.set_item_shortcut(7, create_shortcut("Exit"))
 
 
 func create_shortcut(action_name: StringName) -> Shortcut:

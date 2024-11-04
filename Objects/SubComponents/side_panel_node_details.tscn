@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://nqxlo7mk5nka"]
+[gd_scene load_steps=3 format=3 uid="uid://nqxlo7mk5nka"]
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanel.gd" id="1_haagr"]
 [ext_resource type="Texture2D" uid="uid://b272tbdmvxj20" path="res://Assets/Icons/play.svg" id="2_34x8o"]
-[ext_resource type="Texture2D" uid="uid://kk5em170gn2b" path="res://Assets/Icons/UI/ui_close.svg" id="3_4g753"]
 
 [node name="SidePanelNodeDetails" type="PanelContainer"]
 script = ExtResource("1_haagr")
@@ -37,17 +36,7 @@ mouse_default_cursor_shape = 2
 texture_normal = ExtResource("2_34x8o")
 stretch_mode = 3
 
-[node name="VSeparator" type="VSeparator" parent="OuterMargin/Scroller/InnerMargin/VBox/HBox"]
-layout_mode = 2
-
-[node name="TextureButton" type="TextureButton" parent="OuterMargin/Scroller/InnerMargin/VBox/HBox"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("3_4g753")
-stretch_mode = 3
-
 [node name="Fields" type="VBoxContainer" parent="OuterMargin/Scroller/InnerMargin/VBox"]
 layout_mode = 2
 
 [connection signal="pressed" from="OuterMargin/Scroller/InnerMargin/VBox/HBox/RFHButton" to="." method="_on_rfh_btn_pressed"]
-[connection signal="pressed" from="OuterMargin/Scroller/InnerMargin/VBox/HBox/TextureButton" to="." method="_on_texture_button_pressed"]

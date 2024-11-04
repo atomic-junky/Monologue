@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=21 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
 [ext_resource type="PackedScene" uid="uid://nqxlo7mk5nka" path="res://Objects/SubComponents/side_panel_node_details.tscn" id="6_3jc6d"]
+[ext_resource type="Script" path="res://Scripts/SubComponents/search_bar_container.gd" id="7_eu0e0"]
 [ext_resource type="PackedScene" uid="uid://cvum3eaenloix" path="res://Objects/SubComponents/search_bar.tscn" id="8_tvorm"]
 [ext_resource type="Texture2D" uid="uid://bddodmw1pm42r" path="res://title_banner@0.5x.png" id="10_m5ce4"]
 [ext_resource type="Script" path="res://Scripts/SubComponents/GraphEditSwitcher.gd" id="11_k843q"]
@@ -81,7 +82,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 script = ExtResource("11_k843q")
-side_panel = NodePath("../MarginContainer/SidePanelNodeDetails")
+side_panel = NodePath("../MarginContainer/HSplitContainer/SidePanelNodeDetails")
 
 [node name="GraphEditZone" type="Control" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher"]
 layout_mode = 2
@@ -96,7 +97,34 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 
-[node name="ToolBarContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Container" type="Container" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="SidePanelNodeDetails" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/HSplitContainer" instance=ExtResource("6_3jc6d")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 0)
+layout_mode = 2
+
+[node name="ToolBarContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 2
 anchor_top = 1.0
 anchor_right = 1.0
@@ -108,34 +136,34 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer"]
 layout_mode = 2
 mouse_filter = 2
 alignment = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ToolBar" type="HBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer"]
+[node name="ToolBar" type="HBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer"]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="Left" type="PanelContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar"]
+[node name="Left" type="PanelContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar"]
 layout_mode = 2
 mouse_filter = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="CursorButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
+[node name="CursorButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 flat = true
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/CursorButton"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/CursorButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -143,22 +171,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/CursorButton/CenterContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/CursorButton/CenterContainer"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 texture = ExtResource("15_dc63e")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="VSeparator3" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
+[node name="VSeparator3" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 layout_mode = 2
 
-[node name="HandButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
+[node name="HandButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 flat = true
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/HandButton"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/HandButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -167,26 +195,26 @@ grow_horizontal = 2
 grow_vertical = 2
 rotation = -0.00318988
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/HandButton/CenterContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/HandButton/CenterContainer"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 texture = ExtResource("16_yc7gx")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="VSeparator2" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 layout_mode = 2
 
-[node name="AddNodeBtn" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
+[node name="AddNodeBtn" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 layout_mode = 2
 text = "Add a node..."
 flat = true
 script = SubResource("GDScript_5beyj")
 
-[node name="VSeparator4" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
+[node name="VSeparator4" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 flat = true
@@ -199,22 +227,22 @@ popup/item_1/id = 1
 popup/item_2/text = "French"
 popup/item_2/id = 2
 
-[node name="Right" type="PanelContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar"]
+[node name="Right" type="PanelContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar"]
 layout_mode = 2
 mouse_filter = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="RunButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer"]
+[node name="RunButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 flat = true
 script = SubResource("GDScript_lenro")
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -223,7 +251,7 @@ grow_horizontal = 2
 grow_vertical = 2
 rotation = -0.00318988
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton/CenterContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton/CenterContainer"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "Run the project from the RootNode."
@@ -231,25 +259,7 @@ texture = ExtResource("15_hn16p")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.695
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 0.499878
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="SidePanelNodeDetails" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer" instance=ExtResource("6_3jc6d")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
+[node name="SearchBarContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -257,8 +267,9 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("7_eu0e0")
 
-[node name="SearchBar" parent="MarginContainer/MainContainer/GraphEditsArea/CenterContainer" instance=ExtResource("8_tvorm")]
+[node name="SearchBar" parent="MarginContainer/MainContainer/GraphEditsArea/SearchBarContainer" instance=ExtResource("8_tvorm")]
 visible = false
 layout_mode = 2
 
@@ -270,6 +281,8 @@ transparent_bg = true
 initial_position = 2
 size = Vector2i(450, 235)
 wrap_controls = true
+transient = true
+exclusive = true
 unresizable = true
 borderless = true
 always_on_top = true
@@ -372,8 +385,8 @@ access = 2
 use_native_dialog = true
 script = ExtResource("20_2dvte")
 
-[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/AddNodeBtn" to="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/AddNodeBtn" method="_on_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton" to="MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/AddNodeBtn" to="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer/AddNodeBtn" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton" to="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton" method="_on_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NewFileBtn" to="WelcomeWindow" method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/OpenFileBtn" to="WelcomeWindow" method="_on_open_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CloseButton" to="." method="close_welcome_tab"]

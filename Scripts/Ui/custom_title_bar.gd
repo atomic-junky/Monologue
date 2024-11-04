@@ -3,6 +3,9 @@ extends Control
 var drag_point = null
 
 func _on_gui_input(ev: InputEvent) -> void:
+	if ProjectSettings.get_setting("display/window/size/borderless") == false:
+		return
+	
 	if ev is InputEventMouseButton:
 		if ev.double_click:
 			_on_tb_size_button_pressed()
