@@ -1,5 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/DiceRoll.svg")
 class_name RandomNode extends MonologueGraphNode
+# FIXME: RandomNode is broken, connections doesn't work and changing the value of a field makes the program crash.
 
 
 @onready var output_line := preload("res://Objects/SubComponents/OutputLine.tscn")
@@ -38,7 +39,7 @@ func _load_connections(data: Dictionary, key: String = "NextID") -> void:
 			get_parent().connect_node(name, output["ID"], next_node.name, 0)
 
 
-func _to_next(_dict: Dictionary, _key: String = "PassID") -> void:
+func _to_next(_dict: Dictionary, _key: String = "NextID") -> void:
 	pass
 
 
