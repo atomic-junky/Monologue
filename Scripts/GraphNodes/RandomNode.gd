@@ -15,8 +15,12 @@ func _ready():
 	
 	outputs.setters["add_callback"] = add_output
 	outputs.setters["get_callback"] = get_outputs
-	outputs.connect("preview", load_outputs)
 	outputs.connect("preview", _update)
+	
+	if outputs.value.size() <= 0:
+		add_output()
+		add_output()
+	
 	_update()
 
 

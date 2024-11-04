@@ -127,7 +127,8 @@ func _load_connections(data: Dictionary, key: String = "NextID") -> void:
 	var next_id = data.get(key)
 	if next_id is String:
 		var next_node = get_graph_edit().get_node_by_id(next_id)
-		get_graph_edit().connect_node(name, 0, next_node.name, 0)
+		if next_node:
+			get_graph_edit().connect_node(name, 0, next_node.name, 0)
 
 
 func _load_position(data: Dictionary) -> void:
