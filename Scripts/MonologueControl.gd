@@ -6,18 +6,17 @@ class_name MonologueControl extends Control
 var dialog = {}
 var dialog_for_localisation = []
 
-const HISTORY_FILE_PATH: String = "user://history.save"
 const UNSAVED_FILE_SUFFIX: String = "*"
 
 @onready var graph_edit_inst = preload("res://Objects/MonologueGraphEdit.tscn")
 @onready var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
-@onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/GraphEdits
 @onready var side_panel_node = %SidePanelNodeDetails
 @onready var graph_node_selecter = $GraphNodePicker
 @onready var file_dialog = $FileDialogv2
 @onready var graph: GraphEditSwitcher = %GraphEditSwitcher
+@onready var welcome: WelcomeWindow = $WelcomeWindow
 
 var root_scene = GlobalVariables.node_dictionary.get("Root")
 var live_dict: Dictionary
@@ -39,39 +38,9 @@ var picker_position
 
 func _ready():
 	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
-	var new_root_node = root_scene.instantiate()
-	graph.current.add_child(new_root_node)
-	
-	# Load recent files
-	if not FileAccess.file_exists(HISTORY_FILE_PATH):
-		FileAccess.open(HISTORY_FILE_PATH, FileAccess.WRITE)
-		%RecentFilesContainer.hide()
-	else:
-		var file = FileAccess.open(HISTORY_FILE_PATH, FileAccess.READ)
-		var raw_data = file.get_as_text()
-		if raw_data:
-			var data: Array = JSON.parse_string(raw_data)
-			for path in data:
-				if FileAccess.file_exists(path):
-					continue
-				data.erase(path)
-			for path in data.slice(0, 3):
-				var btn: Button = recent_file_button.instantiate()
-				var btn_text = path.replace("\\", "/")
-				btn_text = btn_text.replace("//", "/")
-				btn_text = btn_text.split("/")
-				if btn_text.size() >= 2:
-					btn_text = btn_text.slice(-2, btn_text.size())
-					btn_text = btn_text[0].path_join(btn_text[1])
-				else:
-					btn_text = btn_text.back()
-				
-				btn.text = Util.truncate_filename(btn_text)
-				btn.pressed.connect(GlobalSignal.emit.bind("load_project", [path, true]))
-				%RecentFilesButtonContainer.add_child(btn)
-			%RecentFilesContainer.show()
-		else:
-			%RecentFilesContainer.hide()
+	welcome.show()
+	#var new_root_node = root_scene.instantiate()
+	#graph.current.add_child(new_root_node)
 	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
 	GlobalSignal.add_listener("select_new_node", _select_new_node)
@@ -170,10 +139,6 @@ func load_project(path: String, new_graph: bool = false) -> void:
 		_connect_nodes(node_list)
 		graph.add_root()
 		graph.current.update_node_positions()
-	elif graph.is_file_opened(path):
-		# Switch to path tab
-		pass
-	file_dialog.hide()
 
 
 func save():

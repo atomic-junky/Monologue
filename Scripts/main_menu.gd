@@ -66,10 +66,10 @@ func _ready() -> void:
 
 
 func create_shortcut(action_name: StringName) -> Shortcut:
-	var shortcut := Shortcut.new()
+	var _shortcut := Shortcut.new()
 	
 	var inputevent := InputEventAction.new()
 	inputevent.action = action_name
-	shortcut.events.append(inputevent)
+	_shortcut.events.append(inputevent)
 	
-	return shortcut
+	return _shortcut

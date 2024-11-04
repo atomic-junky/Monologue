@@ -94,16 +94,6 @@
 			}
 		},
 		{
-			"$type": "NodeWait",
-			"ID": "ce58e64a-62bd-4383-9331-99df9ed625bd",
-			"NextID": "dD2nNRTyjB",
-			"Time": 1,
-			"EditorPosition": {
-				"x": 2560,
-				"y": 280
-			}
-		},
-		{
 			"$type": "NodeSentence",
 			"ID": "7e24e282-b823-45c9-8a5c-aec03fd1b64a",
 			"NextID": "05f9fa16-04ba-466c-8490-79110a676865",
@@ -318,26 +308,6 @@
 			}
 		},
 		{
-			"$type": "NodeRandom",
-			"ID": "dD2nNRTyjB",
-			"Outputs": [
-				{
-					"ID": 0,
-					"Weight": 50,
-					"NextID": -1
-				},
-				{
-					"ID": 1,
-					"Weight": 50,
-					"NextID": -1
-				}
-			],
-			"EditorPosition": {
-				"x": 2967,
-				"y": 348
-			}
-		},
-		{
 			"$type": "NodeComment",
 			"ID": "11812fee-1f97-4b71-84b8-6df22dfda46e",
 			"NextID": -1,
@@ -373,6 +343,36 @@
 			"EditorPosition": {
 				"x": 820,
 				"y": 0
+			}
+		},
+		{
+			"$type": "NodeWait",
+			"ID": "ce58e64a-62bd-4383-9331-99df9ed625bd",
+			"NextID": "moai3YwB8Z",
+			"Time": 1,
+			"EditorPosition": {
+				"x": 2606,
+				"y": 302
+			}
+		},
+		{
+			"$type": "NodeRandom",
+			"ID": "moai3YwB8Z",
+			"Outputs": [
+				{
+					"ID": 0,
+					"Weight": 50,
+					"NextID": -1
+				},
+				{
+					"ID": 1,
+					"Weight": 50,
+					"NextID": -1
+				}
+			],
+			"EditorPosition": {
+				"x": 3041,
+				"y": 391
 			}
 		}
 	],

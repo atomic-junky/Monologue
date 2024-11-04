@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=22 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cvum3eaenloix" path="res://Objects/SubComponents/search_bar.tscn" id="8_tvorm"]
 [ext_resource type="Texture2D" uid="uid://bddodmw1pm42r" path="res://title_banner@0.5x.png" id="10_m5ce4"]
 [ext_resource type="Script" path="res://Scripts/SubComponents/GraphEditSwitcher.gd" id="11_k843q"]
+[ext_resource type="Script" path="res://Scripts/SubComponents/RecentFilesContainer.gd" id="14_xsog8"]
 [ext_resource type="Texture2D" uid="uid://dhlu3mvdkvea6" path="res://Assets/Icons/cursor.svg" id="15_dc63e"]
 [ext_resource type="Texture2D" uid="uid://b272tbdmvxj20" path="res://Assets/Icons/play.svg" id="15_hn16p"]
 [ext_resource type="Texture2D" uid="uid://faci8gjgsxub" path="res://Assets/Icons/file_plus.svg" id="16_x1vtb"]
@@ -282,6 +283,7 @@ initial_position = 2
 size = Vector2i(450, 235)
 wrap_controls = true
 transient = true
+transient_to_focused = true
 exclusive = true
 unresizable = true
 borderless = true
@@ -343,10 +345,12 @@ mouse_default_cursor_shape = 2
 text = "Open File..."
 icon = ExtResource("17_g5nwh")
 
-[node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer" node_paths=PackedStringArray("button_container")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+script = ExtResource("14_xsog8")
+button_container = NodePath("RecentFilesButtonContainer")
 
 [node name="RecentFilesLabel" type="Label" parent="WelcomeWindow/PanelContainer/VBoxContainer/MarginContainer/CenterContainer/VBoxContainer/RecentFilesContainer"]
 layout_mode = 2

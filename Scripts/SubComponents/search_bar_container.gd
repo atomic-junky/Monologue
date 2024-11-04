@@ -4,7 +4,7 @@ extends CenterContainer
 @onready var searchbar = $SearchBar
 
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Show searchbar"):
 		searchbar.visible = !searchbar.visible
 		if searchbar.visible: searchbar.focus()

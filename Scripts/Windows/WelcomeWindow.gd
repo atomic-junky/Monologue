@@ -1,16 +1,29 @@
-extends Window
+class_name WelcomeWindow extends Window
+
+## Callback for loading projects after file selection.
+var file_callback = func(path): GlobalSignal.emit("load_project", [path])
+
+@onready var close_button: BaseButton = $PanelContainer/CloseButton
+@onready var recent_files: RecentFilesContainer = %RecentFilesContainer
+@onready var version_label: Label = $PanelContainer/VBoxContainer/VersionLabel
 
 
 func _ready():
-	$PanelContainer/VBoxContainer/VersionLabel.text = "v" + ProjectSettings.get("application/config/version")
+	version_label.text = "v" + ProjectSettings.get("application/config/version")
 	get_parent().connect("resized", _on_resized)
 	
-	move_to_center.call_deferred()
+	update_size.call_deferred()
 	GlobalSignal.add_listener("load_project", _on_load_project)
 	GlobalSignal.add_listener("show_welcome", _on_show_welcome)
 
 
-func _on_load_project(_path, _new_graph) -> void:
+## Add a file path to the recent files contianer.
+func add_recent_file(path: String):
+	recent_files.add(path)
+
+
+func _on_load_project(path: String) -> void:
+	add_recent_file(path)
 	hide()
 
 
@@ -25,11 +38,17 @@ func refocus_welcome(event: InputEvent):
 	if event is InputEventMouseButton and visible:
 		grab_focus()
 	
+	update_size()
+
+
+func update_size() -> void:
 	move_to_center()
+	reset_size()
+	size.x = 450
 
 
 func _on_resized():
-	move_to_center()
+	update_size()
 
 
 func _on_new_file_btn_pressed() -> void:

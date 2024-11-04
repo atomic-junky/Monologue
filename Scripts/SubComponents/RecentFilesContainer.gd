@@ -2,8 +2,9 @@ class_name RecentFilesContainer extends VBoxContainer
 
 
 @export var button_container: Control
-@export var button_scene: PackedScene
 @export var save_path: String = "user://history.save"
+
+@onready var button_scene: PackedScene = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 var recent_filepaths: Array = []
 
