@@ -6,6 +6,7 @@ class_name SidePanel extends PanelContainer
 @onready var fields_container = $OuterMargin/Scroller/InnerMargin/VBox/Fields
 @onready var topbox = $OuterMargin/Scroller/InnerMargin/VBox/HBox
 @onready var ribbon_scene = preload("res://Objects/SubComponents/Ribbon.tscn")
+@onready var collapsible_field = preload("res://Objects/SubComponents/CollapsibleField.tscn")
 
 var id_field: MonologueField
 var selected_node: MonologueGraphNode
@@ -40,13 +41,39 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 	
 	if not node.is_editable():
 		return
+		
+	
+	var groups = node._get_field_groups()
+	var already_invoke := []
+	
+	for group in groups:
+		var fields = groups[group]
+		var cf: CollapsibleField = collapsible_field.instantiate()
+		fields_container.add_child(cf)
+		cf.set_title(group)
+		
+		for field_name in fields:
+			for property_name in node.get_property_names():
+				if field_name != property_name:
+					continue
+				
+				var field = node.get(property_name).show(fields_container)
+				field.set_label_text(property_name.capitalize())
+				
+				fields_container.remove_child(field)
+				cf.add_item(field)
+				already_invoke.append(property_name)
 	
 	for property_name in node.get_property_names():
+		if property_name in already_invoke:
+			continue
+		
 		if property_name == "id":
 			id_field = node.get(property_name).show(topbox, 0)
 		else:
 			var field = node.get(property_name).show(fields_container)
 			field.set_label_text(property_name.capitalize())
+	
 	show()
 
 

@@ -1,4 +1,4 @@
-extends VBoxContainer
+class_name CollapsibleField extends VBoxContainer
 
 
 signal add_pressed
@@ -21,7 +21,7 @@ func _ready() -> void:
 
 
 func add_item(item: Control, force_readable_name: bool = false) -> void:
-	var is_open: bool = collapsible_container.is_opened()
+	var is_open: bool = collapsible_container.is_opened() or collapsible_container.is_opening()
 	collapsible_container.close()
 	
 	vbox.add_child(item, force_readable_name)
@@ -31,7 +31,7 @@ func add_item(item: Control, force_readable_name: bool = false) -> void:
 		# TODO: Fix collapsible container to avoid using this temporary fix.
 		await get_tree().process_frame
 		await get_tree().process_frame
-		collapsible_container.open.call_deferred()
+		collapsible_container.open()
 
 
 func set_title(text: String) -> void:

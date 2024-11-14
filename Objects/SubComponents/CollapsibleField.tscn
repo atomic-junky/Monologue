@@ -9,7 +9,6 @@ anchors_preset = -1
 anchor_right = 0.029
 offset_right = 0.5
 offset_bottom = 34.0
-theme_override_constants/separation = 0
 script = ExtResource("1_j54qh")
 
 [node name="Button" type="Button" parent="."]
