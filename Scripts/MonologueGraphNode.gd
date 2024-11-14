@@ -169,5 +169,5 @@ func _validate_id(text: String) -> bool:
 	return get_graph_edit().get_node_by_id(text) == null
 
 
-func _get_field_groups() -> Dictionary:
-	return {}
+func _get_field_groups() -> Array:
+	return []

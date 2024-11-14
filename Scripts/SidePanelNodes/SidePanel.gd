@@ -43,26 +43,32 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 		return
 		
 	
-	var groups = node._get_field_groups()
+	var items = node._get_field_groups()
 	var already_invoke := []
 	
-	for group in groups:
-		var fields = groups[group]
-		var cf: CollapsibleField = collapsible_field.instantiate()
-		fields_container.add_child(cf)
-		cf.set_title(group)
-		
-		for field_name in fields:
-			for property_name in node.get_property_names():
-				if field_name != property_name:
-					continue
+	for item in items:
+		if item is String:
+			var field = node.get(item).show(fields_container)
+			field.set_label_text(item.capitalize())
+			already_invoke.append(item)
+		else:
+			for group in item:
+				var fields = item[group]
+				var cf: CollapsibleField = collapsible_field.instantiate()
+				fields_container.add_child(cf)
+				cf.set_title(group)
 				
-				var field = node.get(property_name).show(fields_container)
-				field.set_label_text(property_name.capitalize())
-				
-				fields_container.remove_child(field)
-				cf.add_item(field)
-				already_invoke.append(property_name)
+				for field_name in fields:
+					for property_name in node.get_property_names():
+						if field_name != property_name:
+							continue
+						
+						var field = node.get(property_name).show(fields_container)
+						field.set_label_text(property_name.capitalize())
+						
+						fields_container.remove_child(field)
+						cf.add_item(field)
+						already_invoke.append(property_name)
 	
 	for property_name in node.get_property_names():
 		if property_name in already_invoke:
