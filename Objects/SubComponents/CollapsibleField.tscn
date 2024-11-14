@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://hvv74un17dp0"]
+
+[ext_resource type="Script" path="res://Scripts/SubComponents/collapsible_field.gd" id="1_j54qh"]
+[ext_resource type="Script" path="res://addons/collapsible_container/collapsible_elements/collapsible_container.gd" id="1_pbai0"]
+[ext_resource type="Texture2D" uid="uid://cb6n6enqfvclw" path="res://Assets/Icons/arrow_right.svg" id="1_y6ut8"]
+
+[node name="CollapsibleField" type="VBoxContainer"]
+anchors_preset = -1
+anchor_right = 0.029
+offset_right = 0.5
+offset_bottom = 34.0
+theme_override_constants/separation = 0
+script = ExtResource("1_j54qh")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+icon = ExtResource("1_y6ut8")
+alignment = 0
+
+[node name="CollapsibleContainer" type="Control" parent="."]
+process_mode = 3
+editor_description = "
+			A custom/plugin Control node capable of hiding and revealing its children by folding and unfolding.
+			
+Give feedback at: https://github.com/ArshvirGoraya/Godot-Collapsible-Container"
+clip_contents = true
+custom_minimum_size = Vector2(44, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource("1_pbai0")
+folding_direction_preset = 10
+sizing_constraint = 1
+sizing_node = NodePath("MarginContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="CollapsibleContainer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 10.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="VboxContainer" type="VBoxContainer" parent="CollapsibleContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="FieldContainer" type="VBoxContainer" parent="CollapsibleContainer/MarginContainer/VboxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="CollapsibleContainer/MarginContainer/VboxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "+"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CollapsibleContainer/MarginContainer/VboxContainer/AddButton" to="." method="_on_add_button_pressed"]
