@@ -29,8 +29,7 @@ func append_list_item(item) -> void:
 
 
 func clear_list():
-	for child in collapsible_field.get_items():
-		child.queue_free()
+	collapsible_field.clear()
 	data_list = []
 
 

@@ -12,3 +12,4 @@ script = ExtResource("1_8kx3n")
 [node name="CollapsibleField" parent="." instance=ExtResource("2_jih45")]
 layout_mode = 2
 show_add_button = true
+separate_items = true
