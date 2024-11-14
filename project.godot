@@ -40,6 +40,7 @@ IDGen="*res://Scripts/Global/IDGen.gd"
 
 window/size/viewport_width=1500
 window/size/viewport_height=800
+window/size/resizable=false
 window/size/extend_to_title=true
 window/energy_saving/keep_screen_on=false
 window/per_pixel_transparency/allowed=true
@@ -47,7 +48,7 @@ window/size/fullscreen=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/awesome_custom_cursor/plugin.cfg", "res://addons/script-ide/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/awesome_custom_cursor/plugin.cfg", "res://addons/collapsible_container/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 

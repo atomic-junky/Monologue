@@ -24,4 +24,5 @@ func _process(_delta: float) -> void:
 		await eye.animation_finished
 		await get_tree().create_timer(after_blink_time).timeout
 		
+		get_window().unresizable = false
 		get_tree().change_scene_to_packed(scene)
