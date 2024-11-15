@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cm2caiiwpfydd"]
+
+[node name="TextLabel" type="RichTextLabel"]
+texture_filter = 1
+offset_right = 674.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+bbcode_enabled = true
+fit_content = true
+scroll_following = true

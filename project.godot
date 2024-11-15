@@ -16,7 +16,7 @@ markdown_book/docs_folder=""
 
 config/name="Monologue"
 config/version="2.3.0"
-run/main_scene="res://Scenes/App.tscn"
+run/main_scene="res://scenes/main/app.tscn"
 run/print_header=false
 run/enable_alt_space_menu=true
 config/features=PackedStringArray("4.3")
@@ -29,15 +29,14 @@ boot_splash/size/resizable=false
 
 [autoload]
 
-App="*res://Scripts/Global/App.gd"
-uuid="*res://Scripts/Global/UUID.gd"
-Util="*res://Scripts/Global/Util.gd"
-GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
-SfxLoader="*res://Test/Scripts/SfxLoader.gd"
-GlobalSignal="*res://Scripts/Global/GlobalSignal.gd"
-Path="*res://Scripts/Global/Path.gd"
+App="*res://globals/app.gd"
+Util="*res://globals/util.gd"
+GlobalVariables="*res://globals/variables.gd"
+SfxLoader="*res://scenes/run/logic/SfxLoader.gd"
+GlobalSignal="*res://globals/signal.gd"
+Path="*res://globals/path.gd"
 Cursor="*res://addons/awesome_custom_cursor/Autoloads/Cursor.tscn"
-IDGen="*res://Scripts/Global/IDGen.gd"
+IDGen="*res://globals/id_gen.gd"
 
 [display]
 
@@ -55,19 +54,11 @@ enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/
 [file_customization]
 
 folder_colors={
-"res://Assets/": "orange",
-"res://Examples/": "purple",
-"res://Objects/": "yellow",
-"res://Objects/GraphNodes/": "green",
-"res://Objects/SidePanelNodes/": "teal",
-"res://Objects/SubComponents/": "blue",
-"res://Scenes/": "yellow",
-"res://Scripts/": "yellow",
-"res://Scripts/GraphNodes/": "green",
-"res://Scripts/History/": "teal",
-"res://Scripts/SidePanelNodes/": "teal",
-"res://Scripts/SubComponents/": "blue",
-"res://Test/": "red"
+"res://examples/": "purple",
+"res://globals/": "yellow",
+"res://logic/": "yellow",
+"res://scenes/": "green",
+"res://ui/": "teal"
 }
 
 [filesystem]
@@ -82,7 +73,7 @@ ui/inspector/tree_view_mode=1
 
 [gui]
 
-theme/custom="res://Assets/MainTheme.tres"
+theme/custom="res://ui/theme_default/main.tres"
 theme/default_font_subpixel_positioning=0
 theme/lcd_subpixel_layout=0
 

@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://cndkr1vq6ab1o"]
+
+[ext_resource type="Script" path="res://scenes/prefabs/fields/slider/monologue_slider.gd" id="1_waj5i"]
+
+[node name="MonologueSlider" type="HBoxContainer"]
+offset_right = 291.0
+offset_bottom = 29.0
+script = ExtResource("1_waj5i")
+
+[node name="ControlLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Value"
+
+[node name="HSlider" type="HSlider" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = -100.0
+
+[node name="DisplayLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.572549, 0.572549, 1)
+text = "0.0"
+
+[node name="ResetButton" type="Button" parent="."]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.768627, 0.180392, 0.25098, 1)
+text = "reset"
+flat = true
+
+[connection signal="drag_ended" from="HSlider" to="." method="_on_drag_ended"]
+[connection signal="value_changed" from="HSlider" to="." method="_on_value_changed"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset"]

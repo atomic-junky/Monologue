@@ -122,20 +122,6 @@
 		},
 		{
 			"$type": "NodeSentence",
-			"ID": "3e47d27d-0bd4-40e6-bb9e-d0337e0f91fe",
-			"NextID": -1,
-			"Speaker": 0,
-			"DisplayName": "",
-			"DisplayVariant": "",
-			"Sentence": "Mr.Sharpener got help and is no longer crazy.",
-			"Voiceline": "",
-			"EditorPosition": {
-				"x": 400,
-				"y": 400
-			}
-		},
-		{
-			"$type": "NodeSentence",
 			"ID": "749ea0bf-a997-4c47-9a13-c9221b4b6381",
 			"NextID": "73d66209-10f3-4e14-82c4-5a42e7de7049",
 			"Speaker": 0,
@@ -319,20 +305,6 @@
 		},
 		{
 			"$type": "NodeSentence",
-			"ID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
-			"NextID": "98bc9817-7b7d-4dea-8bb7-626192069677",
-			"Speaker": 0,
-			"DisplayName": "",
-			"DisplayVariant": "",
-			"Sentence": "You see a sharpener in front of you. He appears to be mad.",
-			"Voiceline": "",
-			"EditorPosition": {
-				"x": 380,
-				"y": 0
-			}
-		},
-		{
-			"$type": "NodeSentence",
 			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
 			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
 			"Speaker": 1,
@@ -373,6 +345,34 @@
 			"EditorPosition": {
 				"x": 3041,
 				"y": 391
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "3e47d27d-0bd4-40e6-bb9e-d0337e0f91fe",
+			"NextID": -1,
+			"Speaker": 0,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "Mr.Sharpener got help and is no longer crazy. ",
+			"Voiceline": "",
+			"EditorPosition": {
+				"x": 504,
+				"y": 396
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
+			"NextID": "98bc9817-7b7d-4dea-8bb7-626192069677",
+			"Speaker": 0,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "You see a sharpener in front of you. He appears to be mad.",
+			"Voiceline": "",
+			"EditorPosition": {
+				"x": 380,
+				"y": 0
 			}
 		}
 	],
