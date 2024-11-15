@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://ndpv213mov7p"
-path="res://.godot/imported/kalimba.wav-51f51c3bc8a18a23da1a28de0c211db7.sample"
+path="res://.godot/imported/kalimba.wav-f31ac538b867971d91f8c3cd46c73f87.sample"
 
 [deps]
 
-source_file="res://Examples/mr_sharpener/assets/audios/kalimba.wav"
-dest_files=["res://.godot/imported/kalimba.wav-51f51c3bc8a18a23da1a28de0c211db7.sample"]
+source_file="res://examples/mr_sharpener/assets/audios/kalimba.wav"
+dest_files=["res://.godot/imported/kalimba.wav-f31ac538b867971d91f8c3cd46c73f87.sample"]
 
 [params]
 

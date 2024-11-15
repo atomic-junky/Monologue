@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://doehvwbkfdygp"
-path="res://.godot/imported/mystery_sting.ogg-717cc606b316fe32359f65f050bb8152.oggvorbisstr"
+path="res://.godot/imported/mystery_sting.ogg-3f87a2256476e6cf08d040c6c5b29efe.oggvorbisstr"
 
 [deps]
 
-source_file="res://Examples/mr_sharpener/assets/audios/mystery_sting.ogg"
-dest_files=["res://.godot/imported/mystery_sting.ogg-717cc606b316fe32359f65f050bb8152.oggvorbisstr"]
+source_file="res://examples/mr_sharpener/assets/audios/mystery_sting.ogg"
+dest_files=["res://.godot/imported/mystery_sting.ogg-3f87a2256476e6cf08d040c6c5b29efe.oggvorbisstr"]
 
 [params]
 
