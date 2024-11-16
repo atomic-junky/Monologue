@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://scenes/main/monologue_control.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://scenes/prefabs/windows/welcome_window/welcome_window.gd" id="3_bs36t"]
-[ext_resource type="PackedScene" uid="uid://dgvhvxdrd58qp" path="res://scenes/prefabs/side_panel/side_panel.tscn" id="6_3jc6d"]
+[ext_resource type="PackedScene" uid="uid://dgvhvxdrd58qp" path="res://scenes/prefabs/layouts/side_panel/side_panel.tscn" id="6_3jc6d"]
 [ext_resource type="Script" path="res://scenes/main/search_bar_container.gd" id="7_eu0e0"]
-[ext_resource type="PackedScene" uid="uid://cvum3eaenloix" path="res://scenes/prefabs/search_bar/search_bar.tscn" id="8_tvorm"]
+[ext_resource type="PackedScene" uid="uid://cvum3eaenloix" path="res://scenes/prefabs/layouts/search_bar/search_bar.tscn" id="8_tvorm"]
 [ext_resource type="Texture2D" uid="uid://bddodmw1pm42r" path="res://title_banner@0.5x.png" id="10_m5ce4"]
 [ext_resource type="Script" path="res://scenes/main/graph_edit_switcher.gd" id="11_k843q"]
 [ext_resource type="Script" path="res://scenes/prefabs/windows/welcome_window/recent_file_container.gd" id="14_xsog8"]
@@ -13,9 +13,10 @@
 [ext_resource type="PackedScene" uid="uid://bhf5b42cv02m4" path="res://scenes/prefabs/windows/file_dialog/file_dialog.tscn" id="16_7nqt6"]
 [ext_resource type="Texture2D" uid="uid://faci8gjgsxub" path="res://ui/assets/icons/file_plus.svg" id="16_x1vtb"]
 [ext_resource type="Texture2D" uid="uid://cu75pg7vsf7qi" path="res://ui/assets/icons/hand.svg" id="16_yc7gx"]
-[ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://scenes/prefabs/button/close_button.tscn" id="17_af4y3"]
+[ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://scenes/prefabs/ui/buttons/close_button.tscn" id="17_af4y3"]
 [ext_resource type="Texture2D" uid="uid://bbw07aw88fo0p" path="res://ui/assets/icons/folder_search.svg" id="17_g5nwh"]
 [ext_resource type="PackedScene" uid="uid://cmpsaafag7cwl" path="res://scenes/prefabs/windows/graph_node_picker/graph_node_picker.tscn" id="19_myvjg"]
+
 
 [sub_resource type="GDScript" id="GDScript_5beyj"]
 script/source = "extends Button

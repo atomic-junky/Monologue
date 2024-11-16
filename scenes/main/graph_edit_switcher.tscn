@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" path="res://scenes/main/graph_edit_switcher.gd" id="1_fvn0a"]
 [ext_resource type="Texture2D" uid="uid://c7vdr4e0mxst6" path="res://ui/assets/icons/close_icon.png" id="2_k726l"]
-[ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://scenes/prefabs/graph_edit/monologue_graph_edit.tscn" id="3_o6be6"]
+[ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://scenes/prefabs/layouts/graph_edit/monologue_graph_edit.tscn" id="3_o6be6"]
+
 
 [node name="GraphEditSwitcher" type="VBoxContainer"]
 anchors_preset = 15

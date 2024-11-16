@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://dh7yuosc0hhpp"]
+
+[ext_resource type="Script" path="res://scenes/prefabs/ui/fields/toggle/monologue_toggle.gd" id="1_0u5l0"]
+
+
+[node name="MonologueCheckButton" type="HBoxContainer"]
+offset_right = 43.0
+offset_bottom = 29.0
+script = ExtResource("1_0u5l0")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Value"
+
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 2
+
+[connection signal="toggled" from="CheckButton" to="." method="_on_check_button_toggled"]

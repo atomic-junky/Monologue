@@ -4,7 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://uyec6noccly6" path="res://ui/assets/icons/new_file_icon.png" id="2_ripxl"]
 [ext_resource type="Texture2D" uid="uid://t1i3wy037vsu" path="res://ui/assets/icons/folder_icon.png" id="3_sct6c"]
 [ext_resource type="PackedScene" uid="uid://dbq34pvukxcce" path="res://scenes/prefabs/windows/welcome_window/recent_file_container.tscn" id="4_v0v62"]
-[ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://scenes/prefabs/button/close_button.tscn" id="5_h3u5k"]
+[ext_resource type="PackedScene" uid="uid://dspmmme0jspdx" path="res://scenes/prefabs/ui/buttons/close_button.tscn" id="5_h3u5k"]
+
 
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wb4lr"]

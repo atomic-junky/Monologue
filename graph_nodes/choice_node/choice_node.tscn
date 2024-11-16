@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://coq74c18uq3d3"]
+
+[ext_resource type="Script" path="res://graph_nodes/choice_node/choice_node.gd" id="1_nn3v2"]
+
+
+
+[node name="ChoiceNode" type="GraphNode" groups=["graph_nodes"]]
+offset_right = 320.0
+scale = Vector2(1.0021, 1)
+size_flags_vertical = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/separation = 15
+title = "ChoiceNode"
+script = ExtResource("1_nn3v2")
+titlebar_color = Color(0.835294, 0.317647, 0.376471, 1)
