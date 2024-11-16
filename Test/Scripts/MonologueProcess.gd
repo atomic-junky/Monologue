@@ -37,6 +37,7 @@ func load_dialogue(json_path: String, custom_id: Variant = null) -> void:
 	var file = FileAccess.open(json_path, FileAccess.READ)
 	var data: Dictionary = JSON.parse_string(file.get_as_text())
 	
+	
 	base_path = file.get_path().get_base_dir()
 	root_node_id = data.get("RootNodeID")
 	node_list = data.get("ListNodes")
@@ -44,6 +45,10 @@ func load_dialogue(json_path: String, custom_id: Variant = null) -> void:
 	add_variables(data.get("Variables"))
 	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	next_id = root_node_id if (custom_id is not String) else custom_id
+	
+	for option in node_list.filter(func(n): return n.get("$type") == "NodeOption"):
+		option["Enable"] = option.get("EnableByDefault")
+	
 	print("[INFO] Dialogue %s loaded" % json_path.get_file())
 
 
@@ -107,7 +112,7 @@ func process_node(node: Dictionary) -> void:
 		"NodeSentence":
 			next_id = node.get("NextID")
 			var sentence = process_conditional_text(node.get("Sentence"))
-			var speaker_name = get_speaker_name(node.get("Speaker"))
+			var speaker_name = get_speaker_name(node.get("SpeakerID"))
 			var display_name = node.get("DisplayName", node.get("DisplayName"))
 			if not display_name:
 				display_name = speaker_name
@@ -129,8 +134,7 @@ func process_node(node: Dictionary) -> void:
 					monologue_notify.emit(NotificationLevel.WARN,
 							"Can't find option with id: %s" % option_id)
 					continue
-				if option.get("Enable") == false or \
-						option.get("EnableByDefault") == false:
+				if option.get("Enable") == false:
 					continue
 				options.append(option)
 			monologue_new_choice.emit(options)
@@ -278,7 +282,7 @@ func process_setter(raw_setter: Dictionary) -> void:
 	match raw_setter.get("SetType"):
 		"Option":
 			var option_id = raw_setter.get("OptionID")
-			var value = raw_setter.get("Value")
+			var value = raw_setter.get("Enable")
 			set_option_value(option_id, value if value is bool else false)
 		
 		"Variable":
