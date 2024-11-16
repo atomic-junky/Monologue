@@ -17,8 +17,7 @@ signal add_pressed
 
 func _ready() -> void:
 	button.icon = icon_close
-	collapsible_container.hide()
-	add_button.visible = show_add_button
+	close()
 
 
 func add_item(item: Control, force_readable_name: bool = false) -> void:
@@ -43,13 +42,20 @@ func clear() -> void:
 
 
 func _on_button_pressed() -> void:
-	
 	if collapsible_container.visible:
-		button.icon = icon_close
-		collapsible_container.hide()
+		close()
 	else:
-		button.icon = icon_open
-		collapsible_container.show()
+		open()
+
+
+func open() -> void:
+	button.icon = icon_open
+	collapsible_container.show()
+
+
+func close() -> void:
+	button.icon = icon_close
+	collapsible_container.hide()
 
 
 func _on_add_button_pressed() -> void:

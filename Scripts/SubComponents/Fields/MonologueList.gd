@@ -14,6 +14,12 @@ var data_list: Array = []
 
 func _ready() -> void:
 	collapsible_field.add_pressed.connect(_on_add_button_pressed)
+	post_ready.call_deferred()
+
+
+func post_ready() -> void:
+	if get_parent().get_child_count() <= 1:
+		collapsible_field.open()
 
 
 ## Add a new option node into the list and show its fields in the vbox.
