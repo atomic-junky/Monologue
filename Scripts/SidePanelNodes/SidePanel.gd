@@ -60,7 +60,7 @@ func refocus(node: MonologueGraphNode) -> void:
 			focus_owner.grab_focus()
 
 
-func _on_tfh_button_pressed() -> void:
+func _on_rfh_button_pressed() -> void:
 	GlobalSignal.emit("test_trigger", [selected_node.id.value])
 
 
