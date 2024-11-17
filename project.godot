@@ -49,7 +49,7 @@ window/size/fullscreen=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/awesome_custom_cursor/plugin.cfg", "res://addons/script-ide/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/awesome_custom_cursor/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 

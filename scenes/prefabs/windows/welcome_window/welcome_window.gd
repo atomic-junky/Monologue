@@ -60,4 +60,4 @@ func _on_open_file_btn_pressed() -> void:
 
 
 func load_callback(path: String) -> void:
-	GlobalSignal.emit("load_project", [path, true])
+	GlobalSignal.emit("load_project", [path])

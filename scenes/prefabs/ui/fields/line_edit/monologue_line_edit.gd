@@ -44,6 +44,7 @@ func set_label_visible(can_see: bool) -> void:
 
 
 func propagate(value: Variant) -> void:
+	super.propagate(value)
 	line_edit.text = str(value)
 	revert_text = line_edit.text
 

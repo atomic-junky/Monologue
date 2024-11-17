@@ -5,6 +5,8 @@
 
 
 [node name="SidePanelNodeDetails" type="PanelContainer"]
+offset_right = 158.0
+offset_bottom = 121.0
 script = ExtResource("1_haagr")
 
 [node name="OuterMargin" type="MarginContainer" parent="."]
@@ -40,4 +42,4 @@ stretch_mode = 3
 [node name="Fields" type="VBoxContainer" parent="OuterMargin/Scroller/InnerMargin/VBox"]
 layout_mode = 2
 
-[connection signal="pressed" from="OuterMargin/Scroller/InnerMargin/VBox/HBox/RFHButton" to="." method="_on_rfh_btn_pressed"]
+[connection signal="pressed" from="OuterMargin/Scroller/InnerMargin/VBox/HBox/RFHButton" to="." method="_on_rfh_button_pressed"]
