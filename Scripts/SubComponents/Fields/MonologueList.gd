@@ -9,16 +9,23 @@ var add_callback: Callable = GlobalVariables.empty_callback
 var get_callback: Callable = GlobalVariables.empty_callback
 var data_list: Array = []
 
-@onready var add_button = $AddButton
-@onready var list_label = $ListLabel
-@onready var vbox = $VBox
+
+func _ready() -> void:
+	collapsible_field = $CollapsibleField
+	collapsible_field.add_pressed.connect(_on_add_button_pressed)
+	post_ready.call_deferred()
+
+
+func post_ready() -> void:
+	if get_parent().get_child_count() <= 1:
+		collapsible_field.open()
 
 
 ## Add a new option node into the list and show its fields in the vbox.
 func append_list_item(item) -> void:
 	var panel = create_item_container()
 	var field_box = create_item_vbox(panel)
-	vbox.add_child(panel, true)
+	collapsible_field.add_item(panel, true)
 	for property_name in item.get_property_names():
 		var field = item.get(property_name).show(field_box)
 		field.set_label_text(Util.to_key_name(property_name, " "))
@@ -27,8 +34,7 @@ func append_list_item(item) -> void:
 
 
 func clear_list():
-	for child in vbox.get_children():
-		child.queue_free()
+	collapsible_field.clear()
 	data_list = []
 
 
@@ -59,14 +65,16 @@ func create_delete_button(field_box: VBoxContainer, id: Variant) -> void:
 
 
 func set_label_text(text: String) -> void:
-	list_label.text = text
+	collapsible_field.set_title(text)
 
 
-func set_label_visible(can_see: bool) -> void:
-	list_label.visible = can_see
+func set_label_visible(_can_see: bool) -> void:
+	#list_label.visible = can_see
+	pass
 
 
-func propagate(_data: Variant) -> void:
+func propagate(data: Variant) -> void:
+	super.propagate(data)
 	clear_list()
 	data_list = get_callback.call()
 	for reference in data_list:

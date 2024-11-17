@@ -122,7 +122,7 @@ mouse_filter = 2
 
 [node name="SidePanelNodeDetails" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/HSplitContainer" instance=ExtResource("6_3jc6d")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(340, 0)
+custom_minimum_size = Vector2(425, 0)
 layout_mode = 2
 
 [node name="ToolBarContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
