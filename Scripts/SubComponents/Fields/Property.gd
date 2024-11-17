@@ -19,6 +19,8 @@ var field: MonologueField
 var scene: PackedScene
 ## Dictionary of field property names to set values.
 var setters: Dictionary
+## Temporary boolean to uncollapse the field when first shown if set to true.
+var uncollapse: bool
 ## Actual value of the property.
 var value: Variant
 ## Toggles visibility of the field instance.
@@ -55,6 +57,7 @@ func propagate(new_value: Variant, can_display: bool = true) -> void:
 	if is_instance_valid(field):
 		field.propagate(new_value)
 	elif can_display:
+		uncollapse = true
 		display.emit()
 
 

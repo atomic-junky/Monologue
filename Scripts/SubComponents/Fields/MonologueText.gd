@@ -16,6 +16,7 @@ func set_label_text(text: String) -> void:
 
 
 func propagate(value: Variant) -> void:
+	super.propagate(value)
 	text_edit.text = str(value)
 
 

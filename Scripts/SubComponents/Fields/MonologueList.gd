@@ -9,10 +9,9 @@ var add_callback: Callable = GlobalVariables.empty_callback
 var get_callback: Callable = GlobalVariables.empty_callback
 var data_list: Array = []
 
-@onready var collapsible_field = $CollapsibleField
-
 
 func _ready() -> void:
+	collapsible_field = $CollapsibleField
 	collapsible_field.add_pressed.connect(_on_add_button_pressed)
 	post_ready.call_deferred()
 
@@ -74,7 +73,8 @@ func set_label_visible(_can_see: bool) -> void:
 	pass
 
 
-func propagate(_data: Variant) -> void:
+func propagate(data: Variant) -> void:
+	super.propagate(data)
 	clear_list()
 	data_list = get_callback.call()
 	for reference in data_list:

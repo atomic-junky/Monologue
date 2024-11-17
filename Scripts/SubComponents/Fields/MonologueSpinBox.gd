@@ -26,6 +26,7 @@ func set_label_text(text: String) -> void:
 
 
 func propagate(value: Variant) -> void:
+	super.propagate(value)
 	spin_box.value = value if (value is float or value is int) else 0
 
 

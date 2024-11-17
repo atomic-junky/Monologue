@@ -59,12 +59,18 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 				field_obj.set_title(group)
 				
 				for field_name in fields:
-					var field = node.get(field_name).show(fields_container)
+					var property = node.get(field_name)
+					var field = property.show(fields_container)
 					field.set_label_text(field_name.capitalize())
 
 					fields_container.remove_child(field)
 					field_obj.add_item(field)
 					already_invoke.append(field_name)
+					
+					field.collapsible_field = field_obj
+					if property.uncollapse:
+						field_obj.open()
+						property.uncollapse = false
 
 	for property_name in property_names:
 		if property_name in already_invoke:
