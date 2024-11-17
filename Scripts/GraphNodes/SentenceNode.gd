@@ -34,3 +34,7 @@ func _update():
 	_preview.text = sentence.value
 	speaker.callers["set_items"] = [get_graph_edit().speakers, "Reference", "ID"]
 	super._update()
+
+
+func _get_field_groups() -> Array:
+	return [{"Character": ["speaker", "display_name", "display_variant"]}]

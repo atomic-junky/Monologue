@@ -10,6 +10,7 @@ func set_label_text(text: String) -> void:
 
 
 func propagate(value: Variant) -> void:
+	super.propagate(value)
 	check_button.set_pressed_no_signal(value if value is bool else false)
 
 

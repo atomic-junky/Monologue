@@ -18,6 +18,7 @@ func set_label_text(text: String) -> void:
 
 
 func propagate(value: Variant) -> void:
+	super.propagate(value)
 	line_edit.text = value
 	validate(value)
 

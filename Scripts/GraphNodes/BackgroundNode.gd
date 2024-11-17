@@ -74,3 +74,7 @@ func _update(_bg_type: Variant = background_type.value):
 	_path_label.text = image.value
 	_load_image()
 	super._update()
+
+
+func _get_field_groups() -> Array:
+	return ["background_type", "image", "custom_scene", {"Transition": ["transition", "duration"]}]

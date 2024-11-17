@@ -9,8 +9,7 @@
 ## [method UndoRedo.add_do_method] because of many moving parts in the
 ## Monologue architecture. That's why there are custom [MonologueHistory]
 ## classes to separate bigger operations/data into its own section.
-class_name HistoryHandler
-extends UndoRedo
+class_name HistoryHandler extends UndoRedo
 
 
 ## Extracts the undo/redo callback methods from the given [param history]
