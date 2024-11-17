@@ -17,6 +17,7 @@ signal add_pressed
 
 func _ready() -> void:
 	button.icon = icon_close
+	add_button.visible = show_add_button
 	close()
 
 
