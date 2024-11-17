@@ -11,6 +11,14 @@ signal field_changed(value: Variant)
 signal field_updated(value: Variant)
 
 
+var collapsible_field: CollapsibleField : set = set_collapsible_field
+
+
+## Set the collapsible control that this MonologueField belongs to.
+func set_collapsible_field(collapsible: CollapsibleField):
+	collapsible_field = collapsible
+
+
 ## Called by node panel to set field label text, if applicable.
 func set_label_text(_text: String) -> void:
 	pass
@@ -24,4 +32,5 @@ func set_label_visible(_can_see: bool) -> void:
 ## Meant to propagate the value set in [MonologueProperty] to this Field.
 ## This method does not emit [signal field_updated].
 func propagate(_value: Variant) -> void:
-	pass
+	if collapsible_field:
+		collapsible_field.open()

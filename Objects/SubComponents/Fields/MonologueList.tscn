@@ -1,26 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://ddc27sbeek1p"]
+[gd_scene load_steps=3 format=3 uid="uid://ddc27sbeek1p"]
 
 [ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueList.gd" id="1_8kx3n"]
+[ext_resource type="PackedScene" uid="uid://hvv74un17dp0" path="res://Objects/SubComponents/CollapsibleField.tscn" id="2_jih45"]
 
 [node name="MonologueList" type="VBoxContainer"]
 offset_right = 200.0
 offset_bottom = 60.0
-theme_override_constants/separation = 10
+theme_override_constants/separation = 5
 script = ExtResource("1_8kx3n")
 
-[node name="ListLabel" type="Label" parent="."]
-custom_minimum_size = Vector2(100, 0)
+[node name="CollapsibleField" parent="." instance=ExtResource("2_jih45")]
 layout_mode = 2
-size_flags_vertical = 0
-text = "Items"
-
-[node name="VBox" type="VBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="AddButton" type="Button" parent="."]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-text = "+"
-
-[connection signal="pressed" from="AddButton" to="." method="_on_add_button_pressed"]
+show_add_button = true
+separate_items = true

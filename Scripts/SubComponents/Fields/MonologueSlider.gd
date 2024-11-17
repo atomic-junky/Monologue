@@ -24,6 +24,7 @@ func set_label_text(text: String) -> void:
 
 
 func propagate(value: Variant) -> void:
+	super.propagate(value)
 	slider.value = value if (value is float or value is int) else default
 
 
