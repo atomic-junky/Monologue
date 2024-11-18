@@ -40,6 +40,13 @@ func _ready() -> void:
 	for property_name in get_property_names():
 		get(property_name).connect("change", change.bind(property_name))
 		get(property_name).connect("display", display)
+	
+	_harmonize_size.call_deferred()
+
+
+func _harmonize_size() -> void:
+	size.x = ceil(size.x/30)*30
+	size.y = ceil(size.y/30)*30
 
 
 func _set_titlebar_color(val: Color):
@@ -163,6 +170,7 @@ func _to_next(dict: Dictionary, key: String = "NextID") -> void:
 
 func _update() -> void:
 	size.y = 0
+	_harmonize_size.call_deferred()
 
 
 func _validate_id(text: String) -> bool:
