@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=23 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
 [ext_resource type="PackedScene" uid="uid://nqxlo7mk5nka" path="res://Objects/SubComponents/side_panel_node_details.tscn" id="6_3jc6d"]
 [ext_resource type="Script" path="res://Scripts/SubComponents/search_bar_container.gd" id="7_eu0e0"]
 [ext_resource type="PackedScene" uid="uid://cvum3eaenloix" path="res://Objects/SubComponents/search_bar.tscn" id="8_tvorm"]
+[ext_resource type="PackedScene" uid="uid://bcs6s2yuf374j" path="res://Objects/SubComponents/expand_text_edit_container.tscn" id="9_v3rw4"]
 [ext_resource type="Texture2D" uid="uid://bddodmw1pm42r" path="res://title_banner@0.5x.png" id="10_m5ce4"]
 [ext_resource type="Script" path="res://Scripts/SubComponents/GraphEditSwitcher.gd" id="11_k843q"]
 [ext_resource type="Script" path="res://Scripts/SubComponents/RecentFilesContainer.gd" id="14_xsog8"]
@@ -273,6 +274,18 @@ script = ExtResource("7_eu0e0")
 [node name="SearchBar" parent="MarginContainer/MainContainer/GraphEditsArea/SearchBarContainer" instance=ExtResource("8_tvorm")]
 visible = false
 layout_mode = 2
+
+[node name="ExpandTextEditContainer" parent="." instance=ExtResource("9_v3rw4")]
+layout_mode = 1
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 
 [node name="GraphNodePicker" parent="." instance=ExtResource("19_myvjg")]
 visible = false

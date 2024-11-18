@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://durq2yowmkr60"]
+[gd_scene load_steps=3 format=3 uid="uid://durq2yowmkr60"]
 
 [ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueText.gd" id="1_3q0il"]
+[ext_resource type="Texture2D" uid="uid://bu603ytypk2jb" path="res://Assets/Icons/expand.svg" id="2_mkdom"]
 
 [node name="MonologueText" type="HBoxContainer"]
 size_flags_horizontal = 3
@@ -12,12 +13,52 @@ layout_mode = 2
 size_flags_vertical = 0
 text = "Value"
 
-[node name="TextEdit" type="TextEdit" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer"]
+clip_contents = false
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_horizontal = 3
 wrap_mode = 1
 caret_blink = true
 
-[connection signal="focus_exited" from="TextEdit" to="." method="_on_focus_exited"]
-[connection signal="text_changed" from="TextEdit" to="." method="_on_text_changed"]
+[node name="ExpandContainer" type="PanelContainer" parent="HBoxContainer/TextEdit"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -22.0
+offset_top = -7.0
+offset_right = 5.0
+offset_bottom = 20.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="HBoxContainer/TextEdit/ExpandContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/TextEdit/ExpandContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/TextEdit/ExpandContainer/Button/CenterContainer"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_mkdom")
+expand_mode = 4
+stretch_mode = 5
+
+[connection signal="focus_exited" from="HBoxContainer/TextEdit" to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="HBoxContainer/TextEdit" to="." method="_on_text_changed"]
+[connection signal="pressed" from="HBoxContainer/TextEdit/ExpandContainer/Button" to="." method="_on_button_pressed"]

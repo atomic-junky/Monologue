@@ -318,34 +318,6 @@
 			}
 		},
 		{
-			"$type": "NodeSentence",
-			"ID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
-			"NextID": "98bc9817-7b7d-4dea-8bb7-626192069677",
-			"Speaker": 0,
-			"DisplayName": "",
-			"DisplayVariant": "",
-			"Sentence": "You see a sharpener in front of you. He appears to be mad.",
-			"Voiceline": "",
-			"EditorPosition": {
-				"x": 380,
-				"y": 0
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
-			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
-			"Speaker": 1,
-			"DisplayName": "",
-			"DisplayVariant": "",
-			"Sentence": "[shake rate=20.0 level=5]I... I need to hurt...\nGi-give me a pencil...[shake]",
-			"Voiceline": "",
-			"EditorPosition": {
-				"x": 820,
-				"y": 0
-			}
-		},
-		{
 			"$type": "NodeWait",
 			"ID": "ce58e64a-62bd-4383-9331-99df9ed625bd",
 			"NextID": "moai3YwB8Z",
@@ -373,6 +345,34 @@
 			"EditorPosition": {
 				"x": 3041,
 				"y": 391
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "0d3de1b9-35cd-4536-8b7e-a3cbf400c87b",
+			"NextID": "98bc9817-7b7d-4dea-8bb7-626192069677",
+			"Speaker": 0,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "You see a sharpener in front of you. He appears to be mad.",
+			"Voiceline": "",
+			"EditorPosition": {
+				"x": 380,
+				"y": 0
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
+			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
+			"Speaker": 1,
+			"DisplayName": "",
+			"DisplayVariant": "",
+			"Sentence": "[shake rate=20.0 level=5]I... I need to hurt...\nGi-give me a pencil...[shake]",
+			"Voiceline": "",
+			"EditorPosition": {
+				"x": 820,
+				"y": 0
 			}
 		}
 	],
