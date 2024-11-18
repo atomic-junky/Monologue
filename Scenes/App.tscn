@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://bim51g1aibuw0"]
 
-[ext_resource type="PackedScene" uid="uid://bqjfdabrxujp7" path="res://Scenes/Graph.tscn" id="1_kiov6"]
+[ext_resource type="PackedScene" uid="uid://bqjfdabrxujp7" path="res://scenes/Graph.tscn" id="1_kiov6"]
 [ext_resource type="Script" path="res://Scripts/UI/custom_title_bar.gd" id="1_sdg01"]
 [ext_resource type="Texture2D" uid="uid://cfc0nhupnhixg" path="res://icon_min.png" id="2_601ss"]
 [ext_resource type="PackedScene" uid="uid://c2k0l1j45eshc" path="res://Objects/UI/TitleBarButton.tscn" id="3_0m70l"]
@@ -12,13 +12,13 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_da2f7"]
 bg_color = Color(0.192157, 0.192157, 0.211765, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8orku"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4vskt"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xnh0d"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpbku"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_efv2t"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wodfl"]
 bg_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="App" type="Control"]
@@ -88,17 +88,17 @@ theme_override_constants/separation = 0
 
 [node name="tbReduceButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_8orku")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4vskt")
 texture = ExtResource("4_b7q52")
 
 [node name="tbSizeButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_xnh0d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tpbku")
 texture = ExtResource("5_fxbua")
 
 [node name="tbCloseButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-theme_override_styles/hover = SubResource("StyleBoxFlat_efv2t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_wodfl")
 hover_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]
