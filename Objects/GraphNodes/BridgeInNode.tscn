@@ -39,5 +39,3 @@ allow_greater = true
 allow_lesser = true
 alignment = 1
 update_on_text_changed = true
-
-[connection signal="position_offset_changed" from="." to="." method="_on_position_offset_changed"]

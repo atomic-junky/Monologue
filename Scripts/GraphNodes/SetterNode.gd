@@ -50,19 +50,10 @@ func _from_dict(dict: Dictionary) -> void:
 	_show_group(set_type.value)
 
 
-### Just a fun thing to do as a throwback to the old CustomAction.
-#func _get_emoji() -> String:
-	#match set_type.value:
-		#"Option":     return "❔ "
-		#"Variable":   return "⚙️ "
-		#_:            return ""
-
-
 func _show_group(setter_type: Variant) -> void:
 	for key in _control_groups.keys():
 		for property in _control_groups.get(key):
 			property.visible = key == setter_type
-	#title = "%s%s" % [_get_emoji(), node_type]
 
 
 func _update(setter_type: Variant = set_type.value) -> void:
