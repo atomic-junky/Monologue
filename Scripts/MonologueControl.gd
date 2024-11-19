@@ -186,4 +186,4 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		get_viewport().gui_release_focus()
 		graph.is_closing_all_tabs = true
-		graph.on_tab_close_pressed(0)
+		graph._on_tab_close_pressed(0)

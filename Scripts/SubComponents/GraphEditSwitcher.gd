@@ -92,7 +92,7 @@ func new_graph_edit() -> MonologueGraphEdit:
 	return graph_edit
 
 
-func on_tab_close_pressed(tab: int) -> void:
+func _on_tab_close_pressed(tab: int) -> void:
 	var ge = graph_edits.get_child(tab)
 	if ge.is_unsaved():  # prompt user if there are unsaved changes
 		GlobalSignal.emit("disable_picker_mode")
@@ -136,7 +136,7 @@ func _close_tab(graph_edit, tab_index, save_first = false) -> void:
 	if tab_bar.tab_count == 0:
 		get_tree().quit()
 	elif is_closing_all_tabs:
-		on_tab_close_pressed(0)
+		_on_tab_close_pressed(0)
 
 
 func _on_tab_changed(tab: int) -> void:
@@ -156,10 +156,3 @@ func _on_tab_changed(tab: int) -> void:
 	new_graph_edit()
 	GlobalSignal.emit("show_welcome", [tab_bar.tab_count > 1])
 	side_panel.hide()
-
-
-func _on_tab_close_pressed(tab: int) -> void:
-	if tab < tab_bar.tab_count-1:
-		for ge in graph_edits.get_children():
-			if graph_edits.get_child(tab) == ge:
-				_close_tab(ge, tab)
