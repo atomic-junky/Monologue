@@ -38,8 +38,8 @@ IDGen="*res://Scripts/Global/IDGen.gd"
 
 [display]
 
-window/size/viewport_width=1500
-window/size/viewport_height=800
+window/size/viewport_width=1600
+window/size/viewport_height=960
 window/size/resizable=false
 window/size/extend_to_title=true
 window/energy_saving/keep_screen_on=false

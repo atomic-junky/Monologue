@@ -34,7 +34,6 @@ func _ready() -> void:
 
 	title = node_type
 	id.setters["copyable"] = true
-	id.setters["font_size"] = 11
 	id.setters["validator"] = _validate_id
 	id.callers["set_label_visible"] = [false]
 	for property_name in get_property_names():
