@@ -23,6 +23,7 @@ var tab_bar: TabBar
 func _ready() -> void:
 	tab_bar = control.tab_bar
 	tab_bar.connect("tab_changed", _on_tab_changed)
+	tab_bar.connect("tab_close_pressed", _on_tab_close_pressed)
 	new_graph_edit()
 	current.add_child(root_scene.instantiate())
 	GlobalSignal.add_listener("previous_tab", previous_tab)
@@ -155,3 +156,10 @@ func _on_tab_changed(tab: int) -> void:
 	new_graph_edit()
 	GlobalSignal.emit("show_welcome", [tab_bar.tab_count > 1])
 	side_panel.hide()
+
+
+func _on_tab_close_pressed(tab: int) -> void:
+	if tab < tab_bar.tab_count-1:
+		for ge in graph_edits.get_children():
+			if graph_edits.get_child(tab) == ge:
+				_close_tab(ge, tab)
