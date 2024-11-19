@@ -140,6 +140,10 @@ func _close_tab(graph_edit, tab_index, save_first = false) -> void:
 
 
 func _on_tab_changed(tab: int) -> void:
+	if tab == -1:
+		return
+		
+	tab_bar.deselect_enabled = false
 	if tab < tab_bar.tab_count-1:
 		for ge in graph_edits.get_children():
 			if graph_edits.get_child(tab) == ge:
@@ -151,8 +155,13 @@ func _on_tab_changed(tab: int) -> void:
 			else:
 				ge.visible = false
 		return
-	
-	tab_bar.current_tab = tab_bar.get_previous_tab()
+		
+	var prev_tab = tab_bar.get_previous_tab()
+	if prev_tab == tab_bar.tab_count -1:
+		tab_bar.deselect_enabled = true
+		tab_bar.current_tab = -1
+	else:
+		tab_bar.current_tab = prev_tab
 	new_graph_edit()
 	GlobalSignal.emit("show_welcome", [tab_bar.tab_count > 1])
 	side_panel.hide()
