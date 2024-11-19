@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dqsnkyn3r76m4"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/RootNode.gd" id="1_e8g7i"]
-[ext_resource type="Texture2D" uid="uid://dcwlr40joacng" path="res://Assets/Icons/NodesIcons/slot.png" id="1_vjx27"]
+[ext_resource type="Texture2D" uid="uid://dcwlr40joacng" path="res://Assets/Icons/NodesIcons/slot.svg" id="1_vjx27"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_afdty"]
 font_color = Color(0.635294, 0.635294, 0.635294, 1)

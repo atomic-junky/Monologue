@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dg1if067aop0p"]
 
-[ext_resource type="Texture2D" uid="uid://dcwlr40joacng" path="res://Assets/Icons/NodesIcons/slot.png" id="1_n6akr"]
+[ext_resource type="Texture2D" uid="uid://dcwlr40joacng" path="res://Assets/Icons/NodesIcons/slot.svg" id="1_n6akr"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/ActionNode.gd" id="3_s1gpj"]
 [ext_resource type="StyleBox" uid="uid://bmb6fo20hn20m" path="res://Assets/NodeValue.stylebox" id="4_286lp"]
 

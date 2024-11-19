@@ -315,7 +315,7 @@
 		{
 			"$type": "NodeSentence",
 			"ID": "3e47d27d-0bd4-40e6-bb9e-d0337e0f91fe",
-			"NextID": -1,
+			"NextID": "dFU8dshDm5",
 			"Speaker": 0,
 			"DisplayName": "",
 			"DisplayVariant": "",
@@ -373,6 +373,15 @@
 			"EditorPosition": {
 				"x": 300,
 				"y": 0
+			}
+		},
+		{
+			"$type": "NodeReroute",
+			"ID": "dFU8dshDm5",
+			"NextID": -1,
+			"EditorPosition": {
+				"x": 870,
+				"y": 390
 			}
 		}
 	],
