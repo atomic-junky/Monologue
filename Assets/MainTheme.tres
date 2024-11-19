@@ -1,5 +1,6 @@
-[gd_resource type="Theme" load_steps=76 format=3 uid="uid://budfhk1hudcfj"]
+[gd_resource type="Theme" load_steps=77 format=3 uid="uid://budfhk1hudcfj"]
 
+[ext_resource type="Texture2D" uid="uid://dcwlr40joacng" path="res://Assets/Icons/NodesIcons/slot.png" id="1_emyar"]
 [ext_resource type="FontFile" uid="uid://cfima7icjyyky" path="res://Assets/Fonts/NotoSans-SemiBold.ttf" id="1_l3k8r"]
 [ext_resource type="Texture2D" uid="uid://b0umav8s8l2qa" path="res://Assets/Icons/cross.svg" id="2_vfihn"]
 
@@ -659,6 +660,7 @@ GraphNode/colors/close_color = Color(1, 1, 1, 1)
 GraphNode/colors/resizer_color = Color(1, 1, 1, 1)
 GraphNode/colors/title_color = Color(1, 1, 1, 1)
 GraphNode/constants/separation = 5
+GraphNode/icons/port = ExtResource("1_emyar")
 GraphNode/styles/panel = SubResource("StyleBoxFlat_k1srb")
 GraphNode/styles/panel_selected = SubResource("StyleBoxFlat_7rjya")
 GraphNode/styles/slot = SubResource("StyleBoxFlat_2douw")

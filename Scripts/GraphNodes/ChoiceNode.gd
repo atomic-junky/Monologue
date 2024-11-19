@@ -35,7 +35,7 @@ func add_option(reference: Dictionary = {}) -> OptionNode:
 	
 	var is_first = get_child_count() <= 1
 	set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true,
-			0, Color("ffffff"), LEFT_ARROW_SLOT_TEXTURE, RIGHT_ARROW_SLOT_TEXTURE, false)
+			0, Color("ffffff"), LEFT_SLOT, RIGHT_SLOT, false)
 	return new_option
 
 

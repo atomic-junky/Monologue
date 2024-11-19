@@ -21,8 +21,8 @@ const SPINBOX = preload("res://Objects/SubComponents/Fields/MonologueSpinBox.tsc
 const TEXT = preload("res://Objects/SubComponents/Fields/MonologueText.tscn")
 const TOGGLE = preload("res://Objects/SubComponents/Fields/MonologueToggle.tscn")
 
-const LEFT_ARROW_SLOT_TEXTURE = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
-const RIGHT_ARROW_SLOT_TEXTURE = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
+const LEFT_SLOT = preload("res://Assets/Icons/NodesIcons/slot.svg")
+const RIGHT_SLOT = preload("res://Assets/Icons/NodesIcons/slot.svg")
 
 var id := Property.new(LINE, {}, IDGen.generate())
 var node_type: String = "NodeUnknown"
@@ -41,7 +41,16 @@ func _ready() -> void:
 		get(property_name).connect("change", change.bind(property_name))
 		get(property_name).connect("display", display)
 	
+	_update_slot_icons()
 	_harmonize_size.call_deferred()
+
+
+func _update_slot_icons() -> void:
+	for slot_idx in get_child_count():
+		if is_slot_enabled_left(slot_idx):
+			set_slot_custom_icon_left(slot_idx, LEFT_SLOT)
+		if is_slot_enabled_right(slot_idx):
+			set_slot_custom_icon_right(slot_idx, RIGHT_SLOT)
 
 
 func _harmonize_size() -> void:
