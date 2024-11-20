@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=24 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/MonologueControl.gd" id="1_r00lk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
 [ext_resource type="PackedScene" uid="uid://nqxlo7mk5nka" path="res://Objects/SubComponents/side_panel_node_details.tscn" id="6_3jc6d"]
+[ext_resource type="PackedScene" uid="uid://cb3se7h7akt47" path="res://Objects/SubComponents/language_switcher.tscn" id="6_nqv8k"]
 [ext_resource type="Script" path="res://Scripts/SubComponents/search_bar_container.gd" id="7_eu0e0"]
 [ext_resource type="PackedScene" uid="uid://cvum3eaenloix" path="res://Objects/SubComponents/search_bar.tscn" id="8_tvorm"]
 [ext_resource type="PackedScene" uid="uid://bcs6s2yuf374j" path="res://Objects/SubComponents/expand_text_edit_container.tscn" id="9_v3rw4"]
@@ -216,18 +217,8 @@ script = SubResource("GDScript_5beyj")
 [node name="VSeparator4" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
+[node name="LanguageSwitcher" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer" instance=ExtResource("6_nqv8k")]
 layout_mode = 2
-flat = true
-alignment = 1
-selected = 0
-item_count = 3
-popup/item_0/text = "English"
-popup/item_1/text = "Spanish"
-popup/item_1/id = 1
-popup/item_2/text = "French"
-popup/item_2/id = 2
 
 [node name="Right" type="PanelContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar"]
 layout_mode = 2
@@ -276,6 +267,7 @@ visible = false
 layout_mode = 2
 
 [node name="ExpandTextEditContainer" parent="." instance=ExtResource("9_v3rw4")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_left = 0.0
