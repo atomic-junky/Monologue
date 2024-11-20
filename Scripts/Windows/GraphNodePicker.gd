@@ -13,6 +13,7 @@ func _ready():
 	force_native = true
 	GlobalSignal.add_listener("enable_picker_mode", _on_enable_picker_mode)
 
+
 func _on_enable_picker_mode(node: String = "", port: int = -1, release_pos = null, graph_release_pos = null, center_pos = null):
 	from_node = node
 	from_port = port
@@ -20,8 +21,11 @@ func _on_enable_picker_mode(node: String = "", port: int = -1, release_pos = nul
 	graph_release = graph_release_pos
 	center = center_pos
 	
-	if from_node:
+	
+	if from_node != "":
 		position = Vector2i(release) + get_tree().get_root().position
+	else:
+		position = get_tree().get_root().position + Vector2i(get_parent().get_global_mouse_position())
 	show()
 
 
