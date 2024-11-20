@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://hvv74un17dp0"]
+[gd_scene load_steps=5 format=3 uid="uid://hvv74un17dp0"]
 
 [ext_resource type="Script" path="res://Scripts/SubComponents/collapsible_field.gd" id="1_j54qh"]
 [ext_resource type="Texture2D" uid="uid://cb6n6enqfvclw" path="res://Assets/Icons/arrow_right.svg" id="1_y6ut8"]
+[ext_resource type="Script" path="res://addons/ReorderableContainer/reorderable_vbox.gd" id="3_ew738"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ng6uw"]
 content_margin_left = 10.0
@@ -39,7 +40,14 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ng6uw")
 
 [node name="VboxContainer" type="VBoxContainer" parent="CollapsibleContainer/PanelContainer"]
 layout_mode = 2
-theme_override_constants/separation = 0
+
+[node name="ReorderableFieldContainer" type="Container" parent="CollapsibleContainer/PanelContainer/VboxContainer"]
+unique_name_in_owner = true
+process_mode = 1
+layout_mode = 2
+script = ExtResource("3_ew738")
+hold_duration = 0.2
+is_vertical = true
 
 [node name="FieldContainer" type="VBoxContainer" parent="CollapsibleContainer/PanelContainer/VboxContainer"]
 unique_name_in_owner = true
@@ -53,4 +61,5 @@ mouse_default_cursor_shape = 2
 text = "+"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="sort_children" from="CollapsibleContainer/PanelContainer/VboxContainer/ReorderableFieldContainer" to="CollapsibleContainer/PanelContainer/VboxContainer/ReorderableFieldContainer" method="_on_sort_children"]
 [connection signal="pressed" from="CollapsibleContainer/PanelContainer/VboxContainer/AddButton" to="." method="_on_add_button_pressed"]
