@@ -6,6 +6,8 @@ extends MenuButton
 
 func _ready() -> void:
 	var popup: PopupMenu = get_popup()
+	popup.transparent = true
+	popup.transparent_bg = true
 	
 	# Search item
 	popup.add_icon_item(search_icon, "Search...")
@@ -14,7 +16,7 @@ func _ready() -> void:
 	popup.add_separator()
 	
 	# File item
-	var file_submenu: PopupMenu = PopupMenu.new()
+	var file_submenu: PopupMenu = create_popup_menu()
 	file_submenu.add_item("New file")
 	file_submenu.add_item("Open file")
 	file_submenu.add_separator()
@@ -26,7 +28,7 @@ func _ready() -> void:
 	popup.add_submenu_node_item("File", file_submenu)
 	
 	# Edit item
-	var edit_submenu: PopupMenu = PopupMenu.new()
+	var edit_submenu: PopupMenu = create_popup_menu()
 	edit_submenu.add_item("Undo")
 	edit_submenu.add_item("Redo")
 	edit_submenu.add_separator()
@@ -38,7 +40,7 @@ func _ready() -> void:
 	popup.add_submenu_node_item("Edit", edit_submenu)
 	
 	# View item
-	var view_submenu: PopupMenu = PopupMenu.new()
+	var view_submenu: PopupMenu = create_popup_menu()
 	view_submenu.add_check_item("Pixel grid")
 	view_submenu.add_check_item("Snap to grid")
 	view_submenu.add_separator()
@@ -51,7 +53,7 @@ func _ready() -> void:
 	popup.add_submenu_node_item("View", view_submenu)
 	
 	# Node item
-	var node_submenu: PopupMenu = PopupMenu.new()
+	var node_submenu: PopupMenu = create_popup_menu()
 	node_submenu.add_item("Add node")
 	node_submenu.add_item("Arrange nodes")
 	
@@ -65,6 +67,15 @@ func _ready() -> void:
 	popup.set_item_shortcut(7, create_shortcut("Exit"))
 
 
+func create_popup_menu() -> PopupMenu:
+	var popup: PopupMenu = PopupMenu.new()
+	popup.transparent = true
+	popup.transparent_bg = true
+	
+	return popup
+	
+
+
 func create_shortcut(action_name: StringName) -> Shortcut:
 	var _shortcut := Shortcut.new()
 	
@@ -73,3 +84,9 @@ func create_shortcut(action_name: StringName) -> Shortcut:
 	_shortcut.events.append(inputevent)
 	
 	return _shortcut
+
+
+func _on_about_to_popup() -> void:
+	var popup: PopupMenu = get_popup()
+	await get_tree().process_frame
+	popup.position.y -= (get_window().size.y-global_position.y)+5
