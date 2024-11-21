@@ -68,8 +68,8 @@ func _set_titlebar_color(val: Color):
 	stylebox.set_border_width_all(1)
 	stylebox.border_width_bottom = 0
 	
-	var stylebox_selected = stylebox.duplicate()
-	stylebox_selected.border_color = Color("b2b2b2")
+	var stylebox_selected = get_theme_stylebox("titlebar_selected", "GraphNode").duplicate()
+	stylebox_selected.bg_color = val
 	
 	remove_theme_stylebox_override("titlebar")
 	remove_theme_stylebox_override("titlebar_selected")
