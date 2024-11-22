@@ -10,7 +10,6 @@
 custom_minimum_size = Vector2(400, 100)
 offset_right = 400.0
 offset_bottom = 100.0
-mouse_default_cursor_shape = 2
 theme = SubResource("Theme_llmqa")
 title = "NodeComment"
 slot/0/left_enabled = false

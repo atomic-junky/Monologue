@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dqsnkyn3r76m4"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/RootNode.gd" id="1_e8g7i"]
-[ext_resource type="Texture2D" uid="uid://dcwlr40joacng" path="res://Assets/Icons/NodesIcons/slot.svg" id="1_vjx27"]
+[ext_resource type="Texture2D" uid="uid://dsb6opwewlipc" path="res://Assets/Icons/NodesIcons/slot.svg" id="1_vjx27"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_afdty"]
 font_color = Color(0.635294, 0.635294, 0.635294, 1)
@@ -10,7 +10,6 @@ font_color = Color(0.635294, 0.635294, 0.635294, 1)
 offset_right = 340.0
 offset_bottom = 81.0
 size_flags_vertical = 0
-mouse_default_cursor_shape = 2
 title = "RootNode"
 slot/0/left_enabled = false
 slot/0/left_type = 0

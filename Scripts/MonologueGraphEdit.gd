@@ -18,7 +18,6 @@ var connecting_mode: bool
 var moving_mode: bool
 var recorded_positions: Dictionary = {}  # for undo/redo positoning purpose
 var selected_nodes: Array[MonologueGraphNode] = []  # for group delete
-
 var mouse_hovering: bool = false
 
 
@@ -75,12 +74,11 @@ func _gui_input(_event: InputEvent) -> void:
 		cursor_hand_closed = true
 	
 	if cursor_hand_closed:
-		Cursor.shape = Cursor.Shapes.CURSOR_HAND_CLOSED
+		DisplayServer.cursor_set_custom_image(Cursor.closed_hand)
 	elif cursor_drag:
-		Cursor.shape = Cursor.Shapes.CURSOR_DRAG
+		DisplayServer.cursor_set_custom_image(Cursor.hand)
 	else:
-		Cursor.shape = CURSOR_ARROW
-
+		DisplayServer.cursor_set_custom_image(Cursor.arrow)
 
 ## Adds a node of the given type to this graph.
 func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
@@ -398,5 +396,5 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
-	Cursor.shape = CURSOR_ARROW
+	DisplayServer.cursor_set_custom_image(null)
 	mouse_hovering = false

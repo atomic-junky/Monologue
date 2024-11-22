@@ -166,6 +166,7 @@ alignment = 1
 custom_minimum_size = Vector2(43, 0)
 layout_mode = 2
 icon = ExtResource("5_cttu0")
+flat = false
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("6_0gy3h")
@@ -176,7 +177,6 @@ layout_mode = 2
 [node name="AddNodeBtn" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 layout_mode = 2
 text = "Add a node..."
-flat = true
 script = SubResource("GDScript_5beyj")
 
 [node name="VSeparator4" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
@@ -197,7 +197,6 @@ alignment = 1
 [node name="RunButton" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
-flat = true
 script = SubResource("GDScript_lenro")
 
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Right/HBoxContainer/RunButton"]

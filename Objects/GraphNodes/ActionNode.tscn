@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dg1if067aop0p"]
 
-[ext_resource type="Texture2D" uid="uid://dcwlr40joacng" path="res://Assets/Icons/NodesIcons/slot.svg" id="1_n6akr"]
+[ext_resource type="Texture2D" uid="uid://dsb6opwewlipc" path="res://Assets/Icons/NodesIcons/slot.svg" id="1_n6akr"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/ActionNode.gd" id="3_s1gpj"]
 [ext_resource type="StyleBox" uid="uid://bmb6fo20hn20m" path="res://Assets/NodeValue.stylebox" id="4_286lp"]
 
@@ -12,7 +12,6 @@ offset_right = 343.0
 offset_bottom = 87.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-mouse_default_cursor_shape = 2
 title = "ActionNode"
 slot/0/left_enabled = true
 slot/0/left_type = 0
