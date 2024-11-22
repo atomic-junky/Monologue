@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dsv4f87ttva8d"
-path="res://.godot/imported/AlbertoMielgo04.png-51077acd63abcb8f1e717eb1db01e783.ctex"
+path="res://.godot/imported/silhouette.png-d5089d535d6242871e9b8fbd4cf5c64c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Test/Assets/AlbertoMielgo04.png"
-dest_files=["res://.godot/imported/AlbertoMielgo04.png-51077acd63abcb8f1e717eb1db01e783.ctex"]
+source_file="res://Test/Assets/silhouette.png"
+dest_files=["res://.godot/imported/silhouette.png-d5089d535d6242871e9b8fbd4cf5c64c.ctex"]
 
 [params]
 
