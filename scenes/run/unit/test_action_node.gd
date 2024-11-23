@@ -6,7 +6,7 @@ var action_node: ActionNode
 
 func before_test():
 	action_node = auto_free(ActionNode.new())
-	var graph_runner = scene_runner("res://Objects/MonologueGraphEdit.tscn")
+	var graph_runner = scene_runner("res://common/layouts/graph_edit/monologue_graph_edit.tscn")
 	graph_runner.invoke("add_child", action_node)
 	
 	action_node.arg_box = VBoxContainer.new()

@@ -44,7 +44,7 @@ func test_fallback():
 
 
 func test_load_dialogue():
-	runner.load_dialogue("res://Examples/mr_sharpener/intro.json")
+	runner.load_dialogue("res://examples/mr_sharpener/intro.json")
 	var sharpener = runner.characters[1].get("Reference")
 	assert_str(sharpener).is_equal("Mr.Sharpener")
 
@@ -63,12 +63,12 @@ func test_next():
 
 func test_next_story_valid_without_json_suffix():
 	runner.next_story("ending_01")
-	verify(runner, 1).load_dialogue("res://Examples/mr_sharpener/ending_01.json")
+	verify(runner, 1).load_dialogue("res://examples/mr_sharpener/ending_01.json")
 
 
 func test_next_story_valid_with_json_suffix():
 	runner.next_story("ending_02.json")
-	verify(runner, 1).load_dialogue("res://Examples/mr_sharpener/ending_02.json")
+	verify(runner, 1).load_dialogue("res://examples/mr_sharpener/ending_02.json")
 
 
 func test_next_story_invalid():
@@ -93,7 +93,7 @@ func test_parse_events():
 
 
 func test_play_audio_mp3():
-	var mp3 = "res://Examples/mr_sharpener/assets/audios/sound.mp3"
+	var mp3 = "res://examples/mr_sharpener/assets/audios/sound.mp3"
 	var audio = runner.play_audio(mp3, true, -8.15, 0.421)
 	assert_object(audio.stream).is_instanceof(AudioStreamMP3)
 	assert_array(audio.stream.data).is_not_empty()
@@ -103,7 +103,7 @@ func test_play_audio_mp3():
 
 
 func test_play_audio_ogg():
-	var ogg = "res://Examples/mr_sharpener/assets/audios/mystery_sting.ogg"
+	var ogg = "res://examples/mr_sharpener/assets/audios/mystery_sting.ogg"
 	var audio = runner.play_audio(ogg)
 	assert_object(audio.stream).is_instanceof(AudioStreamOggVorbis)
 	assert_array(audio.stream.packet_sequence.packet_data).is_not_empty()
@@ -113,7 +113,7 @@ func test_play_audio_ogg():
 
 
 func test_play_audio_wav():
-	var wav = "res://Examples/mr_sharpener/assets/audios/kalimba.wav"
+	var wav = "res://examples/mr_sharpener/assets/audios/kalimba.wav"
 	var audio = runner.play_audio(wav, true, -2, 1.2)
 	assert_object(audio.stream).is_instanceof(AudioStreamWAV)
 	assert_array(audio.stream.data).is_not_empty()

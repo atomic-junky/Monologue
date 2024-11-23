@@ -2,7 +2,7 @@ extends GdUnitTestSuite
 
 
 func test_to_fields():
-	var runner = scene_runner("res://Objects/GraphNodes/ChoiceNode.tscn")
+	var runner = scene_runner("res://nodes/choice_node/choice_node.tscn")
 	var test_dict = {}
 	runner.invoke("_to_fields", test_dict)
 	assert_dict(test_dict).contains_keys(["OptionsID"])

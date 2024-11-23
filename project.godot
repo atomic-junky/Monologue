@@ -63,7 +63,7 @@ import/blender/enabled=false
 
 [gdunit4]
 
-settings/test/test_lookup_folder="Unit"
+settings/test/test_lookup_folder="unit"
 ui/toolbar/run_overall=true
 ui/inspector/tree_view_mode=1
 

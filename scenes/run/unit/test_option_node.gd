@@ -2,7 +2,7 @@ extends GdUnitTestSuite
 
 
 func test_to_dict():
-	var runner = scene_runner("res://Objects/GraphNodes/OptionNode.tscn")
+	var runner = scene_runner("res://nodes/option_node/option_node.tscn")
 	runner.get_property("id").value = "12345"
 	runner.get_property("option").value = "heyho"
 	runner.get_property("one_shot").value = true

@@ -9,7 +9,7 @@ func before_test():
 	container = auto_free(RecentFilesContainer.new())
 	container.button_container = auto_free(Control.new())
 	container.button_scene = \
-			preload("res://Objects/SubComponents/RecentFileButton.tscn")
+			preload("res://common/windows/welcome_window/recent_file_button.tscn")
 	container.save_path = "user://test_history.save"
 	directory = DirAccess.open(container.save_path.get_base_dir())
 	directory.remove(container.save_path)
@@ -48,7 +48,7 @@ func test_load_file_empty():
 func test_load_file_exclude_not_exist():
 	var file = FileAccess.open(container.save_path, FileAccess.WRITE)
 	file.store_string('["res://DOES_NOT_EXIST.json", ' + \
-			'"res://Examples/mr_sharpener/ending_02.json"]')
+			'"res://examples/mr_sharpener/ending_02.json"]')
 	file.close()
 	container.load_file()
 	assert_int(container.button_container.get_child_count()).is_equal(1)
@@ -58,8 +58,8 @@ func test_load_file_exclude_not_exist():
 
 func test_load_file_existing():
 	var file = FileAccess.open(container.save_path, FileAccess.WRITE)
-	file.store_string('["res://Examples/mr_sharpener/intro.json", ' + \
-			'"res://Examples/mr_sharpener/ending_01.json"]')
+	file.store_string('["res://examples/mr_sharpener/intro.json", ' + \
+			'"res://examples/mr_sharpener/ending_01.json"]')
 	file.close()
 	container.load_file()
 	assert_int(container.button_container.get_child_count()).is_equal(2)
