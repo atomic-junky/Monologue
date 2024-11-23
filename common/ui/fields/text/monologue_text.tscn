@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://durq2yowmkr60"]
+
+[ext_resource type="Script" path="res://common/ui/fields/text/monologue_text.gd" id="1_3q0il"]
+
+
+
+[node name="MonologueText" type="HBoxContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_3q0il")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 0
+text = "Value"
+
+[node name="TextEdit" type="TextEdit" parent="."]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+wrap_mode = 1
+caret_blink = true
+
+[connection signal="focus_exited" from="TextEdit" to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="TextEdit" to="." method="_on_text_changed"]

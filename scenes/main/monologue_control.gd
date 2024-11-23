@@ -8,8 +8,8 @@ var dialog_for_localisation = []
 
 const UNSAVED_FILE_SUFFIX: String = "*"
 
-@onready var graph_edit_inst = preload("res://scenes/prefabs/layouts/graph_edit/monologue_graph_edit.tscn")
-@onready var prompt_scene = preload("res://scenes/prefabs/windows/prompt_window/prompt_window.tscn")
+@onready var graph_edit_inst = preload("res://common/layouts/graph_edit/monologue_graph_edit.tscn")
+@onready var prompt_scene = preload("res://common/windows/prompt_window/prompt_window.tscn")
 
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher/GraphEditZone/GraphEdits
 @onready var side_panel_node = %SidePanel

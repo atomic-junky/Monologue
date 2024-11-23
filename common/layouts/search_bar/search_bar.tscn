@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvum3eaenloix"]
+
+[ext_resource type="Script" path="res://common/layouts/search_bar/search_bar.gd" id="1_k0a4y"]
+[ext_resource type="Texture2D" uid="uid://7cgdpf2fr6p6" path="res://ui/assets/icons/search.svg" id="2_ejrx2"]
+
+
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iwyw6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5dmbh"]
+
+[node name="SearchBar" type="PanelContainer"]
+script = ExtResource("1_k0a4y")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_ejrx2")
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_iwyw6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5dmbh")
+placeholder_text = "Start typing..."
+flat = true

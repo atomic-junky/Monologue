@@ -29,14 +29,14 @@ boot_splash/size/resizable=false
 
 [autoload]
 
-App="*res://globals/app.gd"
-Util="*res://globals/util.gd"
-GlobalVariables="*res://globals/variables.gd"
+App="*res://autoloads/app.gd"
+Util="*res://autoloads/util.gd"
+GlobalVariables="*res://autoloads/variables.gd"
 SfxLoader="*res://scenes/run/logic/SfxLoader.gd"
-GlobalSignal="*res://globals/signal.gd"
-Path="*res://globals/path.gd"
+GlobalSignal="*res://autoloads/signal.gd"
+Path="*res://autoloads/path.gd"
 Cursor="*res://addons/awesome_custom_cursor/Autoloads/Cursor.tscn"
-IDGen="*res://globals/id_gen.gd"
+IDGen="*res://autoloads/id_gen.gd"
 
 [display]
 
@@ -54,13 +54,7 @@ enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/
 [file_customization]
 
 folder_colors={
-"res://addons/": "gray",
-"res://examples/": "orange",
-"res://globals/": "yellow",
-"res://graph_nodes/": "green",
-"res://logic/": "yellow",
-"res://scenes/": "green",
-"res://ui/": "teal"
+"res://addons/": "gray"
 }
 
 [filesystem]

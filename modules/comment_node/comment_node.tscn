@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://b4ptsysoq7mgm"]
+
+[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://ui/assets/icons/ArrowLeft.svg" id="1_bt0kt"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://ui/assets/icons/ArrowRight.svg" id="2_extdp"]
+[ext_resource type="Script" path="res://modules/comment_node/comment_node.gd" id="3_vd25i"]
+
+
+
+
+[sub_resource type="Theme" id="Theme_llmqa"]
+
+[node name="CommentNode" type="GraphNode" groups=["graph_nodes"]]
+custom_minimum_size = Vector2(400, 100)
+offset_right = 400.0
+offset_bottom = 100.0
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_llmqa")
+title = "NodeComment"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = ExtResource("1_bt0kt")
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = ExtResource("2_extdp")
+slot/0/draw_stylebox = false
+script = ExtResource("3_vd25i")
+titlebar_color = Color(1, 1, 1, 1)
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CommentEdit" type="TextEdit" parent="MainContainer"]
+layout_mode = 2
+wrap_mode = 1
+scroll_fit_content_height = true
+
+[connection signal="resize_request" from="." to="." method="_on_GraphNode_resize_request"]

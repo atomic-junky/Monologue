@@ -8,8 +8,8 @@ const UNSAVED_FILE_SUFFIX: String = "*"
 ## Reference to the side panel control to connect graph edits to.
 @export var side_panel: SidePanel
 
-var graph_edit_scene = preload("res://scenes/prefabs/layouts/graph_edit/monologue_graph_edit.tscn")
-var prompt_scene = preload("res://scenes/prefabs/windows/prompt_window/prompt_window.tscn")
+var graph_edit_scene = preload("res://common/layouts/graph_edit/monologue_graph_edit.tscn")
+var prompt_scene = preload("res://common/windows/prompt_window/prompt_window.tscn")
 var root_scene = GlobalVariables.node_dictionary.get("Root")
 var current: MonologueGraphEdit: get = get_current_graph_edit
 var is_closing_all_tabs: bool
