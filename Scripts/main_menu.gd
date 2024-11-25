@@ -89,4 +89,4 @@ func create_shortcut(action_name: StringName) -> Shortcut:
 func _on_about_to_popup() -> void:
 	var popup: PopupMenu = get_popup()
 	await get_tree().process_frame
-	popup.position.y -= (get_window().size.y-global_position.y)+5
+	popup.position.y -= (get_window().size.y - floor(global_position.y)) + 5
