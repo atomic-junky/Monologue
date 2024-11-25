@@ -8,12 +8,12 @@ const UNSAVED_FILE_SUFFIX: String = "*"
 ## Reference to the side panel control to connect graph edits to.
 @export var side_panel: SidePanel
 
+var current: MonologueGraphEdit: get = get_current_graph_edit
 var graph_edit_scene = preload("res://Objects/MonologueGraphEdit.tscn")
+var is_closing_all_tabs: bool
+var pending_new_graph: MonologueGraphEdit
 var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
 var root_scene = GlobalVariables.node_dictionary.get("Root")
-var current: MonologueGraphEdit: get = get_current_graph_edit
-var is_closing_all_tabs: bool
-
 var tab_bar: TabBar
 
 @onready var graph_edits: Control = $GraphEditZone/GraphEdits
@@ -140,11 +140,14 @@ func _close_tab(graph_edit, tab_index, save_first = false) -> void:
 
 
 func _on_tab_changed(tab: int) -> void:
-	if tab == -1:
-		return
+	if tab < tab_bar.tab_count - 1:
+		# this allows user to switch out of the new tab (welcome window)
+		tab_bar.tab_close_display_policy = TabBar.CLOSE_BUTTON_SHOW_ACTIVE_ONLY
+		if pending_new_graph and not pending_new_graph.file_path:
+			pending_new_graph.queue_free()
+			pending_new_graph = null
+		GlobalSignal.emit("hide_welcome")
 		
-	tab_bar.deselect_enabled = false
-	if tab < tab_bar.tab_count-1:
 		for ge in graph_edits.get_children():
 			if graph_edits.get_child(tab) == ge:
 				ge.visible = true
@@ -154,14 +157,8 @@ func _on_tab_changed(tab: int) -> void:
 					side_panel.hide()
 			else:
 				ge.visible = false
-		return
-		
-	var prev_tab = tab_bar.get_previous_tab()
-	if prev_tab == tab_bar.tab_count -1:
-		tab_bar.deselect_enabled = true
-		tab_bar.current_tab = -1
 	else:
-		tab_bar.current_tab = prev_tab
-	new_graph_edit()
-	GlobalSignal.emit("show_welcome", [tab_bar.tab_count > 1])
-	side_panel.hide()
+		tab_bar.tab_close_display_policy = TabBar.CLOSE_BUTTON_SHOW_NEVER
+		pending_new_graph = new_graph_edit()
+		GlobalSignal.emit("show_welcome")
+		side_panel.hide()
