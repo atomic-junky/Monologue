@@ -7,7 +7,7 @@ func test_enable_picker_mode():
 	var release = Vector2(-100.05, 100.09)
 	var center = Vector2(123.456, -123.456)
 	
-	var runner = scene_runner("res://Objects/UI/GraphNodePicker.tscn")
+	var runner = scene_runner("res://common/windows/graph_node_picker/graph_node_picker.tscn")
 	var switcher = mock(GraphEditSwitcher)
 	var fake_graph = mock(MonologueGraphEdit)
 	fake_graph.file_path = "path present!"
@@ -25,7 +25,7 @@ func test_enable_picker_mode():
 
 
 func test_enable_picker_mode_invalid_graph():
-	var runner = scene_runner("res://Objects/UI/GraphNodePicker.tscn")
+	var runner = scene_runner("res://common/windows/graph_node_picker/graph_node_picker.tscn")
 	var switcher = mock(GraphEditSwitcher)
 	var fake_graph = mock(MonologueGraphEdit)
 	do_return(fake_graph).on(switcher).get_current_graph_edit()
