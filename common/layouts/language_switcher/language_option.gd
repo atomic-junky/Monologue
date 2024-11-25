@@ -2,7 +2,7 @@ extends Button
 
 
 @onready var line_edit: LineEdit = $MarginContainer/HBoxContainer/LineEdit
-@onready var line_edit_focus_stylebox: StyleBoxFlat = preload("res://Assets/line_edit_focus.tres")
+@onready var line_edit_focus_stylebox: StyleBoxFlat = preload("res://ui/theme_default/line_edit_focus.tres")
 var line_edit_unfocus_stylebox := StyleBoxEmpty.new()
 
 

@@ -1,29 +1,28 @@
-[gd_scene load_steps=8 format=3 uid="uid://bakm53e6ecbk8"]
+[gd_scene load_steps=7 format=3 uid="uid://bakm53e6ecbk8"]
 
-[ext_resource type="Script" path="res://Scripts/SplashScreenManager.gd" id="1_wxbjf"]
+[ext_resource type="Script" path="res://scenes/splash/splash.gd" id="1_pl0ug"]
 [ext_resource type="Texture2D" uid="uid://bddodmw1pm42r" path="res://title_banner@0.5x.png" id="2_rikux"]
-[ext_resource type="Texture2D" uid="uid://fnc3c0vvx1dn" path="res://Assets/monologue eye/Calque 1.png" id="3_q01a8"]
-[ext_resource type="Texture2D" uid="uid://dslr5ny5xohlo" path="res://Assets/monologue eye/Calque 4.png" id="6_dlwkm"]
-[ext_resource type="Texture2D" uid="uid://dea6b1sjaitkq" path="res://Assets/monologue eye/Calque 5.png" id="7_ueewa"]
-[ext_resource type="Texture2D" uid="uid://crpri5eghysds" path="res://Assets/monologue eye/Calque 8.png" id="9_0i1b6"]
+[ext_resource type="Texture2D" uid="uid://cbfudkvndq872" path="res://scenes/splash/monologue eye/frame_1.png" id="3_qdaos"]
+[ext_resource type="Texture2D" uid="uid://dp3p88mc7f4k4" path="res://scenes/splash/monologue eye/frame_3.png" id="5_783yv"]
+[ext_resource type="Texture2D" uid="uid://dea6b1sjaitkq" path="res://scenes/splash/monologue eye/frame_2.png" id="7_ueewa"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tj644"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_q01a8")
+"texture": ExtResource("3_qdaos")
 }, {
 "duration": 1.0,
 "texture": ExtResource("7_ueewa")
 }, {
 "duration": 2.0,
-"texture": ExtResource("6_dlwkm")
+"texture": ExtResource("5_783yv")
 }, {
 "duration": 1.0,
 "texture": ExtResource("7_ueewa")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_0i1b6")
+"texture": ExtResource("3_qdaos")
 }],
 "loop": false,
 "name": &"blink",
@@ -37,9 +36,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_wxbjf")
-load_scene = "res://Scenes/App.tscn"
-after_blink_time = 0.5
+script = ExtResource("1_pl0ug")
+load_scene = "res://scenes/main/app.tscn"
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1

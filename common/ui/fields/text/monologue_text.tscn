@@ -1,17 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://durq2yowmkr60"]
 
-<<<<<<< HEAD:common/ui/fields/text/monologue_text.tscn
-[ext_resource type="Script" path="res://common/ui/fields/text/monologue_text.gd" id="1_3q0il"]
-
-
-=======
-[ext_resource type="Script" path="res://Scripts/SubComponents/Fields/MonologueText.gd" id="1_3q0il"]
-[ext_resource type="Texture2D" uid="uid://bu603ytypk2jb" path="res://Assets/Icons/expand.svg" id="2_mkdom"]
->>>>>>> dev:Objects/SubComponents/Fields/MonologueText.tscn
+[ext_resource type="Script" path="res://common/ui/fields/text/monologue_text.gd" id="1_m7tlj"]
+[ext_resource type="Texture2D" uid="uid://bu603ytypk2jb" path="res://ui/assets/icons/expand.svg" id="2_mkdom"]
 
 [node name="MonologueText" type="HBoxContainer"]
 size_flags_horizontal = 3
-script = ExtResource("1_3q0il")
+script = ExtResource("1_m7tlj")
 
 [node name="Label" type="Label" parent="."]
 custom_minimum_size = Vector2(100, 0)

@@ -8,49 +8,28 @@ extends Tree
 ## An oject can contain keys with name "text", "value", icon" and "children".
 var _data =  [
 		{"text": "Narration", "children": [
-			{"text": "Sentence", "icon": "Text.svg"},
-			{"text": "Choice", "icon": "Choice.svg"},
+			{"text": "Sentence", "icon": "text.svg"},
+			{"text": "Choice", "icon": "choice.svg"},
 		]},
 		{"text": "Logic", "children": [
-<<<<<<< HEAD:common/windows/graph_node_picker/graph_node_tree.gd
-			{"text": "Action", "icon": "Action.svg"},
-			{"text": "Condition", "icon": "Condition.svg"},
-			{"text": "Random", "icon": "Dice.svg"},
-			{"text": "Setter", "icon": "Action.svg"},
+			{"text": "Action", "icon": "action.svg"},
+			{"text": "Condition", "icon": "condition.svg"},
+			{"text": "Random", "icon": "dice.svg"},
+			{"text": "Setter", "icon": "toggle.svg"},
 		]},
 		{"text": "Flow", "children": [
-			{"text": "Event", "icon": "Calendar.svg"},
-			{"text": "Bridge", "icon": "Link.svg"},
-			{"text": "EndPath", "icon": "Exit.svg"},
-			{"text": "Wait", "icon": "Exit.svg"},
+			{"text": "Event", "icon": "calendar.svg"},
+			{"text": "Bridge", "icon": "link.svg"},
+			{"text": "EndPath", "icon": "exit.svg"},
+			{"text": "Wait", "icon": "time.svg"},
 		]},
 		{"text": "Audio and Visuals", "children": [
-			{"text": "Audio", "icon": "Exit.svg"},
-			{"text": "Background", "icon": "Exit.svg"},
+			{"text": "Audio", "icon": "recording.svg"},
+			{"text": "Background", "icon": "picture.svg"},
 		]},
 		{"text": "Helpers", "children": [
-			{"text": "Comment", "icon": "Comment.svg"},
-			{"text": "Reroute", "icon": "Comment.svg"},
-=======
-			{"text": "Action", "icon": "Graph/action.svg"},
-			{"text": "Condition", "icon": "Graph/condition.svg"},
-			{"text": "Random", "icon": "Graph/dice.svg"},
-			{"text": "Setter", "icon": "Graph/toggle.svg"},
-		]},
-		{"text": "Flow", "children": [
-			{"text": "Event", "icon": "Graph/calendar.svg"},
-			{"text": "Bridge", "icon": "Graph/link.svg"},
-			{"text": "EndPath", "icon": "Graph/exit.svg"},
-			{"text": "Wait", "icon": "Graph/time.svg"},
-		]},
-		{"text": "Audio and Visuals", "children": [
-			{"text": "Audio", "icon": "Graph/recording.svg"},
-			{"text": "Background", "icon": "Graph/picture.svg"},
-		]},
-		{"text": "Helpers", "children": [
-			{"text": "Comment", "icon": "Graph/comment.svg"},
-			{"text": "Reroute", "icon": "Graph/path.svg"},
->>>>>>> dev:Scripts/UI/GraphNodeTree.gd
+			{"text": "Comment", "icon": "comment.svg"},
+			{"text": "Reroute", "icon": "path.svg"},
 		]}
 	]
 

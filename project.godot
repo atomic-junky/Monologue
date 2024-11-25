@@ -16,11 +16,7 @@ markdown_book/docs_folder=""
 
 config/name="Monologue"
 config/version="2.3.0"
-<<<<<<< HEAD
-run/main_scene="res://scenes/main/app.tscn"
-=======
-run/main_scene="res://Scenes/Splash.tscn"
->>>>>>> dev
+run/main_scene="res://scenes/splash/splash.tscn"
 run/print_header=false
 run/enable_alt_space_menu=true
 config/features=PackedStringArray("4.3")
@@ -30,26 +26,14 @@ config/icon="res://icon.png"
 
 [autoload]
 
-<<<<<<< HEAD
 App="*res://autoloads/app.gd"
 Util="*res://autoloads/util.gd"
-GlobalVariables="*res://autoloads/variables.gd"
-SfxLoader="*res://scenes/run/logic/SfxLoader.gd"
-GlobalSignal="*res://autoloads/signal.gd"
+GlobalVariables="*res://autoloads/global_variables.gd"
+SfxLoader="*res://autoloads/sfx_loader.gd"
+GlobalSignal="*res://autoloads/global_signal.gd"
 Path="*res://autoloads/path.gd"
-Cursor="*res://addons/awesome_custom_cursor/Autoloads/Cursor.tscn"
 IDGen="*res://autoloads/id_gen.gd"
-=======
-App="*res://Scripts/Global/App.gd"
-uuid="*res://Scripts/Global/UUID.gd"
-Util="*res://Scripts/Global/Util.gd"
-GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
-SfxLoader="*res://Test/Scripts/SfxLoader.gd"
-GlobalSignal="*res://Scripts/Global/GlobalSignal.gd"
-Path="*res://Scripts/Global/Path.gd"
-IDGen="*res://Scripts/Global/IDGen.gd"
-Cursor="*res://Scripts/Global/cursor.gd"
->>>>>>> dev
+Cursor="*res://autoloads/cursor.gd"
 
 [display]
 

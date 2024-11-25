@@ -4,9 +4,9 @@ extends Button
 @onready var dropdown_container: Control = $DropdownContainer
 @onready var vbox: VBoxContainer = $DropdownContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer
 
-@onready var language_option := preload("res://Objects/SubComponents/language_option.tscn")
-@onready var arrow_left := preload("res://Assets/Icons/arrow_left.svg")
-@onready var arrow_down := preload("res://Assets/Icons/arrow_down.svg")
+@onready var language_option := preload("res://common/layouts/language_switcher/language_option.tscn")
+@onready var arrow_left := preload("res://ui/assets/icons/arrow_left.svg")
+@onready var arrow_down := preload("res://ui/assets/icons/arrow_down.svg")
 
 
 func _ready() -> void:

@@ -1,5 +1,4 @@
-<<<<<<< HEAD:scenes/run/main/main.tscn
-[gd_scene load_steps=12 format=3 uid="uid://dnxbsvukyu6a2"]
+[gd_scene load_steps=13 format=4 uid="uid://dnxbsvukyu6a2"]
 
 [ext_resource type="Script" path="res://scenes/run/main/main.gd" id="1_8rud0"]
 [ext_resource type="Texture2D" uid="uid://371ns5r4jx2n" path="res://scenes/run/assets/background.png" id="2_0y34q"]
@@ -10,20 +9,6 @@
 [ext_resource type="Script" path="res://scenes/run/logic/Notification.gd" id="6_kev1j"]
 [ext_resource type="PackedScene" uid="uid://cm2caiiwpfydd" path="res://scenes/run/objects/text_box.tscn" id="7_00ova"]
 [ext_resource type="Texture2D" uid="uid://bn7uq5c73oqcw" path="res://ui/assets/icons/TextboxMode.png" id="7_2ymld"]
-
-=======
-[gd_scene load_steps=13 format=4 uid="uid://dnxbsvukyu6a2"]
-
-[ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_8rud0"]
-[ext_resource type="Texture2D" uid="uid://371ns5r4jx2n" path="res://Test/Assets/background.png" id="2_0y34q"]
-[ext_resource type="Script" path="res://Test/Scripts/CharacterAsset.gd" id="3_xil5b"]
-[ext_resource type="Texture2D" uid="uid://dcv65k3aspep6" path="res://Assets/Icons/SidePanelMode.png" id="4_hc80r"]
-[ext_resource type="Script" path="res://Test/Scripts/text_box.gd" id="4_huku6"]
-[ext_resource type="Script" path="res://Test/Scripts/choice_panel.gd" id="5_gll0q"]
-[ext_resource type="Script" path="res://Test/Scripts/Notification.gd" id="6_kev1j"]
-[ext_resource type="PackedScene" uid="uid://cm2caiiwpfydd" path="res://Test/Objects/text_box.tscn" id="7_00ova"]
-[ext_resource type="Texture2D" uid="uid://bn7uq5c73oqcw" path="res://Assets/Icons/TextboxMode.png" id="7_2ymld"]
->>>>>>> dev:Test/Main.tscn
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m05qh"]
 content_margin_left = 10.0
@@ -297,10 +282,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="NotificationContainer/CenterContainer/Notification/VBoxContainer/MarginContainer"]
 layout_mode = 2
-<<<<<<< HEAD:scenes/run/main/main.tscn
-=======
 theme_override_fonts/normal_font = SubResource("FontFile_uhblr")
->>>>>>> dev:Test/Main.tscn
 bbcode_enabled = true
 fit_content = true
 
@@ -315,6 +297,4 @@ fit_content = true
 [connection signal="monologue_timer_started" from="." to="." method="_on_monologue_timer_started"]
 [connection signal="monologue_update_background" from="." to="." method="_on_monologue_update_background"]
 [connection signal="pressed" from="SidePanelContainer/PanelContainer/MarginContainer/ScrollContainer/Container/MarginContainer/HBoxContainer/HBoxContainer/QuitBtn" to="." method="_exit"]
-[connection signal="pressed" from="SidePanelContainer/PanelContainer/MarginContainer/ScrollContainer/Container/MarginContainer/HBoxContainer/SPSwitchModeButton" to="." method="_switch_mode_pressed" binds= [true]]
 [connection signal="pressed" from="TextBoxContainer/PanelContainer/MarginContainer/Container/HBoxContainer/HBoxContainer/QuitBtn" to="." method="_exit"]
-[connection signal="pressed" from="TextBoxContainer/PanelContainer/MarginContainer/Container/HBoxContainer/TBSwitchModeButton" to="." method="_switch_mode_pressed" binds= [false]]

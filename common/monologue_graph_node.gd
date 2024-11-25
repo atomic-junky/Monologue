@@ -21,8 +21,8 @@ const SPINBOX = preload("res://common/ui/fields/spin_box/monologue_spin_box.tscn
 const TEXT = preload("res://common/ui/fields/text/monologue_text.tscn")
 const TOGGLE = preload("res://common/ui/fields/toggle/monologue_toggle.tscn")
 
-const LEFT_SLOT = preload("res://Assets/Icons/NodesIcons/slot.svg")
-const RIGHT_SLOT = preload("res://Assets/Icons/NodesIcons/slot.svg")
+const LEFT_SLOT = preload("res://ui/assets/icons/slot.svg")
+const RIGHT_SLOT = preload("res://ui/assets/icons/slot.svg")
 
 var id := Property.new(LINE, {}, IDGen.generate())
 var node_type: String = "NodeUnknown"

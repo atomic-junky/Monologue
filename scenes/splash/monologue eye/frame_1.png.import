@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bt5v1rbm14y5h"
-path="res://.godot/imported/Calque 6.png-47c88e5f2eb575eb4c8281230ec4c6cb.ctex"
+uid="uid://cbfudkvndq872"
+path="res://.godot/imported/frame_1.png-1d0855d15566831d11b1298e6d697a80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/monologue eye/Calque 6.png"
-dest_files=["res://.godot/imported/Calque 6.png-47c88e5f2eb575eb4c8281230ec4c6cb.ctex"]
+source_file="res://scenes/splash/monologue eye/frame_1.png"
+dest_files=["res://.godot/imported/frame_1.png-1d0855d15566831d11b1298e6d697a80.ctex"]
 
 [params]
 

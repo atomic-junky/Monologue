@@ -1,5 +1,5 @@
 ## Continues the dialogue from BridgeIn node to its counterpart BridgeOut node.
-@icon("res://ui/assets/icons/Link.svg")
+@icon("res://ui/assets/icons/link.svg")
 class_name BridgeInNode extends MonologueGraphNode
 
 

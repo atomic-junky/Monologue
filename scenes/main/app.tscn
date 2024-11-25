@@ -12,23 +12,13 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_da2f7"]
 bg_color = Color(0.192157, 0.192157, 0.211765, 1)
 
-<<<<<<< HEAD:scenes/main/app.tscn
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nefka"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t6k80"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8d5dt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22iga"]
 bg_color = Color(1, 1, 1, 0.12549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_457we"]
-=======
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2xk7g"]
-bg_color = Color(1, 1, 1, 0.12549)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2m0r1"]
-bg_color = Color(1, 1, 1, 0.12549)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qosbl"]
->>>>>>> dev:Scenes/App.tscn
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4p074"]
 bg_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="App" type="Control"]
@@ -97,29 +87,17 @@ theme_override_constants/separation = 0
 
 [node name="tbReduceButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-<<<<<<< HEAD:scenes/main/app.tscn
-theme_override_styles/hover = SubResource("StyleBoxFlat_nefka")
-=======
-theme_override_styles/hover = SubResource("StyleBoxFlat_2xk7g")
->>>>>>> dev:Scenes/App.tscn
+theme_override_styles/hover = SubResource("StyleBoxFlat_t6k80")
 texture = ExtResource("4_b7q52")
 
 [node name="tbSizeButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-<<<<<<< HEAD:scenes/main/app.tscn
-theme_override_styles/hover = SubResource("StyleBoxFlat_8d5dt")
-=======
-theme_override_styles/hover = SubResource("StyleBoxFlat_2m0r1")
->>>>>>> dev:Scenes/App.tscn
+theme_override_styles/hover = SubResource("StyleBoxFlat_22iga")
 texture = ExtResource("5_fxbua")
 
 [node name="tbCloseButton" parent="Frame/VBoxContainer/CustomTitleBar/tbButtonContainer" instance=ExtResource("3_0m70l")]
 layout_mode = 2
-<<<<<<< HEAD:scenes/main/app.tscn
-theme_override_styles/hover = SubResource("StyleBoxFlat_457we")
-=======
-theme_override_styles/hover = SubResource("StyleBoxFlat_qosbl")
->>>>>>> dev:Scenes/App.tscn
+theme_override_styles/hover = SubResource("StyleBoxFlat_4p074")
 hover_color = Color(0.784314, 0.188235, 0.184314, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Frame/VBoxContainer/CustomTitleBar"]

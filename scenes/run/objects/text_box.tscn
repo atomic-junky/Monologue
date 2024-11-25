@@ -4,6 +4,7 @@
 texture_filter = 1
 offset_right = 674.0
 theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
 fit_content = true
 scroll_following = true

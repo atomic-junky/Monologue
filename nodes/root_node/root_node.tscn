@@ -1,14 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dqsnkyn3r76m4"]
 
-<<<<<<< HEAD:nodes/root_node/root_node.tscn
-[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://ui/assets/icons/ArrowRight.svg" id="1_ctsl7"]
 [ext_resource type="Script" path="res://nodes/root_node/root_node.gd" id="1_e8g7i"]
-
-
-=======
-[ext_resource type="Script" path="res://Scripts/GraphNodes/RootNode.gd" id="1_e8g7i"]
-[ext_resource type="Texture2D" uid="uid://dsb6opwewlipc" path="res://Assets/Icons/NodesIcons/slot.svg" id="1_vjx27"]
->>>>>>> dev:Objects/GraphNodes/RootNode.tscn
+[ext_resource type="Texture2D" uid="uid://dsb6opwewlipc" path="res://ui/assets/icons//slot.svg" id="1_vjx27"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_afdty"]
 font_color = Color(0.635294, 0.635294, 0.635294, 1)

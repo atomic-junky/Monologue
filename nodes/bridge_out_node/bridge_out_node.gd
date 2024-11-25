@@ -1,4 +1,4 @@
-@icon("res://ui/assets/icons/Link.svg")
+@icon("res://ui/assets/icons/link.svg")
 class_name BridgeOutNode extends MonologueGraphNode
 
 

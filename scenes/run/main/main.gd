@@ -51,28 +51,7 @@ func get_character_asset(character: String, _variant = null):
 	if character.begins_with("_"):
 		return
 	
-<<<<<<< HEAD:scenes/run/main/main.gd
-	var rng = RandomNumberGenerator.new()
-	rng.seed = hash(character)
-	var rng_nbr = rng.randi_range(0, 5)
-	match rng_nbr:
-		0:
-			return
-		1:
-			return preload("res://scenes/run/assets/AlbertoMielgo01.png")
-		2:
-			return preload("res://scenes/run/assets/AlbertoMielgo02.png")
-		3:
-			return preload("res://scenes/run/assets/AlbertoMielgo03.png")
-		4:
-			return preload("res://scenes/run/assets/AlbertoMielgo04.png")
-		5:
-			return preload("res://scenes/run/assets/AlbertoMielgo05.png")
-	
-	return
-=======
-	return preload("res://Test/Assets/silhouette.png")
->>>>>>> dev:Test/Scripts/Main.gd
+	return preload("res://scenes/run/assets/silhouette.png")
 
 
 func _on_monologue_end(raw_end):

@@ -269,33 +269,6 @@
 			}
 		},
 		{
-<<<<<<< HEAD
-			"$type": "NodeComment",
-			"ID": "11812fee-1f97-4b71-84b8-6df22dfda46e",
-			"NextID": -1,
-			"Comment": "Write a message when the player save Mr.sharpener.",
-			"EditorPosition": {
-				"x": -1,
-				"y": 509
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
-			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
-			"Speaker": 1,
-			"DisplayName": "",
-			"DisplayVariant": "",
-			"Sentence": "[shake rate=20.0 level=5]I... I need to hurt...\nGi-give me a pencil...[shake]",
-			"Voiceline": "",
-			"EditorPosition": {
-				"x": 820,
-				"y": 0
-			}
-		},
-		{
-=======
->>>>>>> dev
 			"$type": "NodeWait",
 			"ID": "ce58e64a-62bd-4383-9331-99df9ed625bd",
 			"NextID": "moai3YwB8Z",
@@ -327,18 +300,6 @@
 		},
 		{
 			"$type": "NodeSentence",
-<<<<<<< HEAD
-			"ID": "3e47d27d-0bd4-40e6-bb9e-d0337e0f91fe",
-			"NextID": -1,
-			"Speaker": 0,
-			"DisplayName": "",
-			"DisplayVariant": "",
-			"Sentence": "Mr.Sharpener got help and is no longer crazy. ",
-			"Voiceline": "",
-			"EditorPosition": {
-				"x": 504,
-				"y": 396
-=======
 			"ID": "98bc9817-7b7d-4dea-8bb7-626192069677",
 			"NextID": "15805e75-d3b3-49f5-9d2e-3851e97bdefc",
 			"Speaker": 1,
@@ -398,7 +359,6 @@
 			"EditorPosition": {
 				"x": -30,
 				"y": 0
->>>>>>> dev
 			}
 		},
 		{
@@ -411,11 +371,6 @@
 			"Sentence": "You see a sharpener in front of you. He appears to be mad.",
 			"Voiceline": "",
 			"EditorPosition": {
-<<<<<<< HEAD
-				"x": 380,
-				"y": 0
-			}
-=======
 				"x": 300,
 				"y": 0
 			}
@@ -428,7 +383,6 @@
 				"x": 870,
 				"y": 390
 			}
->>>>>>> dev
 		}
 	],
 	"Characters": [

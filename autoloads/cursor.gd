@@ -1,6 +1,6 @@
 extends Node
 
 
-@onready var arrow := preload("res://Assets/Icons/cursor.svg")
-@onready var hand := preload("res://Assets/Icons/hand.svg")
-@onready var closed_hand := preload("res://Assets/Icons/closed_hand.svg")
+@onready var arrow := preload("res://ui/assets/cursors/cursor.svg")
+@onready var hand := preload("res://ui/assets/cursors/hand.svg")
+@onready var closed_hand := preload("res://ui/assets/cursors/closed_hand.svg")

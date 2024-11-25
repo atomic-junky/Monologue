@@ -1,4 +1,4 @@
-@icon("res://ui/assets/icons/Exit.svg")
+@icon("res://ui/assets/icons/exit.svg")
 class_name EndPathNode extends MonologueGraphNode
 
 

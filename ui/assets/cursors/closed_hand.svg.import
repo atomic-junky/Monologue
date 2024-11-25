@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjdjqcnjg0yqo"
-path="res://.godot/imported/Move.svg-7f48edc382e0d16d0d463a9b8527f746.ctex"
+uid="uid://bdhmgrqrir12q"
+path="res://.godot/imported/closed_hand.svg-2e3453a9ca7ef3b953b6711566c92755.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/cursors/Move.svg"
-dest_files=["res://.godot/imported/Move.svg-7f48edc382e0d16d0d463a9b8527f746.ctex"]
+source_file="res://ui/assets/cursors/closed_hand.svg"
+dest_files=["res://.godot/imported/closed_hand.svg-2e3453a9ca7ef3b953b6711566c92755.ctex"]
 
 [params]
 

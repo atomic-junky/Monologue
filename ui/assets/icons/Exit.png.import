@@ -2,25 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://h2e5al8yimr8"
-<<<<<<< HEAD:ui/assets/icons/Exit.png.import
-path="res://.godot/imported/Exit.png-7b20b4c0b0f1b861892b10a037b10ec7.ctex"
-=======
-path="res://.godot/imported/exit.png-57c4e8c6235bd5d43da093126f85420d.ctex"
->>>>>>> dev:Assets/Icons/Exit.png.import
+uid="uid://dccbv4x7joj8a"
+path="res://.godot/imported/exit.png-89bb20104225ee47e1c62bcf63e94c1a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-<<<<<<< HEAD:ui/assets/icons/Exit.png.import
-source_file="res://ui/assets/icons/Exit.png"
-dest_files=["res://.godot/imported/Exit.png-7b20b4c0b0f1b861892b10a037b10ec7.ctex"]
-=======
-source_file="res://Assets/Icons/exit.png"
-dest_files=["res://.godot/imported/exit.png-57c4e8c6235bd5d43da093126f85420d.ctex"]
->>>>>>> dev:Assets/Icons/Exit.png.import
+source_file="res://ui/assets/icons/exit.png"
+dest_files=["res://.godot/imported/exit.png-89bb20104225ee47e1c62bcf63e94c1a.ctex"]
 
 [params]
 
