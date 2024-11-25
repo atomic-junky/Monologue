@@ -13,7 +13,7 @@ var v_action =  {
 
 func before_test():
 	runner = mock(MonologueProcess, CALL_REAL_FUNC)
-	runner.base_path = "res://Examples/mr_sharpener"
+	runner.base_path = "res://examples/mr_sharpener"
 	runner.variables = [
 		{"Name": "big", "Value": true, "Type": "Boolean"},
 		{"Name": "x", "Value": true, "Type": "Boolean"},
