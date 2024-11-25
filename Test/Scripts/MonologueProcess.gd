@@ -113,7 +113,7 @@ func process_node(node: Dictionary) -> void:
 			next_id = node.get("NextID")
 			var sentence = process_conditional_text(node.get("Sentence"))
 			var speaker_name = get_speaker_name(node.get("SpeakerID"))
-			var display_name = node.get("DisplayName", node.get("DisplayName"))
+			var display_name = node.get("DisplayName", node.get("DisplaySpeakerName"))
 			if not display_name:
 				display_name = speaker_name
 			
