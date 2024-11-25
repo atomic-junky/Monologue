@@ -96,7 +96,7 @@ func test_on_tab_close_pressed_saved():
 	do_return(false).on(ge).is_unsaved()
 	switcher.graph_edits.add_child(ge)
 	var spy_switcher = spy(switcher)
-	spy_switcher.on_tab_close_pressed(1)
+	spy_switcher._on_tab_close_pressed(1)
 	verify(spy_switcher, 1)._close_tab(ge, 1)
 
 
@@ -104,7 +104,7 @@ func test_on_tab_close_pressed_unsaved():
 	var ge = mock(MonologueGraphEdit)
 	do_return(true).on(ge).is_unsaved()
 	switcher.graph_edits.add_child(ge)
-	switcher.on_tab_close_pressed(1)
+	switcher._on_tab_close_pressed(1)
 	
 	var save_prompt = null
 	for node in switcher.get_children():

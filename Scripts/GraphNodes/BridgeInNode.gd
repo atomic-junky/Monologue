@@ -6,12 +6,13 @@ class_name BridgeInNode extends MonologueGraphNode
 var bridge_out_scene = preload("res://Objects/GraphNodes/BridgeOutNode.tscn")
 
 ## Spinner control which selects what number to bridge to.
-@onready var number_selector: SpinBox = $HBoxContainer/LinkNumber
+@onready var number_selector: SpinBox = $CenterContainer/HBoxContainer/LinkNumber
 
 
 func _ready():
 	node_type = "NodeBridgeIn"
 	title = node_type
+	super._ready()
 
 
 func add_to(graph):
@@ -34,10 +35,6 @@ func _from_dict(dict):
 
 func _load_connections(_data: Dictionary, _key: String = "") -> void:
 	return  # BridgeIn uses NextID covertly, not as a graph connection
-
-
-func _on_position_offset_changed():
-	return
 
 
 func _to_fields(dict: Dictionary) -> void:

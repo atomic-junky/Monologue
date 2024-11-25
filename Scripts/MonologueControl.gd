@@ -117,9 +117,10 @@ func get_root_dict(node_list: Array) -> Dictionary:
 func load_project(path: String, new_graph: bool = false) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file and not graph.is_file_opened(path):
-		if new_graph: graph.new_graph_edit()
+		if new_graph:
+			graph.new_graph_edit()
+		graph.current.file_path = path  # set path first before tab creation
 		graph.add_tab(path.get_file())
-		graph.current.file_path = path
 		
 		var data = {}
 		var text = file.get_as_text()
@@ -153,9 +154,10 @@ func save():
 
 
 func test_project(from_node: Variant = null):
-	await save()
-	var test_window: TestWindow = TestWindow.new(graph.current.file_path, from_node)
-	get_tree().root.add_child(test_window)
+	if graph.current.file_path:
+		await save()
+		var test_window: TestWindow = TestWindow.new(graph.current.file_path, from_node)
+		get_tree().root.add_child(test_window)
 
 
 func _connect_nodes(node_list: Array) -> void:
@@ -186,4 +188,4 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		get_viewport().gui_release_focus()
 		graph.is_closing_all_tabs = true
-		graph.on_tab_close_pressed(0)
+		graph._on_tab_close_pressed(0)

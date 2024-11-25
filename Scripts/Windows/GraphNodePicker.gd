@@ -1,9 +1,19 @@
 class_name GraphNodePicker extends Window
 
 
+## Reference to the tab switcher so that the picker knows which tab it is in.
+@export var switcher: GraphEditSwitcher
+
+
+## The node in which the picker was spawned/dragged from.
 var from_node: String
+## The port in which the picker was spawned/dragged from.
 var from_port: int
+## Mouse release global position.
 var release = null
+## Release position adjusted to the graph's scroll and zoom.
+var graph_release = null
+## Center position of the graph.
 var center = null
 
 
@@ -12,15 +22,22 @@ func _ready():
 	force_native = true
 	GlobalSignal.add_listener("enable_picker_mode", _on_enable_picker_mode)
 
-func _on_enable_picker_mode(node: String = "", port: int = -1, release_pos = null, center_pos = null):
-	from_node = node
-	from_port = port
-	release = release_pos
-	center = center_pos
-	
-	if from_node:
-		position = Vector2i(release) + get_tree().get_root().position
-	show()
+
+func _on_enable_picker_mode(node: String = "", port: int = -1, mouse_pos = null,
+			graph_release_pos = null, center_pos = null):
+	if switcher.current.file_path:
+		from_node = node
+		from_port = port
+		release = mouse_pos
+		graph_release = graph_release_pos
+		center = center_pos
+		
+		if from_node != "":
+			position = Vector2i(release) + get_tree().get_root().position
+		else:
+			var mouse_position =  Vector2i(get_parent().get_global_mouse_position())
+			position = get_tree().get_root().position + mouse_position
+		show()
 
 
 func close() -> void:
@@ -31,6 +48,7 @@ func flush() -> void:
 	from_node = ""
 	from_port = -1
 	release = null
+	graph_release = null
 	center = null
 
 

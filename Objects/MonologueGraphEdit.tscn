@@ -14,16 +14,15 @@ grid_pattern = 1
 snapping_enabled = false
 snapping_distance = 30
 right_disconnects = true
-connection_lines_curvature = 0.25
 zoom = 0.6
 zoom_min = 0.1
 zoom_max = 1.2
 minimap_enabled = false
 show_menu = false
-show_zoom_label = true
 show_zoom_buttons = false
 show_grid_buttons = false
 show_minimap_button = false
+show_arrange_button = false
 script = ExtResource("1_vyrsm")
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

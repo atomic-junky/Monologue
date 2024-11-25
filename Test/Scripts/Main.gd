@@ -15,7 +15,7 @@ extends MonologueProcess
 
 @onready var background_node = $Background
 @onready var character_container = $CharacterAssetContainer/Asset
-@onready var notification = $NotificationContainer/CenterContainer/Notification
+@onready var notifier = $NotificationContainer/CenterContainer/Notification
 
 var from_node: Variant
 var file_path: String
@@ -38,7 +38,7 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("ui_accept") and is_completed and not sp_choice_container.visible:
 		if is_notification_skippable:
-			notification.hide()
+			notifier.hide()
 			is_notification_skippable = false
 		next()
 
@@ -51,24 +51,7 @@ func get_character_asset(character: String, _variant = null):
 	if character.begins_with("_"):
 		return
 	
-	var rng = RandomNumberGenerator.new()
-	rng.seed = hash(character)
-	var rng_nbr = rng.randi_range(0, 5)
-	match rng_nbr:
-		0:
-			return
-		1:
-			return preload("res://Test/Assets/AlbertoMielgo01.png")
-		2:
-			return preload("res://Test/Assets/AlbertoMielgo02.png")
-		3:
-			return preload("res://Test/Assets/AlbertoMielgo03.png")
-		4:
-			return preload("res://Test/Assets/AlbertoMielgo04.png")
-		5:
-			return preload("res://Test/Assets/AlbertoMielgo05.png")
-	
-	return
+	return preload("res://Test/Assets/silhouette.png")
 
 
 func _on_monologue_end(raw_end):
@@ -170,30 +153,30 @@ func _on_monologue_event_triggered(raw_event):
 	
 	var message = "Event triggered [color=7f7f7f](%s)[/color]\n" + \
 			"Condition: [color=7f7f7f]%s %s %s[/color]"
-	notification.debug(message % [event_id, variable, operator, value])
+	notifier.debug(message % [event_id, variable, operator, value])
 
 
 func _on_monologue_update_background(path, texture):
 	if texture:
 		background_node.texture = texture
 	else:
-		notification.debug("Update Background instruction received [color=7f7f7f](%s)[/color]" % path)
+		notifier.debug("Update Background instruction received [color=7f7f7f](%s)[/color]" % path)
 
 
 func _on_monologue_play_audio(path, _player):
-	notification.debug("Play Audio instruction received [color=7f7f7f](%s)[/color]" % path.get_file())
+	notifier.debug("Play Audio instruction received [color=7f7f7f](%s)[/color]" % path.get_file())
 
 
 func _on_monologue_custom_action(raw_action):
 	var action_name = raw_action.get("Value", raw_action.get("Action"))
 	if not action_name:
 		action_name = "<<unnamed>>"
-	notification.debug("Custom action received [color=7f7f7f](%s)[/color]" % action_name)
+	notifier.debug("Custom action received [color=7f7f7f](%s)[/color]" % action_name)
 
 
 func _on_monologue_timer_started(wait_time):
 	is_notification_skippable = true
-	notification.info("Timer started for %d seconds" % wait_time, wait_time)
+	notifier.info("Timer started for %d seconds" % wait_time, wait_time)
 
 
 func _switch_mode_pressed(sp: bool = false):
@@ -204,12 +187,12 @@ func _switch_mode_pressed(sp: bool = false):
 func _on_monologue_notify(level: NotificationLevel, text: String):
 	match level:
 		NotificationLevel.INFO:
-			notification.info(text)
+			notifier.info(text)
 		NotificationLevel.DEBUG:
-			notification.debug(text)
+			notifier.debug(text)
 		NotificationLevel.WARN:
-			notification.warn(text)
+			notifier.warn(text)
 		NotificationLevel.ERROR:
-			notification.error(text)
+			notifier.error(text)
 		NotificationLevel.CRITICAL:
-			notification.critical(text)
+			notifier.critical(text)
