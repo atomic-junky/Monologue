@@ -17,11 +17,14 @@ func _ready():
 	hide()
 
 
-func on_graph_node_deselected(_node):
+func clear():
 	for field in fields_container.get_children():
 		field.queue_free()
 	if is_instance_valid(id_field):
 		id_field.queue_free()
+
+
+func on_graph_node_deselected(_node):
 	hide()
 
 
@@ -36,6 +39,7 @@ func on_graph_node_selected(node: MonologueGraphNode, bypass: bool = false):
 			graph_edit.active_graphnode = null
 			return
 	
+	clear()
 	selected_node = node
 	node._update()
 	

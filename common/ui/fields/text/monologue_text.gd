@@ -4,7 +4,9 @@ class_name MonologueText extends MonologueField
 @export var minimum_size := Vector2(200, 200)
 
 @onready var label = $Label
-@onready var text_edit = $TextEdit
+@onready var text_edit = $HBoxContainer/TextEdit
+@onready var expand_container = $HBoxContainer/TextEdit/ExpandContainer
+@onready var expand_button = $HBoxContainer/TextEdit/ExpandContainer/Button
 
 
 func _ready():
@@ -26,3 +28,7 @@ func _on_focus_exited() -> void:
 
 func _on_text_changed() -> void:
 	field_changed.emit(text_edit.text)
+
+
+func _on_button_pressed() -> void:
+	GlobalSignal.emit("expand_text_edit", [text_edit])

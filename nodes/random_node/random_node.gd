@@ -92,6 +92,6 @@ func _update(_new_value: Variant = null) -> void:
 		output_ref.update_label(str(output.weight.value) + "%")
 	
 	for idx in get_child_count():
-		set_slot(idx, (idx==0), 0, Color.WHITE, true, 0, Color.WHITE, LEFT_ARROW_SLOT_TEXTURE, RIGHT_ARROW_SLOT_TEXTURE)
+		set_slot(idx, (idx==0), 0, Color.WHITE, true, 0, Color.WHITE, LEFT_SLOT, RIGHT_SLOT)
 	
 	super._update()

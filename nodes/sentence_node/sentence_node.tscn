@@ -21,7 +21,6 @@ custom_minimum_size = Vector2(400, 100)
 offset_right = 400.0
 offset_bottom = 100.0
 size_flags_vertical = 0
-mouse_default_cursor_shape = 2
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_ryo67")
 title = "NodeSentence"
 slot/0/left_enabled = true

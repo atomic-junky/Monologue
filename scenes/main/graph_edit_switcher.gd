@@ -8,12 +8,17 @@ const UNSAVED_FILE_SUFFIX: String = "*"
 ## Reference to the side panel control to connect graph edits to.
 @export var side_panel: SidePanel
 
+<<<<<<< HEAD:scenes/main/graph_edit_switcher.gd
 var graph_edit_scene = preload("res://common/layouts/graph_edit/monologue_graph_edit.tscn")
 var prompt_scene = preload("res://common/windows/prompt_window/prompt_window.tscn")
-var root_scene = GlobalVariables.node_dictionary.get("Root")
+=======
 var current: MonologueGraphEdit: get = get_current_graph_edit
+var graph_edit_scene = preload("res://Objects/MonologueGraphEdit.tscn")
 var is_closing_all_tabs: bool
-
+var pending_new_graph: MonologueGraphEdit
+var prompt_scene = preload("res://Objects/Windows/PromptWindow.tscn")
+>>>>>>> dev:Scripts/SubComponents/GraphEditSwitcher.gd
+var root_scene = GlobalVariables.node_dictionary.get("Root")
 var tab_bar: TabBar
 
 @onready var graph_edits: Control = $GraphEditZone/GraphEdits
@@ -23,6 +28,7 @@ var tab_bar: TabBar
 func _ready() -> void:
 	tab_bar = control.tab_bar
 	tab_bar.connect("tab_changed", _on_tab_changed)
+	tab_bar.connect("tab_close_pressed", _on_tab_close_pressed)
 	new_graph_edit()
 	current.add_child(root_scene.instantiate())
 	GlobalSignal.add_listener("previous_tab", previous_tab)
@@ -91,7 +97,7 @@ func new_graph_edit() -> MonologueGraphEdit:
 	return graph_edit
 
 
-func on_tab_close_pressed(tab: int) -> void:
+func _on_tab_close_pressed(tab: int) -> void:
 	var ge = graph_edits.get_child(tab)
 	if ge.is_unsaved():  # prompt user if there are unsaved changes
 		GlobalSignal.emit("disable_picker_mode")
@@ -135,11 +141,18 @@ func _close_tab(graph_edit, tab_index, save_first = false) -> void:
 	if tab_bar.tab_count == 0:
 		get_tree().quit()
 	elif is_closing_all_tabs:
-		on_tab_close_pressed(0)
+		_on_tab_close_pressed(0)
 
 
 func _on_tab_changed(tab: int) -> void:
-	if tab < tab_bar.tab_count-1:
+	if tab < tab_bar.tab_count - 1:
+		# this allows user to switch out of the new tab (welcome window)
+		tab_bar.tab_close_display_policy = TabBar.CLOSE_BUTTON_SHOW_ACTIVE_ONLY
+		if pending_new_graph and not pending_new_graph.file_path:
+			pending_new_graph.queue_free()
+			pending_new_graph = null
+		GlobalSignal.emit("hide_welcome")
+		
 		for ge in graph_edits.get_children():
 			if graph_edits.get_child(tab) == ge:
 				ge.visible = true
@@ -149,9 +162,8 @@ func _on_tab_changed(tab: int) -> void:
 					side_panel.hide()
 			else:
 				ge.visible = false
-		return
-	
-	tab_bar.current_tab = tab_bar.get_previous_tab()
-	new_graph_edit()
-	GlobalSignal.emit("show_welcome", [tab_bar.tab_count > 1])
-	side_panel.hide()
+	else:
+		tab_bar.tab_close_display_policy = TabBar.CLOSE_BUTTON_SHOW_NEVER
+		pending_new_graph = new_graph_edit()
+		GlobalSignal.emit("show_welcome")
+		side_panel.hide()

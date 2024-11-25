@@ -21,8 +21,8 @@ const SPINBOX = preload("res://common/ui/fields/spin_box/monologue_spin_box.tscn
 const TEXT = preload("res://common/ui/fields/text/monologue_text.tscn")
 const TOGGLE = preload("res://common/ui/fields/toggle/monologue_toggle.tscn")
 
-const LEFT_ARROW_SLOT_TEXTURE = preload("res://ui/assets/icons/ArrowLeft.svg")
-const RIGHT_ARROW_SLOT_TEXTURE = preload("res://ui/assets/icons/ArrowRight.svg")
+const LEFT_SLOT = preload("res://Assets/Icons/NodesIcons/slot.svg")
+const RIGHT_SLOT = preload("res://Assets/Icons/NodesIcons/slot.svg")
 
 var id := Property.new(LINE, {}, IDGen.generate())
 var node_type: String = "NodeUnknown"
@@ -34,12 +34,27 @@ func _ready() -> void:
 
 	title = node_type
 	id.setters["copyable"] = true
-	id.setters["font_size"] = 11
 	id.setters["validator"] = _validate_id
 	id.callers["set_label_visible"] = [false]
 	for property_name in get_property_names():
 		get(property_name).connect("change", change.bind(property_name))
 		get(property_name).connect("display", display)
+	
+	_update_slot_icons()
+	_harmonize_size.call_deferred()
+
+
+func _update_slot_icons() -> void:
+	for slot_idx in get_child_count():
+		if is_slot_enabled_left(slot_idx):
+			set_slot_custom_icon_left(slot_idx, LEFT_SLOT)
+		if is_slot_enabled_right(slot_idx):
+			set_slot_custom_icon_right(slot_idx, RIGHT_SLOT)
+
+
+func _harmonize_size() -> void:
+	size.x = ceil(size.x/30)*30
+	size.y = ceil(size.y/30)*30
 
 
 func _set_titlebar_color(val: Color):
@@ -53,8 +68,8 @@ func _set_titlebar_color(val: Color):
 	stylebox.set_border_width_all(1)
 	stylebox.border_width_bottom = 0
 	
-	var stylebox_selected = stylebox.duplicate()
-	stylebox_selected.border_color = Color("b2b2b2")
+	var stylebox_selected = get_theme_stylebox("titlebar_selected", "GraphNode").duplicate()
+	stylebox_selected.bg_color = val
 	
 	remove_theme_stylebox_override("titlebar")
 	remove_theme_stylebox_override("titlebar_selected")
@@ -163,6 +178,7 @@ func _to_next(dict: Dictionary, key: String = "NextID") -> void:
 
 func _update() -> void:
 	size.y = 0
+	_harmonize_size.call_deferred()
 
 
 func _validate_id(text: String) -> bool:

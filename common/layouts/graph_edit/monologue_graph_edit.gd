@@ -18,7 +18,6 @@ var connecting_mode: bool
 var moving_mode: bool
 var recorded_positions: Dictionary = {}  # for undo/redo positoning purpose
 var selected_nodes: Array[MonologueGraphNode] = []  # for group delete
-
 var mouse_hovering: bool = false
 
 
@@ -75,12 +74,11 @@ func _gui_input(_event: InputEvent) -> void:
 		cursor_hand_closed = true
 	
 	if cursor_hand_closed:
-		Cursor.shape = Cursor.Shapes.CURSOR_HAND_CLOSED
+		DisplayServer.cursor_set_custom_image(Cursor.closed_hand)
 	elif cursor_drag:
-		Cursor.shape = Cursor.Shapes.CURSOR_DRAG
+		DisplayServer.cursor_set_custom_image(Cursor.hand)
 	else:
-		Cursor.shape = CURSOR_ARROW
-
+		DisplayServer.cursor_set_custom_image(Cursor.arrow)
 
 ## Adds a node of the given type to this graph.
 func add_node(node_type, record: bool = true) -> Array[MonologueGraphNode]:
@@ -231,17 +229,25 @@ func pick_and_center(nodes: Array[MonologueGraphNode],
 			var from_port = picker.from_port
 			disconnect_outbound_from_node(from_node, from_port)
 			propagate_connection(from_node, from_port, nodes[0].name, 0)
-		if picker.release:
-			offset = picker.release
+		if picker.graph_release:
+			offset = (picker.release + scroll_offset)/zoom
 		
 		control_node.picker_from_node = null
 		control_node.picker_from_port = null
 		picker.flush()
 	
 	for node in nodes:
-		node.position_offset = offset - node.size / 2
+		node.position_offset = offset
 		offset += Vector2(node.size.x + 10, 0)
+	post_node_offset.call_deferred(nodes)
 	return to_names
+
+
+func post_node_offset(nodes: Array[MonologueGraphNode]) -> void:
+	var first_port_pos = nodes[0].get_input_port_position(0)
+	for node in nodes:
+		node.position_offset -= first_port_pos
+		node.position_offset = round(node.position_offset/snapping_distance)*snapping_distance
 
 
 ## Connects/disconnects and updates a given connection's NextID if possible.
@@ -362,7 +368,8 @@ func _on_disconnection_request(from_node, from_port, to_node, to_port) -> void:
 
 func _on_connection_to_empty(node: String, port: int, release: Vector2) -> void:
 	var center = (get_local_mouse_position() + scroll_offset) / zoom
-	GlobalSignal.emit("enable_picker_mode", [node, port, release, center])
+	var graph_release = (release + scroll_offset)/zoom
+	GlobalSignal.emit("enable_picker_mode", [node, port, release, graph_release, center])
 
 
 func _on_node_selected(node) -> void:
@@ -389,5 +396,5 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
-	Cursor.shape = CURSOR_ARROW
+	DisplayServer.cursor_set_custom_image(null)
 	mouse_hovering = false

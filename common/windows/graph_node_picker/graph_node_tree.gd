@@ -12,6 +12,7 @@ var _data =  [
 			{"text": "Choice", "icon": "Choice.svg"},
 		]},
 		{"text": "Logic", "children": [
+<<<<<<< HEAD:common/windows/graph_node_picker/graph_node_tree.gd
 			{"text": "Action", "icon": "Action.svg"},
 			{"text": "Condition", "icon": "Condition.svg"},
 			{"text": "Random", "icon": "Dice.svg"},
@@ -30,6 +31,26 @@ var _data =  [
 		{"text": "Helpers", "children": [
 			{"text": "Comment", "icon": "Comment.svg"},
 			{"text": "Reroute", "icon": "Comment.svg"},
+=======
+			{"text": "Action", "icon": "Graph/action.svg"},
+			{"text": "Condition", "icon": "Graph/condition.svg"},
+			{"text": "Random", "icon": "Graph/dice.svg"},
+			{"text": "Setter", "icon": "Graph/toggle.svg"},
+		]},
+		{"text": "Flow", "children": [
+			{"text": "Event", "icon": "Graph/calendar.svg"},
+			{"text": "Bridge", "icon": "Graph/link.svg"},
+			{"text": "EndPath", "icon": "Graph/exit.svg"},
+			{"text": "Wait", "icon": "Graph/time.svg"},
+		]},
+		{"text": "Audio and Visuals", "children": [
+			{"text": "Audio", "icon": "Graph/recording.svg"},
+			{"text": "Background", "icon": "Graph/picture.svg"},
+		]},
+		{"text": "Helpers", "children": [
+			{"text": "Comment", "icon": "Graph/comment.svg"},
+			{"text": "Reroute", "icon": "Graph/path.svg"},
+>>>>>>> dev:Scripts/UI/GraphNodeTree.gd
 		]}
 	]
 
