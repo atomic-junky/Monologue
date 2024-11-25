@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="6_0gy3h"]
 [ext_resource type="PackedScene" uid="uid://nqxlo7mk5nka" path="res://Objects/SubComponents/side_panel_node_details.tscn" id="6_3jc6d"]
 [ext_resource type="PackedScene" uid="uid://cb3se7h7akt47" path="res://Objects/SubComponents/language_switcher.tscn" id="6_nqv8k"]
+[ext_resource type="Script" path="res://Scripts/SubComponents/add_node_button.gd" id="6_tdvn8"]
 [ext_resource type="Script" path="res://Scripts/SubComponents/search_bar_container.gd" id="7_eu0e0"]
 [ext_resource type="PackedScene" uid="uid://cvum3eaenloix" path="res://Objects/SubComponents/search_bar.tscn" id="8_tvorm"]
 [ext_resource type="PackedScene" uid="uid://bcs6s2yuf374j" path="res://Objects/SubComponents/expand_text_edit_container.tscn" id="9_v3rw4"]
@@ -19,14 +20,6 @@
 [ext_resource type="Texture2D" uid="uid://bbw07aw88fo0p" path="res://Assets/Icons/folder_search.svg" id="17_g5nwh"]
 [ext_resource type="PackedScene" uid="uid://cmpsaafag7cwl" path="res://Objects/UI/GraphNodePicker.tscn" id="19_myvjg"]
 [ext_resource type="Script" path="res://Scripts/GlobalFileDialog.gd" id="20_2dvte"]
-
-[sub_resource type="GDScript" id="GDScript_5beyj"]
-script/source = "extends Button
-
-
-func _on_pressed() -> void:
-	GlobalSignal.emit(\"enable_picker_mode\")
-"
 
 [sub_resource type="GDScript" id="GDScript_lenro"]
 script/source = "extends Button
@@ -163,6 +156,7 @@ theme_override_constants/separation = 0
 alignment = 1
 
 [node name="MainPopupMenu" type="MenuButton" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(43, 0)
 layout_mode = 2
 icon = ExtResource("5_cttu0")
@@ -177,7 +171,7 @@ layout_mode = 2
 [node name="AddNodeBtn" type="Button" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 layout_mode = 2
 text = "Add a node..."
-script = SubResource("GDScript_5beyj")
+script = ExtResource("6_tdvn8")
 
 [node name="VSeparator4" type="VSeparator" parent="MarginContainer/MainContainer/GraphEditsArea/ToolBarContainer/VBoxContainer/CenterContainer/ToolBar/Left/HBoxContainer"]
 layout_mode = 2
@@ -243,8 +237,9 @@ offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="GraphNodePicker" parent="." instance=ExtResource("19_myvjg")]
+[node name="GraphNodePicker" parent="." node_paths=PackedStringArray("switcher") instance=ExtResource("19_myvjg")]
 visible = false
+switcher = NodePath("../MarginContainer/MainContainer/GraphEditsArea/GraphEditSwitcher")
 
 [node name="WelcomeWindow" type="Window" parent="."]
 transparent_bg = true
