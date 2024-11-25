@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-var option_button_instance = preload("res://scenes/run/objects/option_button.tscn")
+var option_button_instance = preload("res://scenes/run/common/option_button.tscn")
 
 
 func add_button(text, callback: Callable):
