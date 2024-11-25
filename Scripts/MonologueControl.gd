@@ -154,9 +154,10 @@ func save():
 
 
 func test_project(from_node: Variant = null):
-	await save()
-	var test_window: TestWindow = TestWindow.new(graph.current.file_path, from_node)
-	get_tree().root.add_child(test_window)
+	if graph.current.file_path:
+		await save()
+		var test_window: TestWindow = TestWindow.new(graph.current.file_path, from_node)
+		get_tree().root.add_child(test_window)
 
 
 func _connect_nodes(node_list: Array) -> void:
