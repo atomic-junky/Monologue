@@ -19,8 +19,8 @@ var _control_groups = {
 func _ready():
 	node_type = "NodeBackground"
 	background_type.callers["set_items"] = [[
-		{ "id": 0, "text": "Image"       },
-		{ "id": 1, "text": "Custom Scene"},
+		{ "id": 0, "text": "Image"        },
+		{ "id": 1, "text": "Custom Scene" },
 	]]
 	background_type.connect("preview", _show_group)
 	background_type.connect("preview", _update)
