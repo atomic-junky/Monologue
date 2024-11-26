@@ -3,7 +3,7 @@ extends VBoxContainer
 @onready var scroll_container = %ScrollContainer
 @onready var scroll_bar: ScrollBar = scroll_container.get_v_scroll_bar()
 
-@onready var text_box = preload("res://scenes/run/objects/text_box.tscn")
+@onready var text_box = preload("res://scenes/run/common/text_box/text_box.tscn")
 
 var current_text_box: RichTextLabel
 

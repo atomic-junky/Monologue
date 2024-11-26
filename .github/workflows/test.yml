@@ -24,4 +24,4 @@ jobs:
         with:
           godot-version: '4.3'
           paths: |
-            res://Test/Unit
+            res://unit

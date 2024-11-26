@@ -1,8 +1,8 @@
 extends MonologueProcess
 
 
-@onready var text_box = preload("res://scenes/run/objects/text_box.tscn")
-@onready var option_button = preload("res://scenes/run/objects/option_button.tscn")
+@onready var text_box = preload("res://scenes/run/common/text_box/text_box.tscn")
+@onready var option_button = preload("res://scenes/run/common/option_button.tscn")
 
 # SidePanel nodes
 @onready var sp_text_box_container = $SidePanelContainer/PanelContainer/MarginContainer/ScrollContainer/Container/ScrollContainer/TextBoxContainer
