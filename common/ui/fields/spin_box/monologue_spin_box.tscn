@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" path="res://common/ui/fields/spin_box/monologue_spin_box.gd" id="1_wmtop"]
 
-
-
 [node name="MonologueSpinBox" type="HBoxContainer"]
 script = ExtResource("1_wmtop")
 

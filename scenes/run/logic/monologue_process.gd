@@ -232,26 +232,20 @@ func process_audio(raw_audio: Dictionary) -> void:
 
 
 func process_background(raw_bg: Dictionary) -> void:
-	var bg_type = raw_bg.get("BackgroundType")
-	# TODO: Support Custom Scene
 	# TODO: Support transtions
-	if bg_type == "Custom Scene":
-		monologue_notify.emit(NotificationLevel.INFO,
-				"Custom Scene Background is not yet supported!")
-	elif bg_type == "Image":
-		var bg = Image.new()
-		var path = raw_bg.get("Image")
-		if path.is_relative_path():
-			path = base_path + "/" + path
+	var bg = Image.new()
+	var path = raw_bg.get("Image")
+	if path.is_relative_path():
+		path = base_path + "/" + path
 
-		if FileAccess.file_exists(path):
-			var status = bg.load(path)
-			if status == OK:
-				var texture = ImageTexture.create_from_image(bg)
-				monologue_update_background.emit(path, texture)
-			else:
-				monologue_notify.emit(NotificationLevel.WARN,
-						"Failed to load background (%s)" % path)
+	if FileAccess.file_exists(path):
+		var status = bg.load(path)
+		if status == OK:
+			var texture = ImageTexture.create_from_image(bg)
+			monologue_update_background.emit(path, texture)
+		else:
+			monologue_notify.emit(NotificationLevel.WARN,
+					"Failed to load background (%s)" % path)
 
 
 func process_condition(raw_condition: Dictionary) -> void:

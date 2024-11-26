@@ -43,7 +43,7 @@ mouse_filter = 2
 
 [node name="BgLabel" type="Label" parent="BackgroundContainer/VBox/HBox"]
 layout_mode = 2
-text = "Show Image"
+text = "Set Background to Image"
 
 [node name="PathLabel" type="Label" parent="BackgroundContainer/VBox/HBox"]
 layout_mode = 2
