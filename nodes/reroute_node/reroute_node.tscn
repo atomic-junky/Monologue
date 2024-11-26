@@ -1,10 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://b4n4q43gfk82"]
 
 [ext_resource type="Script" path="res://nodes/reroute_node/reroute_node.gd" id="1_2xjs7"]
-[ext_resource type="Texture2D" uid="uid://blumv8ks5udd0" path="res://ui/assets/icons/Move.svg" id="2_qvw7q"]
-
-
-
+[ext_resource type="Texture2D" uid="uid://blumv8ks5udd0" path="res://ui/assets/icons/move.svg" id="2_qvw7q"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f11gq"]
 

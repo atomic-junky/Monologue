@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dp3p88mc7f4k4"
-path="res://.godot/imported/frame_3.png-c981371a61372b0bf6701520ee982a43.ctex"
+uid="uid://cx0jcmldcyn1n"
+path="res://.godot/imported/choice.svg-affa86a6b966b61fb0ef343a93bbeb1b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/splash/monologue eye/frame_3.png"
-dest_files=["res://.godot/imported/frame_3.png-c981371a61372b0bf6701520ee982a43.ctex"]
+source_file="res://ui/assets/icons/choice.svg"
+dest_files=["res://.godot/imported/choice.svg-affa86a6b966b61fb0ef343a93bbeb1b.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" path="res://nodes/random_node/random_node.gd" id="1_qeufj"]
 
-
-
 [node name="RandomNode" type="GraphNode" groups=["graph_nodes"]]
 offset_right = 127.0
 offset_bottom = 53.0

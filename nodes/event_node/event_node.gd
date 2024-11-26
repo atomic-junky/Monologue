@@ -1,4 +1,4 @@
-@icon("res://ui/assets/icons/Event.svg")
+@icon("res://ui/assets/icons/calendar.svg")
 class_name EventNode extends AbstractVariableNode
 
 

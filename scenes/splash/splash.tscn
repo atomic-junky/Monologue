@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://scenes/splash/splash.gd" id="1_pl0ug"]
 [ext_resource type="Texture2D" uid="uid://bddodmw1pm42r" path="res://title_banner@0.5x.png" id="2_rikux"]
-[ext_resource type="Texture2D" uid="uid://cbfudkvndq872" path="res://scenes/splash/monologue eye/frame_1.png" id="3_qdaos"]
-[ext_resource type="Texture2D" uid="uid://dp3p88mc7f4k4" path="res://scenes/splash/monologue eye/frame_3.png" id="5_783yv"]
-[ext_resource type="Texture2D" uid="uid://dea6b1sjaitkq" path="res://scenes/splash/monologue eye/frame_2.png" id="7_ueewa"]
+[ext_resource type="Texture2D" uid="uid://cbfudkvndq872" path="res://scenes/splash/monologue_eye/frame_1.png" id="3_qdaos"]
+[ext_resource type="Texture2D" uid="uid://dp3p88mc7f4k4" path="res://scenes/splash/monologue_eye/frame_3.png" id="5_783yv"]
+[ext_resource type="Texture2D" uid="uid://dea6b1sjaitkq" path="res://scenes/splash/monologue_eye/frame_2.png" id="7_ueewa"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tj644"]
 animations = [{

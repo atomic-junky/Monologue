@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bn7uq5c73oqcw"
-path="res://.godot/imported/TextboxMode.png-405815b41d69eb6b13900dd39fb83557.ctex"
+uid="uid://iqm5av5qduiw"
+path="res://.godot/imported/condition.svg-e465084597d0556fe9eb0b96268215eb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/icons/TextboxMode.png"
-dest_files=["res://.godot/imported/TextboxMode.png-405815b41d69eb6b13900dd39fb83557.ctex"]
+source_file="res://ui/assets/icons/condition.svg"
+dest_files=["res://.godot/imported/condition.svg-e465084597d0556fe9eb0b96268215eb.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

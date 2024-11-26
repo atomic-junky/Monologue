@@ -1,4 +1,4 @@
-@icon("res://ui/assets/icons/DiceRoll.svg")
+@icon("res://ui/assets/icons/dice.svg")
 class_name RandomNode extends MonologueGraphNode
 # FIXME: RandomNode is broken, connections doesn't work and changing the value of a field makes the program crash.
 

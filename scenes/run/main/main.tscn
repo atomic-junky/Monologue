@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://scenes/run/main/main.gd" id="1_8rud0"]
 [ext_resource type="Texture2D" uid="uid://371ns5r4jx2n" path="res://scenes/run/assets/background.png" id="2_0y34q"]
 [ext_resource type="Script" path="res://scenes/run/main/character_asset.gd" id="3_xil5b"]
-[ext_resource type="Texture2D" uid="uid://dcv65k3aspep6" path="res://ui/assets/icons/SidePanelMode.png" id="4_hc80r"]
+[ext_resource type="Texture2D" uid="uid://dcv65k3aspep6" path="res://ui/assets/icons/side_panel_mode.png" id="4_hc80r"]
 [ext_resource type="Script" path="res://scenes/run/common/text_box/text_box.gd" id="4_huku6"]
 [ext_resource type="Script" path="res://scenes/run/main/choice_panel.gd" id="5_gll0q"]
 [ext_resource type="Script" path="res://scenes/run/main/notification.gd" id="6_kev1j"]
 [ext_resource type="PackedScene" uid="uid://cm2caiiwpfydd" path="res://scenes/run/common/text_box/text_box.tscn" id="7_00ova"]
-[ext_resource type="Texture2D" uid="uid://bn7uq5c73oqcw" path="res://ui/assets/icons/TextboxMode.png" id="7_2ymld"]
+[ext_resource type="Texture2D" uid="uid://bn7uq5c73oqcw" path="res://ui/assets/icons/textbox_mode.png" id="7_2ymld"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m05qh"]
 content_margin_left = 10.0

@@ -1,4 +1,4 @@
-@icon("res://ui/assets/icons/Cog.svg")
+@icon("res://ui/assets/icons/action.svg")
 class_name ActionNode extends MonologueGraphNode
 
 

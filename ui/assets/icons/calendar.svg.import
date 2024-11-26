@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3cbk6gtd8pis"
-path="res://.godot/imported/Sentence.svg-2825fafb5cd11c63441a970887d27b03.ctex"
+uid="uid://bjt74refsmu3w"
+path="res://.godot/imported/calendar.svg-4a7185fbaf173d39221d95b4ab58b11b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/icons/Sentence.svg"
-dest_files=["res://.godot/imported/Sentence.svg-2825fafb5cd11c63441a970887d27b03.ctex"]
+source_file="res://ui/assets/icons/calendar.svg"
+dest_files=["res://.godot/imported/calendar.svg-4a7185fbaf173d39221d95b4ab58b11b.ctex"]
 
 [params]
 

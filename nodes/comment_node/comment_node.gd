@@ -1,4 +1,4 @@
-@icon("res://ui/assets/icons/Comment.png")
+@icon("res://ui/assets/icons/comment.svg")
 class_name CommentNode extends MonologueGraphNode
 
 

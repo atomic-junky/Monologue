@@ -1,4 +1,4 @@
-@icon("res://ui/assets/icons/Sentence.svg")
+@icon("res://ui/assets/icons/text.svg")
 class_name SentenceNode extends MonologueGraphNode
 
 

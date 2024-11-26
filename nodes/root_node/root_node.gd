@@ -1,4 +1,4 @@
-@icon("res://ui/assets/icons/Root.svg")
+@icon("res://ui/assets/icons/root.svg")
 class_name RootNode extends MonologueGraphNode
 
 

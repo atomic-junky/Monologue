@@ -1,10 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cifg2nritn8t6"]
 
 [ext_resource type="Script" path="res://nodes/sentence_node/sentence_node.gd" id="1_at5jy"]
-[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://ui/assets/icons/ArrowLeft.svg" id="1_hvs86"]
-[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://ui/assets/icons/ArrowRight.svg" id="2_5kymc"]
-
-
+[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://ui/assets/icons/slot_left.svg" id="1_hvs86"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://ui/assets/icons/slot_right.svg" id="2_5kymc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ryo67"]
 content_margin_left = 10.0

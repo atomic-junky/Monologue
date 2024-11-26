@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dg1if067aop0p"]
+[gd_scene load_steps=6 format=3 uid="uid://dg1if067aop0p"]
 
-[ext_resource type="Texture2D" uid="uid://dsb6opwewlipc" path="res://ui/assets/icons//slot.svg" id="1_n6akr"]
+[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://ui/assets/icons/slot_left.svg" id="1_73gbt"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://ui/assets/icons/slot_right.svg" id="2_revt5"]
 [ext_resource type="Script" path="res://nodes/action_node/action_node.gd" id="3_s1gpj"]
 [ext_resource type="StyleBox" uid="uid://bmb6fo20hn20m" path="res://ui/theme_default/node_value.stylebox" id="4_286lp"]
 
@@ -16,11 +17,11 @@ title = "ActionNode"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
-slot/0/left_icon = ExtResource("1_n6akr")
+slot/0/left_icon = ExtResource("1_73gbt")
 slot/0/right_enabled = true
 slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
-slot/0/right_icon = ExtResource("1_n6akr")
+slot/0/right_icon = ExtResource("2_revt5")
 slot/0/draw_stylebox = false
 slot/1/left_enabled = false
 slot/1/left_type = 0
@@ -29,7 +30,7 @@ slot/1/left_icon = null
 slot/1/right_enabled = false
 slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
-slot/1/right_icon = ExtResource("1_n6akr")
+slot/1/right_icon = ExtResource("2_revt5")
 slot/1/draw_stylebox = false
 script = ExtResource("3_s1gpj")
 arg_box = NodePath("ArgBox")

@@ -1,11 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://dsv566w4evo8b"]
 
-[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://ui/assets/icons/ArrowRight.svg" id="1_242j4"]
-[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://ui/assets/icons/ArrowLeft.svg" id="1_dup0t"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://ui/assets/icons/slot_right.svg" id="1_242j4"]
+[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://ui/assets/icons/slot_left.svg" id="1_dup0t"]
 [ext_resource type="Script" path="res://nodes/condition_node/condition_node.gd" id="3_vhhwe"]
-
-
-
 
 [sub_resource type="Theme" id="Theme_llmqa"]
 

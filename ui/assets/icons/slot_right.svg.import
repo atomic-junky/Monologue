@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://duc8w81evfnqw"
-path="res://.godot/imported/DiceRoll.svg-fcbacc38799816102abfe37f36bb7247.ctex"
+uid="uid://bexlgpgwakbrr"
+path="res://.godot/imported/slot_right.svg-8add5ca45ef21dcad026b04cdcc1f76c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/icons/DiceRoll.svg"
-dest_files=["res://.godot/imported/DiceRoll.svg-fcbacc38799816102abfe37f36bb7247.ctex"]
+source_file="res://ui/assets/icons/slot_right.svg"
+dest_files=["res://.godot/imported/slot_right.svg-8add5ca45ef21dcad026b04cdcc1f76c.ctex"]
 
 [params]
 
