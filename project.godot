@@ -16,7 +16,7 @@ markdown_book/docs_folder=""
 
 config/name="Monologue"
 config/version="2.3.0"
-run/main_scene="res://Scenes/Splash.tscn"
+run/main_scene="res://scenes/splash/splash.tscn"
 run/print_header=false
 run/enable_alt_space_menu=true
 config/features=PackedStringArray("4.3")
@@ -26,15 +26,14 @@ config/icon="res://icon.png"
 
 [autoload]
 
-App="*res://Scripts/Global/App.gd"
-uuid="*res://Scripts/Global/UUID.gd"
-Util="*res://Scripts/Global/Util.gd"
-GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
-SfxLoader="*res://Test/Scripts/SfxLoader.gd"
-GlobalSignal="*res://Scripts/Global/GlobalSignal.gd"
-Path="*res://Scripts/Global/Path.gd"
-IDGen="*res://Scripts/Global/IDGen.gd"
-Cursor="*res://Scripts/Global/cursor.gd"
+App="*res://autoloads/app.gd"
+Util="*res://autoloads/util.gd"
+GlobalVariables="*res://autoloads/global_variables.gd"
+SfxLoader="*res://autoloads/sfx_loader.gd"
+GlobalSignal="*res://autoloads/global_signal.gd"
+Path="*res://autoloads/path.gd"
+IDGen="*res://autoloads/id_gen.gd"
+Cursor="*res://autoloads/cursor.gd"
 
 [display]
 
@@ -54,19 +53,7 @@ enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/
 [file_customization]
 
 folder_colors={
-"res://Assets/": "orange",
-"res://Examples/": "purple",
-"res://Objects/": "yellow",
-"res://Objects/GraphNodes/": "green",
-"res://Objects/SidePanelNodes/": "teal",
-"res://Objects/SubComponents/": "blue",
-"res://Scenes/": "yellow",
-"res://Scripts/": "yellow",
-"res://Scripts/GraphNodes/": "green",
-"res://Scripts/History/": "teal",
-"res://Scripts/SidePanelNodes/": "teal",
-"res://Scripts/SubComponents/": "blue",
-"res://Test/": "red"
+"res://addons/": "gray"
 }
 
 [filesystem]
@@ -75,13 +62,13 @@ import/blender/enabled=false
 
 [gdunit4]
 
-settings/test/test_lookup_folder="Unit"
+settings/test/test_lookup_folder="unit"
 ui/toolbar/run_overall=true
 ui/inspector/tree_view_mode=1
 
 [gui]
 
-theme/custom="res://Assets/MainTheme.tres"
+theme/custom="res://ui/theme_default/main.tres"
 theme/default_font_subpixel_positioning=0
 theme/lcd_subpixel_layout=0
 
