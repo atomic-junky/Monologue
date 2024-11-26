@@ -39,8 +39,6 @@ var picker_position
 func _ready():
 	get_tree().auto_accept_quit = false  # quit handled by _close_tab()
 	welcome.show()
-	#var new_root_node = root_scene.instantiate()
-	#graph.current.add_child(new_root_node)
 	
 	GlobalSignal.add_listener("add_graph_node", add_node_from_global)
 	GlobalSignal.add_listener("select_new_node", _select_new_node)
@@ -53,7 +51,7 @@ func _select_new_node() -> void:
 	graph_node_selecter.show()
 
 
-func _shortcut_input(event):
+func _input(event):
 	if event.is_action_pressed("Save"):
 		save()
 
