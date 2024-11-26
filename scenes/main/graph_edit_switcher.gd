@@ -25,7 +25,6 @@ func _ready() -> void:
 	tab_bar.connect("tab_changed", _on_tab_changed)
 	tab_bar.connect("tab_close_pressed", _on_tab_close_pressed)
 	new_graph_edit()
-	current.add_child(root_scene.instantiate())
 	GlobalSignal.add_listener("previous_tab", previous_tab)
 	GlobalSignal.add_listener("show_current_config", show_current_config)
 
