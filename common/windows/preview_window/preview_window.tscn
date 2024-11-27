@@ -43,7 +43,7 @@ size_flags_vertical = 3
 bbcode_enabled = true
 text = "[center][b]Monologue Preview[/b][/center]
 
-Monologue is in preview. If you encounter any bugs or issues, please report them on GitHub by creating an issue.
+Monologue is in preview. If you encounter any bugs or issues, please report them on [url=https://github.com/atomic-junky/Monologue/]GitHub[/url] by creating an issue.
 
 Thank you very much for using Monologue!"
 
@@ -56,4 +56,5 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "OK"
 
+[connection signal="meta_clicked" from="PanelContainer/MarginContainer/VBoxContainer/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
