@@ -6,6 +6,7 @@ var delete_scene = preload("res://common/ui/buttons/delete_button.tscn")
 var stylebox = preload("res://ui/theme_default/list_item.stylebox")
 
 var add_callback: Callable = GlobalVariables.empty_callback
+var delete_callback: Callable = func(list): return list
 var get_callback: Callable = GlobalVariables.empty_callback
 var data_list: Array = []
 
@@ -106,4 +107,5 @@ func _on_delete_button_pressed(id: Variant) -> void:
 		if reference.get("ID") == id or reference.get("Name") == id:
 			data_list.erase(reference)
 			break
-	field_updated.emit(data_list)
+	var modified_list = delete_callback.call(data_list)
+	field_updated.emit(modified_list)

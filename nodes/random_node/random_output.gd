@@ -2,9 +2,9 @@
 class_name MonologueRandomOutput extends RefCounted
 
 
-var weight := Property.new(MonologueGraphNode.SPINBOX, { "minimum": 0, "maximum": 100 })
-var id     := Property.new(MonologueGraphNode.SPINBOX)
-
+var weight  := Property.new(MonologueGraphNode.SPINBOX, { "minimum": 0, "maximum": 100 })
+var id      := Property.new(MonologueGraphNode.SPINBOX, {}, 0)
+var next_id := Property.new(MonologueGraphNode.LINE, {}, -1)
 
 var graph: MonologueGraphEdit
 var graph_node: RandomNode
@@ -30,7 +30,7 @@ func change_output_weight(old_value: Variant, new_value: Variant):
 	var balance = 100 - weight_sum
 	var count = 1
 	while count < new_list.size() and balance != 0:
-		var i = (id.value + count) % new_list.size()
+		var i = int(id.value + count) % new_list.size()
 		var new_weight = new_list[i].get("Weight") + balance
 		if new_weight < 1:
 			balance -= new_list[i].get("Weight") - 1
@@ -53,10 +53,10 @@ func get_property_names() -> PackedStringArray:
 
 
 func _from_dict(dict: Dictionary) -> void:
-	id.value = dict.get("ID")
+	#id.value = dict.get("ID")
 	weight.value = dict.get("Weight")
+	next_id.value = dict.get("NextID")
 
 
 func _to_dict():
-	var next_id_node = graph.get_all_connections_from_slot(graph_node.name, id.value)
-	return { "ID": id.value, "Weight": weight.value, "NextID": next_id_node[0].id.value if next_id_node else -1 }
+	return { "ID": id.value, "Weight": weight.value, "NextID": next_id.value }
