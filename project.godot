@@ -8,55 +8,52 @@
 
 config_version=5
 
+[addons]
+
+markdown_book/docs_folder=""
+
 [application]
 
 config/name="Monologue"
-config/version="2.3.0"
-run/main_scene="res://Scenes/App.tscn"
+config/version="3.0.0-dev1"
+run/main_scene="res://scenes/splash/splash.tscn"
+run/print_header=false
+run/enable_alt_space_menu=true
 config/features=PackedStringArray("4.3")
-run/low_processor_mode=true
-boot_splash/bg_color=Color(0.117647, 0.133333, 0.164706, 1)
-boot_splash/image="res://icon.png"
-boot_splash/fullsize=false
+boot_splash/bg_color=Color(0.117647, 0.117647, 0.129412, 1)
+boot_splash/show_image=false
 config/icon="res://icon.png"
 
 [autoload]
 
-App="*res://Scripts/Global/App.gd"
-uuid="*res://Scripts/Global/UUID.gd"
-Util="*res://Scripts/Global/Util.gd"
-GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
-SfxLoader="*res://Test/Scripts/SfxLoader.gd"
-GlobalSignal="*res://Scripts/Global/GlobalSignal.gd"
-Path="*res://Scripts/Global/Path.gd"
-IDGen="*res://Scripts/Global/IDGen.gd"
+App="*res://autoloads/app.gd"
+Util="*res://autoloads/util.gd"
+GlobalVariables="*res://autoloads/global_variables.gd"
+SfxLoader="*res://autoloads/sfx_loader.gd"
+GlobalSignal="*res://autoloads/global_signal.gd"
+Path="*res://autoloads/path.gd"
+IDGen="*res://autoloads/id_gen.gd"
+Cursor="*res://autoloads/cursor.gd"
 
 [display]
 
-window/stretch/scale=2.09173
+window/size/viewport_width=1600
+window/size/viewport_height=960
+window/size/resizable=false
+window/size/transparent=true
+window/size/extend_to_title=true
+window/energy_saving/keep_screen_on=false
 window/per_pixel_transparency/allowed=true
 window/size/fullscreen=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
 
 [file_customization]
 
 folder_colors={
-"res://Assets/": "orange",
-"res://Examples/": "purple",
-"res://Objects/": "yellow",
-"res://Objects/GraphNodes/": "green",
-"res://Objects/SidePanelNodes/": "teal",
-"res://Objects/SubComponents/": "blue",
-"res://Scenes/": "yellow",
-"res://Scripts/": "yellow",
-"res://Scripts/GraphNodes/": "green",
-"res://Scripts/History/": "teal",
-"res://Scripts/SidePanelNodes/": "teal",
-"res://Scripts/SubComponents/": "blue",
-"res://Test/": "red"
+"res://addons/": "gray"
 }
 
 [filesystem]
@@ -65,13 +62,13 @@ import/blender/enabled=false
 
 [gdunit4]
 
-settings/test/test_lookup_folder="Unit"
+settings/test/test_lookup_folder="unit"
 ui/toolbar/run_overall=true
 ui/inspector/tree_view_mode=1
 
 [gui]
 
-theme/custom="res://Assets/MainTheme.tres"
+theme/custom="res://ui/theme_default/main.tres"
 theme/default_font_subpixel_positioning=0
 theme/lcd_subpixel_layout=0
 
@@ -79,7 +76,7 @@ theme/lcd_subpixel_layout=0
 
 Save={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":83,"key_label":83,"unicode":0,"location":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 Undo={
@@ -102,6 +99,26 @@ Select={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(377, 21),"global_position":Vector2(386, 67),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
+Spacebar={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":32,"location":0,"echo":false,"script":null)
+]
+}
+"Show searchbar"={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"key_label":0,"unicode":32,"location":0,"echo":false,"script":null)
+]
+}
+Exit={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":true,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194335,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+"Add node"={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"key_label":0,"unicode":65,"location":0,"echo":false,"script":null)
+]
+}
 
 [physics]
 
@@ -109,7 +126,8 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/msaa_2d=2
 viewport/transparent_background=true
-2d/snap/snap_2d_transforms_to_pixel=true
-2d/snap/snap_2d_vertices_to_pixel=true
+anti_aliasing/quality/screen_space_aa=1
 environment/defaults/default_environment="res://default_env.tres"

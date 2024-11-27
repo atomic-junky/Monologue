@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://o5dt5106rohh"]
+
+[ext_resource type="Script" path="res://common/ui/fields/file_picker/file_picker.gd" id="1_siiu8"]
+[ext_resource type="Texture2D" uid="uid://t1i3wy037vsu" path="res://ui/assets/icons/folder_icon.png" id="2_plad0"]
+
+
+
+
+[sub_resource type="LabelSettings" id="LabelSettings_nr3ee"]
+font_color = Color(0.768627, 0.180392, 0.25098, 1)
+
+[node name="FilePickerLineEdit" type="HBoxContainer"]
+offset_right = 300.0
+offset_bottom = 59.0
+script = ExtResource("1_siiu8")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 0
+text = "Value"
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+structured_text_bidi_override = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBox/LineEdit"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -36.0
+grow_horizontal = 0
+grow_vertical = 2
+alignment = 2
+
+[node name="FilePickerButton" type="Button" parent="VBox/LineEdit/HBoxContainer"]
+custom_minimum_size = Vector2(33, 25)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("2_plad0")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="WarnLabel" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "File path not found!"
+label_settings = SubResource("LabelSettings_nr3ee")
+autowrap_mode = 2
+
+[connection signal="focus_exited" from="VBox/LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="VBox/LineEdit" to="." method="_on_text_changed"]
+[connection signal="text_submitted" from="VBox/LineEdit" to="." method="_on_text_submitted"]
+[connection signal="pressed" from="VBox/LineEdit/HBoxContainer/FilePickerButton" to="." method="_on_picker_button_pressed"]
