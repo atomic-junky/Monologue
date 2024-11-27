@@ -1,11 +1,10 @@
 @icon("res://ui/assets/icons/dice.svg")
 class_name RandomNode extends MonologueGraphNode
-# FIXME: RandomNode is broken, connections doesn't work and changing the value of a field makes the program crash.
 
 
 @onready var output_line := preload("res://nodes/random_node/output_line.tscn")
 
-var outputs := Property.new(LIST, { }, [])
+var outputs := Property.new(LIST, {}, [])
 
 var _output_references: Array = []
 
@@ -27,22 +26,17 @@ func _ready():
 func _from_dict(dict: Dictionary) -> void:
 	# check for backwards compatibility v2.x
 	if dict.has("Target"):
-		var target = dict.get("Target", 0)
-		var pass_output = {
-			"ID": 0,
-			"Weight": target,
-			"NextID": dict.get("PassID")
-		}
-		var fail_output = {
-			"ID": 1,
-			"Weight": 100 - target,
-			"NextID": dict.get("FailID")
-		}
-		dict["Outputs"] = [pass_output, fail_output]
+		var converter = NodeConverter.new()
+		dict = converter.convert_dice_roll(dict)
 	
 	load_outputs(dict.get("Outputs", []))
 	_load_position(dict)
 	_update()
+
+
+func _load_connections(data: Dictionary, _key: String = "NextID") -> void:
+	for output in data.get("Outputs"):
+		link_output(output, output.get("ID"))
 
 
 func _to_next(_dict: Dictionary, _key: String = "NextID") -> void:
@@ -54,12 +48,8 @@ func add_output(data: Dictionary = {}) -> MonologueRandomOutput:
 	output.id.value = _output_references.size()
 	if data:
 		output._from_dict(data)
-		var next_id = data.get("NextID", -1)
-		if next_id is String:
-			var next_node = get_parent().get_node_by_id(next_id)
-			if next_node:
-				get_parent().connect_node(name, data.get("ID", output.id.value), next_node.name, 0)
-		
+		link_output(data, output.id.value)
+	
 	_output_references.append(output)
 	var line_instance := output_line.instantiate()
 	add_child(line_instance)
@@ -87,6 +77,14 @@ func clear_children() -> void:
 
 func get_outputs() -> Array:
 	return _output_references
+
+
+func link_output(data: Dictionary, from_port: int):
+	var next_id = data.get("NextID", -1)
+	if next_id is String:
+		var next_node = get_parent().get_node_by_id(next_id)
+		if next_node:
+			get_parent().connect_node(name, from_port, next_node.name, 0)
 
 
 func load_outputs(new_output_list: Array):

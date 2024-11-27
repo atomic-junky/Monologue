@@ -7,6 +7,7 @@ class_name NodeConverter extends RefCounted
 func convert_node(node_dict: Dictionary) -> Dictionary:
 	match node_dict.get("$type"):
 		"NodeAction": return convert_action(node_dict)
+		"NodeDiceRoll": return convert_dice_roll(node_dict)
 	return node_dict
 
 
@@ -47,4 +48,27 @@ func convert_action(dict: Dictionary) -> Dictionary:
 				dict["$type"] = "NodeWait"
 				dict["Time"] = value
 	
+	return dict
+
+
+func convert_dice_roll(dict: Dictionary) -> Dictionary:
+	var pass_chance = dict.get("Target", 50)
+	var fail_chance = 100 - pass_chance
+	
+	var pass_dict = { "Weight": pass_chance, "NextID": dict.get("PassID", -1) }
+	var fail_dict = { "Weight": fail_chance, "NextID": dict.get("FailID", -1) }
+	if pass_chance >= fail_chance:
+		pass_dict["ID"] = 0
+		fail_dict["ID"] = 1
+		dict["Outputs"] = [pass_dict, fail_dict]
+	else:
+		fail_dict["ID"] = 0
+		pass_dict["ID"] = 1
+		dict["Outputs"] = [fail_dict, pass_dict]
+	
+	dict["$type"] = "NodeRandom"
+	dict.erase("Skill")
+	dict.erase("Target")
+	dict.erase("PassID")
+	dict.erase("FailID")
 	return dict
