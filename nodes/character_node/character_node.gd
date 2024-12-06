@@ -41,7 +41,10 @@ func _ready():
 	_update()
 
 
-func _update(_value: Variant = null) -> void:
+func _update(value: Variant = null) -> void:
+	super._update()
+	await get_tree().process_frame
+	
 	var action: Variant = action_type.value
 	character.callers["set_items"] = [get_graph_edit().speakers, "Reference", "ID"]
 	
@@ -49,7 +52,6 @@ func _update(_value: Variant = null) -> void:
 	action_type_label.text = action
 	position_label.text = _position.value
 	
-	super._update()
 
 
 func _show_group(action_type: Variant) -> void:

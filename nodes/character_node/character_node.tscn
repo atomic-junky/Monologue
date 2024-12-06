@@ -19,8 +19,8 @@ corner_radius_bottom_left = 2
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
 [node name="CharacterNode" type="GraphNode" groups=["graph_nodes"]]
-custom_minimum_size = Vector2(400, 0)
-offset_right = 400.0
+custom_minimum_size = Vector2(300, 0)
+offset_right = 300.0
 offset_bottom = 82.0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
