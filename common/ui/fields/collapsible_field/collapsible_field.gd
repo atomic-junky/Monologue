@@ -19,7 +19,7 @@ func _ready() -> void:
 	button.icon = icon_close
 	add_button.visible = show_add_button
 	close()
-	hide()
+	_update()
 
 
 func add_item(item: Control, force_readable_name: bool = false) -> void:
@@ -33,7 +33,7 @@ func add_item(item: Control, force_readable_name: bool = false) -> void:
 
 
 func _update():
-	var is_visible: bool = false
+	var is_visible: bool = show_add_button
 		
 	for child in vbox.get_children():
 		if not child.visible:
@@ -53,11 +53,11 @@ func get_items() -> Array[Node]:
 
 
 func clear() -> void:
-	hide()
-	
 	for child in vbox.get_children():
 		vbox.remove_child(child)
 		child.queue_free()
+		
+	_update()
 
 
 func _on_button_pressed() -> void:
