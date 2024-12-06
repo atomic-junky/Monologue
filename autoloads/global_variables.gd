@@ -10,6 +10,7 @@ var node_dictionary = {
 	"Bridge": preload("res://nodes/bridge_in_node/bridge_in_node.tscn"),
 	"BridgeIn": preload("res://nodes/bridge_in_node/bridge_in_node.tscn"),
 	"BridgeOut": preload("res://nodes/bridge_out_node/bridge_out_node.tscn"),
+	"Character": preload("res://nodes/character_node/character_node.tscn"),
 	"Choice": preload("res://nodes/choice_node/choice_node.tscn"),
 	"Comment": preload("res://nodes/comment_node/comment_node.tscn"),
 	"Condition": preload("res://nodes/condition_node/condition_node.tscn"),

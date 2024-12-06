@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://gn7806oog6qo"]
 
-[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_y5116"]
-[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_tyh3j"]
-[ext_resource type="Script" path="res://Scripts/GraphNodes/character_node.gd" id="3_3dcof"]
-[ext_resource type="StyleBox" uid="uid://bmb6fo20hn20m" path="res://Assets/NodeValue.stylebox" id="4_4reyd"]
+[ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://ui/assets/icons/slot_left.svg" id="1_y5116"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://ui/assets/icons/slot_right.svg" id="2_tyh3j"]
+[ext_resource type="Script" path="res://nodes/character_node/character_node.gd" id="3_3dcof"]
+[ext_resource type="StyleBox" uid="uid://bmb6fo20hn20m" path="res://ui/theme_default/node_value.stylebox" id="4_4reyd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ryo67"]
 content_margin_left = 10.0
@@ -19,9 +19,9 @@ corner_radius_bottom_left = 2
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
 [node name="CharacterNode" type="GraphNode" groups=["graph_nodes"]]
-custom_minimum_size = Vector2(400, 100)
+custom_minimum_size = Vector2(400, 0)
 offset_right = 400.0
-offset_bottom = 100.0
+offset_bottom = 82.0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_ryo67")

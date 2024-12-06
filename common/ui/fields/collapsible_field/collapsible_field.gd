@@ -19,13 +19,29 @@ func _ready() -> void:
 	button.icon = icon_close
 	add_button.visible = show_add_button
 	close()
+	hide()
 
 
 func add_item(item: Control, force_readable_name: bool = false) -> void:
 	if separate_items and vbox.get_children().size() > 0:
 		vbox.add_child(HSeparator.new())
 	
+	item.visibility_changed.connect(_update)
+	
 	vbox.add_child(item, force_readable_name)
+	_update()
+
+
+func _update():
+	var is_visible: bool = false
+		
+	for child in vbox.get_children():
+		if not child.visible:
+			continue
+		is_visible = true
+		
+	if visible != is_visible:
+		visible = is_visible
 
 
 func set_title(text: String) -> void:
@@ -37,6 +53,8 @@ func get_items() -> Array[Node]:
 
 
 func clear() -> void:
+	hide()
+	
 	for child in vbox.get_children():
 		vbox.remove_child(child)
 		child.queue_free()
