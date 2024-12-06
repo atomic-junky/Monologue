@@ -37,4 +37,4 @@ func _update():
 
 
 func _get_field_groups() -> Array:
-	return [{"Character": ["speaker", "display_name", "display_variant"]}]
+	return [{"Speaker": ["speaker", "display_name", "display_variant"]}]
