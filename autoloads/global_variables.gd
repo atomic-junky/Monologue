@@ -14,6 +14,7 @@ var node_dictionary = {
 	"Comment": preload("res://nodes/comment_node/comment_node.tscn"),
 	"Condition": preload("res://nodes/condition_node/condition_node.tscn"),
 	"Random": preload("res://nodes/random_node/random_node.tscn"),
+	"Effect": preload("res://nodes/effect_node/effect_node.tscn"),
 	"EndPath": preload("res://nodes/end_path_node/end_path_node.tscn"),
 	"Event": preload("res://nodes/event_node/event_node.tscn"),
 	"Sentence": preload("res://nodes/sentence_node/sentence_node.tscn"),

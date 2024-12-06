@@ -26,6 +26,7 @@ var _data =  [
 		{"text": "Audio and Visuals", "children": [
 			{"text": "Audio", "icon": "recording.svg"},
 			{"text": "Background", "icon": "picture.svg"},
+			{"text": "Effect", "icon": "picture.svg"},
 		]},
 		{"text": "Helpers", "children": [
 			{"text": "Comment", "icon": "comment.svg"},
