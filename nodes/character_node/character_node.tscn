@@ -23,7 +23,6 @@ custom_minimum_size = Vector2(300, 0)
 offset_right = 300.0
 offset_bottom = 82.0
 size_flags_vertical = 0
-mouse_default_cursor_shape = 2
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_ryo67")
 title = "NodeCharacter"
 slot/0/left_enabled = true

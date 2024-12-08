@@ -25,13 +25,16 @@ var uncollapse: bool
 var value: Variant
 ## Toggles visibility of the field instance.
 var visible: bool : set = set_visible
+## Overwrites the displayed property label
+var custom_label: Variant
 
 
 func _init(ui_scene: PackedScene, ui_setters: Dictionary = {},
-			default: Variant = "") -> void:
+			default: Variant = "", ui_custom_label: Variant = null) -> void:
 	scene = ui_scene
 	setters = ui_setters
 	value = default
+	custom_label = ui_custom_label
 	visible = true
 
 
